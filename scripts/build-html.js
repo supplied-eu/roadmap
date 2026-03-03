@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * build-html.js
- * Reads gantt-data.json and writes a self-contained index.html dashboard.
+ * Writes a self-contained index.html shell. Data is loaded at runtime from gantt-data.json.
  */
 
 const fs = require("fs");
@@ -15,8 +15,9 @@ if (!fs.existsSync(dataPath)) {
   process.exit(1);
 }
 
-const data = fs.readFileSync(dataPath, "utf8");
-const { refreshedAt, initiatives } = JSON.parse(data);
+// Still read the file so the build step fails fast if it's malformed
+try { JSON.parse(fs.readFileSync(dataPath, "utf8")); }
+catch(e) { console.error("gantt-data.json is invalid JSON:", e.message); process.exit(1); }
 
 const html = `<!DOCTYPE html>
 <html lang="en">
@@ -87,6 +88,24 @@ body {
   animation: pulse 2s infinite;
 }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ── REFRESH BUTTON ─────────────────────────────────────────────────────── */
+.refresh-btn {
+  font-size: 9px; color: var(--text-muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 10px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  display: flex; align-items: center; gap: 5px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+.refresh-btn .spin { display: inline-block; }
+.refresh-btn.loading .spin { animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── STATS BAR ──────────────────────────────────────────────────────────── */
 .stats {
@@ -197,8 +216,10 @@ body {
   overflow: hidden; padding-left: 5px;
   min-width: 3px; opacity: 0.85;
   transition: opacity 0.15s;
-  cursor: pointer;
+  cursor: default;
 }
+/* Only issue bars are clickable */
+.bar.clickable-bar { cursor: pointer; }
 .bar:hover { opacity: 1; }
 .bar-label {
   font-size: 8px; color: #fff; white-space: nowrap;
@@ -241,9 +262,12 @@ body {
   <div class="header-logo">⬡ <span>Supplied</span> · Product Roadmap</div>
   <div class="header-sub">INITIATIVES · PROJECTS · ISSUES</div>
   <div class="header-right">
+    <button class="refresh-btn" id="refresh-btn" onclick="doRefresh()">
+      <span class="spin">↻</span> REFRESH
+    </button>
     <div class="refresh-badge">
       <span class="dot"></span>
-      UPDATED ${new Date(refreshedAt).toLocaleDateString("en-GB", {day:"2-digit",month:"short",year:"numeric"})}
+      <span id="refresh-time">LOADING…</span>
     </div>
   </div>
 </div>
@@ -254,7 +278,7 @@ body {
     <span class="legend-swatch" style="background:${c}"></span>${s}
   </div>`).join("")}
   <div class="legend-today"><span class="legend-today-line"></span>Today</div>
-  <div class="legend-hint">Click bar → open in Linear · Click row → expand</div>
+  <div class="legend-hint">Click issue bar → open in Linear · Click row → expand</div>
 </div>
 
 <div class="gantt-wrapper" id="gantt">
@@ -268,9 +292,6 @@ body {
 <div class="tooltip" id="tooltip" style="display:none"></div>
 
 <script>
-// ── DATA ─────────────────────────────────────────────────────────────────────
-const DATA = ${data};
-
 // ── STATUS COLORS ─────────────────────────────────────────────────────────────
 const SC = {
   "Todo":"#6366f1","In Progress":"#f59e0b","In Review":"#fb923c",
@@ -308,6 +329,7 @@ while(cur <= endD){
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const expanded = {};
+let DATA = null;
 
 // ── TOOLTIP ───────────────────────────────────────────────────────────────────
 const tip = document.getElementById("tooltip");
@@ -319,7 +341,7 @@ function showTip(e, d){
     \${d.start ? \`<div class="tooltip-dates">\${d.start} → \${d.end||"ongoing"}</div>\`:""}
     \${d.assignee ? \`<div class="tooltip-assignee">👤 \${d.assignee}</div>\`:""}
     \${d.priority ? \`<div class="tooltip-assignee">⚡ \${d.priority}</div>\`:""}
-    \${d.url ? \`<div class="tooltip-link">↗ Open in Linear</div>\`:""}
+    \${d.clickable && d.url ? \`<div class="tooltip-link">↗ Open in Linear</div>\`:""}
   \`;
   tip.style.display="block";
   moveTip(e);
@@ -333,14 +355,15 @@ function hideTip(){ tip.style.display="none"; tipVisible=false; }
 document.addEventListener("mousemove", e => { if(tipVisible) moveTip(e); });
 
 // ── BAR ───────────────────────────────────────────────────────────────────────
-function makeBar(start, end, color, label, url, isIni){
+// isClickable: true only for issue bars — opens Linear on click
+function makeBar(start, end, color, label, url, isIni, isClickable){
   if(!start) return null;
   const effEnd = end || new Date().toISOString().split("T")[0];
   const l = dPct(start), r = dPct(effEnd);
   if(l===null) return null;
   const w = Math.max((r||l)-l, 0.4);
   const bar = document.createElement("div");
-  bar.className = "bar" + (isIni?" initiative-bar":"");
+  bar.className = "bar" + (isIni?" initiative-bar":"") + (isClickable?" clickable-bar":"");
   bar.style.left=l+"%";
   bar.style.width=w+"%";
   bar.style.background=color;
@@ -349,12 +372,13 @@ function makeBar(start, end, color, label, url, isIni){
     lbl.className="bar-label"; lbl.textContent=label;
     bar.appendChild(lbl);
   }
-  if(url) bar.addEventListener("click", e => { e.stopPropagation(); window.open(url,"_blank"); });
+  // Only add click handler for issue bars — prevents stopPropagation from swallowing row expand clicks
+  if(url && isClickable) bar.addEventListener("click", e => { e.stopPropagation(); window.open(url,"_blank"); });
   return bar;
 }
 
 // ── ROW ───────────────────────────────────────────────────────────────────────
-function makeRow({indent, label, status, color, start, end, url, hasChildren, isExpanded, isIni, onClick, barData}){
+function makeRow({indent, label, status, color, start, end, url, hasChildren, isExpanded, isIni, onClick, barData, barClickable}){
   const row = document.createElement("div");
   row.className = "row" + (isIni?" initiative":"") + (hasChildren||onClick?" clickable":"");
   if(onClick) row.addEventListener("click", onClick);
@@ -394,9 +418,9 @@ function makeRow({indent, label, status, color, start, end, url, hasChildren, is
   // Today line
   const tl = document.createElement("div"); tl.className="today-line"; tl.style.left=TODAY_PCT+"%"; bc.appendChild(tl);
   if(start){
-    const bar = makeBar(start,end,color||sc(status),label,url,isIni);
+    const bar = makeBar(start,end,color||sc(status),label,url,isIni,barClickable);
     if(bar){
-      const bd = barData||{label,status,start,end,url};
+      const bd = barData||{label,status,start,end,url,clickable:barClickable};
       bar.addEventListener("mouseenter", e => showTip(e,bd));
       bar.addEventListener("mouseleave", hideTip);
       bc.appendChild(bar);
@@ -412,6 +436,10 @@ function makeRow({indent, label, status, color, start, end, url, hasChildren, is
 const body = document.getElementById("gantt-body");
 
 function render(){
+  if(!DATA){
+    body.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:0.5px">LOADING…</div>';
+    return;
+  }
   body.innerHTML="";
   for(const ini of DATA.initiatives){
     const iniKey=ini.id;
@@ -425,7 +453,8 @@ function render(){
       color:ini.color, start:iniStart, end:iniEnd, url:ini.url,
       hasChildren:ini.projects.length>0, isExpanded:iniExp, isIni:true,
       onClick:()=>{ expanded[iniKey]=!iniExp; render(); },
-      barData:{label:ini.name,status:ini.status,start:iniStart,end:iniEnd,url:ini.url}
+      barClickable:false,
+      barData:{label:ini.name,status:ini.status,start:iniStart,end:iniEnd,url:ini.url,clickable:false}
     }));
 
     if(iniExp){
@@ -438,7 +467,8 @@ function render(){
           color:proj.color, start:proj.startDate, end:proj.targetDate, url:proj.url,
           hasChildren:hasIssues, isExpanded:projExp, isIni:false,
           onClick:hasIssues?()=>{ expanded[projKey]=!projExp; render(); }:null,
-          barData:{label:proj.name,status:proj.status,start:proj.startDate,end:proj.targetDate,url:proj.url}
+          barClickable:false,
+          barData:{label:proj.name,status:proj.status,start:proj.startDate,end:proj.targetDate,url:proj.url,clickable:false}
         }));
         if(projExp&&hasIssues){
           for(const iss of proj.issues){
@@ -447,7 +477,8 @@ function render(){
               status:iss.status, color:sc(iss.status),
               start:iss.start, end:iss.end, url:iss.url,
               hasChildren:false, isExpanded:false, isIni:false, onClick:null,
-              barData:{label:iss.title,status:iss.status,start:iss.start,end:iss.end,assignee:iss.assignee,priority:iss.priority,url:iss.url}
+              barClickable:true,
+              barData:{label:iss.title,status:iss.status,start:iss.start,end:iss.end,assignee:iss.assignee,priority:iss.priority,url:iss.url,clickable:true}
             }));
           }
         }
@@ -458,7 +489,31 @@ function render(){
   }
 }
 
-render();
+// ── INIT / REFRESH ────────────────────────────────────────────────────────────
+async function init(){
+  const btn = document.getElementById("refresh-btn");
+  if(btn) btn.classList.add("loading");
+  render(); // show loading placeholder
+  try {
+    const res = await fetch('./gantt-data.json?t='+Date.now());
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    DATA = await res.json();
+    const el = document.getElementById("refresh-time");
+    if(el && DATA.refreshedAt) el.textContent = "UPDATED " + new Date(DATA.refreshedAt).toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+    render();
+  } catch(err){
+    console.error("Failed to load gantt-data.json", err);
+    body.innerHTML='<div style="padding:40px;text-align:center;color:#ef4444;font-size:11px;letter-spacing:0.5px">Failed to load data — check console.</div>';
+    const el = document.getElementById("refresh-time");
+    if(el) el.textContent = "ERROR";
+  } finally {
+    if(btn) btn.classList.remove("loading");
+  }
+}
+
+function doRefresh(){ init(); }
+
+init();
 </script>
 </body>
 </html>`;
