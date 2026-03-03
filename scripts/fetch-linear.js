@@ -32,9 +32,18 @@ async function gql(query, variables = {}) {
       res.on("end", () => {
         try {
           const parsed = JSON.parse(data);
-          if (parsed.errors) reject(new Error(JSON.stringify(parsed.errors)));
-          else resolve(parsed.data);
-        } catch(e) { reject(e); }
+          if (parsed.errors) {
+            // Log full error detail so it shows up in workflow logs
+            console.error("GraphQL errors:", JSON.stringify(parsed.errors, null, 2));
+            console.error("Variables were:", JSON.stringify(variables));
+            reject(new Error(parsed.errors.map(e => e.message).join("; ")));
+          } else {
+            resolve(parsed.data);
+          }
+        } catch(e) {
+          console.error("Failed to parse response:", data.slice(0, 500));
+          reject(e);
+        }
       });
     });
     req.on("error", reject);
@@ -74,25 +83,21 @@ const PROJECTS_QUERY = `
   }
 `;
 
-// Top-level issues query filtered by project ID — includes all statuses (Todo, In Progress, Done, etc.)
+// Fetch issues via nested project query — most direct and reliable approach
 const ISSUES_QUERY = `
-  query Issues($projectId: String!, $after: String) {
-    issues(
-      first: 100,
-      after: $after,
-      filter: {
-        project: { id: { eq: $projectId } }
-      }
-    ) {
-      pageInfo { hasNextPage endCursor }
-      nodes {
-        id identifier title url
-        state { name }
-        priority
-        dueDate
-        startedAt
-        completedAt
-        assignee { name }
+  query ProjectIssues($id: String!, $after: String) {
+    project(id: $id) {
+      issues(first: 100, after: $after) {
+        pageInfo { hasNextPage endCursor }
+        nodes {
+          id identifier title url
+          state { name }
+          priority
+          dueDate
+          startedAt
+          completedAt
+          assignee { name }
+        }
       }
     }
   }
@@ -105,12 +110,15 @@ async function fetchAll(queryFn) {
   let after = null;
   do {
     const result = await queryFn(after);
+    if (!result) break; // null result (e.g. project not found)
     const page = result.nodes || [];
     nodes.push(...page);
-    after = result.pageInfo.hasNextPage ? result.pageInfo.endCursor : null;
+    after = result.pageInfo?.hasNextPage ? result.pageInfo.endCursor : null;
   } while (after);
   return nodes;
 }
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function priorityName(p) {
   return { 0:"No priority", 1:"Urgent", 2:"High", 3:"Medium", 4:"Low" }[p] || "";
@@ -147,8 +155,8 @@ async function main() {
   for (const proj of projectNodes) {
     try {
       const issues = await fetchAll(async (after) => {
-        const d = await gql(ISSUES_QUERY, { projectId: proj.id, after });
-        return d.issues;
+        const d = await gql(ISSUES_QUERY, { id: proj.id, after });
+        return d.project?.issues ?? null;
       });
       issuesByProject[proj.id] = issues.map(iss => ({
         id: iss.id,
@@ -161,11 +169,12 @@ async function main() {
         priority: priorityName(iss.priority),
         url: iss.url,
       }));
-      console.log(`  ${proj.name}: ${issuesByProject[proj.id].length} issues`);
+      console.log(`  ✓ ${proj.name}: ${issuesByProject[proj.id].length} issues`);
     } catch(e) {
-      console.warn(`  ⚠️  Could not fetch issues for "${proj.name}": ${e.message}`);
+      console.error(`  ✗ Failed "${proj.name}": ${e.message}`);
       issuesByProject[proj.id] = [];
     }
+    await sleep(100); // small delay to avoid rate limiting
   }
 
   // Assemble final data
