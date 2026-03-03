@@ -898,7 +898,7 @@ function renderOps(){
         tr.innerHTML=\`
           <td><span class="deal-name">\${d.name}</span></td>
           <td><span class="deal-stage-badge" style="background:\${stageColor}22;color:\${stageColor}">\${d.stageLabel||d.stage||"—"}</span></td>
-          <td><span class="deal-amount">\${d.amount?\${HS_DATA.currency||"€"}\${(d.amount).toLocaleString()}:"—"}</span></td>
+          <td><span class="deal-amount">\${d.amount?(HS_DATA.currency||"€")+(d.amount).toLocaleString():"—"}</span></td>
           <td><span class="deal-close-date \${dateClass}">\${d.closeDate?fmtDate(d.closeDate):"—"}</span></td>
           <td><span class="deal-owner-pill">\${d.ownerName?d.ownerName.split(" ")[0]:"—"}</span></td>
         \`;
