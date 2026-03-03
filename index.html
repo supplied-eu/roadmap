@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Supplied · Product Roadmap</title>
+<title>Supplied · Product & Operations Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
@@ -36,22 +36,47 @@ body {
 .header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  padding: 14px 20px;
+  padding: 0 20px;
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: stretch;
+  gap: 0;
   position: sticky; top: 0; z-index: 50;
+  min-height: 48px;
 }
 .header-logo {
   font-family: 'Syne', sans-serif;
-  font-size: 17px; font-weight: 800;
+  font-size: 16px; font-weight: 800;
   color: var(--text);
   letter-spacing: -0.5px;
   display: flex; align-items: center; gap: 8px;
+  padding: 0 20px 0 0;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
 }
 .header-logo span { color: var(--accent); }
-.header-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
-.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-tabs {
+  display: flex; align-items: stretch; gap: 0;
+  flex: 1;
+}
+.tab-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.5px;
+  color: var(--text-muted);
+  background: none; border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0 18px;
+  cursor: pointer; white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn .tab-icon { font-size: 12px; }
+.header-right {
+  margin-left: auto; display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0; padding-left: 16px;
+}
 .refresh-badge {
   font-size: 9px; color: var(--text-muted);
   background: var(--bg);
@@ -67,8 +92,6 @@ body {
   animation: pulse 2s infinite;
 }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-/* ── REFRESH BUTTON ─────────────────────────────────────────────────────── */
 .refresh-btn {
   font-size: 9px; color: var(--text-muted);
   background: var(--bg);
@@ -86,7 +109,7 @@ body {
 .refresh-btn.loading .spin { animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── ALERT BAR ──────────────────────────────────────────────────────────── */
+/* ── ALERT BAR (shared) ─────────────────────────────────────────────────── */
 .alert-bar {
   background: var(--surface);
   border-bottom: 2px solid var(--border);
@@ -108,6 +131,7 @@ body {
   font-family: 'DM Mono', monospace;
   letter-spacing: 0.3px;
   user-select: none; flex-shrink: 0;
+  background: inherit;
 }
 .alert-badge:hover { opacity: 0.85; transform: translateY(-1px); }
 .alert-badge.active { border-color: currentColor !important; }
@@ -117,16 +141,18 @@ body {
 .badge-high.active    { background: rgba(249,115,22,0.15); }
 .badge-overdue { color: #f59e0b; background: rgba(245,158,11,0.08); }
 .badge-overdue.active { background: rgba(245,158,11,0.15); }
+.badge-today   { color: #3b82f6; background: rgba(59,130,246,0.08); }
+.badge-today.active   { background: rgba(59,130,246,0.15); }
+.badge-week    { color: #8b5cf6; background: rgba(139,92,246,0.08); }
+.badge-week.active    { background: rgba(139,92,246,0.15); }
 .badge-clear   { color: var(--text-muted); background: var(--bg); border: 1px solid var(--border) !important; font-size: 8px; }
 .alert-num     { font-size: 16px; font-weight: 700; line-height: 1; }
 .alert-lbl     { font-size: 8px; letter-spacing: 0.8px; }
 .alert-divider { width: 1px; height: 22px; background: var(--border); flex-shrink: 0; margin: 0 2px; }
-.alert-all-clear {
-  font-size: 10px; color: #10b981;
-  display: flex; align-items: center; gap: 6px;
-}
+.alert-all-clear { font-size: 10px; color: #10b981; display: flex; align-items: center; gap: 6px; }
+.filter-notice { font-size: 8px; color: var(--text-muted); margin-left: auto; white-space: nowrap; flex-shrink: 0; letter-spacing: 0.5px; }
 
-/* ── PRIORITY / OVERDUE TAGS ─────────────────────────────────────────────── */
+/* ── PRIORITY / OVERDUE TAGS (shared) ───────────────────────────────────── */
 .pri-tag {
   font-size: 7px; border-radius: 2px;
   padding: 1px 4px; flex-shrink: 0;
@@ -136,14 +162,15 @@ body {
 .pri-urgent { color: #ef4444; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); }
 .pri-high   { color: #f97316; background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.3); }
 .overdue-tag {
-  font-size: 7px; border-radius: 2px;
-  padding: 1px 4px; flex-shrink: 0;
-  white-space: nowrap; letter-spacing: 0.5px;
-  font-weight: 600; line-height: 1.5;
-  color: #f59e0b;
-  background: rgba(245,158,11,0.12);
-  border: 1px solid rgba(245,158,11,0.3);
+  font-size: 7px; border-radius: 2px; padding: 1px 4px; flex-shrink: 0;
+  white-space: nowrap; letter-spacing: 0.5px; font-weight: 600; line-height: 1.5;
+  color: #f59e0b; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
   animation: overdueFlash 2.5s ease-in-out infinite;
+}
+.today-tag {
+  font-size: 7px; border-radius: 2px; padding: 1px 4px; flex-shrink: 0;
+  white-space: nowrap; letter-spacing: 0.5px; font-weight: 600; line-height: 1.5;
+  color: #3b82f6; background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3);
 }
 @keyframes overdueFlash { 0%,100%{opacity:1} 50%{opacity:0.5} }
 
@@ -157,26 +184,15 @@ body {
 .row.row-high   { box-shadow: inset 3px 0 0 rgba(249,115,22,0.5); }
 .row.row-high:hover   { background: rgba(249,115,22,0.05) !important; }
 .row.row-overdue { box-shadow: inset 3px 0 0 rgba(245,158,11,0.5); }
-
-/* ── OVERDUE BAR STRIPE ─────────────────────────────────────────────────── */
 .bar-overdue::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent, transparent 4px,
-    rgba(255,255,255,0.2) 4px, rgba(255,255,255,0.2) 6px
-  );
-  border-radius: 3px;
-  pointer-events: none;
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(255,255,255,0.2) 4px, rgba(255,255,255,0.2) 6px);
+  border-radius: 3px; pointer-events: none;
 }
 
-/* ── FILTER ACTIVE NOTICE ────────────────────────────────────────────────── */
-.filter-notice {
-  font-size: 8px; color: var(--text-muted);
-  margin-left: auto; white-space: nowrap;
-  flex-shrink: 0; letter-spacing: 0.5px;
-}
+/* ── TAB PANELS ─────────────────────────────────────────────────────────── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
 /* ── LEGEND ─────────────────────────────────────────────────────────────── */
 .legend {
@@ -187,150 +203,249 @@ body {
 }
 .legend-item { display: flex; align-items: center; gap: 4px; font-size: 9px; color: var(--text-muted); }
 .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-.legend-today { display: flex; align-items: center; gap: 4px; font-size: 9px; color: #ef4444; }
+.legend-today  { display: flex; align-items: center; gap: 4px; font-size: 9px; color: #ef4444; }
 .legend-today-line { width: 2px; height: 10px; background: #ef4444; }
 .legend-hint { margin-left: auto; font-size: 9px; color: var(--text-dim); }
 
 /* ── GANTT LAYOUT ───────────────────────────────────────────────────────── */
-.gantt-wrapper {
-  overflow: auto;
-  height: calc(100vh - 160px);
-}
+.gantt-wrapper { overflow: auto; height: calc(100vh - 160px); }
 .gantt-thead {
-  display: flex;
-  position: sticky; top: 0; z-index: 20;
-  background: var(--surface2);
-  border-bottom: 1px solid var(--border);
+  display: flex; position: sticky; top: 0; z-index: 20;
+  background: var(--surface2); border-bottom: 1px solid var(--border);
 }
 .gantt-thead-label {
-  width: var(--lw); min-width: var(--lw);
-  border-right: 1px solid var(--border);
-  padding: 4px 12px;
-  font-size: 8px; color: var(--text-dim);
-  font-weight: 500; letter-spacing: 1.5px;
-  display: flex; align-items: center;
+  width: var(--lw); min-width: var(--lw); border-right: 1px solid var(--border);
+  padding: 4px 12px; font-size: 8px; color: var(--text-dim);
+  font-weight: 500; letter-spacing: 1.5px; display: flex; align-items: center;
 }
-.gantt-thead-ticks {
-  flex: 1; position: relative; height: 26px;
-}
+.gantt-thead-ticks { flex: 1; position: relative; height: 26px; }
 .tick {
   position: absolute; top: 0; height: 100%;
-  border-left: 1px solid var(--border);
-  padding-left: 4px;
-  display: flex; align-items: center;
+  border-left: 1px solid var(--border); padding-left: 4px; display: flex; align-items: center;
 }
 .tick span { font-size: 9px; color: var(--text-dim); white-space: nowrap; }
 .tick.major span { color: var(--text-muted); }
 
-/* ── ROWS ───────────────────────────────────────────────────────────────── */
+/* ── GANTT ROWS ─────────────────────────────────────────────────────────── */
 .row {
-  display: flex; height: 38px;
-  border-bottom: 1px solid var(--bg);
-  cursor: default;
-  transition: background 0.1s;
+  display: flex; height: 38px; border-bottom: 1px solid var(--bg);
+  cursor: default; transition: background 0.1s;
 }
 .row:hover { background: var(--surface2); }
 .row.clickable { cursor: pointer; }
 .row-label {
-  width: var(--lw); min-width: var(--lw);
-  display: flex; align-items: center;
-  padding-right: 8px;
-  gap: 5px;
-  border-right: 1px solid var(--border);
-  overflow: hidden;
+  width: var(--lw); min-width: var(--lw); display: flex; align-items: center;
+  padding-right: 8px; gap: 5px; border-right: 1px solid var(--border); overflow: hidden;
 }
 .row-arrow {
-  font-size: 8px; color: var(--text-dim);
-  transition: transform 0.15s;
-  flex-shrink: 0; user-select: none; line-height: 1;
-  padding-left: 2px;
+  font-size: 8px; color: var(--text-dim); transition: transform 0.15s;
+  flex-shrink: 0; user-select: none; line-height: 1; padding-left: 2px;
 }
 .row-arrow.open { transform: rotate(90deg); }
 .row-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .row-name {
   font-size: 11px; color: #94a3b8;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  flex: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;
 }
 .row.initiative .row-name { color: var(--text); font-weight: 500; }
 .row-badge {
-  font-size: 7px; border-radius: 3px;
-  padding: 1px 5px; flex-shrink: 0;
+  font-size: 7px; border-radius: 3px; padding: 1px 5px; flex-shrink: 0;
   white-space: nowrap; letter-spacing: 0.3px;
 }
-.row-bars {
-  flex: 1; position: relative; overflow: hidden;
-}
+.row-bars { flex: 1; position: relative; overflow: hidden; }
 .today-line {
   position: absolute; top: 0; bottom: 0;
-  width: 1px; background: #ef4444; opacity: 0.5;
-  pointer-events: none; z-index: 5;
+  width: 1px; background: #ef4444; opacity: 0.5; pointer-events: none; z-index: 5;
 }
 .bar {
   position: absolute; top: 50%; transform: translateY(-50%);
-  height: 18px; border-radius: 3px;
-  display: flex; align-items: center;
-  overflow: hidden; padding-left: 5px;
-  min-width: 3px; opacity: 0.85;
-  transition: opacity 0.15s;
-  cursor: default;
+  height: 18px; border-radius: 3px; display: flex; align-items: center;
+  overflow: hidden; padding-left: 5px; min-width: 3px; opacity: 0.85;
+  transition: opacity 0.15s; cursor: default;
 }
-/* Only issue bars are clickable */
 .bar.clickable-bar { cursor: pointer; }
 .bar:hover { opacity: 1; }
 .bar-label {
   font-size: 8px; color: #fff; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
-  font-weight: 500;
-  pointer-events: none;
+  overflow: hidden; text-overflow: ellipsis; font-weight: 500; pointer-events: none;
 }
 .bar.initiative-bar { height: 22px; }
 .no-dates {
-  position: absolute; left: 10px; top: 50%;
-  transform: translateY(-50%);
-  font-size: 9px; color: var(--text-dim);
-  font-style: italic;
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 9px; color: var(--text-dim); font-style: italic;
 }
+.row-assignee {
+  font-size: 7px; color: var(--text-muted); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px;
+  flex-shrink: 0; white-space: nowrap; max-width: 72px;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.section-gap { height: 6px; background: var(--bg); border-bottom: 1px solid var(--border); }
 
 /* ── TOOLTIP ────────────────────────────────────────────────────────────── */
 .tooltip {
-  position: fixed; background: #ffffff;
-  border: 1px solid var(--border2);
-  border-radius: 6px; padding: 10px 14px;
-  font-size: 11px; pointer-events: none;
-  z-index: 9999; max-width: 260px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-  line-height: 1.7;
-  font-family: 'DM Mono', monospace;
+  position: fixed; background: #ffffff; border: 1px solid var(--border2);
+  border-radius: 6px; padding: 10px 14px; font-size: 11px; pointer-events: none;
+  z-index: 9999; max-width: 260px; box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  line-height: 1.7; font-family: 'DM Mono', monospace;
 }
-.tooltip-title { font-weight: 500; color: var(--text); margin-bottom: 2px; font-size: 11px; }
-.tooltip-status { font-size: 10px; }
-.tooltip-dates { font-size: 9px; color: var(--text-muted); }
+.tooltip-title    { font-weight: 500; color: var(--text); margin-bottom: 2px; font-size: 11px; }
+.tooltip-status   { font-size: 10px; }
+.tooltip-dates    { font-size: 9px; color: var(--text-muted); }
 .tooltip-assignee { font-size: 9px; color: var(--text-muted); }
-.tooltip-link { font-size: 9px; color: var(--accent); margin-top: 3px; }
+.tooltip-link     { font-size: 9px; color: var(--accent); margin-top: 3px; }
 .tooltip-priority { font-size: 9px; font-weight: 600; }
-.tooltip-overdue { font-size: 9px; color: #f59e0b; font-weight: 600; }
+.tooltip-overdue  { font-size: 9px; color: #f59e0b; font-weight: 600; }
 
-/* ── ASSIGNEE TAG ───────────────────────────────────────────────────────── */
-.row-assignee {
-  font-size: 7px; color: var(--text-muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 1px 5px; flex-shrink: 0;
-  white-space: nowrap; max-width: 72px;
-  overflow: hidden; text-overflow: ellipsis;
+/* ── SALES & OPS TAB ────────────────────────────────────────────────────── */
+.ops-layout {
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 0 0 40px 0;
 }
 
-/* ── SECTION DIVIDER ────────────────────────────────────────────────────── */
-.section-gap { height: 6px; background: var(--bg); border-bottom: 1px solid var(--border); }
+/* Owner filter strip */
+.owner-strip {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 20px;
+  display: flex; gap: 6px; align-items: center;
+  overflow-x: auto; position: sticky; top: 0; z-index: 10;
+}
+.owner-strip-label { font-size: 8px; color: var(--text-dim); letter-spacing: 1px; margin-right: 4px; flex-shrink: 0; }
+.owner-pill {
+  font-size: 9px; border-radius: 20px; padding: 3px 12px;
+  border: 1px solid var(--border); cursor: pointer;
+  font-family: 'DM Mono', monospace; letter-spacing: 0.3px;
+  background: var(--bg); color: var(--text-muted);
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+}
+.owner-pill:hover { border-color: var(--accent); color: var(--accent); }
+.owner-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Section headers */
+.ops-section {
+  margin: 0;
+}
+.ops-section-header {
+  padding: 10px 20px 6px;
+  font-size: 8px; color: var(--text-dim);
+  letter-spacing: 1.5px; font-weight: 500;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex; align-items: center; gap: 8px;
+  position: sticky; top: 41px; z-index: 9;
+}
+.ops-section-count {
+  background: var(--border); color: var(--text-muted);
+  border-radius: 10px; padding: 1px 7px; font-size: 8px;
+}
+
+/* Task rows */
+.task-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px; height: 44px;
+  border-bottom: 1px solid var(--bg);
+  cursor: pointer; transition: background 0.1s;
+}
+.task-row:hover { background: var(--surface2); }
+.task-type-icon {
+  font-size: 13px; flex-shrink: 0; width: 20px; text-align: center;
+}
+.task-name {
+  font-size: 11px; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  flex: 1; min-width: 0;
+}
+.task-company {
+  font-size: 9px; color: var(--text-muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  max-width: 160px; flex-shrink: 0;
+}
+.task-due {
+  font-size: 9px; color: var(--text-muted);
+  white-space: nowrap; flex-shrink: 0; min-width: 64px; text-align: right;
+}
+.task-due.overdue { color: #f59e0b; font-weight: 600; }
+.task-due.today   { color: #3b82f6; font-weight: 600; }
+.task-owner-pill {
+  font-size: 8px; padding: 2px 8px; border-radius: 3px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text-muted); white-space: nowrap; flex-shrink: 0;
+}
+@keyframes taskUrgentPulse {
+  0%,100% { box-shadow: inset 3px 0 0 rgba(239,68,68,0.5); }
+  50%     { box-shadow: inset 3px 0 0 rgba(239,68,68,1); background: rgba(239,68,68,0.03); }
+}
+.task-row.row-urgent { animation: taskUrgentPulse 1.6s ease-in-out infinite; }
+.task-row.row-overdue { box-shadow: inset 3px 0 0 rgba(245,158,11,0.5); }
+
+/* Pipeline table */
+.pipeline-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.pipeline-table th {
+  font-size: 8px; color: var(--text-dim); letter-spacing: 1.2px;
+  padding: 8px 12px; text-align: left;
+  background: var(--surface2); border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.pipeline-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--bg);
+  color: var(--text); vertical-align: middle;
+}
+.pipeline-table tr:hover td { background: var(--surface2); }
+.pipeline-table tr { cursor: pointer; }
+.deal-name { font-weight: 500; }
+.deal-stage-badge {
+  font-size: 8px; border-radius: 3px; padding: 2px 7px;
+  white-space: nowrap;
+}
+.deal-amount { font-weight: 500; color: #10b981; font-family: 'DM Mono', monospace; }
+.deal-close-date { font-size: 10px; color: var(--text-muted); }
+.deal-close-date.urgent { color: #ef4444; font-weight: 600; }
+.deal-close-date.soon   { color: #f59e0b; font-weight: 600; }
+.deal-owner-pill {
+  font-size: 8px; padding: 2px 8px; border-radius: 3px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.pipeline-total-row td {
+  font-size: 9px; color: var(--text-muted);
+  background: var(--surface2); font-weight: 500;
+  border-top: 2px solid var(--border);
+}
+
+/* Empty/connect state */
+.ops-empty {
+  padding: 60px 20px; text-align: center;
+}
+.ops-empty-icon { font-size: 40px; margin-bottom: 16px; }
+.ops-empty-title { font-size: 14px; color: var(--text); font-weight: 500; margin-bottom: 8px; }
+.ops-empty-sub { font-size: 11px; color: var(--text-muted); line-height: 1.7; max-width: 400px; margin: 0 auto; }
+.ops-empty-cmd {
+  margin-top: 20px; display: inline-block;
+  font-size: 10px; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px 16px; color: var(--text); letter-spacing: 0.3px;
+}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-logo">⬡ <span>Supplied</span> · Product Roadmap</div>
-  <div class="header-sub">INITIATIVES · PROJECTS · ISSUES</div>
+  <div class="header-logo">⬡ <span>Supplied</span></div>
+
+  <div class="header-tabs">
+    <button class="tab-btn active" id="tab-roadmap-btn" onclick="switchTab('roadmap')">
+      <span class="tab-icon">🗺</span> CUSTOMER &amp; PRODUCT ROADMAP
+    </button>
+    <button class="tab-btn" id="tab-sales-btn" onclick="switchTab('sales')">
+      <span class="tab-icon">📊</span> SALES &amp; OPERATIONS
+    </button>
+  </div>
+
   <div class="header-right">
     <button class="refresh-btn" id="refresh-btn" onclick="doRefresh()">
       <span class="spin">↻</span> REFRESH
@@ -342,55 +457,57 @@ body {
   </div>
 </div>
 
-<div class="alert-bar" id="alert-bar">
-  <span class="alert-section-label">NEEDS ATTENTION</span>
+<!-- ══ ROADMAP TAB ══════════════════════════════════════════════════════════ -->
+<div id="panel-roadmap" class="tab-panel active">
+  <div class="alert-bar" id="alert-bar-roadmap">
+    <span class="alert-section-label">NEEDS ATTENTION</span>
+  </div>
+
+  <div class="legend">
+    
+    <div class="legend-item"><span class="legend-swatch" style="background:#6366f1"></span>Todo</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:#f59e0b"></span>In Progress</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:#fb923c"></span>In Review</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:#a78bfa"></span>In Test</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:#ef4444"></span>Blocked</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:#10b981"></span>Done</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:#10b981"></span>Completed</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:#8b5cf6"></span>Planned</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:#334155"></span>Backlog</div>
+    <div class="legend-today"><span class="legend-today-line"></span>Today</div>
+    <div class="legend-hint">Click issue bar → open in Linear · Click row → expand</div>
+  </div>
+
+  <div class="gantt-wrapper" id="gantt">
+    <div class="gantt-thead" id="thead">
+      <div class="gantt-thead-label">NAME</div>
+      <div class="gantt-thead-ticks" id="ticks"></div>
+    </div>
+    <div id="gantt-body"></div>
+  </div>
 </div>
 
-<div class="legend">
-  
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#6366f1"></span>Todo
+<!-- ══ SALES & OPS TAB ══════════════════════════════════════════════════════ -->
+<div id="panel-sales" class="tab-panel">
+  <div class="alert-bar" id="alert-bar-sales">
+    <span class="alert-section-label">NEEDS ATTENTION</span>
   </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#f59e0b"></span>In Progress
-  </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#fb923c"></span>In Review
-  </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#a78bfa"></span>In Test
-  </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#ef4444"></span>Blocked
-  </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#10b981"></span>Done
-  </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#10b981"></span>Completed
-  </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#8b5cf6"></span>Planned
-  </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:#334155"></span>Backlog
-  </div>
-  <div class="legend-today"><span class="legend-today-line"></span>Today</div>
-  <div class="legend-hint">Click issue bar → open in Linear · Click row → expand</div>
-</div>
 
-<div class="gantt-wrapper" id="gantt">
-  <div class="gantt-thead" id="thead">
-    <div class="gantt-thead-label">NAME</div>
-    <div class="gantt-thead-ticks" id="ticks"></div>
+  <div class="owner-strip" id="owner-strip">
+    <span class="owner-strip-label">OWNER</span>
   </div>
-  <div id="gantt-body"></div>
+
+  <div class="ops-layout" id="ops-layout">
+    <div id="ops-body"></div>
+  </div>
 </div>
 
 <div class="tooltip" id="tooltip" style="display:none"></div>
 
 <script>
-// ── STATUS COLORS ─────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
+// SHARED HELPERS
+// ═══════════════════════════════════════════════════════════════════════════
 const SC = {
   "Todo":"#6366f1","In Progress":"#f59e0b","In Review":"#fb923c",
   "In Test":"#a78bfa","Blocked":"#ef4444","Backlog":"#334155",
@@ -398,414 +515,452 @@ const SC = {
   "Planned":"#8b5cf6","Paused":"#f97316","Cancelled":"#475569",
 };
 const sc = s => SC[s]||"#475569";
+const TODAY_STR  = new Date().toISOString().split("T")[0];
+const DONE_STATES = new Set(["Done","Completed","Cancelled","Won","Closed"]);
+function isActive(status){ return !DONE_STATES.has(status); }
+function priorityLevel(p){ if(p==="Urgent") return "urgent"; if(p==="High") return "high"; return null; }
+function isOverdue(end, status){ return !!end && isActive(status||"") && end < TODAY_STR; }
+function daysDiff(dateStr){ return Math.ceil((new Date(dateStr)-new Date(TODAY_STR))/(1000*86400)); }
+function fmtDate(d){ if(!d) return ""; const [y,m,day]=d.split("-"); return `${day} ${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+m-1]} ${y.slice(2)}`; }
 
-// ── PRIORITY HELPERS ──────────────────────────────────────────────────────────
-const TODAY_STR = new Date().toISOString().split("T")[0];
-const DONE_STATES = new Set(["Done","Completed","Cancelled"]);
-
-function isActive(status) { return !DONE_STATES.has(status); }
-
-function priorityLevel(priority) {
-  if (priority === "Urgent") return "urgent";
-  if (priority === "High")   return "high";
-  return null;
+// ═══════════════════════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════════════════════════════════════
+let currentTab = "roadmap";
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  document.getElementById("tab-"+tab+"-btn").classList.add("active");
+  document.getElementById("panel-"+tab).classList.add("active");
 }
 
-function isOverdue(issue) {
-  if (!issue.end) return false;
-  if (!isActive(issue.status)) return false;
-  return issue.end < TODAY_STR;
+// ═══════════════════════════════════════════════════════════════════════════
+// TOOLTIP
+// ═══════════════════════════════════════════════════════════════════════════
+const tip = document.getElementById("tooltip");
+let tipVisible = false;
+function showTip(e,d){
+  const priLevel = priorityLevel(d.priority);
+  const od = d.end && isActive(d.status||"") && d.end < TODAY_STR;
+  const priColor = priLevel==="urgent"?"#ef4444":priLevel==="high"?"#f97316":null;
+  tip.innerHTML=`
+    <div class="tooltip-title">${d.label}</div>
+    ${d.status?`<div class="tooltip-status" style="color:${sc(d.status)}">${d.status}</div>`:""}
+    ${priColor?`<div class="tooltip-priority" style="color:${priColor}">⚡ ${d.priority}</div>`:""}
+    ${od?`<div class="tooltip-overdue">⚠️ OVERDUE — due ${d.end}</div>`:""}
+    ${d.start?`<div class="tooltip-dates">${d.start} → ${d.end||"ongoing"}</div>`:""}
+    ${d.assignee?`<div class="tooltip-assignee">👤 ${d.assignee}</div>`:""}
+    ${d.clickable&&d.url?`<div class="tooltip-link">↗ Open in Linear</div>`:""}
+  `;
+  tip.style.display="block"; moveTip(e); tipVisible=true;
+}
+function moveTip(e){ tip.style.left=(e.clientX+14)+"px"; tip.style.top=(e.clientY-8)+"px"; }
+function hideTip(){ tip.style.display="none"; tipVisible=false; }
+document.addEventListener("mousemove", e=>{ if(tipVisible) moveTip(e); });
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ROADMAP (LINEAR GANTT)
+// ═══════════════════════════════════════════════════════════════════════════
+const RANGE_START = (()=>{ const d=new Date(); d.setMonth(d.getMonth()-3,1); return d.toISOString().split("T")[0]; })();
+const RANGE_END   = (()=>{ const d=new Date(); d.setFullYear(d.getFullYear()+1); d.setMonth(d.getMonth()+2,28); return d.toISOString().split("T")[0]; })();
+const TOTAL_MS    = new Date(RANGE_END)-new Date(RANGE_START);
+const dPct = s => { if(!s) return null; return Math.max(0,Math.min(100,(new Date(s)-new Date(RANGE_START))/TOTAL_MS*100)); };
+const TODAY_PCT = dPct(TODAY_STR);
+
+// Ticks
+const ticksEl = document.getElementById("ticks");
+const curT = new Date(RANGE_START); curT.setDate(1);
+const endD = new Date(RANGE_END);
+while(curT <= endD){
+  const pct = dPct(curT.toISOString().split("T")[0]);
+  const t = document.createElement("div");
+  t.className = "tick"+(curT.getDate()===1&&curT.getMonth()%3===0?" major":"");
+  t.style.left=pct+"%";
+  const s = document.createElement("span");
+  s.textContent = curT.toLocaleString("default",{month:"short",year:"2-digit"});
+  t.appendChild(s); ticksEl.appendChild(t);
+  curT.setMonth(curT.getMonth()+1);
 }
 
-function computeStats(data) {
-  let urgent = 0, high = 0, overdue = 0, total = 0;
-  for (const ini of data.initiatives) {
-    for (const proj of ini.projects) {
-      for (const iss of (proj.issues || [])) {
-        if (!isActive(iss.status)) continue;
-        total++;
-        const p = priorityLevel(iss.priority);
-        if (p === "urgent") urgent++;
-        else if (p === "high") high++;
-        if (isOverdue(iss)) overdue++;
-      }
-    }
+const expanded = {};
+let GANTT_DATA  = null;
+let GANTT_FILTER = null;
+
+function ganttComputeStats(data){
+  let urgent=0,high=0,overdue=0,total=0;
+  for(const ini of data.initiatives) for(const proj of ini.projects) for(const iss of (proj.issues||[])){
+    if(!isActive(iss.status)) continue; total++;
+    const p=priorityLevel(iss.priority);
+    if(p==="urgent") urgent++; else if(p==="high") high++;
+    if(isOverdue(iss.end,iss.status)) overdue++;
   }
-  return { urgent, high, overdue, total };
+  return {urgent,high,overdue,total};
 }
 
-// ── FILTER STATE ──────────────────────────────────────────────────────────────
-let ACTIVE_FILTER = null; // null | 'urgent' | 'high' | 'overdue'
-
-function setFilter(f) {
-  ACTIVE_FILTER = (ACTIVE_FILTER === f) ? null : f;
-  render();
-  updateAlertBarActive();
-}
-
-function issueMatchesFilter(iss) {
-  if (!ACTIVE_FILTER) return true;
-  if (!isActive(iss.status)) return false;
-  if (ACTIVE_FILTER === "urgent")  return priorityLevel(iss.priority) === "urgent";
-  if (ACTIVE_FILTER === "high")    return priorityLevel(iss.priority) === "high";
-  if (ACTIVE_FILTER === "overdue") return isOverdue(iss);
+function ganttIssueMatchesFilter(iss){
+  if(!GANTT_FILTER) return true;
+  if(!isActive(iss.status)) return false;
+  if(GANTT_FILTER==="urgent")  return priorityLevel(iss.priority)==="urgent";
+  if(GANTT_FILTER==="high")    return priorityLevel(iss.priority)==="high";
+  if(GANTT_FILTER==="overdue") return isOverdue(iss.end,iss.status);
   return true;
 }
 
-function updateAlertBarActive() {
-  document.querySelectorAll(".alert-badge[data-filter]").forEach(b => {
-    b.classList.toggle("active", b.dataset.filter === ACTIVE_FILTER);
-  });
-  const notice = document.getElementById("filter-notice");
-  if (notice) notice.style.display = ACTIVE_FILTER ? "block" : "none";
-}
-
-// ── ALERT BAR ─────────────────────────────────────────────────────────────────
-function populateAlertBar(stats) {
-  const bar = document.getElementById("alert-bar");
-  bar.innerHTML = "";
-
-  const label = document.createElement("span");
-  label.className = "alert-section-label";
-  label.textContent = "NEEDS ATTENTION";
-  bar.appendChild(label);
-
-  if (stats.urgent === 0 && stats.high === 0 && stats.overdue === 0) {
-    const all = document.createElement("div");
-    all.className = "alert-all-clear";
-    all.innerHTML = `✓ <span>All ${stats.total} active issues on track</span>`;
-    bar.appendChild(all);
-    return;
+function populateGanttAlertBar(stats){
+  const bar = document.getElementById("alert-bar-roadmap"); bar.innerHTML="";
+  const lbl=document.createElement("span"); lbl.className="alert-section-label"; lbl.textContent="NEEDS ATTENTION"; bar.appendChild(lbl);
+  if(stats.urgent===0&&stats.high===0&&stats.overdue===0){
+    const a=document.createElement("div"); a.className="alert-all-clear"; a.innerHTML=`✓ <span>All ${stats.total} active issues on track</span>`; bar.appendChild(a); return;
   }
-
-  const badges = [
-    { key: "urgent",  num: stats.urgent,  icon: "🔴", label: "URGENT",  cls: "badge-urgent" },
-    { key: "high",    num: stats.high,    icon: "🟠", label: "HIGH",    cls: "badge-high" },
-    { key: "overdue", num: stats.overdue, icon: "⚠️", label: "OVERDUE", cls: "badge-overdue" },
-  ];
-
-  let first = true;
-  for (const b of badges) {
-    if (b.num === 0) continue;
-    if (!first) {
-      const div = document.createElement("div");
-      div.className = "alert-divider";
-      bar.appendChild(div);
-    }
-    first = false;
-
-    const btn = document.createElement("button");
-    btn.className = `alert-badge ${b.cls}`;
-    btn.dataset.filter = b.key;
-    if (ACTIVE_FILTER === b.key) btn.classList.add("active");
-    btn.innerHTML = `<span class="alert-num">${b.num}</span><span class="alert-lbl">${b.label}</span>`;
-    btn.style.fontFamily = "'DM Mono', monospace";
-    btn.style.cursor = "pointer";
-    btn.style.background = "inherit";
-    btn.addEventListener("click", () => setFilter(b.key));
+  const badges=[{key:"urgent",num:stats.urgent,lbl:"URGENT",cls:"badge-urgent"},{key:"high",num:stats.high,lbl:"HIGH",cls:"badge-high"},{key:"overdue",num:stats.overdue,lbl:"OVERDUE",cls:"badge-overdue"}];
+  let first=true;
+  for(const b of badges){
+    if(b.num===0) continue;
+    if(!first){ const d=document.createElement("div"); d.className="alert-divider"; bar.appendChild(d); }
+    first=false;
+    const btn=document.createElement("button");
+    btn.className=`alert-badge ${b.cls}${GANTT_FILTER===b.key?" active":""}`;
+    btn.dataset.filter=b.key;
+    btn.innerHTML=`<span class="alert-num">${b.num}</span><span class="alert-lbl">${b.lbl}</span>`;
+    btn.addEventListener("click",()=>{ GANTT_FILTER=(GANTT_FILTER===b.key)?null:b.key; renderGantt(); populateGanttAlertBar(stats); });
     bar.appendChild(btn);
   }
-
-  // Clear filter button
-  const div2 = document.createElement("div");
-  div2.className = "alert-divider";
-  bar.appendChild(div2);
-
-  const clearBtn = document.createElement("button");
-  clearBtn.className = "alert-badge badge-clear";
-  clearBtn.innerHTML = "✕ CLEAR FILTER";
-  clearBtn.style.fontFamily = "'DM Mono', monospace";
-  clearBtn.style.cursor = "pointer";
-  clearBtn.addEventListener("click", () => { ACTIVE_FILTER = null; render(); updateAlertBarActive(); });
-  bar.appendChild(clearBtn);
-
-  // Filter notice
-  const notice = document.createElement("span");
-  notice.className = "filter-notice";
-  notice.id = "filter-notice";
-  notice.textContent = "Showing filtered issues only";
-  notice.style.display = ACTIVE_FILTER ? "block" : "none";
-  bar.appendChild(notice);
-
-  // Summary text
-  const summary = document.createElement("span");
-  summary.style.cssText = "margin-left:auto;font-size:9px;color:var(--text-dim);white-space:nowrap;flex-shrink:0";
-  summary.textContent = `${stats.total} active issues total`;
-  bar.appendChild(summary);
+  const d=document.createElement("div"); d.className="alert-divider"; bar.appendChild(d);
+  const clr=document.createElement("button"); clr.className="alert-badge badge-clear"; clr.innerHTML="✕ CLEAR FILTER";
+  clr.addEventListener("click",()=>{ GANTT_FILTER=null; renderGantt(); populateGanttAlertBar(stats); }); bar.appendChild(clr);
+  const sum=document.createElement("span"); sum.style.cssText="margin-left:auto;font-size:9px;color:var(--text-dim);white-space:nowrap;flex-shrink:0"; sum.textContent=`${stats.total} active issues total`; bar.appendChild(sum);
 }
 
-// ── DATE / RANGE ──────────────────────────────────────────────────────────────
-const RANGE_START = (() => { const d=new Date(); d.setMonth(d.getMonth()-3,1); return d.toISOString().split("T")[0]; })();
-const RANGE_END   = (() => { const d=new Date(); d.setFullYear(d.getFullYear()+1); d.setMonth(d.getMonth()+2,28); return d.toISOString().split("T")[0]; })();
-const TOTAL_MS    = new Date(RANGE_END)-new Date(RANGE_START);
-const dPct = dateStr => {
-  if(!dateStr) return null;
-  return Math.max(0, Math.min(100, (new Date(dateStr)-new Date(RANGE_START))/TOTAL_MS*100));
-};
-const TODAY_PCT = dPct(new Date().toISOString().split("T")[0]);
-
-// ── TICKS ─────────────────────────────────────────────────────────────────────
-const ticksEl = document.getElementById("ticks");
-const cur = new Date(RANGE_START); cur.setDate(1);
-const endD = new Date(RANGE_END);
-while(cur <= endD){
-  const pct = dPct(cur.toISOString().split("T")[0]);
-  const t = document.createElement("div");
-  t.className = "tick" + (cur.getDate()===1 && cur.getMonth()%3===0 ? " major":"");
-  t.style.left = pct+"%";
-  const s = document.createElement("span");
-  s.textContent = cur.toLocaleString("default",{month:"short",year:"2-digit"});
-  t.appendChild(s);
-  ticksEl.appendChild(t);
-  cur.setMonth(cur.getMonth()+1);
-}
-
-// ── STATE ─────────────────────────────────────────────────────────────────────
-const expanded = {};
-let DATA = null;
-
-// ── TOOLTIP ───────────────────────────────────────────────────────────────────
-const tip = document.getElementById("tooltip");
-let tipVisible = false;
-function showTip(e, d){
-  const priLevel = priorityLevel(d.priority);
-  const overdue  = d.end && isActive(d.status||"") && d.end < TODAY_STR;
-  const priColor = priLevel === "urgent" ? "#ef4444" : priLevel === "high" ? "#f97316" : null;
-  tip.innerHTML = `
-    <div class="tooltip-title">${d.label}</div>
-    ${d.status ? `<div class="tooltip-status" style="color:${sc(d.status)}">${d.status}</div>`:""}
-    ${priColor ? `<div class="tooltip-priority" style="color:${priColor}">⚡ ${d.priority}</div>`:""}
-    ${overdue  ? `<div class="tooltip-overdue">⚠️ OVERDUE — due ${d.end}</div>`:""}
-    ${d.start  ? `<div class="tooltip-dates">${d.start} → ${d.end||"ongoing"}</div>`:""}
-    ${d.assignee ? `<div class="tooltip-assignee">👤 ${d.assignee}</div>`:""}
-    ${d.clickable && d.url ? `<div class="tooltip-link">↗ Open in Linear</div>`:""}
-  `;
-  tip.style.display="block";
-  moveTip(e);
-  tipVisible=true;
-}
-function moveTip(e){
-  tip.style.left=(e.clientX+14)+"px";
-  tip.style.top=(e.clientY-8)+"px";
-}
-function hideTip(){ tip.style.display="none"; tipVisible=false; }
-document.addEventListener("mousemove", e => { if(tipVisible) moveTip(e); });
-
-// ── BAR ───────────────────────────────────────────────────────────────────────
-function makeBar(start, end, color, label, url, isIni, isClickable, overdueFlag){
+function makeBar(start,end,color,label,url,isIni,isClickable,overdueFlag){
   if(!start) return null;
-  const effEnd = end || new Date().toISOString().split("T")[0];
-  const l = dPct(start), r = dPct(effEnd);
-  if(l===null) return null;
-  const w = Math.max((r||l)-l, 0.4);
-  const bar = document.createElement("div");
-  bar.className = "bar" + (isIni?" initiative-bar":"") + (isClickable?" clickable-bar":"") + (overdueFlag?" bar-overdue":"");
-  bar.style.left=l+"%";
-  bar.style.width=w+"%";
-  bar.style.background=color;
-  if(w>4){
-    const lbl=document.createElement("span");
-    lbl.className="bar-label"; lbl.textContent=label;
-    bar.appendChild(lbl);
-  }
-  if(url && isClickable) bar.addEventListener("click", e => { e.stopPropagation(); window.open(url,"_blank"); });
+  const effEnd=end||TODAY_STR; const l=dPct(start),r=dPct(effEnd); if(l===null) return null;
+  const w=Math.max((r||l)-l,0.4);
+  const bar=document.createElement("div");
+  bar.className="bar"+(isIni?" initiative-bar":"")+(isClickable?" clickable-bar":"")+(overdueFlag?" bar-overdue":"");
+  bar.style.left=l+"%"; bar.style.width=w+"%"; bar.style.background=color;
+  if(w>4){ const lbl=document.createElement("span"); lbl.className="bar-label"; lbl.textContent=label; bar.appendChild(lbl); }
+  if(url&&isClickable) bar.addEventListener("click",e=>{ e.stopPropagation(); window.open(url,"_blank"); });
   return bar;
 }
 
-// ── ROW ───────────────────────────────────────────────────────────────────────
-function makeRow({indent, label, status, color, start, end, url, hasChildren, isExpanded, isIni, onClick, barData, barClickable, assignee, priority, overdueFlag}){
-  const priLevel = priority ? priorityLevel(priority) : null;
-
-  const row = document.createElement("div");
-  let rowClass = "row" + (isIni?" initiative":"") + (hasChildren||onClick?" clickable":"");
-  if (!isIni && priLevel === "urgent") rowClass += " row-urgent";
-  else if (!isIni && priLevel === "high") rowClass += " row-high";
-  else if (!isIni && overdueFlag) rowClass += " row-overdue";
-  row.className = rowClass;
-  if(onClick) row.addEventListener("click", onClick);
-
-  // Label
-  const lc = document.createElement("div");
-  lc.className = "row-label";
-  lc.style.paddingLeft = (10 + indent*14) + "px";
-
-  if(hasChildren){
-    const arr = document.createElement("span");
-    arr.className = "row-arrow" + (isExpanded?" open":"");
-    arr.textContent = "▶";
-    lc.appendChild(arr);
-  }
-  const dot = document.createElement("span");
-  dot.className = "row-dot";
-  dot.style.background = color||sc(status);
-  lc.appendChild(dot);
-
-  const nm = document.createElement("span");
-  nm.className = "row-name"; nm.textContent=label; nm.title=label;
-  lc.appendChild(nm);
-
-  // Priority tag (urgent/high only, not on initiative rows)
-  if (!isIni && priLevel === "urgent") {
-    const pt = document.createElement("span");
-    pt.className = "pri-tag pri-urgent";
-    pt.textContent = "URGENT";
-    lc.appendChild(pt);
-  } else if (!isIni && priLevel === "high") {
-    const pt = document.createElement("span");
-    pt.className = "pri-tag pri-high";
-    pt.textContent = "HIGH";
-    lc.appendChild(pt);
-  }
-
-  // Overdue tag
-  if (!isIni && overdueFlag) {
-    const ot = document.createElement("span");
-    ot.className = "overdue-tag";
-    ot.textContent = "OVERDUE";
-    lc.appendChild(ot);
-  }
-
-  if(status){
-    const badge = document.createElement("span");
-    badge.className="row-badge";
-    badge.style.background=sc(status)+"22";
-    badge.style.color=sc(status);
-    badge.textContent=status;
-    lc.appendChild(badge);
-  }
-  if(assignee){
-    const asn = document.createElement("span");
-    asn.className="row-assignee";
-    asn.textContent=assignee.split(" ")[0];
-    asn.title=assignee;
-    lc.appendChild(asn);
-  }
+function makeGanttRow({indent,label,status,color,start,end,url,hasChildren,isExpanded,isIni,onClick,barData,barClickable,assignee,priority,overdueFlag}){
+  const priLevel=priority?priorityLevel(priority):null;
+  const row=document.createElement("div");
+  let rc="row"+(isIni?" initiative":"")+(hasChildren||onClick?" clickable":"");
+  if(!isIni&&priLevel==="urgent") rc+=" row-urgent";
+  else if(!isIni&&priLevel==="high") rc+=" row-high";
+  else if(!isIni&&overdueFlag) rc+=" row-overdue";
+  row.className=rc;
+  if(onClick) row.addEventListener("click",onClick);
+  const lc=document.createElement("div"); lc.className="row-label"; lc.style.paddingLeft=(10+indent*14)+"px";
+  if(hasChildren){ const arr=document.createElement("span"); arr.className="row-arrow"+(isExpanded?" open":""); arr.textContent="▶"; lc.appendChild(arr); }
+  const dot=document.createElement("span"); dot.className="row-dot"; dot.style.background=color||sc(status); lc.appendChild(dot);
+  const nm=document.createElement("span"); nm.className="row-name"; nm.textContent=label; nm.title=label; lc.appendChild(nm);
+  if(!isIni&&priLevel==="urgent"){ const pt=document.createElement("span"); pt.className="pri-tag pri-urgent"; pt.textContent="URGENT"; lc.appendChild(pt); }
+  else if(!isIni&&priLevel==="high"){ const pt=document.createElement("span"); pt.className="pri-tag pri-high"; pt.textContent="HIGH"; lc.appendChild(pt); }
+  if(!isIni&&overdueFlag){ const ot=document.createElement("span"); ot.className="overdue-tag"; ot.textContent="OVERDUE"; lc.appendChild(ot); }
+  if(status){ const badge=document.createElement("span"); badge.className="row-badge"; badge.style.background=sc(status)+"22"; badge.style.color=sc(status); badge.textContent=status; lc.appendChild(badge); }
+  if(assignee){ const asn=document.createElement("span"); asn.className="row-assignee"; asn.textContent=assignee.split(" ")[0]; asn.title=assignee; lc.appendChild(asn); }
   row.appendChild(lc);
-
-  // Bars
-  const bc = document.createElement("div"); bc.className="row-bars";
-  const tl = document.createElement("div"); tl.className="today-line"; tl.style.left=TODAY_PCT+"%"; bc.appendChild(tl);
+  const bc=document.createElement("div"); bc.className="row-bars";
+  const tl=document.createElement("div"); tl.className="today-line"; tl.style.left=TODAY_PCT+"%"; bc.appendChild(tl);
   if(start){
-    const bar = makeBar(start,end,color||sc(status),label,url,isIni,barClickable,overdueFlag&&!isIni);
-    if(bar){
-      const bd = barData||{label,status,start,end,url,clickable:barClickable};
-      bar.addEventListener("mouseenter", e => showTip(e,bd));
-      bar.addEventListener("mouseleave", hideTip);
-      bc.appendChild(bar);
-    }
-  } else {
-    const nd = document.createElement("span"); nd.className="no-dates"; nd.textContent="no dates"; bc.appendChild(nd);
-  }
+    const bar=makeBar(start,end,color||sc(status),label,url,isIni,barClickable,overdueFlag&&!isIni);
+    if(bar){ const bd=barData||{label,status,start,end,url,clickable:barClickable}; bar.addEventListener("mouseenter",e=>showTip(e,bd)); bar.addEventListener("mouseleave",hideTip); bc.appendChild(bar); }
+  } else { const nd=document.createElement("span"); nd.className="no-dates"; nd.textContent="no dates"; bc.appendChild(nd); }
   row.appendChild(bc);
   return row;
 }
 
-// ── RENDER ────────────────────────────────────────────────────────────────────
-const body = document.getElementById("gantt-body");
-
-function render(){
-  if(!DATA){
-    body.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:0.5px">LOADING…</div>';
-    return;
-  }
-  body.innerHTML="";
-
-  for(const ini of DATA.initiatives){
+const ganttBody = document.getElementById("gantt-body");
+function renderGantt(){
+  if(!GANTT_DATA){ ganttBody.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:0.5px">LOADING…</div>'; return; }
+  ganttBody.innerHTML="";
+  for(const ini of GANTT_DATA.initiatives){
     const iniKey=ini.id;
-
-    // If filter active: only show initiative if it has matching issues
-    if(ACTIVE_FILTER) {
-      const hasMatch = ini.projects.some(p => (p.issues||[]).some(i => issueMatchesFilter(i)));
-      if(!hasMatch) continue;
-    }
-
-    // When filter active, auto-expand everything
-    const iniExp = ACTIVE_FILTER ? true : !!expanded[iniKey];
+    if(GANTT_FILTER){ const hm=ini.projects.some(p=>(p.issues||[]).some(i=>ganttIssueMatchesFilter(i))); if(!hm) continue; }
+    const iniExp=GANTT_FILTER?true:!!expanded[iniKey];
     const dated=ini.projects.filter(p=>p.startDate||p.targetDate);
     const iniStart=dated.reduce((a,p)=>(!a||(p.startDate&&p.startDate<a))?p.startDate:a,null);
     const iniEnd=dated.reduce((a,p)=>(!a||(p.targetDate&&p.targetDate>a))?p.targetDate:a,null)||ini.targetDate;
-
-    body.appendChild(makeRow({
-      indent:0, label:ini.name, status:ini.status,
-      color:ini.color, start:iniStart, end:iniEnd, url:ini.url,
-      hasChildren:ini.projects.length>0, isExpanded:iniExp, isIni:true,
-      onClick:()=>{ expanded[iniKey]=!expanded[iniKey]; render(); },
-      barClickable:false,
-      barData:{label:ini.name,status:ini.status,start:iniStart,end:iniEnd,url:ini.url,clickable:false}
-    }));
-
+    ganttBody.appendChild(makeGanttRow({indent:0,label:ini.name,status:ini.status,color:ini.color,start:iniStart,end:iniEnd,url:ini.url,hasChildren:ini.projects.length>0,isExpanded:iniExp,isIni:true,onClick:()=>{ expanded[iniKey]=!expanded[iniKey]; renderGantt(); },barClickable:false,barData:{label:ini.name,status:ini.status,start:iniStart,end:iniEnd,url:ini.url,clickable:false}}));
     if(iniExp){
       for(const proj of ini.projects){
         const projKey=iniKey+"_"+proj.id;
-
-        // If filter active: only show project if it has matching issues
-        if(ACTIVE_FILTER) {
-          const hasProjMatch = (proj.issues||[]).some(i => issueMatchesFilter(i));
-          if(!hasProjMatch) continue;
-        }
-
-        const projExp = ACTIVE_FILTER ? true : !!expanded[projKey];
+        if(GANTT_FILTER){ const hm=(proj.issues||[]).some(i=>ganttIssueMatchesFilter(i)); if(!hm) continue; }
+        const projExp=GANTT_FILTER?true:!!expanded[projKey];
         const hasIssues=proj.issues&&proj.issues.length>0;
-        body.appendChild(makeRow({
-          indent:1, label:proj.name, status:proj.status||"",
-          color:proj.color, start:proj.startDate, end:proj.targetDate, url:proj.url,
-          hasChildren:hasIssues, isExpanded:projExp, isIni:false,
-          onClick:hasIssues?()=>{ expanded[projKey]=!expanded[projKey]; render(); }:null,
-          barClickable:false,
-          barData:{label:proj.name,status:proj.status,start:proj.startDate,end:proj.targetDate,url:proj.url,clickable:false}
-        }));
-
-        if(projExp&&hasIssues){
-          for(const iss of proj.issues){
-            // Filter: skip non-matching issues when filter active
-            if(ACTIVE_FILTER && !issueMatchesFilter(iss)) continue;
-
-            const od = isOverdue(iss);
-            body.appendChild(makeRow({
-              indent:2, label:(iss.identifier+" "+iss.title).trim(),
-              status:iss.status, color:sc(iss.status),
-              start:iss.start, end:iss.end, url:iss.url,
-              hasChildren:false, isExpanded:false, isIni:false, onClick:null,
-              barClickable:true,
-              assignee:iss.assignee||null,
-              priority:iss.priority||null,
-              overdueFlag:od,
-              barData:{label:iss.title,status:iss.status,start:iss.start,end:iss.end,assignee:iss.assignee,priority:iss.priority,url:iss.url,clickable:true}
-            }));
-          }
+        ganttBody.appendChild(makeGanttRow({indent:1,label:proj.name,status:proj.status||"",color:proj.color,start:proj.startDate,end:proj.targetDate,url:proj.url,hasChildren:hasIssues,isExpanded:projExp,isIni:false,onClick:hasIssues?()=>{ expanded[projKey]=!expanded[projKey]; renderGantt(); }:null,barClickable:false,barData:{label:proj.name,status:proj.status,start:proj.startDate,end:proj.targetDate,url:proj.url,clickable:false}}));
+        if(projExp&&hasIssues) for(const iss of proj.issues){
+          if(GANTT_FILTER&&!ganttIssueMatchesFilter(iss)) continue;
+          const od=isOverdue(iss.end,iss.status);
+          ganttBody.appendChild(makeGanttRow({indent:2,label:(iss.identifier+" "+iss.title).trim(),status:iss.status,color:sc(iss.status),start:iss.start,end:iss.end,url:iss.url,hasChildren:false,isExpanded:false,isIni:false,onClick:null,barClickable:true,assignee:iss.assignee||null,priority:iss.priority||null,overdueFlag:od,barData:{label:iss.title,status:iss.status,start:iss.start,end:iss.end,assignee:iss.assignee,priority:iss.priority,url:iss.url,clickable:true}}));
         }
       }
-      const gap=document.createElement("div"); gap.className="section-gap"; body.appendChild(gap);
+      const gap=document.createElement("div"); gap.className="section-gap"; ganttBody.appendChild(gap);
     }
   }
 }
 
-// ── INIT / REFRESH ────────────────────────────────────────────────────────────
-async function init(){
-  const btn = document.getElementById("refresh-btn");
-  if(btn) btn.classList.add("loading");
-  render();
-  try {
-    const res = await fetch('./gantt-data.json?t='+Date.now());
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    DATA = await res.json();
-    const el = document.getElementById("refresh-time");
-    if(el && DATA.refreshedAt) el.textContent = "UPDATED " + new Date(DATA.refreshedAt).toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
-    const stats = computeStats(DATA);
-    populateAlertBar(stats);
-    render();
-  } catch(err){
-    console.error("Failed to load gantt-data.json", err);
-    body.innerHTML='<div style="padding:40px;text-align:center;color:#ef4444;font-size:11px;letter-spacing:0.5px">Failed to load data — check console.</div>';
-    const el = document.getElementById("refresh-time");
-    if(el) el.textContent = "ERROR";
-  } finally {
-    if(btn) btn.classList.remove("loading");
+// ═══════════════════════════════════════════════════════════════════════════
+// SALES & OPS (HUBSPOT)
+// ═══════════════════════════════════════════════════════════════════════════
+let HS_DATA    = null;
+let OPS_OWNER  = "all"; // "all" or ownerId string
+
+function opsComputeStats(data){
+  const tasks = data.tasks||[];
+  const deals = data.deals||[];
+  let overdue=0, today=0, closingWeek=0;
+  for(const t of tasks){
+    if(t.status==="COMPLETED") continue;
+    if(isOverdue(t.dueDate,t.status||"OPEN")) overdue++;
+    else if(t.dueDate===TODAY_STR) today++;
+  }
+  for(const d of deals){
+    if(!isActive(d.stageType||"open")) continue;
+    if(d.closeDate){ const dd=daysDiff(d.closeDate); if(dd>=0&&dd<=7) closingWeek++; }
+  }
+  return {overdue,today,closingWeek};
+}
+
+let OPS_FILTER = null;
+function populateSalesAlertBar(stats){
+  const bar=document.getElementById("alert-bar-sales"); bar.innerHTML="";
+  const lbl=document.createElement("span"); lbl.className="alert-section-label"; lbl.textContent="NEEDS ATTENTION"; bar.appendChild(lbl);
+  if(stats.overdue===0&&stats.today===0&&stats.closingWeek===0){
+    const a=document.createElement("div"); a.className="alert-all-clear"; a.innerHTML="✓ <span>All tasks on track — no overdue items</span>"; bar.appendChild(a); return;
+  }
+  const badges=[{key:"overdue",num:stats.overdue,lbl:"OVERDUE TASKS",cls:"badge-overdue"},{key:"today",num:stats.today,lbl:"DUE TODAY",cls:"badge-today"},{key:"week",num:stats.closingWeek,lbl:"DEALS CLOSING THIS WEEK",cls:"badge-week"}];
+  let first=true;
+  for(const b of badges){
+    if(b.num===0) continue;
+    if(!first){ const d=document.createElement("div"); d.className="alert-divider"; bar.appendChild(d); }
+    first=false;
+    const btn=document.createElement("button");
+    btn.className=`alert-badge ${b.cls}${OPS_FILTER===b.key?" active":""}`;
+    btn.dataset.filter=b.key;
+    btn.innerHTML=`<span class="alert-num">${b.num}</span><span class="alert-lbl">${b.lbl}</span>`;
+    btn.addEventListener("click",()=>{ OPS_FILTER=(OPS_FILTER===b.key)?null:b.key; renderOps(); populateSalesAlertBar(stats); });
+    bar.appendChild(btn);
+  }
+  const d=document.createElement("div"); d.className="alert-divider"; bar.appendChild(d);
+  const clr=document.createElement("button"); clr.className="alert-badge badge-clear"; clr.innerHTML="✕ CLEAR";
+  clr.addEventListener("click",()=>{ OPS_FILTER=null; renderOps(); populateSalesAlertBar(stats); }); bar.appendChild(clr);
+}
+
+function populateOwnerStrip(data){
+  const strip=document.getElementById("owner-strip"); strip.innerHTML="";
+  const lbl=document.createElement("span"); lbl.className="owner-strip-label"; lbl.textContent="FILTER BY OWNER"; strip.appendChild(lbl);
+  const all=document.createElement("button"); all.className="owner-pill"+(OPS_OWNER==="all"?" active":""); all.textContent="All"; all.addEventListener("click",()=>{ OPS_OWNER="all"; renderOps(); updateOwnerPills(); }); strip.appendChild(all);
+  for(const o of (data.owners||[])){
+    const pill=document.createElement("button");
+    pill.className="owner-pill"+(OPS_OWNER===o.id?" active":"");
+    pill.textContent=o.name.split(" ")[0]+(o.name.split(" ")[1]?" "+o.name.split(" ")[1][0]+".":"");
+    pill.title=o.name;
+    pill.addEventListener("click",()=>{ OPS_OWNER=o.id; renderOps(); updateOwnerPills(); });
+    strip.appendChild(pill);
   }
 }
 
-function doRefresh(){ init(); }
+function updateOwnerPills(){
+  document.querySelectorAll(".owner-pill").forEach((p,i)=>{
+    const id = i===0 ? "all" : (HS_DATA.owners||[])[i-1]?.id;
+    p.classList.toggle("active", id===OPS_OWNER);
+  });
+}
 
+const TASK_ICONS = { "CALL":"📞", "EMAIL":"✉️", "TODO":"☑️" };
+
+function taskMatchesFilters(task){
+  if(task.status==="COMPLETED") return false;
+  if(OPS_OWNER!=="all" && task.ownerId!==OPS_OWNER) return false;
+  if(OPS_FILTER==="overdue") return isOverdue(task.dueDate,"OPEN");
+  if(OPS_FILTER==="today")   return task.dueDate===TODAY_STR;
+  return true;
+}
+
+function dealMatchesFilters(deal){
+  if(!isActive(deal.stageType||"open")) return false;
+  if(OPS_OWNER!=="all" && deal.ownerId!==OPS_OWNER) return false;
+  if(OPS_FILTER==="week") return deal.closeDate && daysDiff(deal.closeDate)>=0 && daysDiff(deal.closeDate)<=7;
+  if(OPS_FILTER==="overdue"||OPS_FILTER==="today") return false; // tasks only
+  return true;
+}
+
+function renderOps(){
+  const body=document.getElementById("ops-body"); body.innerHTML="";
+  if(!HS_DATA){ renderOpsEmpty(); return; }
+
+  const tasks=(HS_DATA.tasks||[]).filter(taskMatchesFilters);
+  const deals=(HS_DATA.deals||[]).filter(dealMatchesFilters);
+
+  // ── TASKS ──────────────────────────────────────────────────────────────
+  if(tasks.length>0){
+    // Group into overdue / today / this week / upcoming
+    const groups = [
+      { key:"overdue", label:"OVERDUE",    color:"#f59e0b", items:[] },
+      { key:"today",   label:"DUE TODAY",  color:"#3b82f6", items:[] },
+      { key:"week",    label:"THIS WEEK",  color:"#8b5cf6", items:[] },
+      { key:"later",   label:"UPCOMING",   color:"#64748b", items:[] },
+    ];
+    for(const t of tasks){
+      if(isOverdue(t.dueDate,"OPEN"))                groups[0].items.push(t);
+      else if(t.dueDate===TODAY_STR)                 groups[1].items.push(t);
+      else if(t.dueDate && daysDiff(t.dueDate)<=7)   groups[2].items.push(t);
+      else                                            groups[3].items.push(t);
+    }
+
+    const tasksSection=document.createElement("div"); tasksSection.className="ops-section";
+    const taskHeader=document.createElement("div"); taskHeader.className="ops-section-header";
+    taskHeader.innerHTML=`☑️ &nbsp;TASKS <span class="ops-section-count">${tasks.length}</span>`;
+    tasksSection.appendChild(taskHeader);
+
+    for(const g of groups){
+      if(g.items.length===0) continue;
+      const grpH=document.createElement("div");
+      grpH.style.cssText=`padding:6px 20px;font-size:8px;color:${g.color};letter-spacing:1.2px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px`;
+      grpH.innerHTML=`<span style="width:6px;height:6px;border-radius:50%;background:${g.color};flex-shrink:0;display:inline-block"></span>${g.label} <span style="opacity:.6">(${g.items.length})</span>`;
+      tasksSection.appendChild(grpH);
+
+      for(const t of g.items){
+        const row=document.createElement("div");
+        const od=isOverdue(t.dueDate,"OPEN"); const td=t.dueDate===TODAY_STR;
+        row.className="task-row"+(od?" row-overdue":"")+(priorityLevel(t.priority)==="urgent"?" row-urgent":"");
+        row.title="Click to open in HubSpot";
+        if(t.url) row.addEventListener("click",()=>window.open(t.url,"_blank"));
+
+        const icon=document.createElement("span"); icon.className="task-type-icon"; icon.textContent=TASK_ICONS[t.type]||"☑️"; row.appendChild(icon);
+        const nm=document.createElement("span"); nm.className="task-name"; nm.textContent=t.title; row.appendChild(nm);
+
+        if(od){ const ot=document.createElement("span"); ot.className="overdue-tag"; ot.textContent="OVERDUE"; row.appendChild(ot); }
+        if(td&&!od){ const tt=document.createElement("span"); tt.className="today-tag"; tt.textContent="TODAY"; row.appendChild(tt); }
+        if(priorityLevel(t.priority)==="urgent"){ const pt=document.createElement("span"); pt.className="pri-tag pri-urgent"; pt.textContent="URGENT"; row.appendChild(pt); }
+        else if(priorityLevel(t.priority)==="high"){ const pt=document.createElement("span"); pt.className="pri-tag pri-high"; pt.textContent="HIGH"; row.appendChild(pt); }
+
+        const co=document.createElement("span"); co.className="task-company"; co.textContent=t.company||t.contact||""; row.appendChild(co);
+        const du=document.createElement("span"); du.className="task-due"+(od?" overdue":td?" today":""); du.textContent=t.dueDate?fmtDate(t.dueDate):"No due date"; row.appendChild(du);
+        const op=document.createElement("span"); op.className="task-owner-pill"; op.textContent=t.ownerName?t.ownerName.split(" ")[0]:"—"; row.appendChild(op);
+        tasksSection.appendChild(row);
+      }
+    }
+    body.appendChild(tasksSection);
+  }
+
+  // ── PIPELINE ───────────────────────────────────────────────────────────
+  if(deals.length>0||!OPS_FILTER){
+    const dealsToShow = deals;
+    const pipeSection=document.createElement("div"); pipeSection.className="ops-section";
+    pipeSection.style.marginTop="0";
+
+    const pipeHeader=document.createElement("div"); pipeHeader.className="ops-section-header";
+    const totalVal=dealsToShow.reduce((s,d)=>s+(d.amount||0),0);
+    const valStr=totalVal>0?` · <span style="color:#10b981;font-weight:600">${HS_DATA.currency||"€"}${totalVal.toLocaleString()}</span>`:"";
+    pipeHeader.innerHTML=`💼 &nbsp;PIPELINE <span class="ops-section-count">${dealsToShow.length}</span>${valStr}`;
+    pipeSection.appendChild(pipeHeader);
+
+    if(dealsToShow.length===0){
+      const em=document.createElement("div"); em.style.cssText="padding:20px;font-size:10px;color:var(--text-dim);text-align:center"; em.textContent="No open deals match current filters"; pipeSection.appendChild(em);
+    } else {
+      // Group by stage
+      const byStage={};
+      for(const d of dealsToShow){ if(!byStage[d.stageLabel]) byStage[d.stageLabel]=[]; byStage[d.stageLabel].push(d); }
+
+      const table=document.createElement("table"); table.className="pipeline-table";
+      table.innerHTML=`<thead><tr>
+        <th style="width:30%">DEAL</th><th>STAGE</th><th>VALUE</th><th>CLOSE DATE</th><th>OWNER</th>
+      </tr></thead>`;
+      const tbody=document.createElement("tbody");
+
+      // Sort by close date ascending
+      const sorted=[...dealsToShow].sort((a,b)=>(a.closeDate||"9999")>(b.closeDate||"9999")?1:-1);
+      for(const d of sorted){
+        const tr=document.createElement("tr");
+        if(d.url) tr.addEventListener("click",()=>window.open(d.url,"_blank"));
+        const dd=d.closeDate?daysDiff(d.closeDate):null;
+        const dateClass=dd!==null?(dd<0?"urgent":dd<=3?"urgent":dd<=7?"soon":""):"";
+        const stageColor=d.stageColor||"#475569";
+        tr.innerHTML=`
+          <td><span class="deal-name">${d.name}</span></td>
+          <td><span class="deal-stage-badge" style="background:${stageColor}22;color:${stageColor}">${d.stageLabel||d.stage||"—"}</span></td>
+          <td><span class="deal-amount">${d.amount?${HS_DATA.currency||"€"}${(d.amount).toLocaleString()}:"—"}</span></td>
+          <td><span class="deal-close-date ${dateClass}">${d.closeDate?fmtDate(d.closeDate):"—"}</span></td>
+          <td><span class="deal-owner-pill">${d.ownerName?d.ownerName.split(" ")[0]:"—"}</span></td>
+        `;
+        tbody.appendChild(tr);
+      }
+      // Total row
+      if(totalVal>0){
+        const tr=document.createElement("tr"); tr.className="pipeline-total-row";
+        tr.innerHTML=`<td colspan="2">TOTAL PIPELINE VALUE</td><td>${HS_DATA.currency||"€"}${totalVal.toLocaleString()}</td><td colspan="2"></td>`;
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      pipeSection.appendChild(table);
+    }
+    body.appendChild(pipeSection);
+  }
+
+  if(tasks.length===0&&deals.length===0&&(OPS_FILTER||OPS_OWNER!=="all")){
+    const em=document.createElement("div"); em.style.cssText="padding:40px;text-align:center;font-size:11px;color:var(--text-muted)"; em.textContent="No items match the current filters."; body.appendChild(em);
+  }
+  if(tasks.length===0&&deals.length===0&&!OPS_FILTER&&OPS_OWNER==="all"){
+    renderOpsEmpty();
+  }
+}
+
+function renderOpsEmpty(){
+  const body=document.getElementById("ops-body");
+  body.innerHTML=`<div class="ops-empty">
+    <div class="ops-empty-icon">📊</div>
+    <div class="ops-empty-title">Connect HubSpot to see Sales &amp; Operations data</div>
+    <div class="ops-empty-sub">
+      Add your HubSpot API key as a repository secret, then run the workflow to pull tasks, deals, and pipeline data.
+    </div>
+    <div class="ops-empty-cmd">HUBSPOT_API_KEY → repo Settings → Secrets &amp; variables → Actions</div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// INIT / REFRESH
+// ═══════════════════════════════════════════════════════════════════════════
+async function init(){
+  const btn=document.getElementById("refresh-btn");
+  if(btn) btn.classList.add("loading");
+  renderGantt();
+  try {
+    // Load Linear gantt data
+    const gr=await fetch('./gantt-data.json?t='+Date.now());
+    if(!gr.ok) throw new Error('HTTP '+gr.status);
+    GANTT_DATA=await gr.json();
+    const el=document.getElementById("refresh-time");
+    if(el&&GANTT_DATA.refreshedAt) el.textContent="UPDATED "+new Date(GANTT_DATA.refreshedAt).toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+    populateGanttAlertBar(ganttComputeStats(GANTT_DATA));
+    renderGantt();
+  } catch(err){
+    console.error("Failed to load gantt-data.json",err);
+    ganttBody.innerHTML='<div style="padding:40px;text-align:center;color:#ef4444;font-size:11px;letter-spacing:0.5px">Failed to load Linear data — check console.</div>';
+    const el=document.getElementById("refresh-time"); if(el) el.textContent="ERROR";
+  }
+
+  // Load HubSpot data (optional — won't fail the page if missing)
+  try {
+    const hr=await fetch('./hubspot-data.json?t='+Date.now());
+    if(hr.ok){
+      HS_DATA=await hr.json();
+      if(HS_DATA&&(HS_DATA.tasks||HS_DATA.deals)){
+        populateSalesAlertBar(opsComputeStats(HS_DATA));
+        populateOwnerStrip(HS_DATA);
+        renderOps();
+      } else { renderOpsEmpty(); }
+    } else { renderOpsEmpty(); }
+  } catch(e){ renderOpsEmpty(); }
+
+  if(btn) btn.classList.remove("loading");
+}
+
+function doRefresh(){ init(); }
 init();
 </script>
 </body>
