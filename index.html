@@ -107,7 +107,37 @@ body {
 .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
 .refresh-btn .spin { display: inline-block; }
 .refresh-btn.loading .spin { animation: spin 0.7s linear infinite; }
+.refresh-btn.running { border-color: #f59e0b; color: #f59e0b; }
+.refresh-btn.done    { border-color: #10b981; color: #10b981; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.pat-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6);
+  z-index: 9999; align-items: center; justify-content: center;
+}
+.pat-overlay.open { display: flex; }
+.pat-modal {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 24px; width: 420px; max-width: 90vw;
+}
+.pat-modal-title { font-size: 11px; font-weight: 700; letter-spacing: .8px; color: var(--text); margin-bottom: 8px; }
+.pat-modal-desc  { font-size: 10px; color: var(--text-dim); margin-bottom: 14px; line-height: 1.6; }
+.pat-modal-desc a { color: var(--accent); text-decoration: none; }
+.pat-modal-desc code { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 0 4px; font-size: 9px; }
+.pat-modal input {
+  width: 100%; box-sizing: border-box;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 4px;
+  color: var(--text); font-family: 'DM Mono', monospace; font-size: 10px;
+  padding: 7px 10px; margin-bottom: 10px; outline: none;
+}
+.pat-modal input:focus { border-color: var(--accent); }
+.pat-modal-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
+.pat-btn {
+  font-size: 9px; letter-spacing: .5px; padding: 5px 14px; border-radius: 4px;
+  cursor: pointer; font-family: 'DM Mono', monospace; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text-dim);
+}
+.pat-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.pat-status { font-size: 9px; color: var(--text-dim); min-height: 13px; flex: 1; }
 
 /* ── ALERT BAR (shared) ─────────────────────────────────────────────────── */
 .alert-bar {
@@ -570,6 +600,7 @@ body {
     <button class="refresh-btn" id="refresh-btn" onclick="doRefresh()">
       <span class="spin">↻</span> REFRESH
     </button>
+    <button class="refresh-btn" title="Update GitHub token" onclick="openPatModal()" style="padding:3px 7px;">⚙</button>
     <div class="refresh-badge">
       <span class="dot"></span>
       <span id="refresh-time">LOADING…</span>
@@ -632,6 +663,26 @@ body {
   <div class="myday-layout">
     <div class="myday-main" id="myday-main"></div>
     <div class="myday-sidebar" id="myday-sidebar"></div>
+  </div>
+</div>
+
+<!-- PAT modal for on-demand refresh -->
+<div class="pat-overlay" id="pat-overlay">
+  <div class="pat-modal">
+    <div class="pat-modal-title">🔑 CONNECT GITHUB FOR ON-DEMAND REFRESH</div>
+    <div class="pat-modal-desc">
+      A GitHub Personal Access Token lets the Refresh button trigger a live data pull
+      without waiting for the scheduled workflow.<br><br>
+      Create one at <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens</a>
+      — scope needed: <code>repo</code> (or <code>workflow</code> for fine-grained tokens).<br><br>
+      Your token is stored only in this browser. It never leaves your device.
+    </div>
+    <input type="password" id="pat-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+    <div class="pat-modal-actions">
+      <span class="pat-status" id="pat-status"></span>
+      <button class="pat-btn" onclick="closePatModal()">Cancel</button>
+      <button class="pat-btn primary" onclick="savePat()">Save &amp; Refresh</button>
+    </div>
   </div>
 </div>
 
@@ -1465,7 +1516,99 @@ async function init(){
   if(btn) btn.classList.remove("loading");
 }
 
-function doRefresh(){ init(); }
+// ═══════════════════════════════════════════════════════════════════════════
+// ON-DEMAND REFRESH — triggers GitHub Actions workflow via PAT
+// ═══════════════════════════════════════════════════════════════════════════
+const GH_OWNER    = "jjrozario";
+const GH_REPO     = "roadmap";
+const GH_WORKFLOW = "refresh.yml";
+const PAT_KEY     = "gh_pat_supplied_dashboard";
+
+function getStoredPat(){ return localStorage.getItem(PAT_KEY)||""; }
+function setStoredPat(t){ if(t) localStorage.setItem(PAT_KEY,t); else localStorage.removeItem(PAT_KEY); }
+
+function openPatModal(){
+  const ov=document.getElementById("pat-overlay");
+  const inp=document.getElementById("pat-input");
+  if(ov) ov.classList.add("open");
+  if(inp){ inp.value=getStoredPat(); inp.focus(); }
+}
+function closePatModal(){
+  const ov=document.getElementById("pat-overlay");
+  if(ov) ov.classList.remove("open");
+}
+function savePat(){
+  const inp=document.getElementById("pat-input");
+  const st=document.getElementById("pat-status");
+  const token=(inp&&inp.value||"").trim();
+  if(!token){ if(st) st.textContent="Please enter a token."; return; }
+  setStoredPat(token);
+  closePatModal();
+  doRefresh();
+}
+
+async function triggerWorkflow(token){
+  const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/${GH_WORKFLOW}/dispatches`;
+  const res=await fetch(url,{
+    method:"POST",
+    headers:{"Authorization":"token "+token,"Accept":"application/vnd.github+json","Content-Type":"application/json"},
+    body:JSON.stringify({ref:"main",inputs:{reason:"Dashboard on-demand refresh"}}),
+  });
+  return res.status===204; // 204 = accepted
+}
+
+async function pollWorkflowDone(token, maxWaitMs=120000){
+  const url=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/${GH_WORKFLOW}/runs?per_page=1&branch=main`;
+  const deadline=Date.now()+maxWaitMs;
+  await new Promise(r=>setTimeout(r,5000)); // give GitHub 5s to register the run
+  while(Date.now()<deadline){
+    try{
+      const res=await fetch(url,{headers:{"Authorization":"token "+token,"Accept":"application/vnd.github+json"}});
+      if(res.ok){
+        const data=await res.json();
+        const run=data.workflow_runs&&data.workflow_runs[0];
+        if(run&&(run.status==="completed"||run.conclusion==="success")) return true;
+        if(run&&run.conclusion==="failure") return false;
+      }
+    }catch(e){ /* keep polling */ }
+    await new Promise(r=>setTimeout(r,5000));
+  }
+  return false; // timed out — reload anyway
+}
+
+function setRefreshLabel(text, cls){
+  const btn=document.getElementById("refresh-btn");
+  if(!btn) return;
+  btn.classList.remove("loading","running","done");
+  if(cls) btn.classList.add(cls);
+  btn.innerHTML=`<span class="spin">↻</span> ${text}`;
+}
+
+async function doRefresh(){
+  const token=getStoredPat();
+  if(!token){ openPatModal(); return; }
+
+  setRefreshLabel("TRIGGERING…","loading");
+  let triggered=false;
+  try{ triggered=await triggerWorkflow(token); } catch(e){}
+
+  if(!triggered){
+    // Token might be invalid/expired — clear it and ask again
+    setStoredPat("");
+    setRefreshLabel("REFRESH","");
+    openPatModal();
+    return;
+  }
+
+  setRefreshLabel("RUNNING…","running");
+  const done=await pollWorkflowDone(token);
+  setRefreshLabel(done?"DONE — RELOADING…":"RELOADING…","done");
+  await new Promise(r=>setTimeout(r,1000));
+  // Re-fetch all data and re-render (no full page reload needed)
+  GANTT_DATA=null; HS_DATA=null; GOOGLE_DATA=null;
+  setRefreshLabel("REFRESH","");
+  init();
+}
 init();
 </script>
 </body>
