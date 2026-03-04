@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-04T08:57:56.781Z",
+  "refreshedAt": "2026-03-04T14:49:02.367Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -264,9 +264,9 @@
               "id": "e80c69e0-8fa7-436d-ac86-9658dbd7accf",
               "identifier": "SUP-586",
               "title": "User agreement is not scrollable",
-              "status": "In Test",
+              "status": "Done",
               "start": "2025-10-16",
-              "end": null,
+              "end": "2026-03-04",
               "assignee": "nadezhda@supplied.eu",
               "priority": "Urgent",
               "url": "https://linear.app/supplied/issue/SUP-586/user-agreement-is-not-scrollable"
@@ -1418,9 +1418,9 @@
               "id": "db6497dd-e952-4c52-a947-579baecc195b",
               "identifier": "SUP-1165",
               "title": "Add UI fields for propertyOtherType and externalId to the supplier forms",
-              "status": "In Test",
+              "status": "Done",
               "start": "2026-02-20",
-              "end": null,
+              "end": "2026-03-04",
               "assignee": "Ivan Tiniakov",
               "priority": "No priority",
               "url": "https://linear.app/supplied/issue/SUP-1165/add-ui-fields-for-propertyothertype-and-externalid-to-the-supplier"
@@ -3539,8 +3539,8 @@
               "id": "ff1d1b8c-4794-4c1d-aa0d-72e66a389e94",
               "identifier": "SUP-1188",
               "title": "HttpException: Failed to find the company for the name authorize",
-              "status": "In Progress",
-              "start": "2026-03-02",
+              "status": "Backlog",
+              "start": null,
               "end": null,
               "assignee": "Vladislav Suvorov",
               "priority": "Urgent",
@@ -4755,6 +4755,72 @@
           "startDate": null,
           "targetDate": null,
           "issues": [
+            {
+              "id": "08dc8c36-a3f6-414e-9a18-bd821bb651d5",
+              "identifier": "IMP-143",
+              "title": "Seller Statement - Add multi-language support (NL & EN versions)",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "Medium",
+              "url": "https://linear.app/supplied/issue/IMP-143/seller-statement-add-multi-language-support-nl-and-en-versions"
+            },
+            {
+              "id": "6e80247c-c63a-4172-a275-779878793942",
+              "identifier": "IMP-142",
+              "title": "Seller Statement - Remove empty second page in PDF",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "url": "https://linear.app/supplied/issue/IMP-142/seller-statement-remove-empty-second-page-in-pdf"
+            },
+            {
+              "id": "752c7e8d-26fd-4c6e-aa2f-a96b09edeae3",
+              "identifier": "IMP-141",
+              "title": "Seller Statement -Fix currency formatting (€ 35.510,26)",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "url": "https://linear.app/supplied/issue/IMP-141/seller-statement-fix-currency-formatting-euro-3551026"
+            },
+            {
+              "id": "640a1148-b56a-4dad-b953-797e041b6575",
+              "identifier": "IMP-140",
+              "title": "Seller Statement - Clarify that Fees & Commissions include VAT (TVA/BTW)",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "Medium",
+              "url": "https://linear.app/supplied/issue/IMP-140/seller-statement-clarify-that-fees-and-commissions-include-vat-tvabtw"
+            },
+            {
+              "id": "d4b2454c-cd0b-4e1f-970e-52a24152feb0",
+              "identifier": "IMP-139",
+              "title": "Seller Statement – Include full owner address (street, number, postal code, city)",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "url": "https://linear.app/supplied/issue/IMP-139/seller-statement-include-full-owner-address-street-number-postal-code"
+            },
+            {
+              "id": "62be012e-d180-4ee4-914c-d2bb856a9224",
+              "identifier": "IMP-138",
+              "title": "Seller Statement: Add preparation date (date of issue)",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "Medium",
+              "url": "https://linear.app/supplied/issue/IMP-138/seller-statement-add-preparation-date-date-of-issue"
+            },
             {
               "id": "a8caac2e-9c7a-43bb-808b-195d88127f0b",
               "identifier": "IMP-135",
