@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-04T16:27:30.149Z",
+  "refreshedAt": "2026-03-04T21:27:30.941Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -6390,9 +6390,9 @@
               "id": "bc06cdce-ae2d-4be6-9549-f2652f2d12d6",
               "identifier": "SUP-1145",
               "title": "DAC7 supplier creation includes empty `realEstateProperties` entries for non-immovable sellers",
-              "status": "In Test",
+              "status": "Done",
               "start": "2026-02-17",
-              "end": null,
+              "end": "2026-03-04",
               "assignee": "Ivan Tiniakov",
               "priority": "No priority",
               "url": "https://linear.app/supplied/issue/SUP-1145/dac7-supplier-creation-includes-empty-realestateproperties-entries-for"
