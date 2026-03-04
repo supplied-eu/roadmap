@@ -1353,6 +1353,76 @@ function renderMyDay(){
   // ── Render main column ────────────────────────────────────────────────────
   main.innerHTML = "";
 
+  // ── Shared priority helpers ───────────────────────────────────────────────
+  const PRIORITY_ACTION_META = {
+    reply:    { label:"REPLY",     color:"#ef4444", icon:"↩" },
+    followup: { label:"FOLLOW UP", color:"#f59e0b", icon:"⏰" },
+    alert:    { label:"ALERT",     color:"#8b5cf6", icon:"⚠" },
+    review:   { label:"REVIEW",    color:"#3b82f6", icon:"👁" },
+    read:     { label:"READ",      color:"#10b981", icon:"📌" },
+    task:     { label:"TASK",      color:"#6366f1", icon:"✓" },
+  };
+  const DONE_PRIO_KEY = "supplied_done_priorities";
+  const DONE_PRIOS = new Set(JSON.parse(localStorage.getItem(DONE_PRIO_KEY)||"[]"));
+  function saveDonePrios(){ localStorage.setItem(DONE_PRIO_KEY, JSON.stringify([...DONE_PRIOS])); }
+
+  function renderPrioritySection(title, items){
+    if(!items || !items.length) return null;
+    const active = items.filter(p => !DONE_PRIOS.has(p.id));
+    if(!active.length) return null;
+    const sec = document.createElement("div");
+    sec.className = "myday-section";
+    const hdr = document.createElement("div");
+    hdr.className = "myday-section-hdr";
+    const countSpan = document.createElement("span");
+    countSpan.className = "myday-section-count";
+    countSpan.textContent = active.length;
+    hdr.innerHTML = `<span>${title}</span>`;
+    hdr.appendChild(countSpan);
+    sec.appendChild(hdr);
+    for(const p of active){
+      const m = PRIORITY_ACTION_META[p.action] || PRIORITY_ACTION_META.task;
+      const row = document.createElement("div");
+      row.className = "myday-item";
+      row.style.cssText = "gap:6px;";
+      if(p.url){ row.style.cursor="pointer"; row.addEventListener("click",()=>window.open(p.url,"_blank")); }
+      const badge = document.createElement("span");
+      badge.className = "myday-source";
+      badge.style.cssText = `background:${m.color};color:#fff;min-width:56px;text-align:center;font-size:9px;flex-shrink:0;`;
+      badge.textContent = m.icon+" "+m.label;
+      const title_ = document.createElement("span");
+      title_.className = "myday-item-title";
+      title_.textContent = p.subject;
+      const reason = document.createElement("span");
+      reason.className = "myday-item-status";
+      reason.style.cssText = "font-style:italic;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px;";
+      reason.textContent = p.reason;
+      const doneBtn = document.createElement("button");
+      doneBtn.title = "Mark done";
+      doneBtn.style.cssText = "flex-shrink:0;width:20px;height:20px;border-radius:50%;border:1.5px solid #22c55e;background:transparent;color:#22c55e;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;";
+      doneBtn.textContent = "✓";
+      doneBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        DONE_PRIOS.add(p.id);
+        saveDonePrios();
+        row.style.transition = "opacity 0.25s";
+        row.style.opacity = "0";
+        setTimeout(() => {
+          row.remove();
+          const remaining = sec.querySelectorAll(".myday-item").length;
+          countSpan.textContent = remaining;
+          if(!remaining) sec.remove();
+        }, 260);
+      });
+      row.appendChild(badge);
+      row.appendChild(title_);
+      row.appendChild(reason);
+      row.appendChild(doneBtn);
+      sec.appendChild(row);
+    }
+    return sec;
+  }
+
   function srcLabel(s){
     if(s==="linear")  return {cls:"src-linear",  txt:"LIN"};
     if(s==="hubspot") return {cls:"src-hubspot",  txt:"HS"};
@@ -1468,32 +1538,15 @@ function renderMyDay(){
     }
   }
 
+  // ── Task priorities section ───────────────────────────────────────────────
+  const showTasks = MYDAY_SECTION==="all"||MYDAY_SECTION==="linear"||MYDAY_SECTION==="hubspot";
+  { const s = renderPrioritySection("🚨 TASK PRIORITIES", GOOGLE_DATA&&GOOGLE_DATA.task_priorities);
+    if(s){ if(!showTasks) s.style.display="none"; main.appendChild(s); } }
+
   // ── Email priorities section ──────────────────────────────────────────────
   const showInbox = MYDAY_SECTION===”all”||MYDAY_SECTION===”inbox”;
-  if(GOOGLE_DATA && GOOGLE_DATA.email_priorities && GOOGLE_DATA.email_priorities.length){
-    const prioSec = document.createElement(“div”);
-    prioSec.className = “myday-section”;
-    if(!showInbox){ prioSec.style.display=”none”; }
-    const ACTION_META = {
-      reply:    { label:”REPLY”,    color:”#ef4444”, icon:”↩” },
-      followup: { label:”FOLLOW UP”,color:”#f59e0b”, icon:”⏰” },
-      alert:    { label:”ALERT”,    color:”#8b5cf6”, icon:”⚠” },
-    };
-    prioSec.innerHTML = `<div class=”myday-section-hdr”><span>🚨 EMAIL PRIORITIES</span><span class=”myday-section-count”>${GOOGLE_DATA.email_priorities.length}</span></div>`;
-    for(const p of GOOGLE_DATA.email_priorities){
-      const m = ACTION_META[p.action] || ACTION_META.reply;
-      const row = document.createElement(“div”);
-      row.className = “myday-item”;
-      if(p.url){ row.style.cursor=”pointer”; row.addEventListener(“click”,()=>window.open(p.url,”_blank”)); }
-      row.innerHTML = `
-        <span class=”myday-source” style=”background:${m.color};color:#fff;min-width:52px;text-align:center;font-size:9px”>${m.icon} ${m.label}</span>
-        <span class=”myday-item-title”>${p.subject}</span>
-        <span class=”myday-item-status” style=”font-style:italic;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px”>${p.reason}</span>
-      `;
-      prioSec.appendChild(row);
-    }
-    main.appendChild(prioSec);
-  }
+  { const s = renderPrioritySection(“🚨 EMAIL PRIORITIES”, GOOGLE_DATA&&GOOGLE_DATA.email_priorities);
+    if(s){ if(!showInbox) s.style.display=”none”; main.appendChild(s); } }
 
   // ── Gmail inbox section ───────────────────────────────────────────────────
   const gmailSec = document.createElement(“div”);
@@ -1532,8 +1585,12 @@ function renderMyDay(){
   }
   main.appendChild(gmailSec);
 
-  // ── Google Drive section ──────────────────────────────────────────────────
+  // ── Drive priorities section ──────────────────────────────────────────────
   const showDrive = MYDAY_SECTION==="all"||MYDAY_SECTION==="drive";
+  { const s = renderPrioritySection("🚨 DRIVE PRIORITIES", GOOGLE_DATA&&GOOGLE_DATA.drive_priorities);
+    if(s){ if(!showDrive) s.style.display="none"; main.appendChild(s); } }
+
+  // ── Google Drive section ──────────────────────────────────────────────────
   const driveSec = document.createElement("div");
   driveSec.className = "myday-section";
   if(!showDrive){ driveSec.style.display="none"; }

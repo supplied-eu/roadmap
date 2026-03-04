@@ -173,42 +173,101 @@
       "subject": "Supplied <> Avalara Partnership",
       "reason": "Vym added Rachael Marshman (VAT PM) \u2014 needs intro & context from you",
       "threadId": "19b7ed7cd4c40a8c",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19b7ed7cd4c40a8c"
+      "url": "https://mail.google.com/mail/u/0/#inbox/19b7ed7cd4c40a8c",
+      "id": "email-19b7ed7cd4c40a8c"
     },
     {
       "action": "reply",
       "subject": "Budget meeting \u2014 Questions Volve",
       "reason": "Maurits pushed back on upfront payment / working capital point \u2014 review & weigh in",
       "threadId": "19c9c18fdc5db478",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19c9c18fdc5db478"
+      "url": "https://mail.google.com/mail/u/0/#inbox/19c9c18fdc5db478",
+      "id": "email-19c9c18fdc5db478"
     },
     {
       "action": "reply",
       "subject": "Multimedia LLC <> Supplied Technologies (Google Doc)",
       "reason": "Julio tagged you: \"1000 euro or 400 per day?\" \u2014 needs your call on pricing",
       "threadId": "19cb930b206bbbea",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19cb930b206bbbea"
+      "url": "https://mail.google.com/mail/u/0/#inbox/19cb930b206bbbea",
+      "id": "email-19cb930b206bbbea"
     },
     {
       "action": "followup",
       "subject": "DN Capital \u2014 Celine Xiao cancelled Fri 6 Mar",
       "reason": "Meeting cancelled with no reschedule \u2014 send a quick note to find another time",
       "threadId": "19cb942f55a75404",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19cb942f55a75404"
+      "url": "https://mail.google.com/mail/u/0/#inbox/19cb942f55a75404",
+      "id": "email-19cb942f55a75404"
     },
     {
       "action": "followup",
       "subject": "Forbes",
       "reason": "You asked Bas \"when do you need this by?\" on Mon 2 Mar \u2014 no reply visible",
       "threadId": "19cada93e578496b",
-      "url": "https://mail.google.com/mail/u/0/#sent/19cada93e578496b"
+      "url": "https://mail.google.com/mail/u/0/#sent/19cada93e578496b",
+      "id": "email-19cada93e578496b"
     },
     {
       "action": "alert",
       "subject": "Fivetran errors \u2014 MariaDB + Xero",
       "reason": "Both connectors erroring & failing to sync \u2014 check with IT/Vladimir",
       "threadId": "19cb86b9fa056778",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19cb86b9fa056778"
+      "url": "https://mail.google.com/mail/u/0/#inbox/19cb86b9fa056778",
+      "id": "email-19cb86b9fa056778"
+    }
+  ],
+  "drive_priorities": [
+    {
+      "id": "drive-multimedia-contract",
+      "action": "review",
+      "subject": "Multimedia LLC <> Supplied Technologies",
+      "reason": "Julio tagged you \u2014 \"\u20ac1,000 or \u20ac400/day?\" needs your answer in comments",
+      "url": "https://docs.google.com/document/d/1KNwfaUpHj4e0mbh8KiUmYXND8-yValjCl7TZpK8mLrE/edit"
+    },
+    {
+      "id": "drive-multimedia-proposal",
+      "action": "review",
+      "subject": "Multi Media LLC <> Supplied \u2014 Commercial Proposal",
+      "reason": "Julio updated today \u2014 review commercial terms before responding",
+      "url": "https://docs.google.com/document/d/1yohZlWLNIi4fd5b6rtumoe0kMMTtqkOHEsPwsIhTb9A/edit"
+    },
+    {
+      "id": "drive-dev-costs-amortization",
+      "action": "read",
+      "subject": "Dev Costs Capitalization & Amortization Procedure",
+      "reason": "Jelena finalised today after Willem suggested 10-year depreciation \u2014 worth a read",
+      "url": "https://docs.google.com/document/d/1YHuflrFcDR45fQY4zGwM3yCfZgo698oR5LB82spBlXA/edit"
+    },
+    {
+      "id": "drive-customer-standup",
+      "action": "read",
+      "subject": "Customer Success Standup Notes",
+      "reason": "Julio updated today \u2014 check latest customer priorities",
+      "url": "https://docs.google.com/document/d/17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY/edit"
+    }
+  ],
+  "task_priorities": [
+    {
+      "id": "task-chesta-hooda",
+      "action": "followup",
+      "subject": "Follow up with Chesta Hooda",
+      "reason": "HubSpot task due today",
+      "url": "https://app-eu1.hubspot.com/contacts/27215736/objects/0-5/views/all/list"
+    },
+    {
+      "id": "task-investor-deck",
+      "action": "task",
+      "subject": "Q1 Investor Presentation (Whisper-style)",
+      "reason": "Maurits asked \u2014 agreed to have one ready before next quarterly meeting",
+      "url": null
+    },
+    {
+      "id": "task-fivetran-xero",
+      "action": "alert",
+      "subject": "Fix Fivetran \u2014 Xero + MariaDB connectors erroring",
+      "reason": "Both syncs failing \u2014 assign to Vladimir / IT",
+      "url": "https://fivetran.com/dashboard"
     }
   ]
 }
