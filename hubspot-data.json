@@ -1,6 +1,7 @@
 {
-  "refreshedAt": "2026-03-04T08:30:37.701Z",
+  "refreshedAt": "2026-03-04T08:42:47.102Z",
   "currency": "€",
+  "portalId": "27215736",
   "owners": [
     {
       "id": "29853062",
@@ -52,7 +53,8 @@
       "priority": "NONE",
       "dueDate": "2025-09-19",
       "ownerId": "29274155",
-      "body": "Regarding email: Test email, sent on Tuesday, September 16, 2025 10:17 AM"
+      "body": "Regarding email: Test email, sent on Tuesday, September 16, 2025 10:17 AM",
+      "ownerName": null
     },
     {
       "id": "371355244765",
@@ -62,7 +64,8 @@
       "priority": "NONE",
       "dueDate": "2025-12-02",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "361343795402",
@@ -72,7 +75,8 @@
       "priority": "NONE",
       "dueDate": "2025-12-04",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "375030088948",
@@ -82,7 +86,8 @@
       "priority": "NONE",
       "dueDate": "2025-12-04",
       "ownerId": "901168591",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">\"@⁨Johann⁩ pls ping me on Thursday so I can find out where we are at with it.\"</p><p style=\"margin:0;\">\"I know USA tax is the focus and we decided to do everything ourselves including tax cost base engine because of high costs. Except for submissions to IRS because of large fines if something goes wrong. I’d imagine our approach will be the same with dac8 - our team always wants to do everything in house but u never know. I think it’s a good time to ask.\"</p></div>"
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">\"@⁨Johann⁩ pls ping me on Thursday so I can find out where we are at with it.\"</p><p style=\"margin:0;\">\"I know USA tax is the focus and we decided to do everything ourselves including tax cost base engine because of high costs. Except for submissions to IRS because of large fines if something goes wrong. I’d imagine our approach will be the same with dac8 - our team always wants to do everything in house but u never know. I think it’s a good time to ask.\"</p></div>",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "361003004127",
@@ -92,7 +97,8 @@
       "priority": "NONE",
       "dueDate": "2025-12-04",
       "ownerId": "901168591",
-      "body": null
+      "body": null,
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "379993648314",
@@ -102,7 +108,8 @@
       "priority": "NONE",
       "dueDate": "2025-12-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "381893363900",
@@ -112,7 +119,8 @@
       "priority": "NONE",
       "dueDate": "2025-12-07",
       "ownerId": "901168591",
-      "body": null
+      "body": null,
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "361248214241",
@@ -122,7 +130,8 @@
       "priority": "NONE",
       "dueDate": "2025-12-22",
       "ownerId": "901168591",
-      "body": null
+      "body": null,
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "361247638727",
@@ -132,7 +141,8 @@
       "priority": "NONE",
       "dueDate": "2026-01-06",
       "ownerId": "901168591",
-      "body": null
+      "body": null,
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "402850241731",
@@ -142,7 +152,8 @@
       "priority": "NONE",
       "dueDate": "2026-01-07",
       "ownerId": "901168591",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">Status of Partnership Applications here https://docs.google.com/document/d/1hiV4HmwL5fdZAZAJGmcJkCTqqeKVZBESaECDhqBYWhY/edit?tab=t.0</p></div>"
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">Status of Partnership Applications here https://docs.google.com/document/d/1hiV4HmwL5fdZAZAJGmcJkCTqqeKVZBESaECDhqBYWhY/edit?tab=t.0</p></div>",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "413654555838",
@@ -152,7 +163,8 @@
       "priority": "NONE",
       "dueDate": "2026-01-15",
       "ownerId": "901168591",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">Send a Video demo</p><p style=\"margin:0;\">List of checks we can do</p></div>"
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">Send a Video demo</p><p style=\"margin:0;\">List of checks we can do</p></div>",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "410864203968",
@@ -162,7 +174,8 @@
       "priority": "NONE",
       "dueDate": "2026-01-16",
       "ownerId": "901168591",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\"><span style=\"color: #000000;\"><span style=\"font-size: 16px;\"><span style=\"background-color: oklab(0.678888 0.00325716 -0.011175 / 0.0784314);\"><span style=\"font-family: &quot;gg sans&quot;, &quot;Noto Sans&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;\">75% of their customers are US, They offer automated reporting but its limited to a few things and customers dont know how to use most of their features - so there should be a software partner opportunity with them to re-sell. A big pain-point for them (fareharbor) is expanding/growth beyond us and therefore being compliance with onboarding in Asia and the Carribean (so the kyc/kyb but also the compliance requirements in those markets) is a pain point for them. they are using d-local in africa but not good. </span></span><span style=\"font-family: inherit;\">Next steps</span><span style=\"background-color: oklab(0.678888 0.00325716 -0.011175 / 0.0784314);\"><span style=\"font-family: &quot;gg sans&quot;, &quot;Noto Sans&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;\">: send through a deck of what we do exactly that highlights 2 opportunities 1) Services to sell to their customers for the reporting and onboarding 2) Services that Fareharbor could use to enter new markets above</span></span></span></span></p></div>"
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\"><span style=\"color: #000000;\"><span style=\"font-size: 16px;\"><span style=\"background-color: oklab(0.678888 0.00325716 -0.011175 / 0.0784314);\"><span style=\"font-family: &quot;gg sans&quot;, &quot;Noto Sans&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;\">75% of their customers are US, They offer automated reporting but its limited to a few things and customers dont know how to use most of their features - so there should be a software partner opportunity with them to re-sell. A big pain-point for them (fareharbor) is expanding/growth beyond us and therefore being compliance with onboarding in Asia and the Carribean (so the kyc/kyb but also the compliance requirements in those markets) is a pain point for them. they are using d-local in africa but not good. </span></span><span style=\"font-family: inherit;\">Next steps</span><span style=\"background-color: oklab(0.678888 0.00325716 -0.011175 / 0.0784314);\"><span style=\"font-family: &quot;gg sans&quot;, &quot;Noto Sans&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;\">: send through a deck of what we do exactly that highlights 2 opportunities 1) Services to sell to their customers for the reporting and onboarding 2) Services that Fareharbor could use to enter new markets above</span></span></span></span></p></div>",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "427621690616",
@@ -172,7 +185,8 @@
       "priority": "HIGH",
       "dueDate": "2026-01-23",
       "ownerId": "29853062",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">NAHV are looking for another Annual Reporting solution fairly urgently</p><ul><li><p style=\"margin:0;\">A lot of clients currently using Emilysystems.nl will churn this year and go somewhere else.</p></li><li><p style=\"margin:0;\">Right now NAHV are forced to use Audition - and they harte it due to the lack of integration capabilities</p></li></ul><p style=\"margin:0;\"><strong><span data-mention-id=\"29853062\" data-mention-name=\"Bas Bogerd\" style=\"color: #425b76;font-weight: 600;\">@Bas Bogerd</span></strong>to setup a time between <strong><span data-mention-id=\"901168591\" data-mention-name=\"Johann Rozario\" style=\"color: #425b76;font-weight: 600;\">@Johann Rozario</span></strong> and <span style=\"color: rgb(94, 94, 94);\">mja@nahv.nl ti discuss</span></p><p style=\"margin:0;\"><br class=\"hs-trailingbreak\"></p></div>"
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">NAHV are looking for another Annual Reporting solution fairly urgently</p><ul><li><p style=\"margin:0;\">A lot of clients currently using Emilysystems.nl will churn this year and go somewhere else.</p></li><li><p style=\"margin:0;\">Right now NAHV are forced to use Audition - and they harte it due to the lack of integration capabilities</p></li></ul><p style=\"margin:0;\"><strong><span data-mention-id=\"29853062\" data-mention-name=\"Bas Bogerd\" style=\"color: #425b76;font-weight: 600;\">@Bas Bogerd</span></strong>to setup a time between <strong><span data-mention-id=\"901168591\" data-mention-name=\"Johann Rozario\" style=\"color: #425b76;font-weight: 600;\">@Johann Rozario</span></strong> and <span style=\"color: rgb(94, 94, 94);\">mja@nahv.nl ti discuss</span></p><p style=\"margin:0;\"><br class=\"hs-trailingbreak\"></p></div>",
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "426556720372",
@@ -182,7 +196,8 @@
       "priority": "NONE",
       "dueDate": "2026-01-26",
       "ownerId": "2008358619",
-      "body": "Regarding call logged on Wednesday, January 21, 2026 6:40 PM"
+      "body": "Regarding call logged on Wednesday, January 21, 2026 6:40 PM",
+      "ownerName": "Vladimir Ivanov"
     },
     {
       "id": "415496033523",
@@ -192,7 +207,8 @@
       "priority": "NONE",
       "dueDate": "2026-01-27",
       "ownerId": "901168591",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\"><br class=\"hs-trailingbreak\"></p></div>"
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\"><br class=\"hs-trailingbreak\"></p></div>",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "427394360546",
@@ -202,7 +218,8 @@
       "priority": "MEDIUM",
       "dueDate": "2026-01-29",
       "ownerId": "687091984",
-      "body": "Lead voor DAC7 rapportage. Probeer contact op te nemen met Szallas.hu om de mogelijkheden te bespreken."
+      "body": "Lead voor DAC7 rapportage. Probeer contact op te nemen met Szallas.hu om de mogelijkheden te bespreken.",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "427441545446",
@@ -212,7 +229,8 @@
       "priority": "MEDIUM",
       "dueDate": "2026-01-29",
       "ownerId": "687091984",
-      "body": "Probeer contact op te nemen met Lekkeslaap (lekkeslaap.co.za) over DAC7 rapportage mogelijkheden."
+      "body": "Probeer contact op te nemen met Lekkeslaap (lekkeslaap.co.za) over DAC7 rapportage mogelijkheden.",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "451224532164",
@@ -222,7 +240,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-14",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "451358380280",
@@ -232,7 +251,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-14",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "451546909901",
@@ -242,7 +262,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-14",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "451906211058",
@@ -252,7 +273,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-14",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "451908064499",
@@ -262,7 +284,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-14",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "451934253266",
@@ -272,7 +295,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-14",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "452030306507",
@@ -282,7 +306,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-14",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "452883777742",
@@ -292,7 +317,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-15",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "453012581589",
@@ -302,7 +328,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-15",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "453027064047",
@@ -312,7 +339,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-15",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "453127256301",
@@ -322,7 +350,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-15",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "454405929202",
@@ -332,7 +361,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-16",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "454425786608",
@@ -342,7 +372,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-16",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "455047022810",
@@ -352,7 +383,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-17",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456317136115",
@@ -362,7 +394,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-19",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456320736501",
@@ -372,7 +405,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-19",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456324326604",
@@ -382,7 +416,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-19",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456365504707",
@@ -392,7 +427,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-19",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456385305831",
@@ -402,7 +438,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-19",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456390711545",
@@ -412,7 +449,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-19",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456401492161",
@@ -422,7 +460,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-19",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456530415853",
@@ -432,7 +471,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-19",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "457161873651",
@@ -442,7 +482,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-20",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "458154537199",
@@ -452,7 +493,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-21",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "458699402486",
@@ -462,7 +504,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-22",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "459063418058",
@@ -472,7 +515,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-22",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "459065296091",
@@ -482,7 +526,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-22",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "459094389962",
@@ -492,7 +537,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-22",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "459676568770",
@@ -502,7 +548,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-23",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "459783990491",
@@ -512,7 +559,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-24",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "459795973313",
@@ -522,7 +570,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-24",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "459755942087",
@@ -532,7 +581,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-25",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "461303796982",
@@ -542,7 +592,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-25",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "462067148994",
@@ -552,7 +603,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-26",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "462068943090",
@@ -562,7 +614,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-26",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "462118281425",
@@ -572,7 +625,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-26",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "462757950692",
@@ -582,7 +636,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-27",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "463105428716",
@@ -592,7 +647,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-27",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "463149163743",
@@ -602,7 +658,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-27",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "463802305741",
@@ -612,7 +669,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-28",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "463959053525",
@@ -622,7 +680,8 @@
       "priority": "NONE",
       "dueDate": "2026-02-28",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "464775238903",
@@ -632,7 +691,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-01",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "464777065676",
@@ -642,7 +702,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-01",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "464780648663",
@@ -652,7 +713,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-01",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "464807513317",
@@ -662,7 +724,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-01",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "465115695350",
@@ -672,7 +735,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-01",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "466210029794",
@@ -682,7 +746,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-02",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "467879498957",
@@ -692,7 +757,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-04",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "456955074799",
@@ -702,7 +768,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-04",
       "ownerId": "901168591",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">Regarding note logged on Tuesday, February 17, 2026 3:08 PM</p></div>"
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">Regarding note logged on Tuesday, February 17, 2026 3:08 PM</p></div>",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "456956439767",
@@ -712,7 +779,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-04",
       "ownerId": "901168591",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\"><br class=\"hs-trailingbreak\"></p></div>"
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\"><br class=\"hs-trailingbreak\"></p></div>",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "468805970112",
@@ -722,7 +790,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "468816771299",
@@ -732,7 +801,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "468870542577",
@@ -742,7 +812,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "469105646780",
@@ -752,7 +823,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "469320290506",
@@ -762,7 +834,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "469327481022",
@@ -772,7 +845,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "469331077334",
@@ -782,7 +856,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "469411577026",
@@ -792,7 +867,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-05",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "470238861507",
@@ -802,7 +878,8 @@
       "priority": "NONE",
       "dueDate": "2026-03-06",
       "ownerId": "29853062",
-      "body": null
+      "body": null,
+      "ownerName": "Bas Bogerd"
     }
   ],
   "deals": [
@@ -815,7 +892,8 @@
       "closeDate": "2025-12-03",
       "ownerId": "687091984",
       "probability": 0.6,
-      "stageLabel": "Proposal Shared"
+      "stageLabel": "Proposal Shared",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "379729648851",
@@ -826,7 +904,8 @@
       "closeDate": "2026-01-07",
       "ownerId": "901168591",
       "probability": 1,
-      "stageLabel": "Closed Won"
+      "stageLabel": "Closed Won",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "399567336674",
@@ -837,7 +916,8 @@
       "closeDate": "2026-01-07",
       "ownerId": "687091984",
       "probability": 1,
-      "stageLabel": "Closed Won"
+      "stageLabel": "Closed Won",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "371120648436",
@@ -848,7 +928,8 @@
       "closeDate": "2026-01-08",
       "ownerId": "687091984",
       "probability": 1,
-      "stageLabel": "Closed Won"
+      "stageLabel": "Closed Won",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "421686686930",
@@ -859,7 +940,8 @@
       "closeDate": "2026-01-31",
       "ownerId": "687091984",
       "probability": 0.4,
-      "stageLabel": "Negotiation & Evaluation"
+      "stageLabel": "Negotiation & Evaluation",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "425898542327",
@@ -870,7 +952,8 @@
       "closeDate": "2026-01-31",
       "ownerId": "687091984",
       "probability": 0.4,
-      "stageLabel": "Negotiation & Evaluation"
+      "stageLabel": "Negotiation & Evaluation",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "397390371051",
@@ -881,7 +964,8 @@
       "closeDate": "2026-02-06",
       "ownerId": "687091984",
       "probability": 0,
-      "stageLabel": "Closed Lost"
+      "stageLabel": "Closed Lost",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "475464711375",
@@ -892,7 +976,8 @@
       "closeDate": "2026-03-10",
       "ownerId": "687091984",
       "probability": 0.4,
-      "stageLabel": "Negotiation & Evaluation"
+      "stageLabel": "Negotiation & Evaluation",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "472770817237",
@@ -903,7 +988,8 @@
       "closeDate": "2026-03-14",
       "ownerId": "29853062",
       "probability": 0.2,
-      "stageLabel": "Discovery call scheduled"
+      "stageLabel": "Discovery call scheduled",
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "472984691899",
@@ -914,7 +1000,8 @@
       "closeDate": "2026-04-01",
       "ownerId": "29853062",
       "probability": 0.3,
-      "stageLabel": "Needs assessment "
+      "stageLabel": "Needs assessment ",
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "473517296836",
@@ -925,7 +1012,8 @@
       "closeDate": "2026-04-01",
       "ownerId": "29853062",
       "probability": 0.3,
-      "stageLabel": "Needs assessment "
+      "stageLabel": "Needs assessment ",
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "461225992421",
@@ -936,7 +1024,8 @@
       "closeDate": "2026-04-30",
       "ownerId": "29853062",
       "probability": 0.2,
-      "stageLabel": "Solution Proposal Sent"
+      "stageLabel": "Solution Proposal Sent",
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "473243074769",
@@ -947,7 +1036,8 @@
       "closeDate": "2026-05-01",
       "ownerId": "29853062",
       "probability": 0.3,
-      "stageLabel": "Needs assessment "
+      "stageLabel": "Needs assessment ",
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "473517297852",
@@ -958,7 +1048,8 @@
       "closeDate": "2026-05-01",
       "ownerId": "901168591",
       "probability": 0.2,
-      "stageLabel": "Discovery call scheduled"
+      "stageLabel": "Discovery call scheduled",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "472986119412",
@@ -969,7 +1060,8 @@
       "closeDate": "2026-06-01",
       "ownerId": "29853062",
       "probability": 0.1,
-      "stageLabel": "Initial Contact"
+      "stageLabel": "Initial Contact",
+      "ownerName": "Bas Bogerd"
     },
     {
       "id": "473516903612",
@@ -980,7 +1072,8 @@
       "closeDate": "2026-06-02",
       "ownerId": "901168591",
       "probability": 0.2,
-      "stageLabel": "Discovery call scheduled"
+      "stageLabel": "Discovery call scheduled",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "473452053736",
@@ -991,7 +1084,8 @@
       "closeDate": "2026-07-01",
       "ownerId": "901168591",
       "probability": 0.5,
-      "stageLabel": "Solution Scoping"
+      "stageLabel": "Solution Scoping",
+      "ownerName": "Johann Rozario"
     }
   ]
 }

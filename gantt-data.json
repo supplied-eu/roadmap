@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-04T08:30:37.072Z",
+  "refreshedAt": "2026-03-04T08:42:46.691Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -1451,9 +1451,9 @@
               "id": "09e4c14a-4262-416c-ab1d-7820182a26d9",
               "identifier": "SUP-1141",
               "title": "[Data Orchestration] Expose property ID in internal collections to connect it to the rest of data",
-              "status": "In Test",
+              "status": "Done",
               "start": "2026-02-16",
-              "end": null,
+              "end": "2026-03-04",
               "assignee": null,
               "priority": "Medium",
               "url": "https://linear.app/supplied/issue/SUP-1141/data-orchestration-expose-property-id-in-internal-collections-to"
@@ -1495,7 +1495,7 @@
               "id": "d6cb036e-bd8e-4c8f-9ae0-93ff256e13d8",
               "identifier": "SUP-1129",
               "title": "Sync Properties to Operations Hub - 1 - Foundation (without new product features)",
-              "status": "In Review",
+              "status": "In Test",
               "start": "2026-02-12",
               "end": null,
               "assignee": "Ivan Tiniakov",
@@ -1820,6 +1820,17 @@
           "startDate": "2025-07-01",
           "targetDate": null,
           "issues": [
+            {
+              "id": "9f8f232f-eef4-462c-9a09-31a4849311d0",
+              "identifier": "SUP-1192",
+              "title": "`past_due` status for additional services purchase",
+              "status": "Backlog",
+              "start": null,
+              "end": null,
+              "assignee": null,
+              "priority": "No priority",
+              "url": "https://linear.app/supplied/issue/SUP-1192/past-due-status-for-additional-services-purchase"
+            },
             {
               "id": "92f4ad36-fa42-498c-b6ed-acdf328213db",
               "identifier": "SUP-1154",
