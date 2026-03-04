@@ -1506,7 +1506,7 @@ function renderMyDay(){
         <span class="myday-coming-icon">📧</span>
         <div class="myday-coming-text">
           <div class="myday-coming-title">GMAIL</div>
-          <div class="myday-coming-desc">Runs at 8am Mon–Fri via morning brief</div>
+          <div class="myday-coming-desc">Run “Morning Brief” task to populate</div>
         </div>
       </div>\`;
   }
@@ -1541,7 +1541,7 @@ function renderMyDay(){
         <span class="myday-coming-icon">📄</span>
         <div class="myday-coming-text">
           <div class="myday-coming-title">GOOGLE DRIVE</div>
-          <div class="myday-coming-desc">Runs at 8am Mon–Fri via morning brief</div>
+          <div class="myday-coming-desc">Run “Morning Brief” task to populate</div>
         </div>
       </div>\`;
   }
@@ -1607,7 +1607,7 @@ function renderMyDay(){
     } else {
       const noCal = document.createElement("div");
       noCal.className = "myday-coming-card";
-      noCal.innerHTML = \`<span class="myday-coming-icon">📅</span><div class="myday-coming-text"><div class="myday-coming-title">GOOGLE CALENDAR</div><div class="myday-coming-desc">Populated at 8am by morning brief</div></div>\`;
+      noCal.innerHTML = \`<span class="myday-coming-icon">📅</span><div class="myday-coming-text"><div class="myday-coming-title">GOOGLE CALENDAR</div><div class="myday-coming-desc">Run “Morning Brief” task to populate</div></div>\`;
       sidebar.appendChild(noCal);
     }
 
