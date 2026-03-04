@@ -860,7 +860,8 @@ function renderOps(){
         const row=document.createElement("div");
         row.className="task-row"+(od?" row-overdue":"")+(pri==="urgent"?" row-urgent":"");
         row.title=t.subject||(t.body?"Has notes":"");
-        if(t.url) row.addEventListener("click",()=>window.open(t.url,"_blank"));
+        const taskUrl=HS_DATA.portalId?`https://app.hubspot.com/contacts/${HS_DATA.portalId}/tasks/${t.id}`:null;
+        if(taskUrl){ row.style.cursor="pointer"; row.addEventListener("click",()=>window.open(taskUrl,"_blank")); }
 
         // Type icon
         const icon=document.createElement("span"); icon.className="task-type-icon"; icon.textContent=TASK_ICONS[t.type]||"☑"; row.appendChild(icon);
@@ -872,9 +873,9 @@ function renderOps(){
         if(pri==="urgent"){ const pt=document.createElement("span"); pt.className="pri-tag pri-urgent"; pt.textContent="URGENT"; row.appendChild(pt); }
         else if(pri==="high"){ const pt=document.createElement("span"); pt.className="pri-tag pri-high"; pt.textContent="HIGH"; row.appendChild(pt); }
 
-        // Owner pill (show when "All" filter active)
-        if(OPS_OWNER==="all"){
-          const op=document.createElement("span"); op.className="task-owner-pill"; op.textContent=t.ownerName?t.ownerName.split(" ")[0]:"—"; row.appendChild(op);
+        // Owner pill — always shown
+        if(t.ownerName){
+          const op=document.createElement("span"); op.className="task-owner-pill"; op.textContent=t.ownerName.split(" ")[0]; row.appendChild(op);
         }
 
         // Due date
@@ -929,7 +930,8 @@ function renderOps(){
         const row=document.createElement("div");
         row.className="task-row"+(isUrgent?" row-overdue":"");
         row.title="Click to open in HubSpot";
-        if(d.url) row.addEventListener("click",()=>window.open(d.url,"_blank"));
+        const dealUrl=HS_DATA.portalId?`https://app.hubspot.com/contacts/${HS_DATA.portalId}/deal/${d.id}`:null;
+        if(dealUrl){ row.style.cursor="pointer"; row.addEventListener("click",()=>window.open(dealUrl,"_blank")); }
 
         // Color dot for stage
         const dot=document.createElement("span");
@@ -944,8 +946,8 @@ function renderOps(){
           const am=document.createElement("span"); am.className="deal-amount"; am.textContent=(HS_DATA.currency||"€")+d.amount.toLocaleString(); row.appendChild(am);
         }
 
-        // Owner
-        if(OPS_OWNER==="all"&&d.ownerName){
+        // Owner — always shown
+        if(d.ownerName){
           const op=document.createElement("span"); op.className="task-owner-pill"; op.textContent=d.ownerName.split(" ")[0]; row.appendChild(op);
         }
 

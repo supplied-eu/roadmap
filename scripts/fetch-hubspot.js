@@ -16,6 +16,7 @@ if (!API_KEY) {
   const empty = {
     refreshedAt: new Date().toISOString(),
     currency: "€",
+    portalId: null,
     owners: [],
     tasks: [],
     deals: [],
@@ -104,6 +105,19 @@ async function searchAll(objectType, requestBody) {
     after = res.paging?.next?.after;
   } while (after);
   return results;
+}
+
+// ─── portal info ─────────────────────────────────────────────────────────────
+
+async function fetchPortalId() {
+  console.log("→ Fetching portal info...");
+  try {
+    const res = await hsGet("/account-info/v3/details");
+    return res.portalId ? String(res.portalId) : null;
+  } catch (e) {
+    console.warn("  Could not fetch portal ID:", e.message);
+    return null;
+  }
 }
 
 // ─── owners ─────────────────────────────────────────────────────────────────
@@ -246,24 +260,37 @@ async function fetchPipelineStages() {
 async function main() {
   console.log("🔄 Fetching HubSpot data...");
 
-  const [owners, tasks, deals, stageLabels] = await Promise.all([
+  const [portalId, owners, tasks, deals, stageLabels] = await Promise.all([
+    fetchPortalId(),
     fetchOwners(),
     fetchTasks(),
     fetchDeals(),
     fetchPipelineStages(),
   ]);
 
-  // Enrich deals with human-readable stage names
+  // Build owner lookup map
+  const ownerMap = {};
+  for (const o of owners) ownerMap[o.id] = o.name;
+
+  // Enrich tasks with owner names
+  const enrichedTasks = tasks.map((t) => ({
+    ...t,
+    ownerName: t.ownerId ? (ownerMap[t.ownerId] || null) : null,
+  }));
+
+  // Enrich deals with human-readable stage names and owner names
   const enrichedDeals = deals.map((d) => ({
     ...d,
     stageLabel: stageLabels[d.stage] || d.stage,
+    ownerName: d.ownerId ? (ownerMap[d.ownerId] || null) : null,
   }));
 
   const output = {
     refreshedAt: new Date().toISOString(),
     currency: "€",
+    portalId: portalId || null,
     owners,
-    tasks,
+    tasks: enrichedTasks,
     deals: enrichedDeals,
   };
 
