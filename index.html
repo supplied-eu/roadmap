@@ -1468,39 +1468,65 @@ function renderMyDay(){
     }
   }
 
-  // ── Gmail section ────────────────────────────────────────────────────────
-  const showInbox = MYDAY_SECTION==="all"||MYDAY_SECTION==="inbox";
-  const gmailSec = document.createElement("div");
-  gmailSec.className = "myday-section";
-  if(!showInbox){ gmailSec.style.display="none"; }
+  // ── Email priorities section ──────────────────────────────────────────────
+  const showInbox = MYDAY_SECTION===”all”||MYDAY_SECTION===”inbox”;
+  if(GOOGLE_DATA && GOOGLE_DATA.email_priorities && GOOGLE_DATA.email_priorities.length){
+    const prioSec = document.createElement(“div”);
+    prioSec.className = “myday-section”;
+    if(!showInbox){ prioSec.style.display=”none”; }
+    const ACTION_META = {
+      reply:    { label:”REPLY”,    color:”#ef4444”, icon:”↩” },
+      followup: { label:”FOLLOW UP”,color:”#f59e0b”, icon:”⏰” },
+      alert:    { label:”ALERT”,    color:”#8b5cf6”, icon:”⚠” },
+    };
+    prioSec.innerHTML = `<div class=”myday-section-hdr”><span>🚨 EMAIL PRIORITIES</span><span class=”myday-section-count”>${GOOGLE_DATA.email_priorities.length}</span></div>`;
+    for(const p of GOOGLE_DATA.email_priorities){
+      const m = ACTION_META[p.action] || ACTION_META.reply;
+      const row = document.createElement(“div”);
+      row.className = “myday-item”;
+      if(p.url){ row.style.cursor=”pointer”; row.addEventListener(“click”,()=>window.open(p.url,”_blank”)); }
+      row.innerHTML = `
+        <span class=”myday-source” style=”background:${m.color};color:#fff;min-width:52px;text-align:center;font-size:9px”>${m.icon} ${m.label}</span>
+        <span class=”myday-item-title”>${p.subject}</span>
+        <span class=”myday-item-status” style=”font-style:italic;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px”>${p.reason}</span>
+      `;
+      prioSec.appendChild(row);
+    }
+    main.appendChild(prioSec);
+  }
+
+  // ── Gmail inbox section ───────────────────────────────────────────────────
+  const gmailSec = document.createElement(“div”);
+  gmailSec.className = “myday-section”;
+  if(!showInbox){ gmailSec.style.display=”none”; }
   if(GOOGLE_DATA && GOOGLE_DATA.gmail && GOOGLE_DATA.gmail.threads && GOOGLE_DATA.gmail.threads.length){
     const threads = GOOGLE_DATA.gmail.threads.slice(0,8);
-    gmailSec.innerHTML = `<div class="myday-section-hdr"><span>📧 INBOX</span><span class="myday-section-count">${GOOGLE_DATA.gmail.unreadCount||threads.length} unread</span></div>`;
+    gmailSec.innerHTML = `<div class=”myday-section-hdr”><span>📧 INBOX</span><span class=”myday-section-count”>${GOOGLE_DATA.gmail.unreadCount||threads.length} unread</span></div>`;
     for(const t of threads){
-      const row = document.createElement("div");
-      row.className = "myday-item";
+      const row = document.createElement(“div”);
+      row.className = “myday-item”;
       const gmailUrl = t.url || (t.id?`https://mail.google.com/mail/u/0/#inbox/${t.id}`:null);
-      if(gmailUrl){ row.style.cursor="pointer"; row.addEventListener("click",()=>window.open(gmailUrl,"_blank")); }
+      if(gmailUrl){ row.style.cursor=”pointer”; row.addEventListener(“click”,()=>window.open(gmailUrl,”_blank”)); }
       const d = t.date ? new Date(t.date) : null;
-      const dateStr = d ? d.toLocaleDateString("en-GB",{day:"2-digit",month:"short"}) : "";
-      const senderName = (t.from||"").replace(/<.*>/,"").trim().split(" ")[0];
+      const dateStr = d ? d.toLocaleDateString(“en-GB”,{day:”2-digit”,month:”short”}) : “”;
+      const senderName = (t.from||””).replace(/<.*>/,””).trim().split(“ “)[0];
       row.innerHTML = `
-        <span class="myday-source src-gmail">ML</span>
-        <span class="myday-item-title">${t.subject||"(no subject)"}</span>
-        <span class="myday-item-owner">${senderName}</span>
-        ${t.snippet?'<span class="myday-item-status" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic">'+t.snippet.slice(0,60)+'</span>':""}
-        ${dateStr?'<span class="myday-item-date">'+dateStr+'</span>':""}
+        <span class=”myday-source src-gmail”>ML</span>
+        <span class=”myday-item-title”>${t.subject||”(no subject)”}</span>
+        <span class=”myday-item-owner”>${senderName}</span>
+        ${t.snippet?'<span class=”myday-item-status” style=”max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic”>'+t.snippet.slice(0,60)+'</span>':””}
+        ${dateStr?'<span class=”myday-item-date”>'+dateStr+'</span>':””}
       `;
       gmailSec.appendChild(row);
     }
   } else {
     gmailSec.innerHTML = `
-      <div class="myday-section-hdr"><span>📧 INBOX</span></div>
-      <div class="myday-coming-card">
-        <span class="myday-coming-icon">📧</span>
-        <div class="myday-coming-text">
-          <div class="myday-coming-title">GMAIL</div>
-          <div class="myday-coming-desc">Run “Morning Brief” task to populate</div>
+      <div class=”myday-section-hdr”><span>📧 INBOX</span></div>
+      <div class=”myday-coming-card”>
+        <span class=”myday-coming-icon”>📧</span>
+        <div class=”myday-coming-text”>
+          <div class=”myday-coming-title”>GMAIL</div>
+          <div class=”myday-coming-desc”>Run “Morning Brief” task to populate</div>
         </div>
       </div>`;
   }
