@@ -1453,7 +1453,7 @@ function renderMyDay(){
   function saveDonePrios(){ localStorage.setItem(DONE_PRIO_KEY, JSON.stringify([...DONE_PRIOS])); }
 
   // Auto-action checklist: resets each calendar day
-  const TODAY_STR = new Date().toISOString().slice(0,10);
+  // TODAY_STR already declared at module level
   const AUTO_DONE_KEY = "supplied_auto_done_" + TODAY_STR;
   const AUTO_DONE = new Set(JSON.parse(localStorage.getItem(AUTO_DONE_KEY)||"[]"));
   function saveAutoDone(){ localStorage.setItem(AUTO_DONE_KEY, JSON.stringify([...AUTO_DONE])); }
