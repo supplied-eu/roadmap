@@ -384,6 +384,33 @@ body {
 .myday-item-date.overdue { color: #f59e0b; font-weight: 600; }
 .myday-item-date.today   { color: #3b82f6; font-weight: 600; }
 .myday-item-status { font-size: 8px; color: var(--text-dim); flex-shrink: 0; }
+.myday-expand-chevron {
+  flex-shrink: 0; font-size: 9px; color: var(--text-dim); opacity:.4;
+  cursor: pointer; padding: 0 2px 0 4px; transition: transform 0.15s; line-height:1;
+  user-select: none;
+}
+.myday-expand-chevron.open { transform: rotate(90deg); opacity:.7; }
+.myday-expand-panel {
+  display: none; padding: 8px 14px 10px 44px;
+  background: rgba(0,0,0,0.012);
+  border-top: 1px solid var(--border);
+  font-size: 10.5px; color: var(--text); line-height: 1.55;
+  flex-direction: column; gap: 6px;
+}
+.myday-expand-panel.open { display: flex; }
+.myday-expand-reason { color: var(--text); font-size: 10.5px; line-height: 1.55; }
+.myday-expand-suggestion {
+  display: flex; gap: 6px; padding: 5px 8px; border-radius: 4px;
+  background: rgba(59,130,246,0.06); border-left: 2px solid rgba(59,130,246,0.35);
+  font-size: 10px; color: var(--text-dim); line-height: 1.45;
+}
+.myday-expand-link {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 9px; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 4px; font-size: 9px; color: var(--text-dim);
+  text-decoration: none; cursor: pointer; align-self: flex-start;
+}
+.myday-expand-link:hover { background: var(--border); }
 .myday-coming-card {
   margin: 16px 16px 0;
   border: 1px dashed var(--border);
@@ -1269,6 +1296,7 @@ function renderMyDay(){
         priority:"", url: HS_DATA.portalId
           ? `https://app.hubspot.com/tasks/${HS_DATA.portalId}?taskId=${t.id}`
           : null,
+        body: t.body||null,
       });
     }
   }
@@ -1437,6 +1465,54 @@ function renderMyDay(){
   const DONE_PRIO_KEY = "supplied_done_priorities";
   const DONE_PRIOS = new Set(JSON.parse(localStorage.getItem(DONE_PRIO_KEY)||"[]"));
   function saveDonePrios(){ localStorage.setItem(DONE_PRIO_KEY, JSON.stringify([...DONE_PRIOS])); }
+  function getSuggestedAction(action){
+    const m = {
+      reply:    { icon:"💬", hint:"Draft a direct response addressing the point raised" },
+      followup: { icon:"⏰",    hint:"Send a short, friendly nudge to keep this moving" },
+      alert:    { icon:"⚠️", hint:"Investigate and resolve — loop in the right person if needed" },
+      review:   { icon:"👁", hint:"Open, read, and add your comment or decision" },
+      read:     { icon:"📚", hint:"Set aside 5 min to scan the key points" },
+      task:     { icon:"✅",    hint:"Complete the task as described" },
+    };
+    return m[action] || { icon:"✅", hint:"Complete the required action" };
+  }
+  function makeExpandPanel(reason, action, url){
+    const panel = document.createElement("div");
+    panel.className = "myday-expand-panel";
+    if(reason){
+      const rEl = document.createElement("div");
+      rEl.className = "myday-expand-reason";
+      rEl.textContent = reason;
+      panel.appendChild(rEl);
+    }
+    if(action){
+      const sa = getSuggestedAction(action);
+      const sEl = document.createElement("div");
+      sEl.className = "myday-expand-suggestion";
+      sEl.textContent = sa.icon + "  " + sa.hint;
+      panel.appendChild(sEl);
+    }
+    if(url){
+      const lEl = document.createElement("a");
+      lEl.className = "myday-expand-link";
+      lEl.href = "#";
+      lEl.textContent = "Open →";
+      lEl.addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); window.open(url,"_blank"); });
+      panel.appendChild(lEl);
+    }
+    return panel;
+  }
+  function addChevron(row, panel){
+    const chev = document.createElement("span");
+    chev.className = "myday-expand-chevron";
+    chev.textContent = "▶";
+    chev.addEventListener("click", e => {
+      e.stopPropagation();
+      const open = panel.classList.toggle("open");
+      chev.classList.toggle("open", open);
+    });
+    row.appendChild(chev);
+  }
 
   // Auto-action checklist: resets each calendar day
   // TODAY_STR already declared at module level
@@ -1496,7 +1572,16 @@ function renderMyDay(){
       row.appendChild(title_);
       row.appendChild(reason);
       row.appendChild(doneBtn);
+      // Expand panel
+      const expPanel = makeExpandPanel(p.reason, p.action, p.url);
+      addChevron(row, expPanel);
       sec.appendChild(row);
+      sec.appendChild(expPanel);
+      // When marked done, also remove panel
+      const origDoneClick = doneBtn.onclick;
+      doneBtn.addEventListener("click", () => {
+        setTimeout(() => { expPanel.remove(); }, 270);
+      });
     }
     return sec;
   }
@@ -1524,6 +1609,14 @@ function renderMyDay(){
       ${it.status?'<span class="myday-item-status">'+it.status.toUpperCase()+'</span>':""}
       ${dateLabel?'<span class="myday-item-date '+dateCls+'">'+dateLabel+'</span>':""}
     `;
+    if(it.body){
+      const expPanel = makeExpandPanel(it.body, null, it.url);
+      addChevron(row, expPanel);
+      const frag = document.createDocumentFragment();
+      frag.appendChild(row);
+      frag.appendChild(expPanel);
+      return frag;
+    }
     return row;
   }
 
@@ -1835,10 +1928,23 @@ function renderMyDay(){
         <span class="myday-source src-gmail">ML</span>
         <span class="myday-item-title">${t.subject||"(no subject)"}</span>
         <span class="myday-item-owner">${senderName}</span>
-        ${t.snippet?'<span class="myday-item-status" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic">'+t.snippet.slice(0,60)+'</span>':""}
+        ${t.snippet?'<span class="myday-item-status" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic;opacity:.7">'+t.snippet.slice(0,50)+'</span>':""}
         ${dateStr?'<span class="myday-item-date">'+dateStr+'</span>':""}
       `;
-      gmailSec.appendChild(row);
+      // Expand panel with full snippet + from
+      if(t.snippet||t.from){
+        const gmailExpPanel = makeExpandPanel(
+          (t.from ? t.from+"
+" : "") + (t.snippet||""),
+          null,
+          gmailUrl
+        );
+        addChevron(row, gmailExpPanel);
+        gmailSec.appendChild(row);
+        gmailSec.appendChild(gmailExpPanel);
+      } else {
+        gmailSec.appendChild(row);
+      }
     }
   } else {
     gmailSec.innerHTML = `
