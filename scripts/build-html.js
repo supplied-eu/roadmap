@@ -40,7 +40,7 @@ const html = `<!DOCTYPE html>
   --text-muted: #64748b;
   --text-dim: #94a3b8;
   --accent: #3b82f6;
-  --lw: 300px;
+  --lw: 400px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
@@ -245,6 +245,7 @@ body {
 /* ── TAB PANELS ─────────────────────────────────────────────────────────── */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
+#panel-roadmap.active { display: flex; flex-direction: column; }
 
 /* ── LEGEND ─────────────────────────────────────────────────────────────── */
 .legend {
@@ -260,7 +261,44 @@ body {
 .legend-hint { margin-left: auto; font-size: 9px; color: var(--text-dim); }
 
 /* ── GANTT LAYOUT ───────────────────────────────────────────────────────── */
-.gantt-wrapper { overflow: auto; height: calc(100vh - 160px); }
+.gantt-outer {
+  display: flex; height: calc(100vh - 160px); overflow: hidden;
+}
+.gantt-wrapper { overflow: auto; flex: 1; height: 100%; }
+.gantt-insights-panel {
+  width: 300px; min-width: 300px; border-left: 1px solid var(--border);
+  overflow-y: auto; background: var(--surface); height: 100%;
+  display: flex; flex-direction: column;
+}
+.gantt-insights-hdr {
+  font-size: 8px; letter-spacing: 1.5px; color: var(--text-dim);
+  padding: 10px 14px 8px; border-bottom: 1px solid var(--border);
+  background: var(--surface2); position: sticky; top: 0; z-index: 5;
+  flex-shrink: 0;
+}
+.gi-section { padding: 12px 14px 6px; border-bottom: 1px solid var(--border); }
+.gi-section:last-child { border-bottom: none; }
+.gi-section-title {
+  font-size: 8px; letter-spacing: 1px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 5px;
+}
+.gi-item {
+  padding: 7px 9px; border-radius: 5px; margin-bottom: 5px;
+  background: var(--bg); border: 1px solid var(--border);
+  cursor: pointer; transition: border-color 0.12s;
+}
+.gi-item:hover { border-color: var(--border2); }
+.gi-item-id { font-size: 8px; color: var(--text-dim); margin-bottom: 2px; }
+.gi-item-name { font-size: 10px; color: var(--text); line-height: 1.4; word-break: break-word; }
+.gi-item-hint {
+  margin-top: 5px; font-size: 9px; color: var(--text-dim); line-height: 1.4;
+  padding: 4px 7px; background: rgba(59,130,246,0.06);
+  border-left: 2px solid rgba(59,130,246,0.3); border-radius: 2px;
+}
+.gi-empty { font-size: 10px; color: var(--text-dim); text-align: center; padding: 28px 14px; opacity: .6; }
+.gi-badge {
+  font-size: 7px; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; letter-spacing: .3px;
+}
 .gantt-thead {
   display: flex; position: sticky; top: 0; z-index: 20;
   background: var(--surface2); border-bottom: 1px solid var(--border);
@@ -275,18 +313,18 @@ body {
   position: absolute; top: 0; height: 100%;
   border-left: 1px solid var(--border); padding-left: 4px; display: flex; align-items: center;
 }
-.tick span { font-size: 9px; color: var(--text-dim); white-space: nowrap; }
+.tick span { font-size: 10px; color: var(--text-dim); white-space: nowrap; }
 .tick.major span { color: var(--text-muted); }
 
 /* ── GANTT ROWS ─────────────────────────────────────────────────────────── */
 .row {
-  display: flex; height: 38px; border-bottom: 1px solid var(--bg);
+  display: flex; min-height: 56px; height: auto; border-bottom: 1px solid var(--bg);
   cursor: default; transition: background 0.1s;
 }
 .row:hover { background: var(--surface2); }
 .row.clickable { cursor: pointer; }
 .row-label {
-  width: var(--lw); min-width: var(--lw); display: flex; align-items: center;
+  width: var(--lw); min-width: var(--lw); display: flex; align-items: flex-start; padding-top: 10px; padding-bottom: 10px;
   padding-right: 8px; gap: 5px; border-right: 1px solid var(--border); overflow: hidden;
 }
 .row-arrow {
@@ -296,8 +334,9 @@ body {
 .row-arrow.open { transform: rotate(90deg); }
 .row-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .row-name {
-  font-size: 11px; color: #94a3b8;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;
+  font-size: 12px; color: #94a3b8;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  white-space: normal; flex: 1; line-height: 1.4;
 }
 .row.initiative .row-name { color: var(--text); font-weight: 500; }
 .row-badge {
@@ -311,17 +350,17 @@ body {
 }
 .bar {
   position: absolute; top: 50%; transform: translateY(-50%);
-  height: 18px; border-radius: 3px; display: flex; align-items: center;
+  height: 24px; border-radius: 4px; display: flex; align-items: center;
   overflow: hidden; padding-left: 5px; min-width: 3px; opacity: 0.85;
   transition: opacity 0.15s; cursor: default;
 }
 .bar.clickable-bar { cursor: pointer; }
 .bar:hover { opacity: 1; }
 .bar-label {
-  font-size: 8px; color: #fff; white-space: nowrap;
+  font-size: 10px; color: #fff; white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis; font-weight: 500; pointer-events: none;
 }
-.bar.initiative-bar { height: 22px; }
+.bar.initiative-bar { height: 28px; }
 .no-dates {
   position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
   font-size: 9px; color: var(--text-dim); font-style: italic;
@@ -680,18 +719,24 @@ body {
   </div>
 
   <div class="legend">
-    ${[["Todo","#6366f1"],["In Progress","#f59e0b"],["In Review","#fb923c"],["In Test","#a78bfa"],["Blocked","#ef4444"],["Done","#10b981"],["Completed","#10b981"],["Planned","#8b5cf6"],["Backlog","#334155"]].map(([s,c])=>`
+    ${[["Todo","#6366f1"],["In Progress","#f59e0b"],["In Review","#fb923c"],["In Test","#a78bfa"],["Blocked","#ef4444"],["Planned","#8b5cf6"],["Backlog","#334155"]].map(([s,c])=>`
     <div class="legend-item"><span class="legend-swatch" style="background:${c}"></span>${s}</div>`).join("")}
     <div class="legend-today"><span class="legend-today-line"></span>Today</div>
     <div class="legend-hint">Click issue bar → open in Linear · Click row → expand</div>
   </div>
 
-  <div class="gantt-wrapper" id="gantt">
-    <div class="gantt-thead" id="thead">
-      <div class="gantt-thead-label">NAME</div>
-      <div class="gantt-thead-ticks" id="ticks"></div>
+  <div class="gantt-outer">
+    <div class="gantt-wrapper" id="gantt">
+      <div class="gantt-thead" id="thead">
+        <div class="gantt-thead-label">NAME</div>
+        <div class="gantt-thead-ticks" id="ticks"></div>
+      </div>
+      <div id="gantt-body"></div>
     </div>
-    <div id="gantt-body"></div>
+    <div class="gantt-insights-panel" id="gantt-insights">
+      <div class="gantt-insights-hdr">INSIGHTS &amp; RECOMMENDATIONS</div>
+      <div id="gantt-insights-body"><div class="gi-empty">Loading…</div></div>
+    </div>
   </div>
 </div>
 
@@ -934,14 +979,79 @@ function renderGantt(){
         const projExp=GANTT_FILTER?true:!!expanded[projKey];
         const hasIssues=proj.issues&&proj.issues.length>0;
         ganttBody.appendChild(makeGanttRow({indent:1,label:proj.name,status:proj.status||"",color:proj.color,start:proj.startDate,end:proj.targetDate,url:proj.url,hasChildren:hasIssues,isExpanded:projExp,isIni:false,onClick:hasIssues?()=>{ expanded[projKey]=!expanded[projKey]; renderGantt(); }:proj.url?()=>window.open(proj.url,"_blank"):null,barClickable:!!proj.url,barData:{label:proj.name,status:proj.status,start:proj.startDate,end:proj.targetDate,url:proj.url,clickable:!!proj.url}}));
-        if(projExp&&hasIssues) for(const iss of proj.issues){
+        if(projExp&&hasIssues){
+        const STATUS_RANK={Blocked:0,'In Test':1,'In Review':2,'In Progress':3,'Todo':4,'Backlog':5};
+        const sortedIssues=[...proj.issues]
+          .filter(i=>!DONE_STATES.has(i.status||''))
+          .sort((a,b)=>{
+            const ra=STATUS_RANK[a.status]??99, rb=STATUS_RANK[b.status]??99;
+            return ra!==rb ? ra-rb : (a.identifier||'').localeCompare(b.identifier||'');
+          });
+        for(const iss of sortedIssues){
           if(GANTT_FILTER&&!ganttIssueMatchesFilter(iss)) continue;
           const od=isOverdue(iss.end,iss.status);
           ganttBody.appendChild(makeGanttRow({indent:2,label:(iss.identifier+" "+iss.title).trim(),status:iss.status,color:sc(iss.status),start:iss.start,end:iss.end,url:iss.url,hasChildren:false,isExpanded:false,isIni:false,onClick:iss.url?()=>window.open(iss.url,"_blank"):null,barClickable:true,assignee:iss.assignee||null,priority:iss.priority||null,overdueFlag:od,barData:{label:iss.title,status:iss.status,start:iss.start,end:iss.end,assignee:iss.assignee,priority:iss.priority,url:iss.url,clickable:true}}));
         }
+        } // end if(projExp&&hasIssues)
       }
       const gap=document.createElement("div"); gap.className="section-gap"; ganttBody.appendChild(gap);
     }
+  }
+  populateGanttInsights();
+}
+
+
+// ── Gantt Insights Panel ─────────────────────────────────────────────────────
+function populateGanttInsights(){
+  const body = document.getElementById("gantt-insights-body");
+  if(!body || !GANTT_DATA) return;
+  body.innerHTML = "";
+
+  const STATUS_RANK={Blocked:0,'In Test':1,'In Review':2,'In Progress':3,'Todo':4,'Backlog':5};
+  const blocked=[], inReview=[], noDates=[], nextUp=[];
+
+  for(const ini of GANTT_DATA.initiatives){
+    for(const proj of ini.projects){
+      for(const iss of (proj.issues||[])){
+        if(DONE_STATES.has(iss.status||'')) continue;
+        const item={id:iss.identifier,name:iss.title,url:iss.url,proj:proj.name,status:iss.status};
+        if(iss.status==='Blocked')                         blocked.push(item);
+        else if(iss.status==='In Review'||iss.status==='In Test') inReview.push(item);
+        else if(iss.status==='In Progress'&&!iss.start&&!iss.end)  noDates.push(item);
+        else if(iss.status==='Backlog'&&(iss.priority==='Urgent'||iss.priority==='High')) nextUp.push(item);
+      }
+    }
+  }
+
+  function makeSection(icon, color, title, items, hint){
+    if(items.length===0) return;
+    const sec=document.createElement("div"); sec.className="gi-section";
+    const hdr=document.createElement("div"); hdr.className="gi-section-title";
+    hdr.style.color=color;
+    const badge=document.createElement("span"); badge.className="gi-badge";
+    badge.style.cssText="background:"+color+"22;color:"+color;
+    badge.textContent=items.length;
+    hdr.textContent=icon+" "+title+" "; hdr.appendChild(badge);
+    sec.appendChild(hdr);
+    items.slice(0,8).forEach(it=>{
+      const card=document.createElement("div"); card.className="gi-item";
+      if(it.url) card.addEventListener("click",()=>window.open(it.url,"_blank"));
+      const idEl=document.createElement("div"); idEl.className="gi-item-id"; idEl.textContent=it.proj+(it.id?" · "+it.id:""); card.appendChild(idEl);
+      const nmEl=document.createElement("div"); nmEl.className="gi-item-name"; nmEl.textContent=it.name; card.appendChild(nmEl);
+      const hintEl=document.createElement("div"); hintEl.className="gi-item-hint"; hintEl.textContent=hint; card.appendChild(hintEl);
+      sec.appendChild(card);
+    });
+    if(items.length>8){ const m=document.createElement("div"); m.style.cssText="font-size:9px;color:var(--text-dim);padding:4px 2px;"; m.textContent="+"+(items.length-8)+" more"; sec.appendChild(m); }
+    body.appendChild(sec);
+  }
+
+  makeSection("🔴","#ef4444","BLOCKED",blocked,"Unblock this to keep momentum — identify the dependency and loop in the right person.");
+  makeSection("👁","#fb923c","NEEDS REVIEW",inReview,"These are waiting on a decision or feedback from you. A quick comment keeps things moving.");
+  makeSection("📅","#f59e0b","IN PROGRESS · NO DATES",noDates,"Add start/end dates so the team knows when to expect delivery.");
+  makeSection("⚡","#8b5cf6","HIGH PRIORITY BACKLOG",nextUp,"Consider pulling these into the current sprint — they're high priority but not yet scheduled.");
+
+  if(body.children.length===0){
+    body.innerHTML='<div class="gi-empty">✓ No blockers or items needing immediate attention</div>';
   }
 }
 
