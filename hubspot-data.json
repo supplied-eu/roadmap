@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-05T11:23:04.144Z",
+  "refreshedAt": "2026-03-08T19:35:46.767Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -860,6 +860,61 @@
       "ownerName": "Bas Bogerd"
     },
     {
+      "id": "474025553143",
+      "subject": "Reach out to Chromomail.Com",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-10",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "474206188742",
+      "subject": "Reach out to VGL Publishing AG",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-10",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "474917819587",
+      "subject": "Reach out to Интернет Хостинг Центр",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-10",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "474949911744",
+      "subject": "Reach out to Ascendion",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-10",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "474951708899",
+      "subject": "Reach out to Foto-klik d.o.o.",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-10",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
       "id": "456955074799",
       "subject": "Follow up with Chesta Hooda",
       "status": "NOT_STARTED",
@@ -945,13 +1000,13 @@
     {
       "id": "421686686930",
       "name": "Multi Media - Lenos",
-      "stage": "qualifiedtobuy",
+      "stage": "decisionmakerboughtin",
       "pipeline": "default",
       "amount": 19588,
       "closeDate": "2026-01-31",
       "ownerId": "687091984",
-      "probability": 0.4,
-      "stageLabel": "Negotiation & Evaluation",
+      "probability": 0.8,
+      "stageLabel": "Contract Sent",
       "ownerName": "Julio Lindveld"
     },
     {
@@ -1000,6 +1055,30 @@
       "ownerId": "29853062",
       "probability": 0.2,
       "stageLabel": "Discovery call scheduled",
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "489228714200",
+      "name": "Trident Holiday Parks",
+      "stage": "presentationscheduled",
+      "pipeline": "default",
+      "amount": 1788,
+      "closeDate": "2026-03-31",
+      "ownerId": "29853062",
+      "probability": 0.6,
+      "stageLabel": "Decision Pending",
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "488029925592",
+      "name": "UGC",
+      "stage": "decisionmakerboughtin",
+      "pipeline": "default",
+      "amount": 1788,
+      "closeDate": "2026-03-31",
+      "ownerId": "29853062",
+      "probability": 0.8,
+      "stageLabel": "Contract Sent",
       "ownerName": "Bas Bogerd"
     },
     {
