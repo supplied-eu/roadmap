@@ -1766,8 +1766,113 @@ function renderMyDay(){
   \`;
   main.appendChild(greeting);
 
-  // ── Auto-generated action checklist (overdue + due today, resets daily) ──
   const showTasks = MYDAY_SECTION==="all"||MYDAY_SECTION==="tasks";
+
+  // ── TASKS section (Linear + HubSpot, split by source) ────────────────────
+  if(showTasks){
+    // Group by urgency buckets as before
+    const urgencyGroups = [
+      { key:"overdue", icon:"🔴", label:"OVERDUE",       items:buckets.overdue },
+      { key:"today",   icon:"🔵", label:"DUE TODAY",     items:buckets.today   },
+      { key:"week",    icon:"🟡", label:"DUE THIS WEEK", items:buckets.week    },
+      { key:"later",   icon:"⚪", label:"LATER",         items:buckets.later   },
+    ];
+    const linFiltered = filtered.filter(i=>i.source==="linear");
+    const hsFiltered  = filtered.filter(i=>i.source==="hubspot");
+
+    // If both sources present, show a Linear sub-section first
+    if(linFiltered.length>0){
+      const linHdr = document.createElement("div");
+      linHdr.className = "myday-section";
+      linHdr.id = "section-linear";
+      linHdr.innerHTML = \`<div class="myday-section-hdr" style="background:rgba(99,102,241,.06)"><span>🔷 LINEAR ISSUES</span><span class="myday-section-count src-linear">\${linFiltered.length}</span></div>\`;
+      const linBuckets = { overdue:[], today:[], week:[], later:[] };
+      for(const it of linFiltered){
+        const dd = it.end ? daysDiff(it.end) : null;
+        const od = it.end && isActive(it.status) && it.end < today;
+        if(od) linBuckets.overdue.push(it);
+        else if(dd===0) linBuckets.today.push(it);
+        else if(dd!==null && dd<=7) linBuckets.week.push(it);
+        else linBuckets.later.push(it);
+      }
+      // Linear summary line
+      {
+        const linSumParts = [];
+        if(linBuckets.overdue.length) linSumParts.push(linBuckets.overdue.length+" overdue");
+        if(linBuckets.today.length)   linSumParts.push(linBuckets.today.length+" due today");
+        if(linBuckets.week.length)    linSumParts.push(linBuckets.week.length+" this week");
+        if(linSumParts.length){
+          const linSum = document.createElement("div");
+          linSum.style.cssText = "padding:4px 12px 2px;font-size:10px;color:var(--text-muted);font-style:italic;letter-spacing:.3px;";
+          linSum.textContent = "\uD83D\uDD37 Linear: "+linSumParts.join(" \xB7")+" \u2014 prioritise these";
+          linHdr.appendChild(linSum);
+        }
+      }
+      for(const sec of [{key:"overdue",icon:"🔴",label:"OVERDUE",items:linBuckets.overdue},{key:"today",icon:"🔵",label:"DUE TODAY",items:linBuckets.today},{key:"week",icon:"🟡",label:"DUE THIS WEEK",items:linBuckets.week},{key:"later",icon:"⚪",label:"LATER",items:linBuckets.later}]){
+        if(!sec.items.length) continue;
+        if(MYDAY_URGENCY && sec.key !== MYDAY_URGENCY) continue;
+        const sg = document.createElement("div");
+        sg.className = "myday-section";
+        sg.innerHTML = \`<div class="myday-section-hdr" style="padding-left:28px;font-size:8px;opacity:.7"><span>\${sec.icon} \${sec.label}</span><span class="myday-section-count">\${sec.items.length}</span></div>\`;
+        for(const it of sec.items) sg.appendChild(makeItemRow(it));
+        linHdr.appendChild(sg);
+      }
+      if(linFiltered.every(i=>!i.end)||!linFiltered.length){
+        for(const it of linFiltered) linHdr.appendChild(makeItemRow(it));
+      }
+      main.appendChild(linHdr);
+    } else {
+      const noLin = document.createElement("div");
+      noLin.className = "myday-section";
+      noLin.innerHTML = \`<div class="myday-section-hdr" style="background:rgba(99,102,241,.06)"><span>🔷 LINEAR ISSUES</span></div><div class="myday-section-empty">No open Linear issues assigned.</div>\`;
+      main.appendChild(noLin);
+    }
+
+    // HubSpot tasks by urgency bucket
+    if(hsFiltered.length>0||true){
+      const hsHdr = document.createElement("div");
+      hsHdr.className = "myday-section";
+      hsHdr.id = "section-hubspot";
+      hsHdr.innerHTML = \`<div class="myday-section-hdr" style="background:rgba(255,122,0,.06)"><span>🟠 HUBSPOT TASKS</span><span class="myday-section-count src-hubspot">\${hsFiltered.length}</span></div>\`;
+      const hsBuckets = { overdue:[], today:[], week:[], later:[] };
+      for(const it of hsFiltered){
+        const dd = it.end ? daysDiff(it.end) : null;
+        const od = it.end && isActive(it.status) && it.end < today;
+        if(od) hsBuckets.overdue.push(it);
+        else if(dd===0) hsBuckets.today.push(it);
+        else if(dd!==null && dd<=7) hsBuckets.week.push(it);
+        else hsBuckets.later.push(it);
+      }
+      // HubSpot tasks summary line
+      {
+        const hsSumParts = [];
+        if(hsBuckets.overdue.length) hsSumParts.push(hsBuckets.overdue.length+" overdue");
+        if(hsBuckets.today.length)   hsSumParts.push(hsBuckets.today.length+" due today");
+        if(hsBuckets.week.length)    hsSumParts.push(hsBuckets.week.length+" this week");
+        if(hsSumParts.length){
+          const hsSum = document.createElement("div");
+          hsSum.style.cssText = "padding:4px 12px 2px;font-size:10px;color:var(--text-muted);font-style:italic;letter-spacing:.3px;";
+          hsSum.textContent = "\uD83D\uDFE0 HubSpot: "+hsSumParts.join(" \xB7")+" \u2014 action needed";
+          hsHdr.appendChild(hsSum);
+        }
+      }
+      for(const sec of [{key:"overdue",icon:"🔴",label:"OVERDUE",items:hsBuckets.overdue},{key:"today",icon:"🔵",label:"DUE TODAY",items:hsBuckets.today},{key:"week",icon:"🟡",label:"DUE THIS WEEK",items:hsBuckets.week},{key:"later",icon:"⚪",label:"LATER",items:hsBuckets.later}]){
+        if(!sec.items.length) continue;
+        if(MYDAY_URGENCY && sec.key !== MYDAY_URGENCY) continue;
+        const sg = document.createElement("div");
+        sg.className = "myday-section";
+        sg.innerHTML = \`<div class="myday-section-hdr" style="padding-left:28px;font-size:8px;opacity:.7"><span>\${sec.icon} \${sec.label}</span><span class="myday-section-count">\${sec.items.length}</span></div>\`;
+        for(const it of sec.items) sg.appendChild(makeItemRow(it));
+        hsHdr.appendChild(sg);
+      }
+      if(!hsFiltered.length){
+        const emp = document.createElement("div"); emp.className="myday-section-empty"; emp.textContent="No open HubSpot tasks."; hsHdr.appendChild(emp);
+      }
+      main.appendChild(hsHdr);
+    }
+  }
+
+  // ── Auto-generated action checklist (overdue + due today, resets daily) ──
   if(showTasks && !MYDAY_URGENCY){
     const actionItems = [
       ...buckets.overdue.slice(0,4).map(it=>({...it,_urgency:"overdue"})),
@@ -1903,110 +2008,6 @@ function renderMyDay(){
         dealSec.appendChild(row);
       }
       main.appendChild(dealSec);
-    }
-  }
-
-  // ── TASKS section (Linear + HubSpot, split by source) ────────────────────
-  if(showTasks){
-    // Group by urgency buckets as before
-    const urgencyGroups = [
-      { key:"overdue", icon:"🔴", label:"OVERDUE",       items:buckets.overdue },
-      { key:"today",   icon:"🔵", label:"DUE TODAY",     items:buckets.today   },
-      { key:"week",    icon:"🟡", label:"DUE THIS WEEK", items:buckets.week    },
-      { key:"later",   icon:"⚪", label:"LATER",         items:buckets.later   },
-    ];
-    const linFiltered = filtered.filter(i=>i.source==="linear");
-    const hsFiltered  = filtered.filter(i=>i.source==="hubspot");
-
-    // If both sources present, show a Linear sub-section first
-    if(linFiltered.length>0){
-      const linHdr = document.createElement("div");
-      linHdr.className = "myday-section";
-      linHdr.id = "section-linear";
-      linHdr.innerHTML = \`<div class="myday-section-hdr" style="background:rgba(99,102,241,.06)"><span>🔷 LINEAR ISSUES</span><span class="myday-section-count src-linear">\${linFiltered.length}</span></div>\`;
-      const linBuckets = { overdue:[], today:[], week:[], later:[] };
-      for(const it of linFiltered){
-        const dd = it.end ? daysDiff(it.end) : null;
-        const od = it.end && isActive(it.status) && it.end < today;
-        if(od) linBuckets.overdue.push(it);
-        else if(dd===0) linBuckets.today.push(it);
-        else if(dd!==null && dd<=7) linBuckets.week.push(it);
-        else linBuckets.later.push(it);
-      }
-      // Linear summary line
-      {
-        const linSumParts = [];
-        if(linBuckets.overdue.length) linSumParts.push(linBuckets.overdue.length+" overdue");
-        if(linBuckets.today.length)   linSumParts.push(linBuckets.today.length+" due today");
-        if(linBuckets.week.length)    linSumParts.push(linBuckets.week.length+" this week");
-        if(linSumParts.length){
-          const linSum = document.createElement("div");
-          linSum.style.cssText = "padding:4px 12px 2px;font-size:10px;color:var(--text-muted);font-style:italic;letter-spacing:.3px;";
-          linSum.textContent = "\uD83D\uDD37 Linear: "+linSumParts.join(" \xB7")+" \u2014 prioritise these";
-          linHdr.appendChild(linSum);
-        }
-      }
-      for(const sec of [{key:"overdue",icon:"🔴",label:"OVERDUE",items:linBuckets.overdue},{key:"today",icon:"🔵",label:"DUE TODAY",items:linBuckets.today},{key:"week",icon:"🟡",label:"DUE THIS WEEK",items:linBuckets.week},{key:"later",icon:"⚪",label:"LATER",items:linBuckets.later}]){
-        if(!sec.items.length) continue;
-        if(MYDAY_URGENCY && sec.key !== MYDAY_URGENCY) continue;
-        const sg = document.createElement("div");
-        sg.className = "myday-section";
-        sg.innerHTML = \`<div class="myday-section-hdr" style="padding-left:28px;font-size:8px;opacity:.7"><span>\${sec.icon} \${sec.label}</span><span class="myday-section-count">\${sec.items.length}</span></div>\`;
-        for(const it of sec.items) sg.appendChild(makeItemRow(it));
-        linHdr.appendChild(sg);
-      }
-      if(linFiltered.every(i=>!i.end)||!linFiltered.length){
-        for(const it of linFiltered) linHdr.appendChild(makeItemRow(it));
-      }
-      main.appendChild(linHdr);
-    } else {
-      const noLin = document.createElement("div");
-      noLin.className = "myday-section";
-      noLin.innerHTML = \`<div class="myday-section-hdr" style="background:rgba(99,102,241,.06)"><span>🔷 LINEAR ISSUES</span></div><div class="myday-section-empty">No open Linear issues assigned.</div>\`;
-      main.appendChild(noLin);
-    }
-
-    // HubSpot tasks by urgency bucket
-    if(hsFiltered.length>0||true){
-      const hsHdr = document.createElement("div");
-      hsHdr.className = "myday-section";
-      hsHdr.id = "section-hubspot";
-      hsHdr.innerHTML = \`<div class="myday-section-hdr" style="background:rgba(255,122,0,.06)"><span>🟠 HUBSPOT TASKS</span><span class="myday-section-count src-hubspot">\${hsFiltered.length}</span></div>\`;
-      const hsBuckets = { overdue:[], today:[], week:[], later:[] };
-      for(const it of hsFiltered){
-        const dd = it.end ? daysDiff(it.end) : null;
-        const od = it.end && isActive(it.status) && it.end < today;
-        if(od) hsBuckets.overdue.push(it);
-        else if(dd===0) hsBuckets.today.push(it);
-        else if(dd!==null && dd<=7) hsBuckets.week.push(it);
-        else hsBuckets.later.push(it);
-      }
-      // HubSpot tasks summary line
-      {
-        const hsSumParts = [];
-        if(hsBuckets.overdue.length) hsSumParts.push(hsBuckets.overdue.length+" overdue");
-        if(hsBuckets.today.length)   hsSumParts.push(hsBuckets.today.length+" due today");
-        if(hsBuckets.week.length)    hsSumParts.push(hsBuckets.week.length+" this week");
-        if(hsSumParts.length){
-          const hsSum = document.createElement("div");
-          hsSum.style.cssText = "padding:4px 12px 2px;font-size:10px;color:var(--text-muted);font-style:italic;letter-spacing:.3px;";
-          hsSum.textContent = "\uD83D\uDFE0 HubSpot: "+hsSumParts.join(" \xB7")+" \u2014 action needed";
-          hsHdr.appendChild(hsSum);
-        }
-      }
-      for(const sec of [{key:"overdue",icon:"🔴",label:"OVERDUE",items:hsBuckets.overdue},{key:"today",icon:"🔵",label:"DUE TODAY",items:hsBuckets.today},{key:"week",icon:"🟡",label:"DUE THIS WEEK",items:hsBuckets.week},{key:"later",icon:"⚪",label:"LATER",items:hsBuckets.later}]){
-        if(!sec.items.length) continue;
-        if(MYDAY_URGENCY && sec.key !== MYDAY_URGENCY) continue;
-        const sg = document.createElement("div");
-        sg.className = "myday-section";
-        sg.innerHTML = \`<div class="myday-section-hdr" style="padding-left:28px;font-size:8px;opacity:.7"><span>\${sec.icon} \${sec.label}</span><span class="myday-section-count">\${sec.items.length}</span></div>\`;
-        for(const it of sec.items) sg.appendChild(makeItemRow(it));
-        hsHdr.appendChild(sg);
-      }
-      if(!hsFiltered.length){
-        const emp = document.createElement("div"); emp.className="myday-section-empty"; emp.textContent="No open HubSpot tasks."; hsHdr.appendChild(emp);
-      }
-      main.appendChild(hsHdr);
     }
   }
 
