@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-17T12:53:11.473Z",
+  "refreshedAt": "2026-03-17T14:39:49.002Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -1992,7 +1992,7 @@
               "status": "Todo",
               "start": null,
               "end": "2026-10-01",
-              "assignee": null,
+              "assignee": "nadezhda@supplied.eu",
               "priority": "Low",
               "url": "https://linear.app/supplied/issue/SUP-1050/i-cant-save-correct-prod-vat"
             },
@@ -5984,8 +5984,8 @@
               "id": "eb3816b4-55bd-4f60-8dcc-82aafbb75022",
               "identifier": "SUP-1155",
               "title": "Add App to Stripe Marketplace",
-              "status": "Todo",
-              "start": null,
+              "status": "In Progress",
+              "start": "2026-03-17",
               "end": "2026-03-11",
               "assignee": "Vladimir Ivanov",
               "priority": "Urgent",
