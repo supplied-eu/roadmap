@@ -270,6 +270,74 @@ async function fetchDrive(token) {
   return { recent: files };
 }
 
+// ── Step 5: Auto-generate email priorities from fresh Gmail threads ───────────
+function deriveEmailPriorities(threads) {
+  const REPLY_PATTERNS = [
+    /waiting for (your|you)/i, /can you (confirm|review|check|advise|let me know)/i,
+    /need your (input|feedback|decision|call|approval)/i, /what do you think/i,
+    /when (can|will|are) you/i, /please (respond|reply|confirm|review)/i,
+    /\?\s*$/, /your (call|decision|thoughts)/i,
+    /tagged you/i, /assigned to you/i, /1000 euro|400.*day|per day|flat rate|pricing/i,
+  ];
+  const ALERT_PATTERNS = [
+    /error|fail(ed|ing)|critical|urgent|broken|down|outage|issue/i,
+    /warning|alert|attention required/i,
+  ];
+  const FOLLOWUP_PATTERNS = [
+    /cancelled|cancel(l?ed)?/i, /no (reply|response)/i, /following up/i,
+  ];
+
+  const now = Date.now();
+  const priorities = [];
+
+  for (const t of threads) {
+    const text = (t.subject + " " + t.snippet).toLowerCase();
+    const ageMs = now - new Date(t.date || 0).getTime();
+    const ageDays = Math.floor(ageMs / 86400000);
+
+    // Skip very old threads (>30 days) unless they match strong patterns
+    if (ageDays > 30) continue;
+
+    let action = null;
+    let reason = "";
+
+    if (ALERT_PATTERNS.some(p => p.test(text))) {
+      action = "alert";
+      reason = t.snippet ? t.snippet.slice(0, 120) : "Needs attention";
+    } else if (REPLY_PATTERNS.some(p => p.test(text))) {
+      action = "reply";
+      reason = t.snippet ? t.snippet.slice(0, 120) : "Reply needed";
+    } else if (FOLLOWUP_PATTERNS.some(p => p.test(text))) {
+      action = "followup";
+      reason = t.snippet ? t.snippet.slice(0, 120) : "Follow up needed";
+    } else if (t.unread && ageDays <= 7) {
+      // Unread within a week gets flagged as reply
+      action = "reply";
+      reason = t.snippet ? t.snippet.slice(0, 120) : "Unread message";
+    }
+
+    if (action) {
+      priorities.push({
+        action,
+        subject: t.subject,
+        reason,
+        from: t.from || "",
+        ageDays,
+        threadId: t.id,
+        url: t.url,
+        id: "email-" + t.id,
+      });
+    }
+  }
+
+  // Sort: alerts first, then replies, then followups; within each by age asc
+  const ORDER = { alert: 0, reply: 1, followup: 2 };
+  priorities.sort((a, b) => (ORDER[a.action] - ORDER[b.action]) || (a.ageDays - b.ageDays));
+
+  console.log(`  ✅ Derived ${priorities.length} email priorities from ${threads.length} threads`);
+  return priorities.slice(0, 8);
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 async function main() {
   const token = await getAccessToken();
@@ -280,19 +348,17 @@ async function main() {
     fetchDrive(token),
   ]);
 
-  // Preserve existing AI-generated priorities (they require manual/AI curation)
-  // so Refresh doesn't wipe them out
-  let existingPriorities = {
-    email_priorities: [],
-    drive_priorities: [],
-    task_priorities: [],
-  };
+  // Auto-generate email priorities from fresh threads (always current)
+  const email_priorities = deriveEmailPriorities(gmail.threads || []);
+
+  // Preserve drive/task priorities (still need manual curation)
+  let drive_priorities = [];
+  let task_priorities  = [];
   if (fs.existsSync(OUT_FILE)) {
     try {
       const existing = JSON.parse(fs.readFileSync(OUT_FILE, "utf8"));
-      existingPriorities.email_priorities = existing.email_priorities || [];
-      existingPriorities.drive_priorities  = existing.drive_priorities  || [];
-      existingPriorities.task_priorities   = existing.task_priorities   || [];
+      drive_priorities = existing.drive_priorities  || [];
+      task_priorities  = existing.task_priorities   || [];
     } catch (_) {}
   }
 
@@ -301,7 +367,9 @@ async function main() {
     gmail,
     calendar,
     drive,
-    ...existingPriorities,
+    email_priorities,
+    drive_priorities,
+    task_priorities,
   };
 
   fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
