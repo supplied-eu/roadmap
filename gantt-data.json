@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-17T14:48:36.887Z",
+  "refreshedAt": "2026-03-17T15:38:31.709Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -374,10 +374,10 @@
               "id": "de70762c-c742-4bfd-a1da-8d562a1d3cb1",
               "identifier": "SUP-1178",
               "title": "Read switch phase",
-              "status": "Backlog",
-              "start": null,
+              "status": "In Progress",
+              "start": "2026-03-17",
               "end": null,
-              "assignee": null,
+              "assignee": "Vladislav Suvorov",
               "priority": "No priority",
               "url": "https://linear.app/supplied/issue/SUP-1178/read-switch-phase"
             },
@@ -1407,7 +1407,7 @@
               "id": "6241bb3f-710a-4442-9708-54cb799556b7",
               "identifier": "SUP-1168",
               "title": "Refactor the API for fetching and modifying supplier properties",
-              "status": "Backlog",
+              "status": "Todo",
               "start": null,
               "end": "2026-03-05",
               "assignee": "Ivan Tiniakov",
@@ -1418,7 +1418,7 @@
               "id": "176f84be-d5cc-4827-876d-c6aab01b56d0",
               "identifier": "SUP-1167",
               "title": "Ability to add and remove properties for a supplier in the Admin app",
-              "status": "Backlog",
+              "status": "Todo",
               "start": null,
               "end": "2026-02-27",
               "assignee": "Ivan Tiniakov",
