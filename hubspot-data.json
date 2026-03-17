@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-08T19:42:17.424Z",
+  "refreshedAt": "2026-03-17T10:48:53.552Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -926,6 +926,237 @@
       "ownerName": "Johann Rozario"
     },
     {
+      "id": "476670942448",
+      "subject": "Reach out to Federal Office of Metrology and Surveying (BEV)",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-12",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "476759913679",
+      "subject": "Reach out to Institut Catholique d'Arts et Metiers Site de Toulouse",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-12",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "476804095201",
+      "subject": "Reach out to Grenzebach Group",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-12",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "477440464098",
+      "subject": "Reach out to Dutch Founders Fund",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-13",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "477501873387",
+      "subject": "Reach out to LaManna Melbourne",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-13",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "477900342474",
+      "subject": "Reach out to AUDI AG",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-14",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "477941657788",
+      "subject": "Reach out to Up Luxembourg",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-14",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478000108793",
+      "subject": "Reach out to Spartans.Ut.Edu",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-14",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478003682534",
+      "subject": "Reach out to Delska",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-14",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478198237433",
+      "subject": "Reach out to Vetaion",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-15",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478199231709",
+      "subject": "Reach out to Studentenwerk Bonn",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-15",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478216805591",
+      "subject": "Reach out to Britalitez",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-15",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478216880328",
+      "subject": "Reach out to IONIS Education Group",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-15",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478390943987",
+      "subject": "Reach out to The Sharing Group N.V.",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-16",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478398566590",
+      "subject": "Reach out to Fortino Capital",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-16",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478423557328",
+      "subject": "Reach out to BREEGA",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-16",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478724698335",
+      "subject": "Reach out to Secret View",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-19",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478730325185",
+      "subject": "Reach out to DHL Parcel NL",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-19",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478749126876",
+      "subject": "Reach out to ShareID",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-19",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478760042689",
+      "subject": "Reach out to Rothschild & Co",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-19",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "478764812512",
+      "subject": "Reach out to Qonto",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-19",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
       "id": "361003004127",
       "subject": "Try to meet them at next techleap event",
       "status": "NOT_STARTED",
@@ -995,18 +1226,6 @@
       "ownerId": "687091984",
       "probability": 1,
       "stageLabel": "Closed Won",
-      "ownerName": "Julio Lindveld"
-    },
-    {
-      "id": "421686686930",
-      "name": "Multi Media - Lenos",
-      "stage": "decisionmakerboughtin",
-      "pipeline": "default",
-      "amount": 19588,
-      "closeDate": "2026-01-31",
-      "ownerId": "687091984",
-      "probability": 0.8,
-      "stageLabel": "Contract Sent",
       "ownerName": "Julio Lindveld"
     },
     {
@@ -1080,6 +1299,18 @@
       "probability": 0.8,
       "stageLabel": "Contract Sent",
       "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "421686686930",
+      "name": "Multi Media - Lenos",
+      "stage": "decisionmakerboughtin",
+      "pipeline": "default",
+      "amount": 19588,
+      "closeDate": "2026-03-31",
+      "ownerId": "687091984",
+      "probability": 0.8,
+      "stageLabel": "Contract Sent",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "472984691899",
