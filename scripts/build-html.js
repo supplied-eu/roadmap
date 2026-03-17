@@ -2199,7 +2199,7 @@ function buildDataContext(){
     const closing=(HS_DATA.deals||[]).filter(d=>d.closeDate&&!DONE_STATES.has(d.stageLabel||"")).map(d=>({...d,diff:Math.ceil((new Date(d.closeDate)-todayMs)/864e5)})).filter(d=>d.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,5);
     if(closing.length){
       lines.push("\\nDEALS CLOSING SOON:");
-      for(const d of closing) lines.push("  "+d.name+(d.amount?" (\u20AC"+Number(d.amount).toLocaleString()+")")+" - "+(d.diff<0?Math.abs(d.diff)+"d overdue":d.diff===0?"TODAY":"in "+d.diff+"d")+" ["+d.stageLabel+"]");
+      for(const d of closing) lines.push("  "+d.name+(d.amount?" (\u20AC"+Number(d.amount).toLocaleString()+")":"")+" - "+(d.diff<0?Math.abs(d.diff)+"d overdue":d.diff===0?"TODAY":"in "+d.diff+"d")+" ["+d.stageLabel+"]");
     }
   }
   if(GOOGLE_DATA){
