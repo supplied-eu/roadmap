@@ -689,14 +689,14 @@ body {
   <div class="header-logo"><svg width="22" height="22" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><circle cx="10" cy="11" r="6" fill="#6c63f7"/><circle cx="25" cy="9" r="8" fill="#6c63f7"/><circle cx="14" cy="27" r="8" fill="#6c63f7"/><circle cx="29" cy="29" r="5" fill="#6c63f7"/></svg> Supplied</div>
 
   <div class="header-tabs">
-    <button class="tab-btn active" id="tab-roadmap-btn" onclick="switchTab('roadmap')">
+    <button class="tab-btn active" id="tab-myday-btn" onclick="switchTab('myday')">
+      <span class="tab-icon">✅</span> TO DOs
+    </button>
+    <button class="tab-btn" id="tab-roadmap-btn" onclick="switchTab('roadmap')">
       <span class="tab-icon">🗺</span> CUSTOMER &amp; PRODUCT ROADMAP
     </button>
     <button class="tab-btn" id="tab-sales-btn" onclick="switchTab('sales')">
       <span class="tab-icon">📊</span> SALES &amp; OPERATIONS
-    </button>
-    <button class="tab-btn" id="tab-myday-btn" onclick="switchTab('myday')">
-      <span class="tab-icon">✅</span> TO DOs
     </button>
   </div>
 
@@ -712,8 +712,21 @@ body {
   </div>
 </div>
 
+<!-- ══ MY DAY TAB ══════════════════════════════════════════════════════════ -->
+<div id="panel-myday" class="tab-panel active">
+  <div class="myday-person-bar" id="myday-person-bar">
+    <span class="owner-strip-label">SHOWING FOR</span>
+  </div>
+  <div class="myday-section-bar" id="myday-section-bar"></div>
+  <div class="myday-stats-bar" id="myday-stats-bar"></div>
+  <div class="myday-layout">
+    <div class="myday-main" id="myday-main"></div>
+    <div class="myday-sidebar" id="myday-sidebar"></div>
+  </div>
+</div>
+
 <!-- ══ ROADMAP TAB ══════════════════════════════════════════════════════════ -->
-<div id="panel-roadmap" class="tab-panel active">
+<div id="panel-roadmap" class="tab-panel">
   <div class="alert-bar" id="alert-bar-roadmap">
     <span class="alert-section-label">NEEDS ATTENTION</span>
   </div>
@@ -753,19 +766,6 @@ body {
   <div class="ops-layout" id="ops-layout">
     <div class="ops-col ops-col-tasks" id="ops-tasks-col"></div>
     <div class="ops-col ops-col-pipeline" id="ops-pipeline-col"></div>
-  </div>
-</div>
-
-<!-- ══ MY DAY TAB ══════════════════════════════════════════════════════════ -->
-<div id="panel-myday" class="tab-panel">
-  <div class="myday-person-bar" id="myday-person-bar">
-    <span class="owner-strip-label">SHOWING FOR</span>
-  </div>
-  <div class="myday-section-bar" id="myday-section-bar"></div>
-  <div class="myday-stats-bar" id="myday-stats-bar"></div>
-  <div class="myday-layout">
-    <div class="myday-main" id="myday-main"></div>
-    <div class="myday-sidebar" id="myday-sidebar"></div>
   </div>
 </div>
 
@@ -813,7 +813,7 @@ function fmtDate(d){ if(!d) return ""; const [y,m,day]=d.split("-"); return \`\$
 // ═══════════════════════════════════════════════════════════════════════════
 // TAB SWITCHING
 // ═══════════════════════════════════════════════════════════════════════════
-let currentTab = "roadmap";
+let currentTab = "myday";
 function switchTab(tab){
   currentTab = tab;
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));

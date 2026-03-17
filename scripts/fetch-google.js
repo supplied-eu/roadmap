@@ -1,0 +1,314 @@
+#!/usr/bin/env node
+/**
+ * fetch-google.js
+ * Fetches Gmail (recent threads), Google Calendar (today + upcoming),
+ * and Google Drive (recently modified files) and writes google-data.json.
+ *
+ * Requires these GitHub Secrets (set under repo Settings → Secrets → Actions):
+ *   GOOGLE_CLIENT_ID      — OAuth2 client ID
+ *   GOOGLE_CLIENT_SECRET  — OAuth2 client secret
+ *   GOOGLE_REFRESH_TOKEN  — long-lived refresh token for the account
+ *
+ * How to get credentials:
+ *   1. Go to console.cloud.google.com → create a project
+ *   2. Enable Gmail API, Calendar API, Drive API
+ *   3. Create OAuth2 credentials (Desktop app)
+ *   4. Run the one-time auth flow (see README or use OAuth Playground) to get
+ *      a refresh token with scopes:
+ *        https://www.googleapis.com/auth/gmail.readonly
+ *        https://www.googleapis.com/auth/calendar.readonly
+ *        https://www.googleapis.com/auth/drive.readonly
+ *   5. Add CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN as GitHub Secrets
+ *
+ * If credentials are missing, writes a minimal stub and exits 0 so the
+ * build never fails because of missing Google credentials.
+ */
+
+const https = require("https");
+const fs    = require("fs");
+const path  = require("path");
+
+const CLIENT_ID     = process.env.GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
+
+const OUT_FILE = path.join(__dirname, "../google-data.json");
+
+// ── Graceful no-op if credentials not set ────────────────────────────────────
+if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
+  console.warn("⚠️  GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / GOOGLE_REFRESH_TOKEN not set");
+  console.warn("   Google data (Gmail, Calendar, Drive) will NOT be refreshed.");
+  console.warn("   Set these secrets in GitHub → Settings → Secrets & variables → Actions");
+
+  // Preserve existing file if it exists; otherwise write empty stub
+  if (!fs.existsSync(OUT_FILE)) {
+    fs.writeFileSync(OUT_FILE, JSON.stringify({
+      refreshedAt: new Date().toISOString(),
+      gmail: { threads: [], unreadCount: 0 },
+      calendar: { today: [], upcoming: [] },
+      drive: { recent: [] },
+      email_priorities: [],
+      drive_priorities: [],
+      task_priorities: [],
+    }, null, 2));
+    console.log("  Wrote empty google-data.json stub.");
+  } else {
+    console.log("  Keeping existing google-data.json untouched.");
+  }
+  process.exit(0);
+}
+
+// ── HTTP helper ───────────────────────────────────────────────────────────────
+function request(options, body) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, res => {
+      let data = "";
+      res.on("data", d => data += d);
+      res.on("end", () => {
+        try {
+          resolve({ status: res.statusCode, body: JSON.parse(data) });
+        } catch (e) {
+          resolve({ status: res.statusCode, body: data });
+        }
+      });
+    });
+    req.on("error", reject);
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
+function get(url, token) {
+  const u = new URL(url);
+  return request({
+    hostname: u.hostname,
+    path: u.pathname + u.search,
+    method: "GET",
+    headers: { Authorization: "Bearer " + token, Accept: "application/json" },
+  });
+}
+
+// ── Step 1: exchange refresh token for access token ──────────────────────────
+async function getAccessToken() {
+  const body = new URLSearchParams({
+    client_id: CLIENT_ID,
+    client_secret: CLIENT_SECRET,
+    refresh_token: REFRESH_TOKEN,
+    grant_type: "refresh_token",
+  }).toString();
+
+  const res = await request({
+    hostname: "oauth2.googleapis.com",
+    path: "/token",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Length": Buffer.byteLength(body),
+    },
+  }, body);
+
+  if (!res.body.access_token) {
+    console.error("Failed to get access token:", JSON.stringify(res.body));
+    process.exit(1);
+  }
+  console.log("✅ Got Google access token");
+  return res.body.access_token;
+}
+
+// ── Step 2: Fetch Gmail ───────────────────────────────────────────────────────
+async function fetchGmail(token) {
+  console.log("📧 Fetching Gmail threads…");
+
+  // Get list of recent unread message IDs from inbox
+  const listUrl = "https://gmail.googleapis.com/gmail/v1/users/me/messages?" +
+    new URLSearchParams({
+      labelIds: "INBOX",
+      q: "is:unread",
+      maxResults: "20",
+    });
+
+  const listRes = await get(listUrl, token);
+  if (listRes.status !== 200) {
+    console.warn("  Gmail list failed:", listRes.status, JSON.stringify(listRes.body).slice(0,200));
+    return { threads: [], unreadCount: 0 };
+  }
+
+  const messages = listRes.body.messages || [];
+  const unreadCount = listRes.body.resultSizeEstimate || messages.length;
+  console.log(`  Found ${messages.length} unread messages`);
+
+  // Fetch metadata for each (in parallel, capped at 15)
+  const toFetch = messages.slice(0, 15);
+  const threads = [];
+
+  await Promise.all(toFetch.map(async msg => {
+    const url = `https://gmail.googleapis.com/gmail/v1/users/me/messages/${msg.id}?` +
+      new URLSearchParams({
+        format: "metadata",
+        metadataHeaders: ["Subject", "From", "Date"].join(","),
+        fields: "id,threadId,snippet,labelIds,internalDate,payload/headers",
+      });
+    const r = await get(url, token);
+    if (r.status !== 200) return;
+    const m = r.body;
+
+    const headers = {};
+    for (const h of (m.payload?.headers || [])) {
+      headers[h.name.toLowerCase()] = h.value;
+    }
+
+    threads.push({
+      id: m.threadId || m.id,
+      subject: headers.subject || "(no subject)",
+      from: headers.from || "",
+      date: headers.date ? new Date(headers.date).toISOString() : null,
+      snippet: m.snippet || "",
+      url: `https://mail.google.com/mail/u/0/#inbox/${m.threadId || m.id}`,
+      unread: (m.labelIds || []).includes("UNREAD"),
+    });
+  }));
+
+  // Sort by date desc, dedupe by threadId
+  const seen = new Set();
+  const deduped = threads
+    .filter(t => { if (seen.has(t.id)) return false; seen.add(t.id); return true; })
+    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
+    .slice(0, 12);
+
+  console.log(`  ✅ Gmail: ${deduped.length} threads`);
+  return { threads: deduped, unreadCount };
+}
+
+// ── Step 3: Fetch Calendar ────────────────────────────────────────────────────
+async function fetchCalendar(token) {
+  console.log("📅 Fetching Calendar…");
+
+  const now   = new Date();
+  const todayStart = new Date(now); todayStart.setHours(0, 0, 0, 0);
+  const todayEnd   = new Date(now); todayEnd.setHours(23, 59, 59, 999);
+  const weekEnd    = new Date(now); weekEnd.setDate(weekEnd.getDate() + 14);
+
+  const params = new URLSearchParams({
+    timeMin: todayStart.toISOString(),
+    timeMax: weekEnd.toISOString(),
+    singleEvents: "true",
+    orderBy: "startTime",
+    maxResults: "30",
+    fields: "items(id,summary,start,end,location,attendees,htmlLink)",
+  });
+  const url = "https://www.googleapis.com/calendar/v3/calendars/primary/events?" + params;
+  const res = await get(url, token);
+
+  if (res.status !== 200) {
+    console.warn("  Calendar fetch failed:", res.status, JSON.stringify(res.body).slice(0,200));
+    return { today: [], upcoming: [] };
+  }
+
+  const items = res.body.items || [];
+  const todayEvents = [];
+  const upcomingEvents = [];
+
+  for (const ev of items) {
+    const startStr = ev.start?.dateTime || ev.start?.date;
+    const endStr   = ev.end?.dateTime   || ev.end?.date;
+    const startDate = startStr ? new Date(startStr) : null;
+    const isAllDay  = !ev.start?.dateTime;
+
+    const entry = {
+      id: ev.id,
+      title: ev.summary || "(no title)",
+      start: startStr || null,
+      end: endStr || null,
+      location: ev.location || null,
+      numAttendees: (ev.attendees || []).length,
+      url: ev.htmlLink || null,
+      allDay: isAllDay,
+    };
+
+    if (startDate && startDate <= todayEnd) {
+      todayEvents.push(entry);
+    } else {
+      upcomingEvents.push(entry);
+    }
+  }
+
+  console.log(`  ✅ Calendar: ${todayEvents.length} today, ${upcomingEvents.length} upcoming`);
+  return {
+    today: todayEvents,
+    upcoming: upcomingEvents.slice(0, 10),
+  };
+}
+
+// ── Step 4: Fetch Drive ───────────────────────────────────────────────────────
+async function fetchDrive(token) {
+  console.log("📄 Fetching Drive…");
+
+  const params = new URLSearchParams({
+    q: "trashed = false",
+    orderBy: "viewedByMeTime desc",
+    pageSize: "12",
+    fields: "files(id,name,mimeType,modifiedTime,viewedByMeTime,webViewLink,lastModifyingUser/displayName)",
+  });
+  const url = "https://www.googleapis.com/drive/v3/files?" + params;
+  const res = await get(url, token);
+
+  if (res.status !== 200) {
+    console.warn("  Drive fetch failed:", res.status, JSON.stringify(res.body).slice(0,200));
+    return { recent: [] };
+  }
+
+  const files = (res.body.files || []).map(f => ({
+    id: f.id,
+    name: f.name,
+    mimeType: f.mimeType,
+    modifiedTime: f.modifiedTime,
+    url: f.webViewLink,
+    lastModifiedBy: f.lastModifyingUser?.displayName || "",
+  }));
+
+  console.log(`  ✅ Drive: ${files.length} recent files`);
+  return { recent: files };
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+async function main() {
+  const token = await getAccessToken();
+
+  const [gmail, calendar, drive] = await Promise.all([
+    fetchGmail(token),
+    fetchCalendar(token),
+    fetchDrive(token),
+  ]);
+
+  // Preserve existing AI-generated priorities (they require manual/AI curation)
+  // so Refresh doesn't wipe them out
+  let existingPriorities = {
+    email_priorities: [],
+    drive_priorities: [],
+    task_priorities: [],
+  };
+  if (fs.existsSync(OUT_FILE)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(OUT_FILE, "utf8"));
+      existingPriorities.email_priorities = existing.email_priorities || [];
+      existingPriorities.drive_priorities  = existing.drive_priorities  || [];
+      existingPriorities.task_priorities   = existing.task_priorities   || [];
+    } catch (_) {}
+  }
+
+  const output = {
+    refreshedAt: new Date().toISOString(),
+    gmail,
+    calendar,
+    drive,
+    ...existingPriorities,
+  };
+
+  fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
+  console.log(`\n✅ google-data.json written (${Math.round(fs.statSync(OUT_FILE).size / 1024)}KB)`);
+}
+
+main().catch(err => {
+  console.error("fetch-google.js failed:", err);
+  process.exit(1);
+});
