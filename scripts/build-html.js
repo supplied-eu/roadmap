@@ -2189,7 +2189,7 @@ function buildDataContext(){
     const blocked=allIss.filter(i=>i.status==="Blocked");
     const overdue=allIss.filter(i=>i.end&&i.end<TODAY_STR);
     const dueToday=allIss.filter(i=>i.end===TODAY_STR);
-    lines.push("\nLINEAR: "+allIss.length+" open issues");
+    lines.push("\\nLINEAR: "+allIss.length+" open issues");
     if(blocked.length) lines.push("BLOCKED ("+blocked.length+"): "+blocked.slice(0,3).map(i=>i.title).join("; "));
     if(overdue.length) lines.push("OVERDUE ("+overdue.length+"): "+overdue.slice(0,5).map(i=>(i.assignee?i.assignee+": ":"")+i.title).join("; "));
     if(dueToday.length) lines.push("DUE TODAY: "+dueToday.map(i=>i.title).join("; "));
@@ -2198,24 +2198,24 @@ function buildDataContext(){
     const todayMs=new Date().setHours(0,0,0,0);
     const closing=(HS_DATA.deals||[]).filter(d=>d.closeDate&&!DONE_STATES.has(d.stageLabel||"")).map(d=>({...d,diff:Math.ceil((new Date(d.closeDate)-todayMs)/864e5)})).filter(d=>d.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,5);
     if(closing.length){
-      lines.push("\nDEALS CLOSING SOON:");
+      lines.push("\\nDEALS CLOSING SOON:");
       for(const d of closing) lines.push("  "+d.name+(d.amount?" (\u20AC"+Number(d.amount).toLocaleString()+")")+" - "+(d.diff<0?Math.abs(d.diff)+"d overdue":d.diff===0?"TODAY":"in "+d.diff+"d")+" ["+d.stageLabel+"]");
     }
   }
   if(GOOGLE_DATA){
     const ep=(GOOGLE_DATA.email_priorities||[]).slice(0,5);
-    if(ep.length){ lines.push("\nEMAILS TO ACTION:"); for(const e of ep) lines.push("  ["+e.action.toUpperCase()+"] "+e.subject+" - "+e.reason); }
+    if(ep.length){ lines.push("\\nEMAILS TO ACTION:"); for(const e of ep) lines.push("  ["+e.action.toUpperCase()+"] "+e.subject+" - "+e.reason); }
     const cal=GOOGLE_DATA.calendar;
-    if(cal&&(cal.today||[]).length){ lines.push("\nMEETINGS TODAY:"); for(const ev of cal.today) lines.push("  "+ev.title+(ev.start?" @ "+ev.start:"")); }
-    else lines.push("\nMEETINGS: None today");
+    if(cal&&(cal.today||[]).length){ lines.push("\\nMEETINGS TODAY:"); for(const ev of cal.today) lines.push("  "+ev.title+(ev.start?" @ "+ev.start:"")); }
+    else lines.push("\\nMEETINGS: None today");
     const dp=(GOOGLE_DATA.drive_priorities||[]).slice(0,3);
-    if(dp.length){ lines.push("\nDRIVE PRIORITIES:"); for(const d of dp) lines.push("  ["+d.action.toUpperCase()+"] "+d.subject); }
+    if(dp.length){ lines.push("\\nDRIVE PRIORITIES:"); for(const d of dp) lines.push("  ["+d.action.toUpperCase()+"] "+d.subject); }
   }
-  return lines.join("\n");
+  return lines.join("\\n");
 }
 function buildSystemPrompt(){
   const name=CLAUDE_VIEW_NAME||"the user";
-  return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\n\nCurrent work data:\n"+buildDataContext()+"\n\nStyle rules: max 120 words unless asked for more. No flattery. Plain text only, no markdown, no bullet points unless specifically asked. Focus on the 3-4 most critical actions. Never repeat context already mentioned in the conversation.";
+  return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\\n\\nCurrent work data:\\n"+buildDataContext()+"\\n\\nStyle rules: max 120 words unless asked for more. No flattery. Plain text only, no markdown, no bullet points unless specifically asked. Focus on the 3-4 most critical actions. Never repeat context already mentioned in the conversation.";
 }
 async function callClaudeStream(messages,onChunk,onDone,onError){
   const key=getClaudeKey();
@@ -2232,7 +2232,7 @@ async function callClaudeStream(messages,onChunk,onDone,onError){
     while(true){
       const {done,value}=await reader.read(); if(done) break;
       buf+=dec.decode(value,{stream:true});
-      const lines=buf.split("\n"); buf=lines.pop();
+      const lines=buf.split("\\n"); buf=lines.pop();
       for(const line of lines){
         if(!line.startsWith("data: ")) continue;
         const data=line.slice(6).trim(); if(data==="[DONE]") continue;
