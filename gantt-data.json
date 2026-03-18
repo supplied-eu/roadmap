@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-18T15:19:08.357Z",
+  "refreshedAt": "2026-03-18T15:29:07.683Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -374,7 +374,7 @@
               "id": "de70762c-c742-4bfd-a1da-8d562a1d3cb1",
               "identifier": "SUP-1178",
               "title": "Read switch phase",
-              "status": "In Progress",
+              "status": "In Review",
               "start": "2026-03-17",
               "end": null,
               "assignee": "Vladislav Suvorov",
@@ -1466,7 +1466,7 @@
               "start": "2026-02-17",
               "end": null,
               "assignee": "Vladislav Suvorov",
-              "priority": "No priority",
+              "priority": "Low",
               "url": "https://linear.app/supplied/issue/SUP-1143/consolidate-calls-for-operations-hub"
             },
             {
