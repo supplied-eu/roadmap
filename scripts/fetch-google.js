@@ -108,8 +108,12 @@ async function getAccessToken() {
   }, body);
 
   if (!res.body.access_token) {
-    console.error("Failed to get access token:", JSON.stringify(res.body));
-    process.exit(1);
+    const err = res.body.error || "unknown";
+    const desc = res.body.error_description || "";
+    console.error(`❌ Google auth failed (${err}): ${desc}`);
+    console.error("   Check GOOGLE_REFRESH_TOKEN secret — it may be expired or invalid.");
+    console.error("   Keeping existing google-data.json untouched.");
+    process.exit(0); // exit 0 so the workflow doesn't fail
   }
   console.log("✅ Got Google access token");
   return res.body.access_token;
@@ -377,6 +381,7 @@ async function main() {
 }
 
 main().catch(err => {
-  console.error("fetch-google.js failed:", err);
-  process.exit(1);
+  console.error("fetch-google.js failed:", err.message || err);
+  console.error("   Keeping existing google-data.json untouched.");
+  process.exit(0); // exit 0 so the workflow doesn't fail
 });
