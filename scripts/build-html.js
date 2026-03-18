@@ -408,6 +408,28 @@ body {
 .cl-item.cl-done{opacity:.32;}.cl-item.cl-done .cl-title{text-decoration:line-through;}
 .cl-cb{flex-shrink:0;width:15px;height:15px;margin-top:2px;border:1.5px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s;}
 .cl-item.cl-done .cl-cb{background:#22c55e;border-color:#22c55e;color:#fff;}
+.roadmap-sec-hdr{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);border-top:2px solid var(--border);position:sticky;top:0;z-index:3;}
+.roadmap-sec-hdr:first-child{border-top:none;}
+.rsh-title{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text);}
+.rsh-sub{font-size:9px;color:var(--text-muted);margin-left:6px;}
+.swim-lane{border-bottom:1px solid var(--border);}
+.swim-hdr{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;user-select:none;}
+.swim-hdr:hover{background:rgba(255,255,255,.03);}
+.swim-arr{font-size:8px;color:var(--text-muted);width:10px;flex-shrink:0;}
+.swim-prio-lbl{font-size:10px;font-weight:700;letter-spacing:0.8px;}
+.swim-count{font-size:9px;color:var(--text-muted);background:rgba(255,255,255,.06);padding:1px 7px;border-radius:10px;margin-left:2px;}
+.swim-urgent .swim-prio-lbl{color:#ef4444;}.swim-high .swim-prio-lbl{color:#f97316;}
+.swim-medium .swim-prio-lbl{color:#eab308;}.swim-low .swim-prio-lbl{color:var(--text-muted);}
+.swim-none .swim-prio-lbl{color:var(--text-muted);}
+.swim-body{border-top:1px solid var(--border);}
+.swim-grp-lbl{font-size:9px;font-weight:600;letter-spacing:0.7px;color:var(--text-muted);padding:7px 14px 3px 32px;text-transform:uppercase;}
+.swim-issue{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 32px;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;}
+.swim-issue:hover{background:rgba(255,255,255,.04);}
+.swim-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.swim-id{font-size:10px;font-weight:600;color:var(--text-muted);flex-shrink:0;min-width:66px;}
+.swim-title{font-size:11px;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.swim-assignee{font-size:9px;color:var(--text-muted);flex-shrink:0;padding:0 4px;}
+.swim-badge{font-size:8px;font-weight:600;padding:1px 5px;border-radius:3px;flex-shrink:0;letter-spacing:.4px;text-transform:uppercase;}
 .cl-src{flex-shrink:0;font-size:8px;font-weight:700;letter-spacing:.5px;padding:2px 5px;border-radius:3px;margin-top:2px;white-space:nowrap;}
 .cl-title{flex:1;font-size:12px;color:var(--text);line-height:1.45;}
 .cl-meta{flex-shrink:0;font-size:10px;color:var(--text-muted);margin-top:2px;white-space:nowrap;}
@@ -1010,43 +1032,96 @@ function makeGanttRow({indent,label,status,color,start,end,url,hasChildren,isExp
 
 const ganttBody = document.getElementById("gantt-body");
 function renderGantt(){
-  if(!GANTT_DATA){ ganttBody.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:0.5px">LOADING…</div>'; return; }
+  if(!GANTT_DATA){ ganttBody.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:0.5px">LOADING\u2026</div>'; return; }
   ganttBody.innerHTML="";
-  for(const ini of GANTT_DATA.initiatives){
-    const iniKey=ini.id;
-    if(DONE_STATES.has(ini.status||"")) continue; // hide completed/cancelled initiatives
-    if(GANTT_FILTER){ const hm=ini.projects.some(p=>(p.issues||[]).some(i=>ganttIssueMatchesFilter(i))); if(!hm) continue; }
-    const iniExp=GANTT_FILTER?true:!!expanded[iniKey];
-    const dated=ini.projects.filter(p=>p.startDate||p.targetDate);
-    const iniStart=dated.reduce((a,p)=>(!a||(p.startDate&&p.startDate<a))?p.startDate:a,null);
-    const iniEnd=dated.reduce((a,p)=>(!a||(p.targetDate&&p.targetDate>a))?p.targetDate:a,null)||ini.targetDate;
-    ganttBody.appendChild(makeGanttRow({indent:0,label:ini.name,status:ini.status,color:ini.color,start:iniStart,end:iniEnd,url:ini.url,hasChildren:ini.projects.length>0,isExpanded:iniExp,isIni:true,onClick:()=>{ expanded[iniKey]=!expanded[iniKey]; renderGantt(); },barClickable:!!ini.url,barData:{label:ini.name,status:ini.status,start:iniStart,end:iniEnd,url:ini.url,clickable:!!ini.url}}));
-    if(iniExp){
-      for(const proj of ini.projects){
-        const projKey=iniKey+"_"+proj.id;
-        if(DONE_STATES.has(proj.status||"")) continue; // hide completed/cancelled projects
-        if(GANTT_FILTER){ const hm=(proj.issues||[]).some(i=>ganttIssueMatchesFilter(i)); if(!hm) continue; }
-        const projExp=GANTT_FILTER?true:!!expanded[projKey];
-        const hasIssues=proj.issues&&proj.issues.length>0;
-        ganttBody.appendChild(makeGanttRow({indent:1,label:proj.name,status:proj.status||"",color:proj.color,start:proj.startDate,end:proj.targetDate,url:proj.url,hasChildren:hasIssues,isExpanded:projExp,isIni:false,onClick:hasIssues?()=>{ expanded[projKey]=!expanded[projKey]; renderGantt(); }:proj.url?()=>window.open(proj.url,"_blank"):null,barClickable:!!proj.url,barData:{label:proj.name,status:proj.status,start:proj.startDate,end:proj.targetDate,url:proj.url,clickable:!!proj.url}}));
-        if(projExp&&hasIssues){
-        const STATUS_RANK={Blocked:0,'In Test':1,'In Review':2,'In Progress':3,'Todo':4,'Backlog':5};
-        const sortedIssues=[...proj.issues]
-          .filter(i=>!DONE_STATES.has(i.status||''))
-          .sort((a,b)=>{
-            const ra=STATUS_RANK[a.status]??99, rb=STATUS_RANK[b.status]??99;
-            return ra!==rb ? ra-rb : (a.identifier||'').localeCompare(b.identifier||'');
-          });
-        for(const iss of sortedIssues){
+  const isCustomerIni=ini=>(ini.name.indexOf("Customer")!==-1||ini.name.indexOf("Go Live")!==-1);
+  const PRIO_ORDER=["Urgent","High","Medium","Low","No priority"];
+  const PRIO_RANK={Urgent:0,High:1,Medium:2,Low:3,"No priority":4};
+  const STATUS_RANK={Blocked:0,"In Test":1,"In Review":2,"In Progress":3,Todo:4,Backlog:5};
+  const SWIM_CFG={Urgent:{cls:"swim-urgent"},High:{cls:"swim-high"},Medium:{cls:"swim-medium"},Low:{cls:"swim-low"},"No priority":{cls:"swim-none"}};
+
+  function makeSectionHdr(title,sub){
+    const h=document.createElement("div"); h.className="roadmap-sec-hdr";
+    const t=document.createElement("span"); t.className="rsh-title"; t.textContent=title; h.appendChild(t);
+    if(sub){ const s=document.createElement("span"); s.className="rsh-sub"; s.textContent=sub; h.appendChild(s); }
+    return h;
+  }
+
+  // ── SECTION 1: Customer Commitments (Gantt with real dates) ──────────────
+  ganttBody.appendChild(makeSectionHdr("🤝  CUSTOMER COMMITMENTS","contract dates · click project to expand issues"));
+  const custIni=GANTT_DATA.initiatives.find(isCustomerIni);
+  if(custIni&&!DONE_STATES.has(custIni.status||"")){
+    const iniKey=custIni.id;
+    for(const proj of custIni.projects){
+      if(DONE_STATES.has(proj.status||"")) continue;
+      const projKey=iniKey+"_"+proj.id;
+      const hasIssues=proj.issues&&proj.issues.length>0;
+      const projExp=GANTT_FILTER?true:!!expanded[projKey];
+      ganttBody.appendChild(makeGanttRow({indent:0,label:proj.name,status:proj.status||"Active",color:proj.color||custIni.color,start:proj.startDate,end:proj.targetDate,url:proj.url,hasChildren:hasIssues,isExpanded:projExp,isIni:false,onClick:hasIssues?()=>{ expanded[projKey]=!expanded[projKey]; renderGantt(); }:proj.url?()=>window.open(proj.url,"_blank"):null,barClickable:!!proj.url,barData:{label:proj.name,status:proj.status,start:proj.startDate,end:proj.targetDate,url:proj.url,clickable:!!proj.url}}));
+      if(projExp&&hasIssues){
+        const sorted=[...proj.issues].filter(i=>!DONE_STATES.has(i.status||"")).sort((a,b)=>{ const pa=PRIO_RANK[a.priority]??99,pb=PRIO_RANK[b.priority]??99; return pa!==pb?pa-pb:(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99); });
+        for(const iss of sorted){
           if(GANTT_FILTER&&!ganttIssueMatchesFilter(iss)) continue;
           const od=isOverdue(iss.end,iss.status);
-          ganttBody.appendChild(makeGanttRow({indent:2,label:(iss.identifier+" "+iss.title).trim(),status:iss.status,color:sc(iss.status),start:iss.start,end:iss.end,url:iss.url,hasChildren:false,isExpanded:false,isIni:false,onClick:iss.url?()=>window.open(iss.url,"_blank"):null,barClickable:true,assignee:iss.assignee||null,priority:iss.priority||null,overdueFlag:od,barData:{label:iss.title,status:iss.status,start:iss.start,end:iss.end,assignee:iss.assignee,priority:iss.priority,url:iss.url,clickable:true}}));
+          ganttBody.appendChild(makeGanttRow({indent:1,label:(iss.identifier+" "+iss.title).trim(),status:iss.status,color:sc(iss.status),start:iss.start,end:iss.end,url:iss.url,hasChildren:false,isExpanded:false,isIni:false,onClick:iss.url?()=>window.open(iss.url,"_blank"):null,barClickable:true,assignee:iss.assignee||null,priority:iss.priority||null,overdueFlag:od,barData:{label:iss.title,status:iss.status,start:iss.start,end:iss.end,assignee:iss.assignee,priority:iss.priority,url:iss.url,clickable:true}}));
         }
-        } // end if(projExp&&hasIssues)
       }
-      const gap=document.createElement("div"); gap.className="section-gap"; ganttBody.appendChild(gap);
+    }
+    const gap=document.createElement("div"); gap.className="section-gap"; ganttBody.appendChild(gap);
+  }
+
+  // ── SECTION 2: Product Priorities (swim lanes, no dates) ─────────────────
+  ganttBody.appendChild(makeSectionHdr("⚡  PRODUCT PRIORITIES","sorted by priority — no fake dates"));
+  const byPrio={};
+  for(const p of PRIO_ORDER) byPrio[p]={};
+  for(const ini of GANTT_DATA.initiatives){
+    if(isCustomerIni(ini)) continue;
+    if(DONE_STATES.has(ini.status||"")) continue;
+    for(const proj of ini.projects){
+      if(DONE_STATES.has(proj.status||"")) continue;
+      for(const iss of (proj.issues||[])){
+        if(!isActive(iss.status)) continue;
+        if(GANTT_FILTER&&!ganttIssueMatchesFilter(iss)) continue;
+        const prio=(iss.priority&&byPrio[iss.priority]!==undefined)?iss.priority:"No priority";
+        if(!byPrio[prio][ini.name]) byPrio[prio][ini.name]=[];
+        byPrio[prio][ini.name].push(iss);
+      }
     }
   }
+  for(const prio of PRIO_ORDER){
+    const iniGroups=byPrio[prio];
+    const total=Object.values(iniGroups).reduce((s,arr)=>s+arr.length,0);
+    if(total===0) continue;
+    const cfg=SWIM_CFG[prio];
+    const laneKey="swim_"+prio.replace(" ","_");
+    const laneExp=expanded[laneKey]!==undefined?expanded[laneKey]:(prio==="Urgent"||prio==="High");
+    const lane=document.createElement("div"); lane.className="swim-lane "+cfg.cls;
+    const hdr=document.createElement("div"); hdr.className="swim-hdr";
+    const arr=document.createElement("span"); arr.className="swim-arr"; arr.textContent=laneExp?"▼":"▶"; hdr.appendChild(arr);
+    const pl=document.createElement("span"); pl.className="swim-prio-lbl"; pl.textContent=prio.toUpperCase(); hdr.appendChild(pl);
+    const ct=document.createElement("span"); ct.className="swim-count"; ct.textContent=total+" issues"; hdr.appendChild(ct);
+    hdr.addEventListener("click",()=>{ expanded[laneKey]=!laneExp; renderGantt(); });
+    lane.appendChild(hdr);
+    if(laneExp){
+      const body=document.createElement("div"); body.className="swim-body";
+      for(const [iniName,issues] of Object.entries(iniGroups)){
+        const grpLbl=document.createElement("div"); grpLbl.className="swim-grp-lbl"; grpLbl.textContent=iniName; body.appendChild(grpLbl);
+        const sorted=[...issues].sort((a,b)=>(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99));
+        for(const iss of sorted){
+          const row=document.createElement("div"); row.className="swim-issue"; if(iss.url) row.addEventListener("click",()=>window.open(iss.url,"_blank"));
+          const dot=document.createElement("span"); dot.className="swim-dot"; dot.style.background=sc(iss.status); row.appendChild(dot);
+          const id=document.createElement("span"); id.className="swim-id"; id.textContent=iss.identifier||""; row.appendChild(id);
+          const ttl=document.createElement("span"); ttl.className="swim-title"; ttl.textContent=iss.title; ttl.title=iss.title; row.appendChild(ttl);
+          if(iss.assignee){ const asn=document.createElement("span"); asn.className="swim-assignee"; asn.textContent=iss.assignee.split(" ")[0]; row.appendChild(asn); }
+          const bdg=document.createElement("span"); bdg.className="swim-badge"; bdg.style.background=sc(iss.status)+"22"; bdg.style.color=sc(iss.status); bdg.textContent=iss.status; row.appendChild(bdg);
+          body.appendChild(row);
+        }
+      }
+      lane.appendChild(body);
+    }
+    ganttBody.appendChild(lane);
+  }
+
   populateGanttInsights();
 }
 
