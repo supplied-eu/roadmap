@@ -2472,7 +2472,7 @@ async function init(){
 // ═══════════════════════════════════════════════════════════════════════════
 // ON-DEMAND REFRESH — triggers GitHub Actions workflow via PAT
 // ═══════════════════════════════════════════════════════════════════════════
-const GH_OWNER    = "jjrozario";
+const GH_OWNER    = "supplied-eu";
 const GH_REPO     = "roadmap";
 const GH_WORKFLOW = "refresh.yml";
 const PAT_KEY     = "gh_pat_supplied_dashboard";
