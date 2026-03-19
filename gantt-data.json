@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-18T16:01:35.430Z",
+  "refreshedAt": "2026-03-19T11:25:35.190Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -44,7 +44,7 @@
               "id": "be895dec-396b-4e6b-b61c-2d33d5a86804",
               "identifier": "SUP-890",
               "title": "Generate Monthly Customer Report",
-              "status": "Todo",
+              "status": "Backlog",
               "start": null,
               "end": "2026-10-07",
               "assignee": null,
@@ -209,7 +209,7 @@
               "id": "9a695959-3b6d-480b-b76a-ee376f645de0",
               "identifier": "SUP-969",
               "title": "BUG: On Safari browser - the App cannot be opened",
-              "status": "Todo",
+              "status": "Backlog",
               "start": null,
               "end": "2026-12-17",
               "assignee": null,
@@ -231,7 +231,7 @@
               "id": "0293112e-1a59-4438-a561-11329a6d4df4",
               "identifier": "SUP-802",
               "title": "Full email address isn't stored",
-              "status": "Backlog",
+              "status": "Todo",
               "start": null,
               "end": null,
               "assignee": null,
@@ -290,7 +290,7 @@
               "start": null,
               "end": "2026-08-17",
               "assignee": null,
-              "priority": "Medium",
+              "priority": "Urgent",
               "url": "https://linear.app/supplied/issue/SUP-571/operations-hub-cant-addsync-suppliers-using-relatively-big-files"
             }
           ]
@@ -1583,7 +1583,7 @@
               "id": "a1f8f5fd-e69c-493a-ac43-7c4bba89c285",
               "identifier": "SUP-773",
               "title": "[Operations hub] Navigation sidebar on supplier card isn't working",
-              "status": "Backlog",
+              "status": "Todo",
               "start": null,
               "end": null,
               "assignee": null,
@@ -1795,7 +1795,7 @@
               "start": null,
               "end": "2026-09-21",
               "assignee": null,
-              "priority": "Low",
+              "priority": "High",
               "url": "https://linear.app/supplied/issue/SUP-565/white-label-upload-functionality-greyed-out"
             },
             {
@@ -1982,7 +1982,7 @@
               "start": null,
               "end": "2026-12-23",
               "assignee": null,
-              "priority": "No priority",
+              "priority": "High",
               "url": "https://linear.app/supplied/issue/SUP-1060/essential-tier-cant-purchase-white-label"
             },
             {
@@ -2099,7 +2099,7 @@
               "id": "92918210-4cb7-4ccd-b19c-1c214f39501c",
               "identifier": "SUP-892",
               "title": "Convert the Customers Signed Billing Agreement into a Signed PDF",
-              "status": "Todo",
+              "status": "Backlog",
               "start": null,
               "end": "2026-09-25",
               "assignee": "Johann Rozario",
@@ -2241,13 +2241,13 @@
             {
               "id": "3766b093-4b5c-44ff-a594-16e570fc6713",
               "identifier": "SUP-769",
-              "title": "Update services to mention 1099-K reporting",
+              "title": "Update services to mention 1099-K and DRR reporting",
               "status": "Todo",
               "start": null,
-              "end": "2026-03-03",
+              "end": "2026-03-20",
               "assignee": "Vladimir Ivanov",
-              "priority": "Medium",
-              "url": "https://linear.app/supplied/issue/SUP-769/update-services-to-mention-1099-k-reporting"
+              "priority": "Urgent",
+              "url": "https://linear.app/supplied/issue/SUP-769/update-services-to-mention-1099-k-and-drr-reporting"
             },
             {
               "id": "7dd5e7e0-205a-4efe-a2cb-1075acc97c48",
@@ -3569,6 +3569,17 @@
           "targetDate": null,
           "issues": [
             {
+              "id": "b9e08643-6922-4d86-af4e-e6c61ac62167",
+              "identifier": "SUP-1218",
+              "title": "Perform a checksum Business TIN or VAT validation",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "url": "https://linear.app/supplied/issue/SUP-1218/perform-a-checksum-business-tin-or-vat-validation"
+            },
+            {
               "id": "ff1d1b8c-4794-4c1d-aa0d-72e66a389e94",
               "identifier": "SUP-1188",
               "title": "HttpException: Failed to find the company for the name authorize",
@@ -3983,7 +3994,7 @@
               "start": null,
               "end": "2026-10-29",
               "assignee": "nadezhda@supplied.eu",
-              "priority": "Low",
+              "priority": "Medium",
               "url": "https://linear.app/supplied/issue/SUP-277/user-needs-to-fill-in-multiple-fields-for-street-name-at-onboarding"
             }
           ]
@@ -5712,8 +5723,8 @@
               "id": "f8acfb20-e5bf-423e-82bb-350fe2d5d494",
               "identifier": "SUP-1015",
               "title": "TIN validation for platform operator",
-              "status": "Todo",
-              "start": null,
+              "status": "Done",
+              "start": "2026-03-19",
               "end": "2026-10-19",
               "assignee": "Vladimir Ivanov",
               "priority": "Low",
@@ -5729,17 +5740,6 @@
               "assignee": "Ivan Tiniakov",
               "priority": "Medium",
               "url": "https://linear.app/supplied/issue/SUP-987/block-the-essential-report-generation-when-data-validation-fails"
-            },
-            {
-              "id": "13fdd28c-bb3f-40f5-9d01-766ae30c421d",
-              "identifier": "SUP-945",
-              "title": "DAC7 report validation failed for individual supplier without TIN but with birth data",
-              "status": "Backlog",
-              "start": null,
-              "end": null,
-              "assignee": null,
-              "priority": "High",
-              "url": "https://linear.app/supplied/issue/SUP-945/dac7-report-validation-failed-for-individual-supplier-without-tin-but"
             },
             {
               "id": "a872beed-6050-4965-9fd6-255ced243ccf",
@@ -6401,7 +6401,7 @@
               "id": "153b9c0b-6ce1-4848-8a31-fa584af2e3de",
               "identifier": "SUP-1207",
               "title": "Can't apply AI mapping for property sync",
-              "status": "Backlog",
+              "status": "Todo",
               "start": null,
               "end": null,
               "assignee": "Vladimir Ivanov",
@@ -6427,7 +6427,7 @@
               "start": null,
               "end": "2026-11-17",
               "assignee": null,
-              "priority": "No priority",
+              "priority": "Low",
               "url": "https://linear.app/supplied/issue/SUP-1163/put-the-language-field-back-into-dac7-generation-in-the-report-builder"
             },
             {
@@ -6691,7 +6691,7 @@
               "start": null,
               "end": "2026-07-01",
               "assignee": null,
-              "priority": "Medium",
+              "priority": "Urgent",
               "url": "https://linear.app/supplied/issue/SUP-1010/special-rule-for-receivingcountry-element-in-dac7-xml-for-germany"
             },
             {
@@ -6770,6 +6770,17 @@
               "assignee": "Alexander samaniego",
               "priority": "High",
               "url": "https://linear.app/supplied/issue/SUP-951/uk-digital-reporting-schema-for-report-generation"
+            },
+            {
+              "id": "13fdd28c-bb3f-40f5-9d01-766ae30c421d",
+              "identifier": "SUP-945",
+              "title": "DAC7 report validation failed for individual supplier without TIN but with birth data",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Ivan Tiniakov",
+              "priority": "High",
+              "url": "https://linear.app/supplied/issue/SUP-945/dac7-report-validation-failed-for-individual-supplier-without-tin-but"
             },
             {
               "id": "f3055917-bada-4956-95e0-02dfad81a637",
@@ -7923,7 +7934,7 @@
               "start": null,
               "end": "2026-07-24",
               "assignee": "Ivan Tiniakov",
-              "priority": "Medium",
+              "priority": "High",
               "url": "https://linear.app/supplied/issue/SUP-959/report-builder-for-every-generated-report-automatically-determine-the"
             },
             {
@@ -8072,13 +8083,13 @@
             {
               "id": "f42a2da5-947b-4ef3-b945-1ba4f7309ae6",
               "identifier": "SUP-589",
-              "title": "Using multiple fileds for data set mapping",
+              "title": "Using multiple fileds for data set linking",
               "status": "Todo",
               "start": null,
               "end": "2026-09-02",
               "assignee": null,
               "priority": "Medium",
-              "url": "https://linear.app/supplied/issue/SUP-589/using-multiple-fileds-for-data-set-mapping"
+              "url": "https://linear.app/supplied/issue/SUP-589/using-multiple-fileds-for-data-set-linking"
             },
             {
               "id": "d3632636-9b55-4d9a-94e5-61a05f04e1fb",
