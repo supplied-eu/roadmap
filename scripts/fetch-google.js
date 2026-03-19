@@ -128,7 +128,7 @@ async function fetchGmail(token) {
     new URLSearchParams({
       labelIds: "INBOX",
       q: "is:unread",
-      maxResults: "20",
+      maxResults: "50",
     });
 
   const listRes = await get(listUrl, token);
@@ -282,13 +282,35 @@ function deriveEmailPriorities(threads) {
     /when (can|will|are) you/i, /please (respond|reply|confirm|review)/i,
     /\?\s*$/, /your (call|decision|thoughts)/i,
     /tagged you/i, /assigned to you/i, /1000 euro|400.*day|per day|flat rate|pricing/i,
+    // Scheduling & meetings
+    /schedule (a )?(call|meeting|session|demo|interview)/i,
+    /book (a )?(call|meeting|slot|time)/i,
+    /earliest convenience/i, /let me know (your|a good) time/i,
+    /are you (free|available)/i, /can we (meet|talk|connect|jump on)/i,
+    /set up a (call|meeting)/i, /catch up (this|next) week/i,
+    // Action requests
+    /action required/i, /fill in|fill out/i, /complete (the|your)/i,
+    /asap|as soon as possible/i, /by end of (day|week|month)/i,
+    /deadline|due (by|date|today|tomorrow)/i,
+    /questionnaire|proposal|contract|agreement|sign/i,
+    /please (send|share|provide|submit|upload)/i,
+    /your (approval|sign-off|signature|response)/i,
+    /awaiting your/i, /pending your/i,
+    // Partnership / business
+    /partnership|collaboration|introduce|introduction/i,
+    /candidate|profile|applicant/i,
+    /invoice|payment|quote|renewal/i,
   ];
   const ALERT_PATTERNS = [
     /error|fail(ed|ing)|critical|urgent|broken|down|outage|issue/i,
     /warning|alert|attention required/i,
+    /out of office (starting|from) (today|tomorrow|this)/i,
+    /last chance|final (reminder|notice)/i,
   ];
   const FOLLOWUP_PATTERNS = [
     /cancelled|cancel(l?ed)?/i, /no (reply|response)/i, /following up/i,
+    /just checking|any update|circling back|touching base/i,
+    /haven.t heard|still waiting/i,
   ];
 
   const now = Date.now();
@@ -339,7 +361,7 @@ function deriveEmailPriorities(threads) {
   priorities.sort((a, b) => (ORDER[a.action] - ORDER[b.action]) || (a.ageDays - b.ageDays));
 
   console.log(`  ✅ Derived ${priorities.length} email priorities from ${threads.length} threads`);
-  return priorities.slice(0, 8);
+  return priorities.slice(0, 12);
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
