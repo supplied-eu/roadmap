@@ -403,11 +403,18 @@ body {
 /* ── SIMPLE CHECKLIST ────────────────────────────────────────────────────── */
 .checklist-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .checklist-hdr{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-muted);}
-.cl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;user-select:none;}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);transition:background .12s;user-select:none;position:relative;}
 .cl-item:last-child{border-bottom:none;}.cl-item:hover{background:var(--surface2);}
 .cl-item.cl-done{opacity:.32;}.cl-item.cl-done .cl-title{text-decoration:line-through;}
-.cl-cb{flex-shrink:0;width:15px;height:15px;margin-top:2px;border:1.5px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s;}
+.cl-cb{flex-shrink:0;width:15px;height:15px;margin-top:2px;border:1.5px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s;cursor:pointer;}
 .cl-item.cl-done .cl-cb{background:#22c55e;border-color:#22c55e;color:#fff;}
+.cl-action-btn{flex-shrink:0;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;border:1.5px solid var(--accent);color:var(--accent);background:transparent;cursor:pointer;letter-spacing:.5px;margin-top:1px;}
+.cl-action-btn:hover{background:var(--accent);color:#fff;}
+.cl-snooze-btn{flex-shrink:0;font-size:11px;padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--text-muted);background:transparent;cursor:pointer;margin-top:1px;}
+.cl-snooze-btn:hover{border-color:var(--text-muted);color:var(--text);}
+.cl-snooze-menu{position:absolute;right:14px;top:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:200;min-width:140px;overflow:hidden;}
+.cl-snooze-opt{display:block;width:100%;padding:8px 12px;font-size:11px;cursor:pointer;color:var(--text);background:transparent;border:none;text-align:left;letter-spacing:.3px;}
+.cl-snooze-opt:hover{background:var(--accent);color:#fff;}
 .roadmap-sec-hdr{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);border-top:2px solid var(--border);position:sticky;top:0;z-index:3;}
 .roadmap-sec-hdr:first-child{border-top:none;}
 .rsh-title{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text);}
@@ -1772,6 +1779,10 @@ function renderMyDay(){
   const AUTO_DONE_KEY = "supplied_auto_done_" + TODAY_STR;
   const AUTO_DONE = new Set(JSON.parse(localStorage.getItem(AUTO_DONE_KEY)||"[]"));
   function saveAutoDone(){ localStorage.setItem(AUTO_DONE_KEY, JSON.stringify([...AUTO_DONE])); }
+  // Snooze storage: persists across days, keyed by item id → wake date
+  const SNOOZE_KEY = "supplied_snooze";
+  const SNOOZED = JSON.parse(localStorage.getItem(SNOOZE_KEY)||"{}");
+  function saveSnooze(){ localStorage.setItem(SNOOZE_KEY, JSON.stringify(SNOOZED)); }
 
   function renderPrioritySection(title, items){
     if(!items || !items.length) return null;
@@ -1940,7 +1951,11 @@ function renderMyDay(){
     }
     items.sort((a,b)=>a.prio-b.prio);
     const seen=new Set();
-    return items.filter(i=>{if(seen.has(i.id))return false;seen.add(i.id);return true;});
+    return items.filter(i=>{
+      if(seen.has(i.id)) return false; seen.add(i.id);
+      if(SNOOZED[i.id]&&SNOOZED[i.id]>TODAY_STR) return false;
+      return true;
+    });
   }
 
   function renderSimpleChecklist(container){
@@ -1950,7 +1965,8 @@ function renderMyDay(){
     const hdr=document.createElement("div"); hdr.className="checklist-hdr";
     const lbl=document.createElement("span"); lbl.textContent="\u2611\uFE0F  TODAY\u2019S ACTIONS";
     const cnt=document.createElement("span"); cnt.style.cssText="margin-left:auto;background:var(--accent);color:#fff;border-radius:10px;padding:1px 7px;font-size:9px;";
-    cnt.textContent=items.filter(i=>!AUTO_DONE.has(i.id)).length;
+    function refreshCount(){ cnt.textContent=items.filter(i=>!AUTO_DONE.has(i.id)).length; }
+    refreshCount();
     hdr.appendChild(lbl); hdr.appendChild(cnt); wrap.appendChild(hdr);
     const listEl=document.createElement("div"); listEl.id="cl-list"; wrap.appendChild(listEl);
     if(!items.length){
@@ -1958,24 +1974,52 @@ function renderMyDay(){
       emp.textContent="All clear \u2014 nothing urgent right now."; listEl.appendChild(emp);
       container.appendChild(wrap); return;
     }
+    const ACTION_LABEL={gmail:"REPLY",linear:"OPEN",hubspot:"OPEN",drive:"OPEN",task:"OPEN"};
     function draw(showAll){
+      document.querySelectorAll(".cl-snooze-menu").forEach(m=>m.remove());
       listEl.innerHTML="";
       const visible=showAll?items:items.slice(0,SHOW_INIT);
       for(const item of visible){
         const done=AUTO_DONE.has(item.id);
         const row=document.createElement("div"); row.className="cl-item"+(done?" cl-done":"");
+        // ── Checkbox: click only toggles done ──────────────────────────────
         const cb=document.createElement("div"); cb.className="cl-cb"; if(done) cb.textContent="\u2713";
-        row.onclick=function(e){
-          if(e.target===cb||cb.contains(e.target)){
-            if(AUTO_DONE.has(item.id)) AUTO_DONE.delete(item.id); else AUTO_DONE.add(item.id);
-            saveAutoDone(); draw(listEl.dataset.showAll==="1");
-            cnt.textContent=items.filter(i=>!AUTO_DONE.has(i.id)).length;
-          } else if(item.url){ window.open(item.url,"_blank"); }
-        };
+        cb.addEventListener("click",function(e){
+          e.stopPropagation();
+          if(AUTO_DONE.has(item.id)) AUTO_DONE.delete(item.id); else AUTO_DONE.add(item.id);
+          saveAutoDone(); draw(listEl.dataset.showAll==="1"); refreshCount();
+        });
+        // ── Source badge + title + meta ─────────────────────────────────────
         const srcEl=document.createElement("span"); srcEl.className="cl-src "+item.srcCls; srcEl.textContent=item.src;
         const titleEl=document.createElement("span"); titleEl.className="cl-title"; titleEl.textContent=item.title;
         const metaEl=document.createElement("span"); metaEl.className="cl-meta"; metaEl.textContent=item.meta||"";
+        // ── Action button: only this opens the URL ──────────────────────────
+        const actionBtn=document.createElement("button"); actionBtn.className="cl-action-btn";
+        actionBtn.textContent=ACTION_LABEL[item.source]||"OPEN";
+        actionBtn.addEventListener("click",function(e){ e.stopPropagation(); if(item.url) window.open(item.url,"_blank"); });
+        // ── Snooze button ───────────────────────────────────────────────────
+        const snoozeBtn=document.createElement("button"); snoozeBtn.className="cl-snooze-btn";
+        snoozeBtn.textContent="\u23F0"; snoozeBtn.title="Snooze";
+        snoozeBtn.addEventListener("click",function(e){
+          e.stopPropagation();
+          document.querySelectorAll(".cl-snooze-menu").forEach(m=>m.remove());
+          const menu=document.createElement("div"); menu.className="cl-snooze-menu";
+          [["Tomorrow",1],["Next week",7],["Next month",30]].forEach(function([label,days]){
+            const opt=document.createElement("button"); opt.className="cl-snooze-opt"; opt.textContent=label;
+            opt.addEventListener("click",function(e2){
+              e2.stopPropagation();
+              const d=new Date(); d.setDate(d.getDate()+days);
+              SNOOZED[item.id]=d.toISOString().slice(0,10); saveSnooze();
+              draw(listEl.dataset.showAll==="1"); refreshCount(); menu.remove();
+            });
+            menu.appendChild(opt);
+          });
+          row.appendChild(menu);
+          setTimeout(function(){ document.addEventListener("click",function h(){ menu.remove(); document.removeEventListener("click",h); }); },10);
+        });
         row.appendChild(cb); row.appendChild(srcEl); row.appendChild(titleEl); row.appendChild(metaEl);
+        if(item.url) row.appendChild(actionBtn);
+        row.appendChild(snoozeBtn);
         listEl.appendChild(row);
       }
       if(items.length>SHOW_INIT){
