@@ -2383,7 +2383,7 @@ function renderClaudeBrief(container,personName,tabKey){
   const BRIEF_LABELS={myday:"DAILY BRIEF",roadmap:"ROADMAP BRIEF",sales:"SALES BRIEF"};
   const DEFAULT_PROMPTS={
     myday:"Give me a sharp daily brief \u2014 what are my top 3-4 most important actions right now? Be direct and specific.",
-    roadmap:"Give me a sharp roadmap brief \u2014 which customer commitments are at risk, and what are the top product priority items the team should focus on this sprint?",
+    roadmap:"Give me a sharp roadmap brief focused purely on delivery. Look at Linear tickets only \u2014 which ones linked to customer initiatives are overdue or blocked, and could any of them delay a customer go-live? Then list the top product priority items the team should pick up this sprint. Do not mention HubSpot deals or sales pipeline \u2014 that belongs in Sales & Ops.",
     sales:"Give me a sharp sales brief \u2014 which deals need action this week, what\u2019s at risk of slipping, and what should I prioritise in the pipeline?"
   };
   const autoPrompt=DEFAULT_PROMPTS[tk]||DEFAULT_PROMPTS.myday;
