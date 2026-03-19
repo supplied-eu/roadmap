@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-19T12:11:05.184Z",
+  "refreshedAt": "2026-03-19T12:49:23.473Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -2245,7 +2245,7 @@
               "status": "Todo",
               "start": null,
               "end": "2026-03-20",
-              "assignee": "Vladimir Ivanov",
+              "assignee": "Ivan Tiniakov",
               "priority": "Urgent",
               "url": "https://linear.app/supplied/issue/SUP-769/update-services-to-mention-1099-k-and-drr-reporting"
             },
@@ -7336,8 +7336,8 @@
               "id": "22a90759-732f-43c6-9ea3-5a88f7b43b49",
               "identifier": "SUP-560",
               "title": "Add refresh status for the XML files -",
-              "status": "Todo",
-              "start": null,
+              "status": "Done",
+              "start": "2026-03-19",
               "end": "2026-05-07",
               "assignee": "Vladimir Ivanov",
               "priority": "High",

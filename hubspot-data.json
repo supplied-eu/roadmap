@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-19T12:11:05.987Z",
+  "refreshedAt": "2026-03-19T12:49:24.157Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -883,7 +883,7 @@
     },
     {
       "id": "474917819587",
-      "subject": "Reach out to Интернет Хостинг Центр",
+      "subject": "Reach out to Ин��ернет Хостинг Центр",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
@@ -1298,18 +1298,6 @@
       "ownerName": "Julio Lindveld"
     },
     {
-      "id": "472770817237",
-      "name": "Loewe (3 Year Contract)",
-      "stage": "4874399933",
-      "pipeline": "3557407943",
-      "amount": 125000,
-      "closeDate": "2026-03-14",
-      "ownerId": "29853062",
-      "probability": 0.2,
-      "stageLabel": "Discovery call scheduled",
-      "ownerName": "Bas Bogerd"
-    },
-    {
       "id": "489228714200",
       "name": "Trident Holiday Parks",
       "stage": "presentationscheduled",
@@ -1334,18 +1322,6 @@
       "ownerName": "Bas Bogerd"
     },
     {
-      "id": "421686686930",
-      "name": "Multi Media - Lenos",
-      "stage": "decisionmakerboughtin",
-      "pipeline": "default",
-      "amount": 19588,
-      "closeDate": "2026-03-31",
-      "ownerId": "687091984",
-      "probability": 0.8,
-      "stageLabel": "Contract Sent",
-      "ownerName": "Julio Lindveld"
-    },
-    {
       "id": "472984691899",
       "name": "BEX (3 Year Contract) ",
       "stage": "4874399934",
@@ -1360,13 +1336,25 @@
     {
       "id": "473517296836",
       "name": "Dutch Cleantech (3 Year Contract)",
-      "stage": "4874399934",
+      "stage": "4874399935",
       "pipeline": "3557407943",
       "amount": 175000,
       "closeDate": "2026-04-01",
       "ownerId": "29853062",
-      "probability": 0.3,
-      "stageLabel": "Needs assessment ",
+      "probability": 0.5,
+      "stageLabel": "Solution Scoping",
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "472770817237",
+      "name": "Loewe (3 Year Contract)",
+      "stage": "4874399933",
+      "pipeline": "3557407943",
+      "amount": 25000,
+      "closeDate": "2026-04-30",
+      "ownerId": "29853062",
+      "probability": 0.2,
+      "stageLabel": "Discovery call scheduled",
       "ownerName": "Bas Bogerd"
     },
     {
