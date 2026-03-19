@@ -2260,7 +2260,10 @@ function saveClaudeKey(){
     if(cont) renderClaudeBrief(cont, CLAUDE_VIEW_NAME||"Johann", currentTab);
   }
 }
-function buildDataContext(){
+function buildDataContext(tabKey){
+  const tk=tabKey||"myday";
+  const inclHubspot=(tk==="myday"||tk==="sales");
+  const inclGoogle=(tk==="myday");
   const lines=[];
   lines.push("TODAY: "+new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"}));
   if(GANTT_DATA){
@@ -2288,7 +2291,7 @@ function buildDataContext(){
     if(backlogUrgHigh.length){ lines.push("\\nBACKLOG - URGENT/HIGH (should these be Todo?):"); backlogUrgHigh.forEach(i=>lines.push(fmtIss(i))); }
     if(overdue.length){ lines.push("\\nOVERDUE:"); overdue.slice(0,10).forEach(i=>lines.push(fmtIss(i))); }
   }
-  if(HS_DATA){
+  if(inclHubspot&&HS_DATA){
     const todayMs=new Date().setHours(0,0,0,0);
     const closing=(HS_DATA.deals||[]).filter(d=>d.closeDate&&!DONE_STATES.has(d.stageLabel||"")).map(d=>({...d,diff:Math.ceil((new Date(d.closeDate)-todayMs)/864e5)})).filter(d=>d.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,5);
     if(closing.length){
@@ -2296,7 +2299,7 @@ function buildDataContext(){
       for(const d of closing) lines.push("  "+d.name+(d.amount?" (\u20AC"+Number(d.amount).toLocaleString()+")":"")+" - "+(d.diff<0?Math.abs(d.diff)+"d overdue":d.diff===0?"TODAY":"in "+d.diff+"d")+" ["+d.stageLabel+"]");
     }
   }
-  if(GOOGLE_DATA){
+  if(inclGoogle&&GOOGLE_DATA){
     const ep=(GOOGLE_DATA.email_priorities||[]).slice(0,5);
     if(ep.length){ lines.push("\\nEMAILS TO ACTION:"); for(const e of ep) lines.push("  ["+e.action.toUpperCase()+"] "+e.subject+" - "+e.reason); }
     const cal=GOOGLE_DATA.calendar;
@@ -2307,18 +2310,24 @@ function buildDataContext(){
   }
   return lines.join("\\n");
 }
-function buildSystemPrompt(){
+function buildSystemPrompt(tabKey){
+  const tk=tabKey||"myday";
   const name=CLAUDE_VIEW_NAME||"the user";
-  return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\\n\\nYou have full visibility of their Linear issues (id, title, status, priority, assignee, project, initiative, due date), HubSpot deals, calendar, and emails. Use this data to answer specific questions accurately.\\n\\nCurrent work data:\\n"+buildDataContext()+"\\n\\nStyle rules: be concise but complete when asked specific questions. No flattery. Plain text only. When asked about specific issues, list them with their identifier and key attributes. Never say you lack visibility into individual issues — you have the full list above.";
+  const scope={
+    myday:"Linear issues, HubSpot deals, calendar, and emails",
+    roadmap:"Linear issues only (tickets, projects, initiatives). You have NO HubSpot or email data — do not invent or reference deals.",
+    sales:"HubSpot deals and tasks. You also have Linear issue data for cross-referencing delivery dependencies."
+  };
+  return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\\n\\nData scope for this view: "+(scope[tk]||scope.myday)+"\\n\\nYou have full visibility of their Linear issues (id, title, status, priority, assignee, project, initiative, due date). Use this data to answer specific questions accurately.\\n\\nCurrent work data:\\n"+buildDataContext(tk)+"\\n\\nStyle rules: be concise but complete when asked specific questions. No flattery. Plain text only. When asked about specific issues, list them with their identifier and key attributes. Never say you lack visibility into individual issues — you have the full list above.";
 }
-async function callClaudeStream(messages,onChunk,onDone,onError){
+async function callClaudeStream(messages,onChunk,onDone,onError,tabKey){
   const key=getClaudeKey();
   if(!key){ openClaudeKeyModal(); return; }
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST",
       headers:{"x-api-key":key,"anthropic-version":"2023-06-01","content-type":"application/json","anthropic-dangerous-direct-browser-access":"true"},
-      body:JSON.stringify({model:"claude-opus-4-5-20251101",max_tokens:600,system:buildSystemPrompt(),messages,stream:true}),
+      body:JSON.stringify({model:"claude-opus-4-5-20251101",max_tokens:600,system:buildSystemPrompt(tabKey),messages,stream:true}),
     });
     if(res.status===401){ setClaudeKey(""); openClaudeKeyModal(); onError("Invalid API key \u2014 please re-enter."); return; }
     if(!res.ok){ onError("API error "+res.status); return; }
@@ -2364,7 +2373,8 @@ function streamClaudeReply(userMsg,silent,tabKey){
       full+=chunk; textEl.textContent=full; if(msgsEl) msgsEl.scrollTop=msgsEl.scrollHeight;
     },
     ()=>{ CLAUDE_HISTORIES[tk].push({role:"assistant",content:full}); if(sendBtn) sendBtn.disabled=false; },
-    (err)=>{ if(think.parentNode) think.remove(); appendClaudeMsg("assistant","\u26A0\uFE0F "+err,tk); if(sendBtn) sendBtn.disabled=false; }
+    (err)=>{ if(think.parentNode) think.remove(); appendClaudeMsg("assistant","\u26A0\uFE0F "+err,tk); if(sendBtn) sendBtn.disabled=false; },
+    tk
   );
 }
 function sendClaudeMsg(tabKey){
