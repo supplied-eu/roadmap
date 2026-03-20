@@ -2013,6 +2013,16 @@ function renderMyDay(){
             });
             menu.appendChild(opt);
           });
+          const divider=document.createElement("div"); divider.style.cssText="height:1px;background:var(--border);margin:2px 0;";
+          menu.appendChild(divider);
+          const dismissOpt=document.createElement("button"); dismissOpt.className="cl-snooze-opt"; dismissOpt.textContent="\u2715  Dismiss forever";
+          dismissOpt.style.cssText="color:#ef4444;";
+          dismissOpt.addEventListener("click",function(e2){
+            e2.stopPropagation();
+            SNOOZED[item.id]="9999-12-31"; saveSnooze();
+            draw(listEl.dataset.showAll==="1"); refreshCount(); menu.remove();
+          });
+          menu.appendChild(dismissOpt);
           row.appendChild(menu);
           setTimeout(function(){ document.addEventListener("click",function h(){ menu.remove(); document.removeEventListener("click",h); }); },10);
         });
