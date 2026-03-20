@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-20T08:04:37.169Z",
+  "refreshedAt": "2026-03-20T09:46:31.650Z",
   "gmail": {
     "threads": [
       {
@@ -12,21 +12,21 @@
         "unread": true
       },
       {
-        "id": "19ce82e9d0fab621",
+        "id": "19cda0433ba07fa8",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
         "unread": true
       },
       {
-        "id": "19cf4de5565b3976",
+        "id": "19ce0214716b0ff0",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
         "unread": true
       },
       {
@@ -39,21 +39,12 @@
         "unread": true
       },
       {
-        "id": "19ce82e9d0fab621",
+        "id": "19cde516ee128e60",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
-        "unread": true
-      },
-      {
-        "id": "19bb7ac8b007233d",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Good afternoon Vladimir! Good to hear from you again. There&#39;s an easier option we explored and I&#39;d like to update you on that option as well (I&#39;ve already spoken to Johann and Bas about",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19bb7ac8b007233d",
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
         "unread": true
       },
       {
@@ -63,6 +54,33 @@
         "date": null,
         "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "unread": true
+      },
+      {
+        "id": "19ce82e9d0fab621",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "unread": true
+      },
+      {
+        "id": "19ce30963c459b27",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
+        "unread": true
+      },
+      {
+        "id": "19cd4f96e1d663cb",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann, Thanks for the note. I&#39;ve grabbed time for Thursday, March 19 th at 8:30am PST (4:30pm CET). Looking forward to connecting and safe travels! Best, Casey Casey Coppock K1 875 Manhattan",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cd4f96e1d663cb",
         "unread": true
       },
       {
@@ -84,52 +102,16 @@
         "unread": true
       },
       {
-        "id": "19ce0214716b0ff0",
+        "id": "19cded5cddf36048",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
-        "unread": true
-      },
-      {
-        "id": "19cde516ee128e60",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed GDPR Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
-        "unread": true
-      },
-      {
-        "id": "19bb7ac8b007233d",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Good afternoon Vladimir! Good to hear from you again. There&#39;s an easier option we explored and I&#39;d like to update you on that option as well (I&#39;ve already spoken to Johann and Bas about",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19bb7ac8b007233d",
-        "unread": true
-      },
-      {
-        "id": "19cda0433ba07fa8",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
-        "unread": true
-      },
-      {
-        "id": "19ce30963c459b27",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
+        "snippet": "Please click here for important disclaimer information regarding this e-mail communication. By messaging with K1 Investment Management, LLC and its affiliated entities, you consent to the foregoing.",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cded5cddf36048",
         "unread": true
       }
     ],
-    "unreadCount": 201
+    "unreadCount": 37
   },
   "calendar": {
     "today": [
@@ -330,6 +312,22 @@
   "drive": {
     "recent": [
       {
+        "id": "1bUHM3_BoKaWktGrdL5zEyEcHy1bbZ_tXR84yuWvVRow",
+        "name": "Supplied Deck March",
+        "mimeType": "application/vnd.google-apps.presentation",
+        "modifiedTime": "2026-03-20T09:03:26.366Z",
+        "url": "https://docs.google.com/presentation/d/1bUHM3_BoKaWktGrdL5zEyEcHy1bbZ_tXR84yuWvVRow/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
+        "name": "Supplied_Technologies_Budget_2026",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-03-13T10:10:52.499Z",
+        "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
+        "lastModifiedBy": "Jelena Hmeltnitski"
+      },
+      {
         "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
         "name": "Notes - Commerce<>Product Weekly",
         "mimeType": "application/vnd.google-apps.document",
@@ -408,22 +406,6 @@
         "modifiedTime": "2026-03-16T11:14:55.790Z",
         "url": "https://drive.google.com/file/d/1FYFx-sO7rwdiWYcrQCwVgL75x1Py5eOW/view?usp=drivesdk",
         "lastModifiedBy": "Julio Lindveld"
-      },
-      {
-        "id": "1V7dInN3lLEV0HgxjPGENc0YBUwQNx8WwsvczYxRTYU0",
-        "name": "Reporting template Maurits",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-13T10:30:20.746Z",
-        "url": "https://docs.google.com/spreadsheets/d/1V7dInN3lLEV0HgxjPGENc0YBUwQNx8WwsvczYxRTYU0/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1-12uWzUtGmlY-okUiA5pdcDsbZZ7e4sV",
-        "name": "Supplied<> FY26 Q1 Internal Reporting.xlsx",
-        "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "modifiedTime": "2026-03-19T16:18:17.114Z",
-        "url": "https://docs.google.com/spreadsheets/d/1-12uWzUtGmlY-okUiA5pdcDsbZZ7e4sV/edit?usp=drivesdk&ouid=102001541152652764667&rtpof=true&sd=true",
-        "lastModifiedBy": "Jelena Hmeltnitski"
       }
     ]
   },

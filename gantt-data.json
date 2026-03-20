@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-20T08:04:35.532Z",
+  "refreshedAt": "2026-03-20T09:46:29.754Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -1626,7 +1626,7 @@
               "id": "a857d667-2ae5-4df0-a6c1-4c08a9f7874a",
               "identifier": "SUP-1099",
               "title": "Migrate feature gating to the new subscription system",
-              "status": "In Review",
+              "status": "In Test",
               "start": "2026-02-09",
               "end": null,
               "assignee": "Ivan Tiniakov",
