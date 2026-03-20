@@ -1,25 +1,7 @@
 {
-  "refreshedAt": "2026-03-20T10:35:08.695Z",
+  "refreshedAt": "2026-03-20T11:55:07.946Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d0ac31367032bf",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Meeting Summary General Summary The meeting focused on addressing discrepancies in numerical reports and the alignment of calculations with customer expectations. The team discussed the ongoing",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d0ac31367032bf",
-        "unread": true
-      },
-      {
-        "id": "19ce6606ba2e3745",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
-        "unread": true
-      },
       {
         "id": "19ce0214716b0ff0",
         "subject": "(no subject)",
@@ -27,6 +9,15 @@
         "date": null,
         "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
+        "unread": true
+      },
+      {
+        "id": "19cf4de5565b3976",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
         "unread": true
       },
       {
@@ -39,12 +30,57 @@
         "unread": true
       },
       {
+        "id": "19ce6606ba2e3745",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "unread": true
+      },
+      {
+        "id": "19cfedcbae96beb5",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Nagenieten: vertel ons over jouw vakantie‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cfedcbae96beb5",
+        "unread": true
+      },
+      {
+        "id": "19cded4a75632083",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
+        "unread": true
+      },
+      {
+        "id": "19ce82e9d0fab621",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "unread": true
+      },
+      {
         "id": "19ce7f12f8358ef7",
         "subject": "(no subject)",
         "from": "",
         "date": null,
         "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
+        "unread": true
+      },
+      {
+        "id": "19cded5cddf36048",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Please click here for important disclaimer information regarding this e-mail communication. By messaging with K1 Investment Management, LLC and its affiliated entities, you consent to the foregoing.",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cded5cddf36048",
         "unread": true
       },
       {
@@ -151,7 +187,7 @@
         "start": "2026-03-20T12:30:00+01:00",
         "end": "2026-03-20T13:00:00+01:00",
         "location": "Google Meet (instructions in description)",
-        "numAttendees": 2,
+        "numAttendees": 3,
         "url": "https://www.google.com/calendar/event?eid=dXF1ZDNsYWJnYjFjdmhmaGU2aTNjOWw1NjQgam9oYW5uQHN1cHBsaWVkLmV1",
         "allDay": false
       },
@@ -312,12 +348,44 @@
   "drive": {
     "recent": [
       {
+        "id": "10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I",
+        "name": "Supplied_MOFU1_STB",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-20T11:48:02.951Z",
+        "url": "https://docs.google.com/document/d/10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1pUJiXO5-vmNXifZPBB1otoF5Y-lHbaim",
+        "name": "Supplied_MOFU1_STB.pdf",
+        "mimeType": "application/pdf",
+        "modifiedTime": "2026-03-17T16:18:35.000Z",
+        "url": "https://drive.google.com/file/d/1pUJiXO5-vmNXifZPBB1otoF5Y-lHbaim/view?usp=drivesdk",
+        "lastModifiedBy": "Nitya Shukla Paharia"
+      },
+      {
+        "id": "1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY",
+        "name": "Supplied Video - Batch 2",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-20T11:02:52.728Z",
+        "url": "https://docs.google.com/document/d/1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY/edit?usp=drivesdk",
+        "lastModifiedBy": "Nitya Shukla Paharia"
+      },
+      {
+        "id": "1l5FukcbqAxmmLQ5Y6kly2lfnKoWOBEWU",
+        "name": "SuppliedLogos",
+        "mimeType": "application/vnd.google-apps.folder",
+        "modifiedTime": "2026-03-20T10:55:39.457Z",
+        "url": "https://drive.google.com/drive/folders/1l5FukcbqAxmmLQ5Y6kly2lfnKoWOBEWU",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "1bUHM3_BoKaWktGrdL5zEyEcHy1bbZ_tXR84yuWvVRow",
         "name": "Supplied Deck March",
         "mimeType": "application/vnd.google-apps.presentation",
-        "modifiedTime": "2026-03-20T09:03:26.366Z",
+        "modifiedTime": "2026-03-20T11:18:59.664Z",
         "url": "https://docs.google.com/presentation/d/1bUHM3_BoKaWktGrdL5zEyEcHy1bbZ_tXR84yuWvVRow/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
+        "lastModifiedBy": "Bas Bogerd"
       },
       {
         "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
@@ -374,38 +442,6 @@
         "modifiedTime": "2026-03-18T11:40:23.753Z",
         "url": "https://docs.google.com/spreadsheets/d/11jA83EMnBymlTCu0YjXD6NwX8jBJgWXD/edit?usp=drivesdk&ouid=102001541152652764667&rtpof=true&sd=true",
         "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1j8hfDG76usb_keiDz9qrXuSnsdlBlHLLXwT66nRuZC0",
-        "name": "Supplied Operations Data Mapping - TarisioComplete ",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-18T11:06:06.141Z",
-        "url": "https://docs.google.com/spreadsheets/d/1j8hfDG76usb_keiDz9qrXuSnsdlBlHLLXwT66nRuZC0/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1Q9bbOwIceGsE1DhCNcQThcyoO1eyo8--tCemg5VY4WA",
-        "name": "Tarisio - Supplied Operations Data Mapping Template ",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-01-07T15:24:53.657Z",
-        "url": "https://docs.google.com/spreadsheets/d/1Q9bbOwIceGsE1DhCNcQThcyoO1eyo8--tCemg5VY4WA/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1b0qRTMra3utQ7khr1rQrZvpCr2LIFnLW7oqmJfvd9HI",
-        "name": "GASTRO-AI_Consortium_Questionnaire",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-17T15:24:41.519Z",
-        "url": "https://docs.google.com/document/d/1b0qRTMra3utQ7khr1rQrZvpCr2LIFnLW7oqmJfvd9HI/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1FYFx-sO7rwdiWYcrQCwVgL75x1Py5eOW",
-        "name": "Multimedia LLC <> Supplied Technologies - 3/16/26, 12:32 PM",
-        "mimeType": "application/pdf",
-        "modifiedTime": "2026-03-16T11:14:55.790Z",
-        "url": "https://drive.google.com/file/d/1FYFx-sO7rwdiWYcrQCwVgL75x1Py5eOW/view?usp=drivesdk",
-        "lastModifiedBy": "Julio Lindveld"
       }
     ]
   },

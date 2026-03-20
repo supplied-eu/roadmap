@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-20T10:35:07.951Z",
+  "refreshedAt": "2026-03-20T11:55:07.138Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1440,7 +1440,7 @@
       "name": "Guesty (3Year Contract)",
       "stage": "4874399934",
       "pipeline": "3557407943",
-      "amount": 745000,
+      "amount": 75000,
       "closeDate": "2026-05-01",
       "ownerId": "29853062",
       "probability": 0.3,
