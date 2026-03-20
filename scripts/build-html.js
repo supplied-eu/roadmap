@@ -1978,12 +1978,11 @@ function renderMyDay(){
     function draw(showAll){
       document.querySelectorAll(".cl-snooze-menu").forEach(m=>m.remove());
       listEl.innerHTML="";
-      const visible=showAll?items:items.slice(0,SHOW_INIT);
+      const visible=(showAll?items:items.slice(0,SHOW_INIT)).filter(i=>!AUTO_DONE.has(i.id));
       for(const item of visible){
-        const done=AUTO_DONE.has(item.id);
-        const row=document.createElement("div"); row.className="cl-item"+(done?" cl-done":"");
+        const row=document.createElement("div"); row.className="cl-item";
         // ── Checkbox: click only toggles done ──────────────────────────────
-        const cb=document.createElement("div"); cb.className="cl-cb"; if(done) cb.textContent="\u2713";
+        const cb=document.createElement("div"); cb.className="cl-cb";
         cb.addEventListener("click",function(e){
           e.stopPropagation();
           if(AUTO_DONE.has(item.id)) AUTO_DONE.delete(item.id); else AUTO_DONE.add(item.id);
@@ -2308,8 +2307,13 @@ function buildDataContext(tabKey){
   const tk=tabKey||"myday";
   const inclHubspot=(tk==="myday"||tk==="sales");
   const inclGoogle=(tk==="myday");
+  // Read what the user has already ticked off today
+  const donedToday=new Set(JSON.parse(localStorage.getItem("supplied_auto_done_"+TODAY_STR)||"[]"));
+  const snoozed=JSON.parse(localStorage.getItem("supplied_snooze")||"{}");
+  function isDismissed(id){ return donedToday.has(id)||(snoozed[id]&&snoozed[id]>TODAY_STR); }
   const lines=[];
   lines.push("TODAY: "+new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"}));
+  if(donedToday.size) lines.push("ALREADY DONE TODAY (user ticked off): "+donedToday.size+" items \u2014 do not suggest these again.");
   if(GANTT_DATA){
     const allIss=[];
     for(const ini of (GANTT_DATA.initiatives||[])){
@@ -2317,7 +2321,7 @@ function buildDataContext(tabKey){
       for(const proj of (ini.projects||[])){
         if(DONE_STATES.has(proj.status||"")) continue;
         for(const iss of (proj.issues||[])){
-          if(isActive(iss.status)) allIss.push({...iss, _ini:ini.name, _proj:proj.name});
+          if(isActive(iss.status)&&!isDismissed("lin-"+iss.id)) allIss.push({...iss, _ini:ini.name, _proj:proj.name});
         }
       }
     }
@@ -2337,19 +2341,20 @@ function buildDataContext(tabKey){
   }
   if(inclHubspot&&HS_DATA){
     const todayMs=new Date().setHours(0,0,0,0);
-    const closing=(HS_DATA.deals||[]).filter(d=>d.closeDate&&!DONE_STATES.has(d.stageLabel||"")).map(d=>({...d,diff:Math.ceil((new Date(d.closeDate)-todayMs)/864e5)})).filter(d=>d.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,5);
+    const closing=(HS_DATA.deals||[]).filter(d=>d.closeDate&&!DONE_STATES.has(d.stageLabel||"")&&!isDismissed("deal-"+d.id)).map(d=>({...d,diff:Math.ceil((new Date(d.closeDate)-todayMs)/864e5)})).filter(d=>d.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,5);
     if(closing.length){
       lines.push("\\nDEALS CLOSING SOON:");
       for(const d of closing) lines.push("  "+d.name+(d.amount?" (\u20AC"+Number(d.amount).toLocaleString()+")":"")+" - "+(d.diff<0?Math.abs(d.diff)+"d overdue":d.diff===0?"TODAY":"in "+d.diff+"d")+" ["+d.stageLabel+"]");
     }
   }
   if(inclGoogle&&GOOGLE_DATA){
-    const ep=(GOOGLE_DATA.email_priorities||[]).slice(0,5);
+    const ep=(GOOGLE_DATA.email_priorities||[]).filter(e=>!isDismissed("ep-"+e.id)).slice(0,5);
     if(ep.length){ lines.push("\\nEMAILS TO ACTION:"); for(const e of ep) lines.push("  ["+e.action.toUpperCase()+"] "+e.subject+" - "+e.reason); }
+    else lines.push("\\nEMAILS: All actioned.");
     const cal=GOOGLE_DATA.calendar;
     if(cal&&(cal.today||[]).length){ lines.push("\\nMEETINGS TODAY:"); for(const ev of cal.today) lines.push("  "+ev.title+(ev.start?" @ "+ev.start:"")); }
     else lines.push("\\nMEETINGS: None today");
-    const dp=(GOOGLE_DATA.drive_priorities||[]).slice(0,3);
+    const dp=(GOOGLE_DATA.drive_priorities||[]).filter(d=>!isDismissed("dp-"+d.id)).slice(0,3);
     if(dp.length){ lines.push("\\nDRIVE PRIORITIES:"); for(const d of dp) lines.push("  ["+d.action.toUpperCase()+"] "+d.subject); }
   }
   return lines.join("\\n");
