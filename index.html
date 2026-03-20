@@ -893,8 +893,9 @@ const SC = {
 };
 const sc = s => SC[s]||"#475569";
 const TODAY_STR  = new Date().toISOString().split("T")[0];
-const DONE_STATES = new Set(["Done","Completed","Cancelled","Canceled","Duplicate","Won","Closed"]);
+const DONE_STATES = new Set(["Done","Completed","Cancelled","Canceled","Duplicate","Won","Closed","Closed Won","Closed Lost","closedwon","closedlost"]);
 function isActive(status){ return !DONE_STATES.has(status); }
+function isDoneStage(s){ const v=(s||"").toLowerCase(); return DONE_STATES.has(s)||v.includes("closed")||v.includes("won")||v.includes("lost"); }
 function priorityLevel(p){ const u=(p||"").toUpperCase(); if(u==="URGENT"||u==="1") return "urgent"; if(u==="HIGH"||u==="2") return "high"; return null; }
 function isOverdue(end, status){ return !!end && isActive(status||"") && end < TODAY_STR; }
 function daysDiff(dateStr){ return Math.ceil((new Date(dateStr)-new Date(TODAY_STR))/(1000*86400)); }
@@ -1993,7 +1994,7 @@ function renderMyDay(){
     // 3. Deals closing soon
     if(HS_DATA){
       for(const d of (HS_DATA.deals||[])){
-        if(!d.closeDate||DONE_STATES.has(d.stageLabel||"")) continue;
+        if(!d.closeDate||isDoneStage(d.stageLabel)) continue;
         const diff=Math.ceil((new Date(d.closeDate)-todayMs)/864e5);
         if(diff>14) continue;
         const prio=diff<=0?2:diff<=3?5:11;
@@ -2436,7 +2437,7 @@ function buildDataContext(tabKey){
   }
   if(inclHubspot&&HS_DATA){
     const todayMs=new Date().setHours(0,0,0,0);
-    const closing=(HS_DATA.deals||[]).filter(d=>d.closeDate&&!DONE_STATES.has(d.stageLabel||"")&&!isDismissed("deal-"+d.id)).map(d=>({...d,diff:Math.ceil((new Date(d.closeDate)-todayMs)/864e5)})).filter(d=>d.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,5);
+    const closing=(HS_DATA.deals||[]).filter(d=>d.closeDate&&!isDoneStage(d.stageLabel)&&!isDismissed("deal-"+d.id)).map(d=>({...d,diff:Math.ceil((new Date(d.closeDate)-todayMs)/864e5)})).filter(d=>d.diff<=14).sort((a,b)=>a.diff-b.diff).slice(0,5);
     if(closing.length){
       lines.push("\nDEALS CLOSING SOON:");
       for(const d of closing) lines.push("  "+d.name+(d.amount?" (€"+Number(d.amount).toLocaleString()+")":"")+" - "+(d.diff<0?Math.abs(d.diff)+"d overdue":d.diff===0?"TODAY":"in "+d.diff+"d")+" ["+d.stageLabel+"]");
