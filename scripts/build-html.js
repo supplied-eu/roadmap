@@ -1103,34 +1103,100 @@ function renderGantt(){
     return h;
   }
 
-  // ── SECTION 1: Customer Commitments (Gantt with real dates) ──────────────
-  ganttBody.appendChild(makeSectionHdr("🤝  CUSTOMER COMMITMENTS","contract dates · click project to expand issues"));
-  const custIni=GANTT_DATA.initiatives.find(isCustomerIni);
-  if(custIni&&!DONE_STATES.has(custIni.status||"")){
-    const iniKey=custIni.id;
-    for(const proj of custIni.projects){
-      if(DONE_STATES.has(proj.status||"")) continue;
-      const projKey=iniKey+"_"+proj.id;
-      const hasIssues=proj.issues&&proj.issues.length>0;
-      const projExp=GANTT_FILTER?true:!!expanded[projKey];
-      ganttBody.appendChild(makeGanttRow({indent:0,label:proj.name,status:proj.status||"Active",color:proj.color||custIni.color,start:proj.startDate,end:proj.targetDate,url:proj.url,hasChildren:hasIssues,isExpanded:projExp,isIni:false,onClick:hasIssues?()=>{ expanded[projKey]=!expanded[projKey]; renderGantt(); }:proj.url?()=>window.open(proj.url,"_blank"):null,barClickable:!!proj.url,barData:{label:proj.name,status:proj.status,start:proj.startDate,end:proj.targetDate,url:proj.url,clickable:!!proj.url}}));
-      if(projExp&&hasIssues){
-        const sorted=[...proj.issues].filter(i=>!DONE_STATES.has(i.status||"")).sort((a,b)=>{ const pa=PRIO_RANK[a.priority]??99,pb=PRIO_RANK[b.priority]??99; return pa!==pb?pa-pb:(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99); });
-        for(const iss of sorted){
-          if(GANTT_FILTER&&!ganttIssueMatchesFilter(iss)) continue;
-          const od=isOverdue(iss.end,iss.status);
-          ganttBody.appendChild(makeGanttRow({indent:1,label:(iss.identifier+" "+iss.title).trim(),status:iss.status,color:sc(iss.status),start:iss.start,end:iss.end,url:iss.url,hasChildren:false,isExpanded:false,isIni:false,onClick:iss.url?()=>window.open(iss.url,"_blank"):null,barClickable:true,assignee:iss.assignee||null,priority:iss.priority||null,overdueFlag:od,barData:{label:iss.title,status:iss.status,start:iss.start,end:iss.end,assignee:iss.assignee,priority:iss.priority,url:iss.url,clickable:true}}));
-        }
-      }
-    }
-    const gap=document.createElement("div"); gap.className="section-gap"; ganttBody.appendChild(gap);
-  }
+  // ── SECTION 1: Customer Commitments (drag-to-reorder projects) ───────────
+  ganttBody.appendChild(makeSectionHdr("🤝  CUSTOMER COMMITMENTS","contract dates \u00b7 drag \u283f to reorder \u00b7 click project to expand issues"));
+  renderCustomerCommitments(ganttBody);
+  const custGap=document.createElement("div"); custGap.className="section-gap"; ganttBody.appendChild(custGap);
 
   // ── SECTION 2: Initiative Tree (all product initiatives, drag-to-reorder) ──
   ganttBody.appendChild(makeSectionHdr("⚡  PRODUCT PRIORITIES","all initiatives \u00b7 drag \u283f to reorder \u00b7 click project to expand issues"));
   renderInitiativeTree(ganttBody);
 
   populateGanttInsights();
+}
+
+// ── Customer Commitments (drag-to-reorder projects) ───────────────────────────
+const CUST_ORDER_KEY="supplied_cust_order";
+function getCustOrder(projs){
+  const saved=JSON.parse(localStorage.getItem(CUST_ORDER_KEY)||"[]");
+  const byId=Object.fromEntries(projs.map(p=>[p.id,p]));
+  const ordered=saved.filter(id=>byId[id]).map(id=>byId[id]);
+  const seenIds=new Set(saved);
+  for(const p of projs) if(!seenIds.has(p.id)) ordered.push(p);
+  return ordered;
+}
+function saveCustOrder(projs){ localStorage.setItem(CUST_ORDER_KEY,JSON.stringify(projs.map(p=>p.id))); }
+function renderCustomerCommitments(container){
+  if(!GANTT_DATA) return;
+  const custIni=GANTT_DATA.initiatives.find(ini=>ini.name.indexOf("Customer")!==-1||ini.name.indexOf("Go Live")!==-1);
+  if(!custIni||DONE_STATES.has(custIni.status||"")) return;
+  const activeProjs=(custIni.projects||[]).filter(p=>!DONE_STATES.has(p.status||""));
+  if(!activeProjs.length) return;
+  const PRIO_COLORS={Urgent:"#ef4444",High:"#f97316",Medium:"#eab308",Low:"#3b82f6","No priority":"#94a3b8"};
+  const PRIO_RANK={Urgent:0,High:1,Medium:2,Low:3,"No priority":4};
+  const STATUS_RANK={Blocked:0,"In Test":1,"In Review":2,"In Progress":3,Todo:4,Backlog:5};
+  let orderedProjs=getCustOrder(activeProjs);
+  let dragSrcIdx=null;
+  const tree=document.createElement("div"); tree.className="ini-tree";
+  function rebuildCust(){
+    tree.innerHTML="";
+    for(let idx=0;idx<orderedProjs.length;idx++){
+      const proj=orderedProjs[idx];
+      const projKey="cust_"+proj.id;
+      const projExp=expanded[projKey]!==undefined?expanded[projKey]:false;
+      const hasIssues=proj.issues&&proj.issues.length>0;
+      const row=document.createElement("div"); row.className="ini-row"; row.draggable=true;
+      // ── Drag & drop ────────────────────────────────────────────────────────
+      row.addEventListener("dragstart",function(e){ dragSrcIdx=idx; row.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; });
+      row.addEventListener("dragend",function(){ row.classList.remove("dragging"); tree.querySelectorAll(".drag-over").forEach(el=>el.classList.remove("drag-over")); });
+      row.addEventListener("dragover",function(e){ e.preventDefault(); e.dataTransfer.dropEffect="move"; if(dragSrcIdx!==idx) row.classList.add("drag-over"); });
+      row.addEventListener("dragleave",function(){ row.classList.remove("drag-over"); });
+      row.addEventListener("drop",function(e){ e.preventDefault(); row.classList.remove("drag-over"); if(dragSrcIdx===null||dragSrcIdx===idx) return; const moved=orderedProjs.splice(dragSrcIdx,1)[0]; orderedProjs.splice(idx,0,moved); dragSrcIdx=null; saveCustOrder(orderedProjs); rebuildCust(); });
+      // ── Project header ─────────────────────────────────────────────────────
+      const hdr=document.createElement("div"); hdr.className="ini-hdr";
+      const drag=document.createElement("span"); drag.className="ini-drag"; drag.textContent="\u283f"; drag.title="Drag to reorder";
+      const arr=document.createElement("span"); arr.className="ini-arr"; arr.textContent=hasIssues?(projExp?"\u25BC":"\u25B6"):"\u2013";
+      const name=document.createElement("span"); name.className="ini-name"; name.textContent=proj.name;
+      const badge=document.createElement("span"); badge.className="ini-hdr-badge"; badge.style.background=sc(proj.status||"Active")+"22"; badge.style.color=sc(proj.status||"Active"); badge.textContent=proj.status||"Active";
+      if(proj.targetDate){
+        const today=TODAY_STR;
+        const od=proj.targetDate<today;
+        const dateBadge=document.createElement("span"); dateBadge.className="ini-hdr-count"; dateBadge.style.cssText=od?"color:#ef4444;":"";
+        dateBadge.textContent=(od?"\u26A0\uFE0F overdue \u00b7 ":"")+fmtDate(proj.targetDate);
+        hdr.appendChild(drag); hdr.appendChild(arr); hdr.appendChild(name); hdr.appendChild(badge); hdr.appendChild(dateBadge);
+      } else {
+        hdr.appendChild(drag); hdr.appendChild(arr); hdr.appendChild(name); hdr.appendChild(badge);
+      }
+      if(proj.url){
+        const openBtn=document.createElement("a"); openBtn.href=proj.url; openBtn.target="_blank"; openBtn.className="ini-open-link"; openBtn.textContent="\u2197"; openBtn.title="Open in Linear";
+        openBtn.addEventListener("click",function(e){ e.stopPropagation(); });
+        hdr.appendChild(openBtn);
+      }
+      hdr.addEventListener("click",function(e){ if(e.target.classList.contains("ini-drag")||e.target.classList.contains("ini-open-link")) return; if(hasIssues){ expanded[projKey]=!projExp; rebuildCust(); } else if(proj.url) window.open(proj.url,"_blank"); });
+      row.appendChild(hdr);
+      // ── Issues ────────────────────────────────────────────────────────────
+      if(projExp&&hasIssues){
+        const sorted=[...proj.issues].filter(i=>!DONE_STATES.has(i.status||"")).sort((a,b)=>{ const pa=PRIO_RANK[a.priority]??99,pb=PRIO_RANK[b.priority]??99; return pa!==pb?pa-pb:(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99); });
+        for(const iss of sorted){
+          const od=isOverdue(iss.end,iss.status);
+          const issRow=document.createElement("div"); issRow.className="ini-issue"+(od?" ini-iss-overdue":"");
+          const pDot=document.createElement("span"); pDot.className="ini-iss-prio"; pDot.style.background=PRIO_COLORS[iss.priority]||"#94a3b8"; pDot.title=iss.priority||"No priority";
+          const idEl=document.createElement("span"); idEl.className="ini-iss-id"; idEl.textContent=iss.identifier||"";
+          const titleEl=document.createElement("span"); titleEl.className="ini-iss-title"; titleEl.textContent=iss.title;
+          if(iss.url) issRow.style.cursor="pointer";
+          issRow.addEventListener("click",function(){ if(iss.url) window.open(iss.url,"_blank"); });
+          const stBadge=document.createElement("span"); stBadge.className="ini-iss-status"; stBadge.style.background=sc(iss.status)+"22"; stBadge.style.color=sc(iss.status); stBadge.textContent=iss.status;
+          const ownerEl=document.createElement("span"); ownerEl.className="ini-iss-owner"; ownerEl.textContent=iss.assignee?ownerFirst(iss.assignee):"";
+          const estEl=document.createElement("span"); estEl.className="ini-iss-est"; estEl.textContent=iss.estimate!=null?iss.estimate+"pt":"";
+          issRow.appendChild(pDot); issRow.appendChild(idEl); issRow.appendChild(titleEl); issRow.appendChild(stBadge); issRow.appendChild(ownerEl); issRow.appendChild(estEl);
+          row.appendChild(issRow);
+        }
+      }
+      tree.appendChild(row);
+    }
+  }
+  rebuildCust();
+  container.appendChild(tree);
 }
 
 // ── Initiative Tree ───────────────────────────────────────────────────────────
