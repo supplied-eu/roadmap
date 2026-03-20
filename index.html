@@ -419,6 +419,37 @@ body {
 .swim-title{font-size:11px;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .swim-assignee{font-size:9px;color:var(--text-muted);flex-shrink:0;padding:0 4px;}
 .swim-badge{font-size:8px;font-weight:600;padding:1px 5px;border-radius:3px;flex-shrink:0;letter-spacing:.4px;text-transform:uppercase;}
+/* ── Initiative Tree ──────────────────────────────────────────────────── */
+.ini-row{border-bottom:1px solid var(--border);transition:opacity .15s;}
+.ini-row.dragging{opacity:.35;}
+.ini-row.drag-over{box-shadow:inset 0 2px 0 var(--accent);}
+.ini-hdr{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;background:var(--surface);user-select:none;}
+.ini-hdr:hover{background:var(--surface2);}
+.ini-drag{flex-shrink:0;cursor:grab;color:var(--text-dim);font-size:13px;padding:0 2px;line-height:1;opacity:.5;}
+.ini-drag:hover{opacity:1;}
+.ini-arr{flex-shrink:0;font-size:9px;color:var(--text-muted);width:12px;}
+.ini-name{flex:1;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--text);text-transform:uppercase;}
+.ini-hdr-badge{font-size:9px;padding:1px 7px;border-radius:3px;font-weight:600;}
+.ini-hdr-count{flex-shrink:0;font-size:10px;color:var(--text-muted);}
+.ini-proj{border-top:1px solid var(--border);}
+.ini-proj-hdr{display:flex;align-items:center;gap:8px;padding:7px 14px 7px 36px;cursor:pointer;background:var(--surface2);}
+.ini-proj-hdr:hover{filter:brightness(.97);}
+.ini-proj-arr{flex-shrink:0;font-size:9px;color:var(--text-muted);width:10px;}
+.ini-proj-name{flex:1;font-size:11px;color:var(--text);font-weight:600;}
+.ini-proj-badge{font-size:9px;padding:1px 6px;border-radius:3px;font-weight:600;}
+.ini-proj-count{font-size:10px;color:var(--text-muted);}
+.ini-prio-grp{display:flex;align-items:center;gap:6px;padding:3px 14px 3px 52px;background:var(--surface2);border-top:1px solid var(--border);}
+.ini-prio-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ini-prio-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;}
+.ini-prio-ct{font-size:9px;color:var(--text-muted);}
+.ini-issue{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 52px;border-top:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.ini-issue:hover{background:var(--surface2);}
+.ini-iss-dot{flex-shrink:0;width:7px;height:7px;border-radius:50%;}
+.ini-iss-id{flex-shrink:0;font-size:9px;font-weight:700;color:var(--text-muted);min-width:64px;}
+.ini-iss-title{flex:1;font-size:11px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ini-iss-status{flex-shrink:0;font-size:9px;padding:1px 6px;border-radius:3px;font-weight:600;}
+.ini-iss-owner{flex-shrink:0;font-size:10px;color:var(--text-muted);min-width:50px;text-align:right;}
+.ini-iss-size{flex-shrink:0;font-size:10px;color:var(--text-dim);width:20px;text-align:right;font-weight:600;}
 .cl-src{flex-shrink:0;font-size:8px;font-weight:700;letter-spacing:.5px;padding:2px 5px;border-radius:3px;margin-top:2px;white-space:nowrap;}
 .cl-title{flex:1;font-size:12px;color:var(--text);line-height:1.45;}
 .cl-meta{flex-shrink:0;font-size:10px;color:var(--text-muted);margin-top:2px;white-space:nowrap;}
@@ -1069,61 +1100,112 @@ function renderGantt(){
     const gap=document.createElement("div"); gap.className="section-gap"; ganttBody.appendChild(gap);
   }
 
-  // ── SECTION 2: Product Priorities (swim lanes, no dates) ─────────────────
-  ganttBody.appendChild(makeSectionHdr("⚡  PRODUCT PRIORITIES","sorted by priority — no fake dates"));
-  const byPrio={};
-  for(const p of PRIO_ORDER) byPrio[p]={};
-  for(const ini of GANTT_DATA.initiatives){
-    if(isCustomerIni(ini)) continue;
-    if(DONE_STATES.has(ini.status||"")) continue;
-    for(const proj of ini.projects){
-      if(DONE_STATES.has(proj.status||"")) continue;
-      for(const iss of (proj.issues||[])){
-        if(!isActive(iss.status)) continue;
-        if(GANTT_FILTER&&!ganttIssueMatchesFilter(iss)) continue;
-        const prio=(iss.priority&&byPrio[iss.priority]!==undefined)?iss.priority:"No priority";
-        if(!byPrio[prio][ini.name]) byPrio[prio][ini.name]=[];
-        byPrio[prio][ini.name].push(iss);
-      }
-    }
-  }
-  for(const prio of PRIO_ORDER){
-    const iniGroups=byPrio[prio];
-    const total=Object.values(iniGroups).reduce((s,arr)=>s+arr.length,0);
-    if(total===0) continue;
-    const cfg=SWIM_CFG[prio];
-    const laneKey="swim_"+prio.replace(" ","_");
-    const laneExp=expanded[laneKey]!==undefined?expanded[laneKey]:(prio==="Urgent"||prio==="High");
-    const lane=document.createElement("div"); lane.className="swim-lane "+cfg.cls;
-    const hdr=document.createElement("div"); hdr.className="swim-hdr";
-    const arr=document.createElement("span"); arr.className="swim-arr"; arr.textContent=laneExp?"▼":"▶"; hdr.appendChild(arr);
-    const pl=document.createElement("span"); pl.className="swim-prio-lbl"; pl.textContent=prio.toUpperCase(); hdr.appendChild(pl);
-    const ct=document.createElement("span"); ct.className="swim-count"; ct.textContent=total+" issues"; hdr.appendChild(ct);
-    hdr.addEventListener("click",()=>{ expanded[laneKey]=!laneExp; renderGantt(); });
-    lane.appendChild(hdr);
-    if(laneExp){
-      const body=document.createElement("div"); body.className="swim-body";
-      for(const [iniName,issues] of Object.entries(iniGroups)){
-        const grpLbl=document.createElement("div"); grpLbl.className="swim-grp-lbl"; grpLbl.textContent=iniName; body.appendChild(grpLbl);
-        const sorted=[...issues].sort((a,b)=>(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99));
-        for(const iss of sorted){
-          const row=document.createElement("div"); row.className="swim-issue"; if(iss.url) row.addEventListener("click",()=>window.open(iss.url,"_blank"));
-          const dot=document.createElement("span"); dot.className="swim-dot"; dot.style.background=sc(iss.status); row.appendChild(dot);
-          const id=document.createElement("span"); id.className="swim-id"; id.textContent=iss.identifier||""; row.appendChild(id);
-          const ttl=document.createElement("span"); ttl.className="swim-title"; ttl.textContent=iss.title; ttl.title=iss.title; row.appendChild(ttl);
-          if(iss.assignee){ const asn=document.createElement("span"); asn.className="swim-assignee"; asn.textContent=iss.assignee.split(" ")[0]; row.appendChild(asn); }
-          const bdg=document.createElement("span"); bdg.className="swim-badge"; bdg.style.background=sc(iss.status)+"22"; bdg.style.color=sc(iss.status); bdg.textContent=iss.status; row.appendChild(bdg);
-          body.appendChild(row);
-        }
-      }
-      lane.appendChild(body);
-    }
-    ganttBody.appendChild(lane);
-  }
+  // ── SECTION 2: Initiative Tree (all product initiatives, drag-to-reorder) ──
+  ganttBody.appendChild(makeSectionHdr("⚡  PRODUCT PRIORITIES","all initiatives · drag ⠿ to reorder · click project to expand issues"));
+  renderInitiativeTree(ganttBody);
 
   populateGanttInsights();
 }
 
+// ── Initiative Tree ───────────────────────────────────────────────────────────
+const INI_ORDER_KEY="supplied_ini_order";
+function getIniOrder(inis){
+  const saved=JSON.parse(localStorage.getItem(INI_ORDER_KEY)||"[]");
+  const byId=Object.fromEntries(inis.map(i=>[i.id,i]));
+  const ordered=saved.filter(id=>byId[id]).map(id=>byId[id]);
+  const seenIds=new Set(saved);
+  for(const ini of inis) if(!seenIds.has(ini.id)) ordered.push(ini);
+  return ordered;
+}
+function saveIniOrder(inis){ localStorage.setItem(INI_ORDER_KEY,JSON.stringify(inis.map(i=>i.id))); }
+function renderInitiativeTree(container){
+  if(!GANTT_DATA) return;
+  const isCustomerIni=ini=>(ini.name.indexOf("Customer")!==-1||ini.name.indexOf("Go Live")!==-1);
+  const PRIO_ORDER=["Urgent","High","Medium","Low","No priority"];
+  const PRIO_COLORS={Urgent:"#ef4444",High:"#f97316",Medium:"#eab308",Low:"#3b82f6","No priority":"#94a3b8"};
+  const STATUS_RANK={Blocked:0,"In Test":1,"In Review":2,"In Progress":3,Todo:4,Backlog:5};
+  const activeInis=GANTT_DATA.initiatives.filter(i=>!isCustomerIni(i)&&!DONE_STATES.has(i.status||""));
+  const orderedInis=getIniOrder(activeInis);
+  let dragSrcIdx=null;
+  const tree=document.createElement("div"); tree.className="ini-tree";
+  function rebuildTree(){
+    tree.innerHTML="";
+    for(let idx=0;idx<orderedInis.length;idx++){
+      const ini=orderedInis[idx];
+      const iniKey="ini_"+ini.id;
+      const iniExp=expanded[iniKey]!==undefined?expanded[iniKey]:true;
+      let totalIssues=0;
+      for(const proj of (ini.projects||[])){ if(!DONE_STATES.has(proj.status||"")) for(const iss of (proj.issues||[])){ if(isActive(iss.status)) totalIssues++; } }
+      const row=document.createElement("div"); row.className="ini-row"; row.draggable=true;
+      // ── Drag & drop ──────────────────────────────────────────────────────
+      row.addEventListener("dragstart",function(e){ dragSrcIdx=idx; row.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; });
+      row.addEventListener("dragend",function(){ row.classList.remove("dragging"); tree.querySelectorAll(".drag-over").forEach(el=>el.classList.remove("drag-over")); });
+      row.addEventListener("dragover",function(e){ e.preventDefault(); e.dataTransfer.dropEffect="move"; if(dragSrcIdx!==idx) row.classList.add("drag-over"); });
+      row.addEventListener("dragleave",function(){ row.classList.remove("drag-over"); });
+      row.addEventListener("drop",function(e){ e.preventDefault(); row.classList.remove("drag-over"); if(dragSrcIdx===null||dragSrcIdx===idx) return; const moved=orderedInis.splice(dragSrcIdx,1)[0]; orderedInis.splice(idx,0,moved); dragSrcIdx=null; saveIniOrder(orderedInis); rebuildTree(); });
+      // ── Initiative header ─────────────────────────────────────────────────
+      const hdr=document.createElement("div"); hdr.className="ini-hdr";
+      const drag=document.createElement("span"); drag.className="ini-drag"; drag.textContent="⠿"; drag.title="Drag to reorder";
+      const arr=document.createElement("span"); arr.className="ini-arr"; arr.textContent=iniExp?"▼":"▶";
+      const name=document.createElement("span"); name.className="ini-name"; name.textContent=ini.name;
+      const badge=document.createElement("span"); badge.className="ini-hdr-badge"; badge.style.background=sc(ini.status||"Active")+"22"; badge.style.color=sc(ini.status||"Active"); badge.textContent=ini.status||"Active";
+      const count=document.createElement("span"); count.className="ini-hdr-count"; count.textContent=totalIssues+" issues";
+      hdr.appendChild(drag); hdr.appendChild(arr); hdr.appendChild(name); hdr.appendChild(badge); hdr.appendChild(count);
+      hdr.addEventListener("click",function(e){ if(e.target===drag) return; expanded[iniKey]=!iniExp; rebuildTree(); });
+      row.appendChild(hdr);
+      // ── Projects ──────────────────────────────────────────────────────────
+      if(iniExp){
+        for(const proj of (ini.projects||[])){
+          if(DONE_STATES.has(proj.status||"")) continue;
+          const activeIssues=(proj.issues||[]).filter(i=>isActive(i.status));
+          if(!activeIssues.length) continue;
+          const projKey="inip_"+ini.id+"_"+proj.id;
+          const projExp=expanded[projKey]!==undefined?expanded[projKey]:false;
+          const projEl=document.createElement("div"); projEl.className="ini-proj";
+          const projHdr=document.createElement("div"); projHdr.className="ini-proj-hdr";
+          const pArr=document.createElement("span"); pArr.className="ini-proj-arr"; pArr.textContent=projExp?"▼":"▶";
+          const pName=document.createElement("span"); pName.className="ini-proj-name"; pName.textContent=proj.name;
+          const pBadge=document.createElement("span"); pBadge.className="ini-proj-badge"; pBadge.style.background=sc(proj.status||"Active")+"22"; pBadge.style.color=sc(proj.status||"Active"); pBadge.textContent=proj.status||"Active";
+          const pCount=document.createElement("span"); pCount.className="ini-proj-count"; pCount.textContent=activeIssues.length+" issues";
+          projHdr.appendChild(pArr); projHdr.appendChild(pName); projHdr.appendChild(pBadge); projHdr.appendChild(pCount);
+          projHdr.addEventListener("click",function(e){ e.stopPropagation(); expanded[projKey]=!projExp; rebuildTree(); });
+          projEl.appendChild(projHdr);
+          // ── Issues grouped by priority ──────────────────────────────────
+          if(projExp){
+            const byPrio={};
+            for(const p of PRIO_ORDER) byPrio[p]=[];
+            for(const iss of activeIssues){ const p=(iss.priority&&byPrio[iss.priority]!==undefined)?iss.priority:"No priority"; byPrio[p].push(iss); }
+            for(const p of PRIO_ORDER){
+              const grpIss=byPrio[p]; if(!grpIss.length) continue;
+              grpIss.sort((a,b)=>(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99));
+              const pGrp=document.createElement("div"); pGrp.className="ini-prio-grp";
+              const pDot=document.createElement("span"); pDot.className="ini-prio-dot"; pDot.style.background=PRIO_COLORS[p];
+              const pLbl=document.createElement("span"); pLbl.className="ini-prio-lbl"; pLbl.style.color=PRIO_COLORS[p]; pLbl.textContent=p.toUpperCase();
+              const pCt=document.createElement("span"); pCt.className="ini-prio-ct"; pCt.textContent="("+grpIss.length+")";
+              pGrp.appendChild(pDot); pGrp.appendChild(pLbl); pGrp.appendChild(pCt); projEl.appendChild(pGrp);
+              for(const iss of grpIss){
+                const issRow=document.createElement("div"); issRow.className="ini-issue";
+                if(iss.url) issRow.addEventListener("click",function(e){ e.stopPropagation(); window.open(iss.url,"_blank"); });
+                const dot=document.createElement("span"); dot.className="ini-iss-dot"; dot.style.background=sc(iss.status);
+                const idEl=document.createElement("span"); idEl.className="ini-iss-id"; idEl.textContent=iss.identifier||"";
+                const ttl=document.createElement("span"); ttl.className="ini-iss-title"; ttl.textContent=iss.title; ttl.title=iss.title;
+                const stEl=document.createElement("span"); stEl.className="ini-iss-status"; stEl.style.background=sc(iss.status)+"22"; stEl.style.color=sc(iss.status); stEl.textContent=iss.status||"";
+                const own=document.createElement("span"); own.className="ini-iss-owner"; own.textContent=(iss.assignee||"").split(" ")[0];
+                issRow.appendChild(dot); issRow.appendChild(idEl); issRow.appendChild(ttl); issRow.appendChild(stEl); issRow.appendChild(own);
+                if(iss.estimate!=null){ const sz=document.createElement("span"); sz.className="ini-iss-size"; sz.textContent=iss.estimate; sz.title="Estimate: "+iss.estimate+" pts"; issRow.appendChild(sz); }
+                projEl.appendChild(issRow);
+              }
+            }
+          }
+          row.appendChild(projEl);
+        }
+      }
+      tree.appendChild(row);
+    }
+  }
+  rebuildTree();
+  container.appendChild(tree);
+}
 
 // ── Gantt Insights Panel ─────────────────────────────────────────────────────
 function populateGanttInsights(){

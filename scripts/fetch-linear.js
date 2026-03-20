@@ -93,6 +93,7 @@ const ISSUES_QUERY = `
           id identifier title url
           state { name }
           priority
+          estimate
           dueDate
           startedAt
           completedAt
@@ -167,6 +168,7 @@ async function main() {
         end: iss.dueDate || (iss.completedAt ? iss.completedAt.split("T")[0] : null),
         assignee: iss.assignee?.name || null,
         priority: priorityName(iss.priority),
+        estimate: iss.estimate || null,
         url: iss.url,
       }));
       console.log(`  ✓ ${proj.name}: ${issuesByProject[proj.id].length} issues`);
