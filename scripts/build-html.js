@@ -415,6 +415,10 @@ body {
 .cl-snooze-menu{position:absolute;right:14px;top:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:200;min-width:140px;overflow:hidden;}
 .cl-snooze-opt{display:block;width:100%;padding:8px 12px;font-size:11px;cursor:pointer;color:var(--text);background:transparent;border:none;text-align:left;letter-spacing:.3px;}
 .cl-snooze-opt:hover{background:var(--accent);color:#fff;}
+.cl-undo-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 16px;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,.4);z-index:9999;animation:toast-in .2s ease;}
+.cl-undo-btn{font-size:11px;font-weight:700;color:var(--accent);background:transparent;border:none;cursor:pointer;padding:0;letter-spacing:.5px;}
+.cl-undo-btn:hover{text-decoration:underline;}
+@keyframes toast-in{from{opacity:0;transform:translateX(-50%) translateY(8px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 .roadmap-sec-hdr{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);border-top:2px solid var(--border);position:sticky;top:0;z-index:3;}
 .roadmap-sec-hdr:first-child{border-top:none;}
 .rsh-title{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text);}
@@ -1975,6 +1979,17 @@ function renderMyDay(){
       container.appendChild(wrap); return;
     }
     const ACTION_LABEL={gmail:"REPLY",linear:"OPEN",hubspot:"OPEN",drive:"OPEN",task:"OPEN"};
+    let undoTimer=null;
+    function showUndoToast(msg, undoFn){
+      document.querySelectorAll(".cl-undo-toast").forEach(t=>t.remove());
+      if(undoTimer) clearTimeout(undoTimer);
+      const toast=document.createElement("div"); toast.className="cl-undo-toast";
+      const txt=document.createElement("span"); txt.textContent=msg;
+      const btn=document.createElement("button"); btn.className="cl-undo-btn"; btn.textContent="UNDO";
+      btn.addEventListener("click",function(){ clearTimeout(undoTimer); toast.remove(); undoFn(); draw(listEl.dataset.showAll==="1"); refreshCount(); });
+      toast.appendChild(txt); toast.appendChild(btn); document.body.appendChild(toast);
+      undoTimer=setTimeout(()=>toast.remove(), 5000);
+    }
     function draw(showAll){
       document.querySelectorAll(".cl-snooze-menu").forEach(m=>m.remove());
       listEl.innerHTML="";
@@ -1985,8 +2000,9 @@ function renderMyDay(){
         const cb=document.createElement("div"); cb.className="cl-cb";
         cb.addEventListener("click",function(e){
           e.stopPropagation();
-          if(AUTO_DONE.has(item.id)) AUTO_DONE.delete(item.id); else AUTO_DONE.add(item.id);
-          saveAutoDone(); draw(listEl.dataset.showAll==="1"); refreshCount();
+          AUTO_DONE.add(item.id); saveAutoDone();
+          draw(listEl.dataset.showAll==="1"); refreshCount();
+          showUndoToast("Marked done", function(){ AUTO_DONE.delete(item.id); saveAutoDone(); });
         });
         // ── Source badge + title + meta ─────────────────────────────────────
         const srcEl=document.createElement("span"); srcEl.className="cl-src "+item.srcCls; srcEl.textContent=item.src;
@@ -2008,8 +2024,10 @@ function renderMyDay(){
             opt.addEventListener("click",function(e2){
               e2.stopPropagation();
               const d=new Date(); d.setDate(d.getDate()+days);
-              SNOOZED[item.id]=d.toISOString().slice(0,10); saveSnooze();
+              const snoozeDate=d.toISOString().slice(0,10);
+              SNOOZED[item.id]=snoozeDate; saveSnooze();
               draw(listEl.dataset.showAll==="1"); refreshCount(); menu.remove();
+              showUndoToast("Snoozed until "+snoozeDate, function(){ delete SNOOZED[item.id]; saveSnooze(); });
             });
             menu.appendChild(opt);
           });
@@ -2021,6 +2039,7 @@ function renderMyDay(){
             e2.stopPropagation();
             SNOOZED[item.id]="9999-12-31"; saveSnooze();
             draw(listEl.dataset.showAll==="1"); refreshCount(); menu.remove();
+            showUndoToast("Dismissed", function(){ delete SNOOZED[item.id]; saveSnooze(); });
           });
           menu.appendChild(dismissOpt);
           row.appendChild(menu);
