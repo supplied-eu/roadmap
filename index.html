@@ -390,6 +390,15 @@ body {
 .cl-action-btn:hover{background:var(--accent);color:#fff;}
 .cl-snooze-btn{flex-shrink:0;font-size:11px;padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--text-muted);background:transparent;cursor:pointer;margin-top:1px;}
 .cl-snooze-btn:hover{border-color:var(--text-muted);color:var(--text);}
+.cl-del-btn{flex-shrink:0;font-size:11px;padding:1px 5px;border-radius:4px;border:1px solid transparent;color:var(--text-dim);background:transparent;cursor:pointer;margin-top:1px;opacity:.5;}
+.cl-del-btn:hover{border-color:#ef4444;color:#ef4444;opacity:1;}
+.src-custom{background:#7c3aed22;color:#a78bfa;border:1px solid #7c3aed44;}
+.cl-add-row{display:flex;gap:6px;padding:8px 12px 6px;border-bottom:1px solid var(--border);}
+.cl-add-inp{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:5px 9px;font-size:11px;color:var(--text);outline:none;}
+.cl-add-inp:focus{border-color:var(--accent);}
+.cl-add-inp::placeholder{color:var(--text-dim);}
+.cl-add-btn{flex-shrink:0;font-size:11px;font-weight:700;padding:4px 10px;border-radius:5px;border:1.5px solid var(--accent);color:var(--accent);background:transparent;cursor:pointer;letter-spacing:.4px;}
+.cl-add-btn:hover{background:var(--accent);color:#fff;}
 .cl-snooze-menu{position:absolute;right:14px;top:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:200;min-width:140px;overflow:hidden;}
 .cl-snooze-opt{display:block;width:100%;padding:8px 12px;font-size:11px;cursor:pointer;color:var(--text);background:transparent;border:none;text-align:left;letter-spacing:.3px;}
 .cl-snooze-opt:hover{background:var(--accent);color:#fff;}
@@ -1854,6 +1863,10 @@ function renderMyDay(){
   const SNOOZE_KEY = "supplied_snooze";
   const SNOOZED = JSON.parse(localStorage.getItem(SNOOZE_KEY)||"{}");
   function saveSnooze(){ localStorage.setItem(SNOOZE_KEY, JSON.stringify(SNOOZED)); }
+  // Custom manually-added tasks: persist forever until deleted
+  const CUSTOM_TASKS_KEY = "supplied_custom_tasks";
+  let CUSTOM_TASKS = JSON.parse(localStorage.getItem(CUSTOM_TASKS_KEY)||"[]");
+  function saveCustomTasks(){ localStorage.setItem(CUSTOM_TASKS_KEY, JSON.stringify(CUSTOM_TASKS)); }
 
   function renderPrioritySection(title, items){
     if(!items || !items.length) return null;
@@ -2020,6 +2033,12 @@ function renderMyDay(){
         items.push({id:"tp-"+t.id,title:t.subject,source:"task",src:"TASK",srcCls:"src-linear",meta:t.action.toUpperCase(),url:t.url,prio:9});
       }
     }
+    // 5. Custom manually-added tasks (always at top)
+    for(const t of CUSTOM_TASKS){
+      if(AUTO_DONE.has(t.id)) continue;
+      if(SNOOZED[t.id]&&SNOOZED[t.id]>TODAY_STR) continue;
+      items.push({id:t.id,title:t.title,source:"custom",src:"TASK",srcCls:"src-custom",meta:"",url:t.url||null,prio:0,custom:true});
+    }
     items.sort((a,b)=>a.prio-b.prio);
     const seen=new Set();
     return items.filter(i=>{
@@ -2031,7 +2050,7 @@ function renderMyDay(){
 
   function renderSimpleChecklist(container){
     const SHOW_INIT=12;
-    const items=buildChecklistItems();
+    let items=buildChecklistItems();
     const wrap=document.createElement("div"); wrap.className="checklist-wrap";
     const hdr=document.createElement("div"); hdr.className="checklist-hdr";
     const lbl=document.createElement("span"); lbl.textContent="☑️  TODAY’S ACTIONS";
@@ -2039,13 +2058,23 @@ function renderMyDay(){
     function refreshCount(){ cnt.textContent=items.filter(i=>!AUTO_DONE.has(i.id)).length; }
     refreshCount();
     hdr.appendChild(lbl); hdr.appendChild(cnt); wrap.appendChild(hdr);
-    const listEl=document.createElement("div"); listEl.id="cl-list"; wrap.appendChild(listEl);
-    if(!items.length){
-      const emp=document.createElement("div"); emp.style.cssText="padding:20px;text-align:center;color:var(--text-dim);font-size:11px;";
-      emp.textContent="All clear — nothing urgent right now."; listEl.appendChild(emp);
-      container.appendChild(wrap); return;
+    // ── Add-task input bar ───────────────────────────────────────────────────
+    const addRow=document.createElement("div"); addRow.className="cl-add-row";
+    const addInp=document.createElement("input"); addInp.type="text"; addInp.className="cl-add-inp"; addInp.placeholder="Add a task…";
+    const addBtn=document.createElement("button"); addBtn.className="cl-add-btn"; addBtn.textContent="+ Add";
+    function addTask(){
+      const title=(addInp.value||"").trim(); if(!title) return;
+      const newTask={id:"custom-"+Date.now(),title:title,url:null};
+      CUSTOM_TASKS.unshift(newTask); saveCustomTasks();
+      items=buildChecklistItems(); refreshCount();
+      draw(listEl.dataset.showAll==="1");
+      addInp.value="";
     }
-    const ACTION_LABEL={gmail:"REPLY",linear:"OPEN",hubspot:"OPEN",drive:"OPEN",task:"OPEN"};
+    addBtn.addEventListener("click",addTask);
+    addInp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); addTask(); }});
+    addRow.appendChild(addInp); addRow.appendChild(addBtn); wrap.appendChild(addRow);
+    const listEl=document.createElement("div"); listEl.id="cl-list"; wrap.appendChild(listEl);
+    const ACTION_LABEL={gmail:"REPLY",linear:"OPEN",hubspot:"OPEN",drive:"OPEN",task:"OPEN",custom:"OPEN"};
     let undoTimer=null;
     function showUndoToast(msg, undoFn){
       document.querySelectorAll(".cl-undo-toast").forEach(t=>t.remove());
@@ -2061,6 +2090,10 @@ function renderMyDay(){
       document.querySelectorAll(".cl-snooze-menu").forEach(m=>m.remove());
       listEl.innerHTML="";
       const visible=(showAll?items:items.slice(0,SHOW_INIT)).filter(i=>!AUTO_DONE.has(i.id));
+      if(!visible.length){
+        const emp=document.createElement("div"); emp.style.cssText="padding:16px 12px;text-align:center;color:var(--text-dim);font-size:11px;";
+        emp.textContent="All clear — nothing urgent right now."; listEl.appendChild(emp);
+      }
       for(const item of visible){
         const row=document.createElement("div"); row.className="cl-item";
         // ── Checkbox: click only toggles done ──────────────────────────────
@@ -2115,6 +2148,19 @@ function renderMyDay(){
         row.appendChild(cb); row.appendChild(srcEl); row.appendChild(titleEl); row.appendChild(metaEl);
         if(item.url) row.appendChild(actionBtn);
         row.appendChild(snoozeBtn);
+        // ── Delete button (custom tasks only) ──────────────────────────────
+        if(item.custom){
+          const delBtn=document.createElement("button"); delBtn.className="cl-del-btn"; delBtn.textContent="✕"; delBtn.title="Delete task";
+          delBtn.addEventListener("click",function(e){
+            e.stopPropagation();
+            const removed=CUSTOM_TASKS.find(t=>t.id===item.id);
+            CUSTOM_TASKS=CUSTOM_TASKS.filter(t=>t.id!==item.id); saveCustomTasks();
+            items=buildChecklistItems(); refreshCount();
+            draw(listEl.dataset.showAll==="1");
+            if(removed) showUndoToast("Task deleted", function(){ CUSTOM_TASKS.unshift(removed); saveCustomTasks(); items=buildChecklistItems(); refreshCount(); draw(listEl.dataset.showAll==="1"); });
+          });
+          row.appendChild(delBtn);
+        }
         listEl.appendChild(row);
       }
       if(items.length>SHOW_INIT){
