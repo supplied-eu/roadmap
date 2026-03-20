@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-20T12:52:25.254Z",
+  "refreshedAt": "2026-03-20T13:00:39.096Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1362,18 +1362,6 @@
       "probability": 0.4,
       "stageLabel": "Negotiation & Evaluation",
       "ownerName": "Julio Lindveld"
-    },
-    {
-      "id": "489228714200",
-      "name": "Trident Holiday Parks",
-      "stage": "presentationscheduled",
-      "pipeline": "default",
-      "amount": 1788,
-      "closeDate": "2026-03-31",
-      "ownerId": "29853062",
-      "probability": 0.6,
-      "stageLabel": "Decision Pending",
-      "ownerName": "Bas Bogerd"
     },
     {
       "id": "488029925592",
