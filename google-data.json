@@ -1,14 +1,23 @@
 {
-  "refreshedAt": "2026-03-20T13:00:40.046Z",
+  "refreshedAt": "2026-03-20T15:09:31.957Z",
   "gmail": {
     "threads": [
       {
-        "id": "19cfedcbae96beb5",
+        "id": "19d0bcb1a20f0a8a",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Nagenieten: vertel ons over jouw vakantie‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cfedcbae96beb5",
+        "snippet": "Hi Johann Rozario, The event below has been canceled. Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 21:00 - Friday, 20 March 2026 (Central European Time) Cancellation Reason:",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d0bcb1a20f0a8a",
+        "unread": true
+      },
+      {
+        "id": "19d0bcaf891a7005",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Canceled: Casey Coppock and Johann Rozario Casey Coppock has declined this invitation. Join with Google Meet Meeting link meet.google.com/rzi-yqro-igp Join by phone (NL) +31 20 257 6962 PIN: 560220015",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d0bcaf891a7005",
         "unread": true
       },
       {
@@ -16,30 +25,21 @@
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Regus Uw Regus ervaring Re: Uw ervaring bij ZWOLLE, Trade Centre Om onze service voortdurend te kunnen verbeteren zijn wij zeer geinteresseeerd naar uw ervaring op uw locatie. Het invullen van de",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cfc73957f9533b",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
         "unread": true
       },
       {
-        "id": "19cd4f96e1d663cb",
+        "id": "19cde516ee128e60",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Hi Johann, Thanks for the note. I&#39;ve grabbed time for Thursday, March 19 th at 8:30am PST (4:30pm CET). Looking forward to connecting and safe travels! Best, Casey Casey Coppock K1 875 Manhattan",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cd4f96e1d663cb",
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
         "unread": true
       },
       {
-        "id": "19cda0433ba07fa8",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
-        "unread": true
-      },
-      {
-        "id": "19ce82e9d0fab621",
+        "id": "19ce30963c459b27",
         "subject": "(no subject)",
         "from": "",
         "date": null,
@@ -57,6 +57,15 @@
         "unread": true
       },
       {
+        "id": "19ce6606ba2e3745",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "unread": true
+      },
+      {
         "id": "19ce7f12f8358ef7",
         "subject": "(no subject)",
         "from": "",
@@ -66,30 +75,21 @@
         "unread": true
       },
       {
-        "id": "19cde516ee128e60",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed GDPR Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
-        "unread": true
-      },
-      {
-        "id": "19cc2fcaa76e484f",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hi Willem, I am aware of the interest; as previously mentioned, this was already explained (see the image below). It is common practice during fiscal closing to provide explanations for small, short-",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cc2fcaa76e484f",
-        "unread": true
-      },
-      {
         "id": "19cded4a75632083",
         "subject": "(no subject)",
         "from": "",
         "date": null,
         "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
+        "unread": true
+      },
+      {
+        "id": "19cf4de5565b3976",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
         "unread": true
       },
       {
@@ -109,9 +109,18 @@
         "snippet": "Please click here for important disclaimer information regarding this e-mail communication. By messaging with K1 Investment Management, LLC and its affiliated entities, you consent to the foregoing.",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cded5cddf36048",
         "unread": true
+      },
+      {
+        "id": "19cd4f96e1d663cb",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann, Thanks for the note. I&#39;ve grabbed time for Thursday, March 19 th at 8:30am PST (4:30pm CET). Looking forward to connecting and safe travels! Best, Casey Casey Coppock K1 875 Manhattan",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cd4f96e1d663cb",
+        "unread": true
       }
     ],
-    "unreadCount": 35
+    "unreadCount": 37
   },
   "calendar": {
     "today": [
@@ -197,7 +206,7 @@
       },
       {
         "id": "0pkbob5pcp4fv7qlp0hgefvb8o",
-        "title": "Casey Coppock and Johann Rozario",
+        "title": "Canceled: Casey Coppock and Johann Rozario",
         "start": "2026-03-20T21:00:00+01:00",
         "end": "2026-03-20T21:30:00+01:00",
         "location": "Google Meet (instructions in description)",
@@ -312,6 +321,38 @@
   "drive": {
     "recent": [
       {
+        "id": "1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA",
+        "name": "Friday Weekly Reviews",
+        "mimeType": "application/vnd.google-apps.presentation",
+        "modifiedTime": "2026-03-20T14:44:35.586Z",
+        "url": "https://docs.google.com/presentation/d/1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
+        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-19T10:25:55.880Z",
+        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
+        "name": "Notes - Commerce<>Product Weekly",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-18T10:38:37.496Z",
+        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
+        "name": "Supplied_SALES_Revenue_Costs_Master_File",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-03-20T13:41:49.168Z",
+        "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
+        "lastModifiedBy": "Jelena Hmeltnitski"
+      },
+      {
         "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
         "name": " Customer success standup notes",
         "mimeType": "application/vnd.google-apps.document",
@@ -374,38 +415,6 @@
         "modifiedTime": "2026-03-20T11:18:59.664Z",
         "url": "https://docs.google.com/presentation/d/1bUHM3_BoKaWktGrdL5zEyEcHy1bbZ_tXR84yuWvVRow/edit?usp=drivesdk",
         "lastModifiedBy": "Bas Bogerd"
-      },
-      {
-        "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
-        "name": "Supplied_Technologies_Budget_2026",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-13T10:10:52.499Z",
-        "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
-        "lastModifiedBy": "Jelena Hmeltnitski"
-      },
-      {
-        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
-        "name": "Notes - Commerce<>Product Weekly",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-18T10:38:37.496Z",
-        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
-        "name": "Supplied_SALES_Revenue_Costs_Master_File",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-20T12:58:26.220Z",
-        "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
-        "lastModifiedBy": "Jelena Hmeltnitski"
-      },
-      {
-        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
-        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-19T10:25:55.880Z",
-        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
       }
     ]
   },
