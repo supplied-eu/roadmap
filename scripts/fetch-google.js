@@ -313,6 +313,18 @@ function deriveEmailPriorities(threads) {
     /haven.t heard|still waiting/i,
   ];
 
+  // Threads where the latest message signals no action needed
+  const RESOLVED_PATTERNS = [
+    /marked as resolved/i, /\bresolved\b/i, /\bclosed\b/i,
+    /no action (needed|required)/i, /disregard|never ?mind|ignore this/i,
+    /thanks,? (that.s|this is) (all|done|sorted|great|perfect)/i,
+    /all (done|sorted|good|set)/i, /got it,? thanks/i,
+    /will (handle|take care of|sort) (it|this)/i,
+    /i.ve (done|handled|sorted|sent|replied|updated|fixed|completed)/i,
+    /already (done|sent|replied|handled|sorted|fixed|completed)/i,
+    /out of office/i, /on (vacation|holiday|leave)/i,
+  ];
+
   const now = Date.now();
   const priorities = [];
 
@@ -323,6 +335,9 @@ function deriveEmailPriorities(threads) {
 
     // Skip very old threads (>30 days) unless they match strong patterns
     if (ageDays > 30) continue;
+
+    // Skip threads where the latest message signals resolution
+    if (RESOLVED_PATTERNS.some(p => p.test(text))) continue;
 
     let action = null;
     let reason = "";
