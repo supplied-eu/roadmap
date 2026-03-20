@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-19T12:49:24.157Z",
+  "refreshedAt": "2026-03-20T07:58:14.147Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -883,7 +883,7 @@
     },
     {
       "id": "474917819587",
-      "subject": "Reach out to Ин��ернет Хостинг Центр",
+      "subject": "Reach out to Интер��ет Хостинг Центр",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
@@ -1185,6 +1185,72 @@
       "type": "TODO",
       "priority": "NONE",
       "dueDate": "2026-03-21",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "479569813753",
+      "subject": "Reach out to University of Twente",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-22",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "479579110633",
+      "subject": "Reach out to LifeQuotes.com",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-22",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "479579313355",
+      "subject": "Reach out to Investagon Group",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-22",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "479579453674",
+      "subject": "Reach out to Travelers",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-22",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "479594992850",
+      "subject": "Reach out to Baltimore County Public Schools",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-22",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "479595598051",
+      "subject": "Reach out to NFP, an Aon company",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-22",
       "ownerId": "29853062",
       "body": null,
       "ownerName": "Bas Bogerd"

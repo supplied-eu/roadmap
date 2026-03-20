@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-19T12:49:23.473Z",
+  "refreshedAt": "2026-03-20T07:58:13.266Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -1978,8 +1978,8 @@
               "id": "d5670bd1-b19b-4d8e-956f-9ebe2f88788f",
               "identifier": "SUP-1060",
               "title": "[essential tier] can't purchase white label",
-              "status": "Todo",
-              "start": null,
+              "status": "Done",
+              "start": "2026-03-20",
               "end": "2026-12-23",
               "assignee": null,
               "priority": "High",
@@ -1989,8 +1989,8 @@
               "id": "a1c03562-ea24-433b-b46d-4b7942cf5996",
               "identifier": "SUP-1050",
               "title": "I can't save correct prod VAT",
-              "status": "Todo",
-              "start": null,
+              "status": "Done",
+              "start": "2026-03-20",
               "end": "2026-10-01",
               "assignee": "nadezhda@supplied.eu",
               "priority": "Low",
