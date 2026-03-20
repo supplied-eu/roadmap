@@ -1,25 +1,7 @@
 {
-  "refreshedAt": "2026-03-20T07:58:14.957Z",
+  "refreshedAt": "2026-03-20T08:04:37.169Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d09046e5584cae",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "ATP Insights discusses the most important tech news in Asia. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d09046e5584cae",
-        "unread": true
-      },
-      {
-        "id": "19ce2db4070d3a8d",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "hey Jack, Thank you for the template and for walking me through it on today&#39;s call - the Intro is added, sheets for MB input - looks beautiful and user-friendly. As we discovered during the session",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce2db4070d3a8d",
-        "unread": true
-      },
       {
         "id": "19cfedcbae96beb5",
         "subject": "(no subject)",
@@ -30,12 +12,30 @@
         "unread": true
       },
       {
-        "id": "19cfc73957f9533b",
+        "id": "19ce82e9d0fab621",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Regus Uw Regus ervaring Re: Uw ervaring bij ZWOLLE, Trade Centre Om onze service voortdurend te kunnen verbeteren zijn wij zeer geinteresseeerd naar uw ervaring op uw locatie. Het invullen van de",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cfc73957f9533b",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "unread": true
+      },
+      {
+        "id": "19cf4de5565b3976",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "unread": true
+      },
+      {
+        "id": "19ce7f12f8358ef7",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
         "unread": true
       },
       {
@@ -66,30 +66,12 @@
         "unread": true
       },
       {
-        "id": "19ce0214716b0ff0",
+        "id": "19cfc73957f9533b",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
-        "unread": true
-      },
-      {
-        "id": "19ce7f12f8358ef7",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
-        "unread": true
-      },
-      {
-        "id": "19ce30963c459b27",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
+        "snippet": "Regus Uw Regus ervaring Re: Uw ervaring bij ZWOLLE, Trade Centre Om onze service voortdurend te kunnen verbeteren zijn wij zeer geinteresseeerd naar uw ervaring op uw locatie. Het invullen van de",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cfc73957f9533b",
         "unread": true
       },
       {
@@ -99,6 +81,51 @@
         "date": null,
         "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "unread": true
+      },
+      {
+        "id": "19ce0214716b0ff0",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
+        "unread": true
+      },
+      {
+        "id": "19cde516ee128e60",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed GDPR Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
+        "unread": true
+      },
+      {
+        "id": "19bb7ac8b007233d",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Good afternoon Vladimir! Good to hear from you again. There&#39;s an easier option we explored and I&#39;d like to update you on that option as well (I&#39;ve already spoken to Johann and Bas about",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19bb7ac8b007233d",
+        "unread": true
+      },
+      {
+        "id": "19cda0433ba07fa8",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
+        "unread": true
+      },
+      {
+        "id": "19ce30963c459b27",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
         "unread": true
       }
     ],
