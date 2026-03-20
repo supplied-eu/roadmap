@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-20T09:46:41.643Z",
+  "refreshedAt": "2026-03-20T10:28:13.290Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -7872,17 +7872,6 @@
               "url": "https://linear.app/supplied/issue/SUP-1037/failed-to-sync-suppliers"
             },
             {
-              "id": "719d3a9a-8071-4fcc-bf29-1165b0f26331",
-              "identifier": "SUP-1004",
-              "title": "[Reporting] Ability to filter on the transaction data (value/count) to generate the report",
-              "status": "Backlog",
-              "start": null,
-              "end": "2026-05-01",
-              "assignee": "andrei@supplied.eu",
-              "priority": "High",
-              "url": "https://linear.app/supplied/issue/SUP-1004/reporting-ability-to-filter-on-the-transaction-data-valuecount-to"
-            },
-            {
               "id": "76deceea-a000-4e5d-a0d6-13b783ee7cdb",
               "identifier": "SUP-977",
               "title": "Re-design for Linking Data Sources to avoid duplicate/incorrectly attributed records",
@@ -7923,7 +7912,7 @@
               "start": null,
               "end": null,
               "assignee": null,
-              "priority": "Medium",
+              "priority": "No priority",
               "url": "https://linear.app/supplied/issue/SUP-960/view-of-imported-data-filtering-column-unexpectedly-changing"
             },
             {
