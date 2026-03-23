@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-23T12:31:40.748Z",
+  "refreshedAt": "2026-03-23T15:26:39.544Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -883,7 +883,7 @@
     },
     {
       "id": "474917819587",
-      "subject": "Reach out to Интернет Хостинг Центр",
+      "subject": "Reach out to Интерне�� Хостинг Центр",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
@@ -1344,6 +1344,28 @@
       "ownerName": "Bas Bogerd"
     },
     {
+      "id": "479982222584",
+      "subject": "Follow-up with Daan",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-26",
+      "ownerId": "29853062",
+      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">Reminder of the flowcharts</p></div>",
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "479956280508",
+      "subject": "Follow-Up Koos",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-30",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
       "id": "361003004127",
       "subject": "Try to meet them at next techleap event",
       "status": "NOT_STARTED",
@@ -1445,7 +1467,7 @@
       "stage": "qualifiedtobuy",
       "pipeline": "default",
       "amount": 10000,
-      "closeDate": "2026-03-10",
+      "closeDate": "2026-03-31",
       "ownerId": "687091984",
       "probability": 0.4,
       "stageLabel": "Negotiation & Evaluation",
@@ -1571,5 +1593,189 @@
       "stageLabel": "Solution Scoping",
       "ownerName": "Johann Rozario"
     }
-  ]
+  ],
+  "pipelines": [
+    {
+      "id": "3557407943",
+      "label": "Prospects",
+      "stages": [
+        {
+          "id": "4874399932",
+          "label": "Initial Contact",
+          "probability": 0.1,
+          "displayOrder": 0
+        },
+        {
+          "id": "4874399933",
+          "label": "Discovery call scheduled",
+          "probability": 0.2,
+          "displayOrder": 1
+        },
+        {
+          "id": "4874399934",
+          "label": "Needs assessment ",
+          "probability": 0.3,
+          "displayOrder": 2
+        },
+        {
+          "id": "4874399935",
+          "label": "Solution Scoping",
+          "probability": 0.5,
+          "displayOrder": 3
+        },
+        {
+          "id": "4874399936",
+          "label": "Proposal Preparation",
+          "probability": 0.6,
+          "displayOrder": 4
+        },
+        {
+          "id": "4874399937",
+          "label": "Negotiations",
+          "probability": 0.8,
+          "displayOrder": 5
+        },
+        {
+          "id": "4874399938",
+          "label": "Ready for deal",
+          "probability": 0.9,
+          "displayOrder": 6
+        }
+      ]
+    },
+    {
+      "id": "default",
+      "label": " Sales Pipeline",
+      "stages": [
+        {
+          "id": "187084238",
+          "label": "Discovery Call Completed",
+          "probability": 0.1,
+          "displayOrder": 0
+        },
+        {
+          "id": "appointmentscheduled",
+          "label": "Solution Proposal Sent",
+          "probability": 0.2,
+          "displayOrder": 1
+        },
+        {
+          "id": "qualifiedtobuy",
+          "label": "Negotiation & Evaluation",
+          "probability": 0.4,
+          "displayOrder": 2
+        },
+        {
+          "id": "presentationscheduled",
+          "label": "Decision Pending",
+          "probability": 0.6,
+          "displayOrder": 3
+        },
+        {
+          "id": "decisionmakerboughtin",
+          "label": "Contract Sent",
+          "probability": 0.8,
+          "displayOrder": 4
+        },
+        {
+          "id": "closedwon",
+          "label": "Closed won",
+          "probability": 1,
+          "displayOrder": 5
+        },
+        {
+          "id": "closedlost",
+          "label": "Closed lost",
+          "probability": 0,
+          "displayOrder": 6
+        }
+      ]
+    },
+    {
+      "id": "2336720120",
+      "label": "Upsell Existing Customers",
+      "stages": [
+        {
+          "id": "3190524120",
+          "label": "Opportunity Identified",
+          "probability": 0.2,
+          "displayOrder": 0
+        },
+        {
+          "id": "3190524121",
+          "label": "Discovery & Scoping",
+          "probability": 0.4,
+          "displayOrder": 1
+        },
+        {
+          "id": "3190524122",
+          "label": "Proposal Shared",
+          "probability": 0.6,
+          "displayOrder": 2
+        },
+        {
+          "id": "3190524123",
+          "label": "Negotiation & Evaluation",
+          "probability": 0.7,
+          "displayOrder": 3
+        },
+        {
+          "id": "3190524124",
+          "label": "Contract Sent",
+          "probability": 0.8,
+          "displayOrder": 4
+        },
+        {
+          "id": "3190524125",
+          "label": "Closed Won",
+          "probability": 1,
+          "displayOrder": 5
+        },
+        {
+          "id": "3190524126",
+          "label": "Closed Lost",
+          "probability": 0,
+          "displayOrder": 6
+        }
+      ]
+    }
+  ],
+  "contactLifecycle": [
+    {
+      "key": "subscriber",
+      "label": "Subscriber",
+      "count": 0
+    },
+    {
+      "key": "lead",
+      "label": "Lead",
+      "count": 18
+    },
+    {
+      "key": "marketingqualifiedlead",
+      "label": "MQL",
+      "count": 0
+    },
+    {
+      "key": "salesqualifiedlead",
+      "label": "SQL",
+      "count": 0
+    },
+    {
+      "key": "opportunity",
+      "label": "Opportunity",
+      "count": 63
+    },
+    {
+      "key": "customer",
+      "label": "Customer",
+      "count": 15
+    }
+  ],
+  "closedDealStats": {
+    "wonCount": 6,
+    "wonValue": 38341,
+    "lostCount": 4,
+    "lostValue": 17940
+  }
 }
