@@ -266,7 +266,7 @@ async function fetchPipelineStages() {
 // ─── contact lifecycle stage counts ─────────────────────────────────────────
 
 async function fetchContactLifecycleCounts() {
-  console.log("→ Fetching contact lifecycle stages...");
+  console.log("→ Fetching contact lifecycle stages + traffic sources...");
   const STAGES = [
     { key: "subscriber",             label: "Subscriber" },
     { key: "lead",                   label: "Lead" },
@@ -275,20 +275,112 @@ async function fetchContactLifecycleCounts() {
     { key: "opportunity",            label: "Opportunity" },
     { key: "customer",               label: "Customer" },
   ];
+  // Source key → human label + icon
+  const SOURCE_META = {
+    ORGANIC_SEARCH:   { label: "Organic Search",  icon: "🔍" },
+    PAID_SEARCH:      { label: "Paid Search",      icon: "💰" },
+    SOCIAL_MEDIA:     { label: "Social Media",     icon: "📱" },
+    PAID_SOCIAL:      { label: "Paid Social",      icon: "📢" },
+    REFERRALS:        { label: "Referrals",        icon: "🔗" },
+    DIRECT_TRAFFIC:   { label: "Direct",           icon: "🏠" },
+    EMAIL_MARKETING:  { label: "Email Marketing",  icon: "📧" },
+    OTHER_CAMPAIGNS:  { label: "Campaigns",        icon: "📣" },
+    OFFLINE:          { label: "Offline",          icon: "📴" },
+  };
   try {
+    const now = Date.now();
+    const oneWeekMs = 7 * 24 * 3600 * 1000;
+    const thisWeekCutoff = now - oneWeekMs;
+    const lastWeekCutoff = now - 2 * oneWeekMs;
+
     const raw = await searchAll("contacts", {
-      properties: ["lifecyclestage"],
+      properties: [
+        "lifecyclestage",
+        "hs_analytics_source",
+        "hs_analytics_source_data_1",
+        "hs_analytics_source_data_2",
+        "createdate",
+        "firstname",
+        "lastname",
+        "email",
+      ],
+      sorts: [{ propertyName: "createdate", direction: "DESCENDING" }],
       limit: 100,
     });
+
+    // Lifecycle counts
     const counts = {};
     for (const c of raw) {
       const s = (c.properties?.lifecyclestage || "").toLowerCase();
       if (s) counts[s] = (counts[s] || 0) + 1;
     }
-    return STAGES.map(s => ({ ...s, count: counts[s.key] || 0 }));
+
+    // Traffic source grouping
+    const sourceMap = {}; // source key → { thisWeek, lastWeek, contacts[] }
+    for (const c of raw) {
+      const p = c.properties || {};
+      let srcKey = (p.hs_analytics_source || "").toUpperCase() || "UNKNOWN";
+      // For SOCIAL_MEDIA, use data_1 to distinguish platform (LinkedIn, Facebook, etc.)
+      if (srcKey === "SOCIAL_MEDIA" && p.hs_analytics_source_data_1) {
+        const platform = p.hs_analytics_source_data_1.toLowerCase();
+        if (platform.includes("linkedin")) srcKey = "LINKEDIN";
+        else if (platform.includes("facebook") || platform.includes("instagram")) srcKey = "FACEBOOK";
+        else if (platform.includes("twitter") || platform.includes("x.com")) srcKey = "TWITTER";
+        else srcKey = "SOCIAL_MEDIA";
+      } else if (srcKey === "ORGANIC_SEARCH" && p.hs_analytics_source_data_1) {
+        // data_1 often has the search engine
+        const engine = p.hs_analytics_source_data_1.toLowerCase();
+        if (engine.includes("google")) srcKey = "GOOGLE_ORGANIC";
+        else if (engine.includes("bing")) srcKey = "BING_ORGANIC";
+      }
+      if (!srcKey || srcKey === "UNKNOWN" || srcKey === "") continue;
+
+      if (!sourceMap[srcKey]) sourceMap[srcKey] = { key: srcKey, thisWeek: 0, lastWeek: 0, contacts: [] };
+
+      const created = p.createdate ? new Date(p.createdate).getTime() : 0;
+      if (created >= thisWeekCutoff) sourceMap[srcKey].thisWeek++;
+      else if (created >= lastWeekCutoff) sourceMap[srcKey].lastWeek++;
+
+      // Keep most recent 25 contacts per source for the expanded list
+      if (sourceMap[srcKey].contacts.length < 25) {
+        const firstName = p.firstname || "";
+        const lastName  = p.lastname  || "";
+        const name = [firstName, lastName].filter(Boolean).join(" ") || p.email || "(unnamed)";
+        sourceMap[srcKey].contacts.push({
+          id:    c.id,
+          name,
+          email: p.email || null,
+          stage: p.lifecyclestage || null,
+          createdAt: p.createdate ? p.createdate.split("T")[0] : null,
+        });
+      }
+    }
+
+    // Augment sourceMap keys with friendly labels
+    const SOURCE_EXTRA = {
+      GOOGLE_ORGANIC: { label: "Google Search",  icon: "🔍" },
+      BING_ORGANIC:   { label: "Bing Search",    icon: "🔍" },
+      LINKEDIN:       { label: "LinkedIn",        icon: "💼" },
+      FACEBOOK:       { label: "Facebook/Meta",   icon: "📘" },
+      TWITTER:        { label: "Twitter / X",     icon: "🐦" },
+    };
+    const trafficSources = Object.values(sourceMap)
+      .map(s => {
+        const meta = SOURCE_EXTRA[s.key] || SOURCE_META[s.key] || { label: s.key.replace(/_/g," ").toLowerCase().replace(/\b\w/g,c=>c.toUpperCase()), icon: "📊" };
+        return { ...s, label: meta.label, icon: meta.icon };
+      })
+      .sort((a, b) => (b.thisWeek + b.lastWeek) - (a.thisWeek + a.lastWeek));
+
+    return {
+      lifecycle: STAGES.map(s => ({ ...s, count: counts[s.key] || 0 })),
+      trafficSources,
+    };
   } catch (e) {
     console.warn("  Could not fetch contacts:", e.message);
-    return STAGES.map(s => ({ ...s, count: 0 }));
+    return {
+      lifecycle: STAGES.map(s => ({ ...s, count: 0 })),
+      trafficSources: [],
+    };
   }
 }
 
@@ -438,7 +530,8 @@ async function main() {
     tasks: enrichedTasks,
     deals: enrichedDeals,
     pipelines,
-    contactLifecycle,
+    contactLifecycle: contactLifecycle.lifecycle,
+    trafficSources: contactLifecycle.trafficSources,
     closedDealStats,
     companies: enrichedCompanies,
   };

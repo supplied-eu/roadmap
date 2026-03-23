@@ -1772,6 +1772,120 @@ function renderSalesFunnels(){
     em.textContent="No contact lifecycle data available yet."; mktPanel.appendChild(em);
   }
   wrap.appendChild(mktPanel);
+
+  // ── TRAFFIC SOURCES PANEL ─────────────────────────────────────────────────
+  const srcPanel=document.createElement("div"); srcPanel.className="funnel-panel";
+  srcPanel.style.cssText="min-width:320px;flex:1.2";
+  const srcTitle=document.createElement("div"); srcTitle.className="funnel-title";
+  const trafficSources=HS_DATA.trafficSources||[];
+  const totalThisWeek=trafficSources.reduce((s,t)=>s+t.thisWeek,0);
+  const totalLastWeek=trafficSources.reduce((s,t)=>s+t.lastWeek,0);
+  const weekTrend=totalLastWeek>0?Math.round(((totalThisWeek-totalLastWeek)/totalLastWeek)*100):null;
+  const weekTrendHtml=weekTrend!=null
+    ?\`<span style="font-size:10px;color:\${weekTrend>=0?"#10b981":"#ef4444"};margin-left:8px;">\${weekTrend>=0?"↑":"↓"}\${Math.abs(weekTrend)}% w/w</span>\`:"";
+  srcTitle.innerHTML=\`<span>📡  TRAFFIC SOURCES</span><span class="funnel-title-kpi">\${totalThisWeek} this week\${weekTrendHtml}</span>\`;
+  srcPanel.appendChild(srcTitle);
+
+  if(!trafficSources.length){
+    const em=document.createElement("div"); em.style.cssText="font-size:11px;color:var(--text-dim);padding:20px 0";
+    em.textContent="No traffic source data available — run data refresh to populate."; srcPanel.appendChild(em);
+  } else {
+    const portalId=HS_DATA.portalId||"";
+    const maxSrcWeek=Math.max(1,...trafficSources.map(t=>t.thisWeek+t.lastWeek));
+
+    trafficSources.forEach((src)=>{
+      const total=src.thisWeek+src.lastWeek;
+      if(!total&&!src.contacts.length) return;
+      const wowPct=src.lastWeek>0?Math.round(((src.thisWeek-src.lastWeek)/src.lastWeek)*100):(src.thisWeek>0?null:null);
+      const wowColor=wowPct==null?"#6b7280":wowPct>=0?"#10b981":"#ef4444";
+      const wowText=wowPct==null?(src.thisWeek>0?"new":"—"):(wowPct>=0?"↑"+Math.abs(wowPct)+"%":"↓"+Math.abs(wowPct)+"%");
+
+      const srcBlock=document.createElement("div");
+      srcBlock.style.cssText="margin-bottom:6px;";
+
+      // Header row
+      const srcRow=document.createElement("div");
+      srcRow.className="funnel-row";
+      srcRow.style.cssText="cursor:pointer;user-select:none;align-items:center;";
+      const srcLbl=document.createElement("div"); srcLbl.className="funnel-label";
+      srcLbl.style.cssText="display:flex;align-items:center;gap:6px;min-width:140px;";
+      srcLbl.innerHTML=\`<span style="font-size:13px">\${src.icon||"📊"}</span><span>\${src.label}</span>\`;
+
+      const barWrap=document.createElement("div"); barWrap.className="funnel-bar-wrap";
+      const bar=document.createElement("div"); bar.className="funnel-bar";
+      const barPct=Math.round((src.thisWeek/Math.max(1,maxSrcWeek))*100)||2;
+      bar.style.cssText=\`width:\${barPct}%;background:#3b82f6;min-width:4px\`;
+      const barLbl=document.createElement("span"); barLbl.className="funnel-bar-label"; barLbl.textContent=src.thisWeek;
+      bar.appendChild(barLbl); barWrap.appendChild(bar);
+
+      const wowBadge=document.createElement("div"); wowBadge.className="funnel-meta";
+      wowBadge.innerHTML=\`<span style="color:\${wowColor};font-weight:600;font-size:10px;">\${wowText}</span>\`;
+
+      const chevron=document.createElement("span");
+      chevron.textContent="▸";
+      chevron.style.cssText="font-size:9px;color:var(--text-muted);margin-left:4px;transition:transform .2s;";
+
+      srcRow.appendChild(srcLbl);
+      srcRow.appendChild(barWrap);
+      srcRow.appendChild(wowBadge);
+      srcRow.appendChild(chevron);
+
+      // Expandable contacts list
+      const contactsList=document.createElement("div");
+      contactsList.style.cssText="display:none;padding:6px 0 6px 20px;border-left:2px solid var(--border);margin-left:8px;margin-top:4px;";
+
+      if(src.contacts&&src.contacts.length){
+        const listHdr=document.createElement("div");
+        listHdr.style.cssText="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;";
+        listHdr.textContent="Recent contacts — click to open in HubSpot";
+        contactsList.appendChild(listHdr);
+
+        for(const ct of src.contacts){
+          const ctRow=document.createElement("div");
+          ctRow.style.cssText="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11px;border-bottom:1px solid var(--border);";
+          const link=document.createElement("a");
+          link.href=portalId?\`https://app.hubspot.com/contacts/\${portalId}/contact/\${ct.id}\`:\`https://app.hubspot.com/contacts/\${ct.id}\`;
+          link.target="_blank";
+          link.rel="noopener";
+          link.style.cssText="color:var(--accent);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
+          link.textContent=ct.name;
+          link.addEventListener("mouseover",()=>link.style.textDecoration="underline");
+          link.addEventListener("mouseout",()=>link.style.textDecoration="none");
+          const stage=document.createElement("span");
+          stage.style.cssText="color:var(--text-muted);font-size:9px;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;";
+          stage.textContent=ct.stage?ct.stage.replace(/([a-z])([A-Z])/g,"$1 $2").replace("qualifiedlead"," QL"):"";
+          const date=document.createElement("span");
+          date.style.cssText="color:var(--text-dim);font-size:9px;flex-shrink:0;";
+          date.textContent=ct.createdAt||"";
+          ctRow.appendChild(link); ctRow.appendChild(stage); ctRow.appendChild(date);
+          contactsList.appendChild(ctRow);
+        }
+        if(src.contacts.length>=25){
+          const moreNote=document.createElement("div");
+          moreNote.style.cssText="font-size:9px;color:var(--text-muted);margin-top:4px;font-style:italic;";
+          moreNote.textContent="Showing top 25 most recent contacts";
+          contactsList.appendChild(moreNote);
+        }
+      } else {
+        const em=document.createElement("div");
+        em.style.cssText="font-size:11px;color:var(--text-dim);padding:4px 0;";
+        em.textContent="No recent contacts from this source.";
+        contactsList.appendChild(em);
+      }
+
+      let expanded=false;
+      srcRow.addEventListener("click",()=>{
+        expanded=!expanded;
+        contactsList.style.display=expanded?"block":"none";
+        chevron.style.transform=expanded?"rotate(90deg)":"";
+      });
+
+      srcBlock.appendChild(srcRow);
+      srcBlock.appendChild(contactsList);
+      srcPanel.appendChild(srcBlock);
+    });
+  }
+  wrap.appendChild(srcPanel);
 }
 
 function renderOps(){
