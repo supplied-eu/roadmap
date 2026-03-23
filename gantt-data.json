@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-20T15:17:07.117Z",
+  "refreshedAt": "2026-03-23T10:46:53.537Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -1996,6 +1996,18 @@
           "targetDate": null,
           "issues": [
             {
+              "id": "3baf2cf5-809a-4172-b41a-d5c3c2e1434a",
+              "identifier": "SUP-1222",
+              "title": "Rename \"API Based Verifications\" Line in pricing table",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": null,
+              "priority": "High",
+              "estimate": 1,
+              "url": "https://linear.app/supplied/issue/SUP-1222/rename-api-based-verifications-line-in-pricing-table"
+            },
+            {
               "id": "6685e1bd-0cc1-47f5-82bc-709a29c8bd1d",
               "identifier": "SUP-1208",
               "title": "Error: Product not found for plan name: Enterprise",
@@ -2414,6 +2426,18 @@
               "priority": "No priority",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/SUP-819/edgecase-wrong-status-of-subscription-in-root"
+            },
+            {
+              "id": "07074e61-e4fe-4c4b-961d-dd4e8b41c4bd",
+              "identifier": "SUP-787",
+              "title": "[Operations Hub] \"Enable service\" button unexpected behaviour",
+              "status": "Todo",
+              "start": null,
+              "end": "2027-01-08",
+              "assignee": null,
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-787/operations-hub-enable-service-button-unexpected-behaviour"
             },
             {
               "id": "653bff1f-b44d-4ffe-8647-ded83b87ba80",
@@ -5128,6 +5152,30 @@
           "targetDate": "2026-01-30",
           "issues": [
             {
+              "id": "d0792c71-81a8-4d47-999d-d50b96787823",
+              "identifier": "IMP-151",
+              "title": "Review of reported discrepancies and missing suppliers in DAC7 report",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "andrei@supplied.eu",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-151/review-of-reported-discrepancies-and-missing-suppliers-in-dac7-report"
+            },
+            {
+              "id": "ed12daaf-33fb-4fb3-9ebb-554a3d959c9f",
+              "identifier": "IMP-150",
+              "title": "Chaletplus – Umlaut characters not displaying correctly in Excel export",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-150/chaletplus-umlaut-characters-not-displaying-correctly-in-excel-export"
+            },
+            {
               "id": "e50d21a6-4cf0-48b6-87d5-50143770eb79",
               "identifier": "IMP-124",
               "title": "Remove relationships_administrators - 2390 Homeowners (NPC Verwaltung) – Validation Required Before Deletion",
@@ -7263,14 +7311,14 @@
             {
               "id": "9a5358dc-d1d9-4006-8dd1-e66494e2a1a6",
               "identifier": "SUP-1005",
-              "title": "[Operations Hub] Update earnings on the app to reflect individual property earnings",
+              "title": "[Operations Hub] Don't show earnings on the verification view and in the app",
               "status": "In Progress",
               "start": "2026-03-17",
               "end": null,
               "assignee": "andrei@supplied.eu",
               "priority": "High",
               "estimate": null,
-              "url": "https://linear.app/supplied/issue/SUP-1005/operations-hub-update-earnings-on-the-app-to-reflect-individual"
+              "url": "https://linear.app/supplied/issue/SUP-1005/operations-hub-dont-show-earnings-on-the-verification-view-and-in-the"
             },
             {
               "id": "56a9f0e1-75cc-41b3-bade-73764e267af1",
@@ -8674,18 +8722,6 @@
               "priority": "Urgent",
               "estimate": 2,
               "url": "https://linear.app/supplied/issue/SUP-824/global-reporting-no-earnings-connection-for-verification"
-            },
-            {
-              "id": "07074e61-e4fe-4c4b-961d-dd4e8b41c4bd",
-              "identifier": "SUP-787",
-              "title": "[Operations Hub] \"Enable service\" button unexpected behaviour",
-              "status": "Todo",
-              "start": null,
-              "end": "2027-01-08",
-              "assignee": null,
-              "priority": "No priority",
-              "estimate": null,
-              "url": "https://linear.app/supplied/issue/SUP-787/operations-hub-enable-service-button-unexpected-behaviour"
             },
             {
               "id": "ca33ff36-caf4-4fa4-9c50-4ced2c947247",
