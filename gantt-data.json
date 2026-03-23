@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-23T15:58:06.341Z",
+  "refreshedAt": "2026-03-23T16:11:45.014Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -7324,7 +7324,7 @@
               "id": "9a5358dc-d1d9-4006-8dd1-e66494e2a1a6",
               "identifier": "SUP-1005",
               "title": "[Operations Hub] Don't show earnings on the verification view and in the app",
-              "status": "In Review",
+              "status": "In Test",
               "start": "2026-03-17",
               "end": null,
               "assignee": "andrei@supplied.eu",
