@@ -127,7 +127,7 @@ async function fetchGmail(token) {
   const listUrl = "https://gmail.googleapis.com/gmail/v1/users/me/messages?" +
     new URLSearchParams({
       labelIds: "INBOX",
-      q: "is:unread",
+      q: "is:unread newer_than:14d",
       maxResults: "50",
     });
 
@@ -333,8 +333,8 @@ function deriveEmailPriorities(threads) {
     const ageMs = now - new Date(t.date || 0).getTime();
     const ageDays = Math.floor(ageMs / 86400000);
 
-    // Skip very old threads (>30 days) unless they match strong patterns
-    if (ageDays > 30) continue;
+    // Skip threads older than 14 days
+    if (ageDays > 14) continue;
 
     // Skip threads where the latest message signals resolution
     if (RESOLVED_PATTERNS.some(p => p.test(text))) continue;

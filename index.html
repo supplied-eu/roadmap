@@ -1836,7 +1836,7 @@ function renderMyDay(){
       if(hubspotCount) sbar.appendChild(mkChip(hubspotCount, "hubspot", "src-hubspot", {       dim:true, onClick:()=>scrollTo("section-hubspot"), title:"Jump to HubSpot tasks"}));
 
     } else if(MYDAY_SECTION==="inbox"){
-      const epN = (GOOGLE_DATA&&GOOGLE_DATA.email_priorities||[]).filter(p=>!DP.has(p.id)).length;
+      const epN = (GOOGLE_DATA&&GOOGLE_DATA.email_priorities||[]).filter(p=>{ const cl="ep-"+p.id; return !DP.has(p.id)&&!AUTO_DONE.has(cl)&&!(SNOOZED[cl]&&SNOOZED[cl]>TODAY_STR); }).length;
       const unrN = (GOOGLE_DATA&&GOOGLE_DATA.gmail&&GOOGLE_DATA.gmail.unreadCount)||0;
       sbar.appendChild(mkChip(epN, "priorities", epN>0?"red":"",
         epN>0 ? {onClick:()=>scrollTo("section-email-prios"), title:"Jump to email priorities"} : null));
@@ -1936,7 +1936,14 @@ function renderMyDay(){
 
   function renderPrioritySection(title, items){
     if(!items || !items.length) return null;
-    const active = items.filter(p => !DONE_PRIOS.has(p.id));
+    // Filter by inbox done-state AND checklist done/snooze state (id with "ep-" prefix)
+    const active = items.filter(p => {
+      if(DONE_PRIOS.has(p.id)) return false;
+      const clId="ep-"+p.id;
+      if(AUTO_DONE.has(clId)) return false;
+      if(SNOOZED[clId]&&SNOOZED[clId]>TODAY_STR) return false;
+      return true;
+    });
     if(!active.length) return null;
     const sec = document.createElement("div");
     sec.className = "myday-section";
@@ -2260,7 +2267,7 @@ function renderMyDay(){
       s.id="section-email-prios";
       // Summary line inside section, right below header
       if(GOOGLE_DATA&&GOOGLE_DATA.email_priorities){
-        const eps = GOOGLE_DATA.email_priorities.filter(p=>!DONE_PRIOS.has(p.id));
+        const eps = GOOGLE_DATA.email_priorities.filter(p=>{ const cl="ep-"+p.id; return !DONE_PRIOS.has(p.id)&&!AUTO_DONE.has(cl)&&!(SNOOZED[cl]&&SNOOZED[cl]>TODAY_STR); });
         if(eps.length){
           const counts = {};
           for(const p of eps) counts[p.action]=(counts[p.action]||0)+1;
