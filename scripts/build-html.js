@@ -1947,6 +1947,17 @@ function renderMyDay(){
   const weekCount = buckets.week.length;
   const linearCount = filtered.filter(i=>i.source==="linear").length;
   const hubspotCount= filtered.filter(i=>i.source==="hubspot").length;
+  // ── Checklist / snooze / custom task storage (renderMyDay scope) ────────────
+  const AUTO_DONE_KEY = "supplied_auto_done_" + TODAY_STR;
+  const AUTO_DONE = new Set(JSON.parse(localStorage.getItem(AUTO_DONE_KEY)||"[]"));
+  function saveAutoDone(){ localStorage.setItem(AUTO_DONE_KEY, JSON.stringify([...AUTO_DONE])); }
+  const SNOOZE_KEY = "supplied_snooze";
+  const SNOOZED = JSON.parse(localStorage.getItem(SNOOZE_KEY)||"{}");
+  function saveSnooze(){ localStorage.setItem(SNOOZE_KEY, JSON.stringify(SNOOZED)); }
+  const CUSTOM_TASKS_KEY = "supplied_custom_tasks";
+  let CUSTOM_TASKS = JSON.parse(localStorage.getItem(CUSTOM_TASKS_KEY)||"[]");
+  function saveCustomTasks(){ localStorage.setItem(CUSTOM_TASKS_KEY, JSON.stringify(CUSTOM_TASKS)); }
+
   // ── Stats bar: section-aware + clickable chips ────────────────────────────
   sbar.innerHTML = "";
   (function buildStatsBar(){
@@ -1981,16 +1992,6 @@ function renderMyDay(){
     }
     function scrollTo(id){ const e=document.getElementById(id); if(e) e.scrollIntoView({behavior:"smooth",block:"start"}); }
     const DP = new Set(JSON.parse(localStorage.getItem("supplied_done_priorities")||"[]"));
-  // Checklist done/snooze/custom storage — declared here so buildStatsBar can access them
-  const AUTO_DONE_KEY = "supplied_auto_done_" + TODAY_STR;
-  const AUTO_DONE = new Set(JSON.parse(localStorage.getItem(AUTO_DONE_KEY)||"[]"));
-  function saveAutoDone(){ localStorage.setItem(AUTO_DONE_KEY, JSON.stringify([...AUTO_DONE])); }
-  const SNOOZE_KEY = "supplied_snooze";
-  const SNOOZED = JSON.parse(localStorage.getItem(SNOOZE_KEY)||"{}");
-  function saveSnooze(){ localStorage.setItem(SNOOZE_KEY, JSON.stringify(SNOOZED)); }
-  const CUSTOM_TASKS_KEY = "supplied_custom_tasks";
-  let CUSTOM_TASKS = JSON.parse(localStorage.getItem(CUSTOM_TASKS_KEY)||"[]");
-  function saveCustomTasks(){ localStorage.setItem(CUSTOM_TASKS_KEY, JSON.stringify(CUSTOM_TASKS)); }
 
     if(MYDAY_SECTION==="all"||MYDAY_SECTION==="tasks"){
       // "X tasks" chip — click clears urgency filter if active
@@ -2099,8 +2100,6 @@ function renderMyDay(){
     });
     row.appendChild(chev);
   }
-
-  // AUTO_DONE, SNOOZED, CUSTOM_TASKS declared earlier (before buildStatsBar)
 
   function renderPrioritySection(title, items){
     if(!items || !items.length) return null;
