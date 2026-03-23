@@ -320,12 +320,79 @@ async function fetchClosedDealStats() {
   }
 }
 
+// ─── companies (account management) ─────────────────────────────────────────
+
+async function fetchCompanies() {
+  console.log("→ Fetching companies...");
+  try {
+    const raw = await searchAll("companies", {
+      filterGroups: [{ filters: [{ propertyName: "lifecyclestage", operator: "EQ", value: "customer" }] }],
+      properties: [
+        "name", "domain", "lifecyclestage", "hs_lastmodifieddate",
+        "notes_last_updated", "notes_last_contacted", "num_associated_contacts",
+        "num_associated_deals", "annualrevenue", "hs_lead_status",
+        "hubspot_owner_id", "createdate", "hs_num_open_deals",
+        "recent_deal_amount", "recent_deal_close_date",
+        "hs_analytics_last_visit_timestamp",
+      ],
+      sorts: [{ propertyName: "notes_last_contacted", direction: "ASCENDING" }],
+      limit: 100,
+    });
+    return raw.map(c => {
+      const p = c.properties || {};
+      const lastContacted = p.notes_last_contacted ? p.notes_last_contacted.split("T")[0] : null;
+      const lastModified  = p.hs_lastmodifieddate  ? p.hs_lastmodifieddate.split("T")[0]  : null;
+      const lastVisit     = p.hs_analytics_last_visit_timestamp ? p.hs_analytics_last_visit_timestamp.split("T")[0] : null;
+      const daysSinceContact = lastContacted
+        ? Math.floor((Date.now() - new Date(lastContacted)) / 86400000) : null;
+      return {
+        id: c.id,
+        name: p.name || "(unnamed)",
+        domain: p.domain || null,
+        ownerId: p.hubspot_owner_id ? String(p.hubspot_owner_id) : null,
+        contacts: p.num_associated_contacts ? parseInt(p.num_associated_contacts) : 0,
+        openDeals: p.hs_num_open_deals ? parseInt(p.hs_num_open_deals) : 0,
+        recentDealAmount: p.recent_deal_amount ? parseFloat(p.recent_deal_amount) : null,
+        recentDealCloseDate: p.recent_deal_close_date ? p.recent_deal_close_date.split("T")[0] : null,
+        lastContacted,
+        lastModified,
+        lastVisit,
+        daysSinceContact,
+        createdAt: p.createdate ? p.createdate.split("T")[0] : null,
+        leadStatus: p.hs_lead_status || null,
+      };
+    });
+  } catch (e) {
+    console.warn("  Could not fetch companies:", e.message);
+    return [];
+  }
+}
+
+// ─── notes for a company (last 3) ────────────────────────────────────────────
+
+async function fetchCompanyNotes(companyId) {
+  try {
+    const res = await hsPost(`/crm/v3/objects/notes/search`, {
+      filterGroups: [{
+        filters: [{ propertyName: "associations.company", operator: "EQ", value: companyId }],
+      }],
+      properties: ["hs_note_body", "hs_timestamp", "hubspot_owner_id"],
+      sorts: [{ propertyName: "hs_timestamp", direction: "DESCENDING" }],
+      limit: 3,
+    });
+    return (res.results || []).map(n => ({
+      body: (n.properties?.hs_note_body || "").slice(0, 200),
+      date: n.properties?.hs_timestamp ? n.properties.hs_timestamp.split("T")[0] : null,
+    }));
+  } catch { return []; }
+}
+
 // ─── main ────────────────────────────────────────────────────────────────────
 
 async function main() {
   console.log("🔄 Fetching HubSpot data...");
 
-  const [portalId, owners, tasks, deals, pipelineData, contactLifecycle, closedDealStats] = await Promise.all([
+  const [portalId, owners, tasks, deals, pipelineData, contactLifecycle, closedDealStats, companies] = await Promise.all([
     fetchPortalId(),
     fetchOwners(),
     fetchTasks(),
@@ -333,6 +400,7 @@ async function main() {
     fetchPipelineStages(),
     fetchContactLifecycleCounts(),
     fetchClosedDealStats(),
+    fetchCompanies(),
   ]);
 
   const { stageMap, pipelines } = pipelineData;
@@ -340,6 +408,14 @@ async function main() {
   // Build owner lookup map
   const ownerMap = {};
   for (const o of owners) ownerMap[o.id] = o.name;
+
+  // Fetch recent notes for each company (capped at 20 to limit API calls)
+  const notesResults = await Promise.all(companies.slice(0, 20).map(c => fetchCompanyNotes(c.id)));
+  const enrichedCompanies = companies.map((c, i) => ({
+    ...c,
+    ownerName: c.ownerId ? (ownerMap[c.ownerId] || null) : null,
+    notes: i < 20 ? (notesResults[i] || []) : [],
+  }));
 
   // Enrich tasks with owner names
   const enrichedTasks = tasks.map((t) => ({
@@ -364,6 +440,7 @@ async function main() {
     pipelines,
     contactLifecycle,
     closedDealStats,
+    companies: enrichedCompanies,
   };
 
   const outPath = path.join(__dirname, "../hubspot-data.json");

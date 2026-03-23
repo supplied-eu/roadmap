@@ -812,6 +812,42 @@ body {
 .funnel-won-kpi-val.green { color: #10b981; }
 .funnel-won-kpi-val.red { color: #ef4444; }
 
+/* ── Account Management ────────────────────────────────────────────────────── */
+#accounts-main { padding: 20px 24px; overflow-y: auto; height: calc(100vh - 56px); }
+.acct-toolbar { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+.acct-toolbar-title { font-size:11px; font-weight:600; color:var(--text); letter-spacing:.5px; }
+.acct-search { flex:1; max-width:280px; background:var(--surface2); border:1px solid var(--border); border-radius:5px; padding:5px 10px; font-size:11px; color:var(--text); outline:none; }
+.acct-search:focus { border-color:var(--accent); }
+.acct-search::placeholder { color:var(--text-dim); }
+.acct-filter-btn { font-size:10px; padding:4px 10px; border-radius:4px; border:1px solid var(--border); background:transparent; color:var(--text-muted); cursor:pointer; letter-spacing:.3px; }
+.acct-filter-btn.active { border-color:var(--accent); color:var(--accent); background:var(--accent)11; }
+.acct-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(340px,1fr)); gap:14px; }
+.acct-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; cursor:pointer; transition:border-color .15s; position:relative; }
+.acct-card:hover { border-color:var(--accent); }
+.acct-card-top { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; }
+.acct-avatar { width:34px; height:34px; border-radius:6px; background:var(--accent)22; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--accent); flex-shrink:0; }
+.acct-name { font-size:12px; font-weight:600; color:var(--text); line-height:1.3; }
+.acct-domain { font-size:10px; color:var(--text-dim); margin-top:1px; }
+.acct-health { margin-left:auto; flex-shrink:0; }
+.health-badge { font-size:9px; font-weight:700; padding:3px 8px; border-radius:10px; letter-spacing:.5px; }
+.health-green  { background:#10b98122; color:#10b981; border:1px solid #10b98144; }
+.health-amber  { background:#f9731622; color:#f97316; border:1px solid #f9731644; }
+.health-red    { background:#ef444422; color:#ef4444; border:1px solid #ef444444; }
+.health-grey   { background:var(--surface2); color:var(--text-dim); border:1px solid var(--border); }
+.acct-meta-row { display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+.acct-meta-chip { font-size:9px; color:var(--text-muted); background:var(--surface2); border-radius:4px; padding:2px 7px; display:flex; align-items:center; gap:3px; }
+.acct-meta-chip.warn { color:#f97316; background:#f9731611; }
+.acct-meta-chip.ok   { color:#10b981; background:#10b98111; }
+.acct-section-label { font-size:8px; letter-spacing:1.2px; color:var(--text-dim); font-weight:500; margin-bottom:5px; }
+.acct-note { font-size:10px; color:var(--text-muted); line-height:1.5; padding:6px 8px; background:var(--surface2); border-radius:4px; margin-bottom:5px; border-left:2px solid var(--border); }
+.acct-note:last-child { margin-bottom:0; }
+.acct-note-date { font-size:8px; color:var(--text-dim); margin-bottom:2px; }
+.acct-next-steps { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+.acct-next-label { font-size:8px; letter-spacing:1.1px; color:var(--accent); font-weight:600; margin-bottom:4px; }
+.acct-next-text { font-size:10px; color:var(--text-muted); line-height:1.5; }
+.acct-owner-pill { font-size:8px; color:var(--text-dim); background:var(--surface2); border-radius:3px; padding:1px 5px; position:absolute; top:12px; right:12px; }
+.acct-expand-btn { font-size:9px; color:var(--accent); background:transparent; border:none; cursor:pointer; padding:2px 0; margin-top:4px; }
+
 /* Empty/connect state */
 .ops-empty {
   padding: 60px 20px; text-align: center;
@@ -840,6 +876,9 @@ body {
     </button>
     <button class="tab-btn" id="tab-sales-btn" onclick="switchTab('sales')">
       <span class="tab-icon">📊</span> SALES &amp; OPERATIONS
+    </button>
+    <button class="tab-btn" id="tab-accounts-btn" onclick="switchTab('accounts')">
+      <span class="tab-icon">🏢</span> ACCOUNTS
     </button>
   </div>
 
@@ -912,6 +951,11 @@ body {
     <div class="ops-col ops-col-tasks" id="ops-tasks-col"></div>
     <div class="ops-col ops-col-pipeline" id="ops-pipeline-col"></div>
   </div>
+</div>
+
+<!-- ══ ACCOUNTS TAB ═════════════════════════════════════════════════════════ -->
+<div id="panel-accounts" class="tab-panel">
+  <div id="accounts-main"></div>
 </div>
 
 <!-- Anthropic API key modal -->
@@ -988,6 +1032,7 @@ function switchTab(tab){
     const cont=document.getElementById("panel-"+tab);
     if(cont) renderClaudeBrief(cont, CLAUDE_VIEW_NAME||"Johann", tab);
   }
+  if(tab==="accounts") renderAccountManagement();
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1497,6 +1542,130 @@ function stageColor(label){
     _stageColorMap[label]=STAGE_COLORS[keys.length % STAGE_COLORS.length];
   }
   return _stageColorMap[label];
+}
+
+function computeHealthScore(company){
+  // Health = composite of recency of contact, open deals, and activity
+  // Returns {score: 0-100, label: 'Healthy'|'At Risk'|'Needs Attention'|'Unknown', cls: 'green'|'amber'|'red'|'grey'}
+  if(company.daysSinceContact===null && !company.openDeals) return {score:null,label:"Unknown",cls:"grey"};
+  let score=100;
+  const days=company.daysSinceContact;
+  if(days===null){ score-=40; }
+  else if(days>90){ score-=50; }
+  else if(days>30){ score-=25; }
+  else if(days>14){ score-=10; }
+  if(company.openDeals>0) score+=10;
+  if(company.recentDealAmount>0) score=Math.min(score+5,100);
+  if(company.notes&&company.notes.length) score=Math.min(score+5,100);
+  score=Math.max(0,Math.min(100,score));
+  if(score>=70) return {score,label:"Healthy",cls:"green"};
+  if(score>=40) return {score,label:"At Risk",cls:"amber"};
+  return {score,label:"Needs Attention",cls:"red"};
+}
+
+function getNextSteps(company, health){
+  if(health.cls==="red"){
+    const d=company.daysSinceContact;
+    if(d>90) return "No contact in "+d+" days — schedule a check-in call.";
+    if(d>30) return "Last contacted "+d+" days ago — follow up to stay top of mind.";
+    return "Review account health and confirm go-live status.";
+  }
+  if(health.cls==="amber"){
+    if(company.openDeals>0) return company.openDeals+" open deal"+(company.openDeals>1?"s":"")+". Confirm next steps and close date.";
+    return "No open deals — explore expansion or renewal opportunities.";
+  }
+  if(company.openDeals>0) return "Active deal in progress — keep momentum going.";
+  return "Account is active. Consider a QBR or upsell conversation.";
+}
+
+function renderAccountManagement(){
+  const container=document.getElementById("accounts-main");
+  if(!container) return;
+  container.innerHTML="";
+  const companies=(HS_DATA&&HS_DATA.companies)||[];
+  if(!companies.length){
+    container.innerHTML=\`<div style="padding:60px;text-align:center;color:var(--text-dim);font-size:12px;">No customer companies found in HubSpot.<br><br>Make sure companies are marked with lifecycle stage <strong>Customer</strong>.</div>\`;
+    return;
+  }
+  // Toolbar
+  const toolbar=document.createElement("div"); toolbar.className="acct-toolbar";
+  const title=document.createElement("span"); title.className="acct-toolbar-title"; title.textContent="\uD83C\uDFE2  ACCOUNT MANAGEMENT  \u2014  "+companies.length+" customers";
+  const search=document.createElement("input"); search.type="text"; search.className="acct-search"; search.placeholder="Search accounts\u2026";
+  const filters=[{key:"all",label:"All"},{key:"red",label:"\uD83D\uDD34 Needs Attention"},{key:"amber",label:"\uD83D\uDFE0 At Risk"},{key:"green",label:"\uD83D\uDFE2 Healthy"}];
+  let activeFilter="all";
+  const filterBtns=[];
+  filters.forEach(f=>{
+    const btn=document.createElement("button"); btn.className="acct-filter-btn"+(f.key==="all"?" active":""); btn.textContent=f.label;
+    btn.addEventListener("click",()=>{ activeFilter=f.key; filterBtns.forEach(b=>b.classList.remove("active")); btn.classList.add("active"); renderCards(); });
+    filterBtns.push(btn); toolbar.appendChild(btn);
+  });
+  toolbar.appendChild(title); toolbar.appendChild(search); container.appendChild(toolbar);
+  const grid=document.createElement("div"); grid.className="acct-grid"; container.appendChild(grid);
+  const enriched=companies.map(c=>({...c,health:computeHealthScore(c),nextSteps:getNextSteps(c,computeHealthScore(c))}));
+  function renderCards(){
+    const q=(search.value||"").toLowerCase();
+    grid.innerHTML="";
+    const visible=enriched.filter(c=>{
+      if(q&&!c.name.toLowerCase().includes(q)&&!(c.domain||"").includes(q)) return false;
+      if(activeFilter!=="all"&&c.health.cls!==activeFilter) return false;
+      return true;
+    }).sort((a,b)=>{
+      const rank={red:0,amber:1,grey:2,green:3};
+      return (rank[a.health.cls]??9)-(rank[b.health.cls]??9);
+    });
+    for(const c of visible){
+      const card=document.createElement("div"); card.className="acct-card";
+      const hsUrl=HS_DATA&&HS_DATA.portalId?\`https://app.hubspot.com/contacts/\${HS_DATA.portalId}/company/\${c.id}\`:null;
+      if(hsUrl) card.addEventListener("click",()=>window.open(hsUrl,"_blank"));
+      // Owner pill
+      if(c.ownerName){
+        const op=document.createElement("span"); op.className="acct-owner-pill"; op.textContent=c.ownerName.split(" ")[0]; card.appendChild(op);
+      }
+      // Top row: avatar + name + health
+      const top=document.createElement("div"); top.className="acct-card-top";
+      const av=document.createElement("div"); av.className="acct-avatar"; av.textContent=(c.name||"?")[0].toUpperCase();
+      const nameWrap=document.createElement("div");
+      const nm=document.createElement("div"); nm.className="acct-name"; nm.textContent=c.name;
+      const dm=document.createElement("div"); dm.className="acct-domain"; dm.textContent=c.domain||"";
+      nameWrap.appendChild(nm); nameWrap.appendChild(dm);
+      const hbadge=document.createElement("div"); hbadge.className="acct-health";
+      const hb=document.createElement("span"); hb.className=\`health-badge health-\${c.health.cls}\`; hb.textContent=c.health.label;
+      hbadge.appendChild(hb);
+      top.appendChild(av); top.appendChild(nameWrap); top.appendChild(hbadge);
+      card.appendChild(top);
+      // Meta chips
+      const metaRow=document.createElement("div"); metaRow.className="acct-meta-row";
+      const dsc=c.daysSinceContact;
+      const contactCls=dsc===null?"":dsc>30?"warn":"ok";
+      const contactTxt=dsc===null?"Never contacted":dsc===0?"Contacted today":dsc===1?"Contacted yesterday":""+dsc+"d since contact";
+      [{txt:contactTxt,cls:contactCls},{txt:c.contacts+" contact"+(c.contacts!==1?"s":""),cls:""},{txt:c.openDeals+" open deal"+(c.openDeals!==1?"s":""),cls:c.openDeals>0?"ok":""}].forEach(m=>{
+        const ch=document.createElement("span"); ch.className="acct-meta-chip"+(m.cls?" "+m.cls:""); ch.textContent=m.txt; metaRow.appendChild(ch);
+      });
+      card.appendChild(metaRow);
+      // Recent notes
+      if(c.notes&&c.notes.length){
+        const nl=document.createElement("div"); nl.className="acct-section-label"; nl.textContent="RECENT NOTES"; card.appendChild(nl);
+        c.notes.slice(0,2).forEach(n=>{
+          const nd=document.createElement("div"); nd.className="acct-note";
+          if(n.date){ const dl=document.createElement("div"); dl.className="acct-note-date"; dl.textContent=fmtDate(n.date); nd.appendChild(dl); }
+          const nb=document.createElement("div"); nb.textContent=(n.body||"").slice(0,120)+(n.body&&n.body.length>120?"\u2026":""); nd.appendChild(nb);
+          nl.parentNode&&nl.parentNode.appendChild(nd); card.appendChild(nd);
+        });
+      }
+      // Next steps
+      const ns=document.createElement("div"); ns.className="acct-next-steps";
+      const nsl=document.createElement("div"); nsl.className="acct-next-label"; nsl.textContent="\u2192 SUGGESTED NEXT STEP";
+      const nst=document.createElement("div"); nst.className="acct-next-text"; nst.textContent=c.nextSteps;
+      ns.appendChild(nsl); ns.appendChild(nst); card.appendChild(ns);
+      grid.appendChild(card);
+    }
+    if(!visible.length){
+      const em=document.createElement("div"); em.style.cssText="grid-column:1/-1;padding:40px;text-align:center;color:var(--text-dim);font-size:11px;";
+      em.textContent="No accounts match your search or filter."; grid.appendChild(em);
+    }
+  }
+  search.addEventListener("input",renderCards);
+  renderCards();
 }
 
 function renderSalesFunnels(){
