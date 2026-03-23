@@ -1186,7 +1186,7 @@ function renderCustomerCommitments(container){
           if(iss.url) issRow.style.cursor="pointer";
           issRow.addEventListener("click",function(){ if(iss.url) window.open(iss.url,"_blank"); });
           const stBadge=document.createElement("span"); stBadge.className="ini-iss-status"; stBadge.style.background=sc(iss.status)+"22"; stBadge.style.color=sc(iss.status); stBadge.textContent=iss.status;
-          const ownerEl=document.createElement("span"); ownerEl.className="ini-iss-owner"; ownerEl.textContent=iss.assignee?ownerFirst(iss.assignee):"";
+          const ownerEl=document.createElement("span"); ownerEl.className="ini-iss-owner"; ownerEl.textContent=iss.assignee?(iss.assignee.split(" ")[0]):"";
           const estEl=document.createElement("span"); estEl.className="ini-iss-est"; estEl.textContent=iss.estimate!=null?iss.estimate+"pt":"";
           issRow.appendChild(pDot); issRow.appendChild(idEl); issRow.appendChild(titleEl); issRow.appendChild(stBadge); issRow.appendChild(ownerEl); issRow.appendChild(estEl);
           row.appendChild(issRow);
