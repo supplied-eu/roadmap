@@ -766,6 +766,52 @@ body {
   border-top: 2px solid var(--border);
 }
 
+/* ── Sales Funnels ─────────────────────────────────────────────────────────── */
+.sales-funnels {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border-bottom: 2px solid var(--border);
+}
+.funnel-panel {
+  padding: 16px 20px 20px; border-right: 1px solid var(--border);
+}
+.funnel-panel:last-child { border-right: none; }
+.funnel-title {
+  font-size: 8px; letter-spacing: 1.4px; color: var(--text-dim);
+  font-weight: 500; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.funnel-title-kpi {
+  margin-left: auto; font-size: 10px; color: var(--text); letter-spacing: 0; font-weight: 600;
+}
+.funnel-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
+}
+.funnel-label {
+  font-size: 10px; color: var(--text-muted); width: 110px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.funnel-bar-wrap {
+  flex: 1; height: 18px; background: var(--surface2); border-radius: 3px; overflow: hidden; position: relative;
+}
+.funnel-bar {
+  height: 100%; border-radius: 3px; transition: width .4s ease; min-width: 2px;
+  display: flex; align-items: center; padding-left: 6px;
+}
+.funnel-bar-label {
+  font-size: 9px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden;
+}
+.funnel-meta {
+  font-size: 9px; color: var(--text-dim); width: 70px; text-align: right; flex-shrink: 0; white-space: nowrap;
+}
+.funnel-won-row {
+  display: flex; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);
+}
+.funnel-won-kpi {
+  flex: 1; background: var(--surface2); border-radius: 5px; padding: 8px 10px;
+}
+.funnel-won-kpi-label { font-size: 8px; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 3px; }
+.funnel-won-kpi-val { font-size: 13px; font-weight: 600; color: var(--text); }
+.funnel-won-kpi-val.green { color: #10b981; }
+.funnel-won-kpi-val.red { color: #ef4444; }
+
 /* Empty/connect state */
 .ops-empty {
   padding: 60px 20px; text-align: center;
@@ -859,6 +905,8 @@ body {
   <div class="owner-strip" id="owner-strip">
     <span class="owner-strip-label">OWNER</span>
   </div>
+
+  <div class="sales-funnels" id="sales-funnels-row"></div>
 
   <div class="ops-layout" id="ops-layout">
     <div class="ops-col ops-col-tasks" id="ops-tasks-col"></div>
@@ -1449,6 +1497,112 @@ function stageColor(label){
     _stageColorMap[label]=STAGE_COLORS[keys.length % STAGE_COLORS.length];
   }
   return _stageColorMap[label];
+}
+
+function renderSalesFunnels(){
+  const wrap=document.getElementById("sales-funnels-row");
+  if(!wrap||!HS_DATA) return;
+  wrap.innerHTML="";
+  const cur=HS_DATA.currency||"\u20AC";
+
+  // ── DEAL FUNNEL ───────────────────────────────────────────────────────────
+  const dealPanel=document.createElement("div"); dealPanel.className="funnel-panel";
+  const dealTitle=document.createElement("div"); dealTitle.className="funnel-title";
+  const openDeals=(HS_DATA.deals||[]).filter(d=>!isDoneStage(d.stageLabel));
+  const totalPipeVal=openDeals.reduce((s,d)=>s+(d.amount||0),0);
+  dealTitle.innerHTML=\`<span>\uD83D\uDCC8  DEAL PIPELINE</span><span class="funnel-title-kpi">\${cur}\${totalPipeVal.toLocaleString()}</span>\`;
+  dealPanel.appendChild(dealTitle);
+
+  // Build ordered stages from pipeline data, fall back to deal stage labels
+  const pipelines=HS_DATA.pipelines||[];
+  let orderedStages=[];
+  if(pipelines.length){
+    // Use first pipeline's stage order (or merge all)
+    const seen=new Set();
+    for(const pipe of pipelines){
+      for(const s of (pipe.stages||[])){
+        if(!seen.has(s.label)){ seen.add(s.label); orderedStages.push(s); }
+      }
+    }
+  }
+  // Count deals per stage
+  const stageDeals={};
+  for(const d of openDeals){
+    const sl=d.stageLabel||d.stage||"Unknown";
+    if(!stageDeals[sl]) stageDeals[sl]={count:0,value:0,prob:d.probability};
+    stageDeals[sl].count++;
+    stageDeals[sl].value+=(d.amount||0);
+  }
+  // Build rows: use orderedStages if available, else derive from deals
+  const funnelStages=orderedStages.length
+    ? orderedStages.filter(s=>stageDeals[s.label]).map(s=>({label:s.label,prob:s.probability,...stageDeals[s.label]}))
+    : Object.entries(stageDeals).map(([label,v])=>({label,...v}));
+  const maxCount=Math.max(1,...funnelStages.map(s=>s.count));
+  const COLORS=["#6366f1","#8b5cf6","#a78bfa","#7c3aed","#4f46e5","#3b82f6","#0ea5e9"];
+  funnelStages.forEach((s,i)=>{
+    const row=document.createElement("div"); row.className="funnel-row";
+    const lbl=document.createElement("div"); lbl.className="funnel-label"; lbl.textContent=s.label; lbl.title=s.label;
+    const barWrap=document.createElement("div"); barWrap.className="funnel-bar-wrap";
+    const bar=document.createElement("div"); bar.className="funnel-bar";
+    const pct=Math.round((s.count/maxCount)*100);
+    bar.style.cssText=\`width:\${pct}%;background:\${COLORS[i%COLORS.length]}\`;
+    const barLbl=document.createElement("span"); barLbl.className="funnel-bar-label"; barLbl.textContent=s.count+" deal"+(s.count!==1?"s":"");
+    bar.appendChild(barLbl); barWrap.appendChild(bar);
+    const meta=document.createElement("div"); meta.className="funnel-meta";
+    meta.textContent=s.value>0?cur+Math.round(s.value/1000)+"k":"—";
+    row.appendChild(lbl); row.appendChild(barWrap); row.appendChild(meta);
+    dealPanel.appendChild(row);
+  });
+  // Won/lost footer
+  const cls=HS_DATA.closedDealStats||{wonCount:0,wonValue:0,lostCount:0,lostValue:0};
+  const total90=cls.wonCount+cls.lostCount;
+  const winRate=total90>0?Math.round((cls.wonCount/total90)*100):null;
+  const wonRow=document.createElement("div"); wonRow.className="funnel-won-row";
+  [
+    {label:"WON (90d)",val:cls.wonCount?cur+Math.round(cls.wonValue/1000)+"k ("+cls.wonCount+")":"—",cls_:cls.wonCount?"green":""},
+    {label:"LOST (90d)",val:cls.lostCount?cls.lostCount+" deals":"—",cls_:cls.lostCount?"red":""},
+    {label:"WIN RATE",val:winRate!=null?winRate+"%":"—",cls_:winRate!=null&&winRate>=50?"green":winRate!=null?"red":""},
+  ].forEach(k=>{
+    const kpi=document.createElement("div"); kpi.className="funnel-won-kpi";
+    const kl=document.createElement("div"); kl.className="funnel-won-kpi-label"; kl.textContent=k.label;
+    const kv=document.createElement("div"); kv.className="funnel-won-kpi-val "+(k.cls_||""); kv.textContent=k.val;
+    kpi.appendChild(kl); kpi.appendChild(kv); wonRow.appendChild(kpi);
+  });
+  dealPanel.appendChild(wonRow);
+  wrap.appendChild(dealPanel);
+
+  // ── MARKETING FUNNEL ─────────────────────────────────────────────────────
+  const mktPanel=document.createElement("div"); mktPanel.className="funnel-panel";
+  const mktTitle=document.createElement("div"); mktTitle.className="funnel-title";
+  const lifecycle=HS_DATA.contactLifecycle||[];
+  const totalContacts=lifecycle.reduce((s,l)=>s+l.count,0);
+  mktTitle.innerHTML=\`<span>\uD83E\uDDF2  MARKETING FUNNEL</span><span class="funnel-title-kpi">\${totalContacts.toLocaleString()} contacts</span>\`;
+  mktPanel.appendChild(mktTitle);
+  const MKT_COLORS=["#06b6d4","#0ea5e9","#3b82f6","#6366f1","#8b5cf6","#10b981"];
+  const maxLC=Math.max(1,...lifecycle.map(l=>l.count));
+  lifecycle.forEach((lc,i)=>{
+    if(!lc.count) return;
+    const row=document.createElement("div"); row.className="funnel-row";
+    const lbl=document.createElement("div"); lbl.className="funnel-label"; lbl.textContent=lc.label;
+    const barWrap=document.createElement("div"); barWrap.className="funnel-bar-wrap";
+    const bar=document.createElement("div"); bar.className="funnel-bar";
+    const pct=Math.round((lc.count/maxLC)*100);
+    bar.style.cssText=\`width:\${pct}%;background:\${MKT_COLORS[i%MKT_COLORS.length]}\`;
+    const barLbl=document.createElement("span"); barLbl.className="funnel-bar-label"; barLbl.textContent=lc.count;
+    bar.appendChild(barLbl); barWrap.appendChild(bar);
+    // Conversion to next stage
+    const nextLc=lifecycle.slice(i+1).find(l=>l.count>0);
+    const convPct=nextLc?Math.round((nextLc.count/lc.count)*100):null;
+    const meta=document.createElement("div"); meta.className="funnel-meta";
+    meta.textContent=convPct!=null?"\u2192 "+convPct+"%":"";
+    row.appendChild(lbl); row.appendChild(barWrap); row.appendChild(meta);
+    mktPanel.appendChild(row);
+  });
+  if(!lifecycle.some(l=>l.count)){
+    const em=document.createElement("div"); em.style.cssText="font-size:11px;color:var(--text-dim);padding:20px 0";
+    em.textContent="No contact lifecycle data available yet."; mktPanel.appendChild(em);
+  }
+  wrap.appendChild(mktPanel);
 }
 
 function renderOps(){
@@ -2729,6 +2883,7 @@ async function init(){
       if(HS_DATA&&(HS_DATA.tasks||HS_DATA.deals)){
         populateSalesAlertBar(opsComputeStats(HS_DATA));
         populateOwnerStrip(HS_DATA);
+        renderSalesFunnels();
         renderOps();
       } else { renderOpsEmpty(); }
     } else { renderOpsEmpty(); }
