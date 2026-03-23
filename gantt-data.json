@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-23T10:46:53.537Z",
+  "refreshedAt": "2026-03-23T12:31:39.937Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -18,6 +18,18 @@
           "startDate": null,
           "targetDate": null,
           "issues": [
+            {
+              "id": "33b92c20-3915-4b0e-980c-dbc2f71533fb",
+              "identifier": "SUP-1224",
+              "title": "Add filter & signal for non-reportable (incomplete) suppliers in Operations Hub",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "Medium",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-1224/add-filter-and-signal-for-non-reportable-incomplete-suppliers-in"
+            },
             {
               "id": "80b2b7de-2de6-42cc-bc76-c328cc2731e1",
               "identifier": "SUP-984",
@@ -304,18 +316,6 @@
               "priority": "Medium",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/SUP-576/no-cors-on-api-gateway-error-responses"
-            },
-            {
-              "id": "a2017d5c-1f7f-4e20-b15e-e7c4c3344306",
-              "identifier": "SUP-571",
-              "title": "[Operations hub] Can't add/sync suppliers using relatively big files",
-              "status": "Todo",
-              "start": null,
-              "end": "2026-08-17",
-              "assignee": null,
-              "priority": "Urgent",
-              "estimate": null,
-              "url": "https://linear.app/supplied/issue/SUP-571/operations-hub-cant-addsync-suppliers-using-relatively-big-files"
             }
           ]
         },
@@ -1685,7 +1685,7 @@
               "start": null,
               "end": "2026-04-08",
               "assignee": null,
-              "priority": "High",
+              "priority": "Medium",
               "estimate": 3,
               "url": "https://linear.app/supplied/issue/SUP-1072/ability-to-sync-supplier-verification-documents-and-verification"
             },
@@ -1697,7 +1697,7 @@
               "start": null,
               "end": "2026-08-21",
               "assignee": null,
-              "priority": "Medium",
+              "priority": "High",
               "estimate": 3,
               "url": "https://linear.app/supplied/issue/SUP-1030/ability-to-sync-suppliers-and-properties-from-merged-data"
             },
@@ -6102,6 +6102,18 @@
               "priority": "High",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/IMP-20/confirm-mysql-version-and-hosting-self-hosted-vs-managed-for-connector"
+            },
+            {
+              "id": "a2017d5c-1f7f-4e20-b15e-e7c4c3344306",
+              "identifier": "SUP-571",
+              "title": "[Operations hub] Can't add/sync suppliers using relatively big files",
+              "status": "Todo",
+              "start": null,
+              "end": "2026-08-17",
+              "assignee": null,
+              "priority": "Urgent",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-571/operations-hub-cant-addsync-suppliers-using-relatively-big-files"
             }
           ]
         },
@@ -7312,7 +7324,7 @@
               "id": "9a5358dc-d1d9-4006-8dd1-e66494e2a1a6",
               "identifier": "SUP-1005",
               "title": "[Operations Hub] Don't show earnings on the verification view and in the app",
-              "status": "In Progress",
+              "status": "In Review",
               "start": "2026-03-17",
               "end": null,
               "assignee": "andrei@supplied.eu",
