@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-23T15:26:39.544Z",
+  "refreshedAt": "2026-03-23T15:53:44.824Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -883,7 +883,7 @@
     },
     {
       "id": "474917819587",
-      "subject": "Reach out to Интерне�� Хостинг Центр",
+      "subject": "Reach out to Интернет Хостинг Центр",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
@@ -1777,5 +1777,6 @@
     "wonValue": 38341,
     "lostCount": 4,
     "lostValue": 17940
-  }
+  },
+  "companies": []
 }

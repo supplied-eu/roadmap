@@ -1,25 +1,7 @@
 {
-  "refreshedAt": "2026-03-23T15:26:40.468Z",
+  "refreshedAt": "2026-03-23T15:53:46.215Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d1b4d2a47f2c46",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Please click here for important disclaimer information regarding this e-mail communication. By messaging with K1 Investment Management, LLC and its affiliated entities, you consent to the foregoing.",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d1b4d2a47f2c46",
-        "unread": true
-      },
-      {
-        "id": "19d1b4ce7c3d0b9d",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:00 - Wednesday, 25 March 2026 (Central",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d1b4ce7c3d0b9d",
-        "unread": true
-      },
       {
         "id": "19ce7f12f8358ef7",
         "subject": "(no subject)",
@@ -30,30 +12,21 @@
         "unread": true
       },
       {
+        "id": "19cded4a75632083",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
+        "unread": true
+      },
+      {
         "id": "19d0f4a455062f23",
         "subject": "(no subject)",
         "from": "",
         "date": null,
         "snippet": "English below. Hi, Jouw aangifte loonheffingen over de hieronder aangegeven periode is aangemaakt. Je kan de loonaangifte vinden onder het overzicht &#39;loonaangifte&#39;. Onderstaand vind je de",
         "url": "https://mail.google.com/mail/u/0/#inbox/19d0f4a455062f23",
-        "unread": true
-      },
-      {
-        "id": "19d1ae936fab43e6",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "AWS logo Dear AWS Customer, You recently requested AWS Fargate in Europe (Ireland) Region(s) that required additional validation. Your request has now been validated. If you did not make this request",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d1ae936fab43e6",
-        "unread": true
-      },
-      {
-        "id": "19d0f4a35f0e8cd4",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "English below. Hi, Jouw aangifte loonheffingen over de hieronder aangegeven periode is aangemaakt. Je kan de loonaangifte vinden onder het overzicht &#39;loonaangifte&#39;. Onderstaand vind je de",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d0f4a35f0e8cd4",
         "unread": true
       },
       {
@@ -75,12 +48,48 @@
         "unread": true
       },
       {
-        "id": "19ce82e9d0fab621",
+        "id": "19d1ae936fab43e6",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "snippet": "AWS logo Dear AWS Customer, You recently requested AWS Fargate in Europe (Ireland) Region(s) that required additional validation. Your request has now been validated. If you did not make this request",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d1ae936fab43e6",
+        "unread": true
+      },
+      {
+        "id": "19cde516ee128e60",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
+        "unread": true
+      },
+      {
+        "id": "19d0f4a35f0e8cd4",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "English below. Hi, Jouw aangifte loonheffingen over de hieronder aangegeven periode is aangemaakt. Je kan de loonaangifte vinden onder het overzicht &#39;loonaangifte&#39;. Onderstaand vind je de",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d0f4a35f0e8cd4",
+        "unread": true
+      },
+      {
+        "id": "19cfc73957f9533b",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Regus Uw Regus ervaring Re: Uw ervaring bij ZWOLLE, Trade Centre Om onze service voortdurend te kunnen verbeteren zijn wij zeer geinteresseeerd naar uw ervaring op uw locatie. Het invullen van de",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cfc73957f9533b",
+        "unread": true
+      },
+      {
+        "id": "19cf4de5565b3976",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
         "unread": true
       },
       {
@@ -93,15 +102,6 @@
         "unread": true
       },
       {
-        "id": "19cd4f96e1d663cb",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hi Johann, Thanks for the note. I&#39;ve grabbed time for Thursday, March 19 th at 8:30am PST (4:30pm CET). Looking forward to connecting and safe travels! Best, Casey Casey Coppock K1 875 Manhattan",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cd4f96e1d663cb",
-        "unread": true
-      },
-      {
         "id": "19ce6606ba2e3745",
         "subject": "(no subject)",
         "from": "",
@@ -111,7 +111,7 @@
         "unread": true
       }
     ],
-    "unreadCount": 40
+    "unreadCount": 37
   },
   "calendar": {
     "today": [
@@ -302,6 +302,22 @@
   "drive": {
     "recent": [
       {
+        "id": "1qVcfeXZl8q3Lg5jcuXBoVkqNMkqOt4Zk",
+        "name": "ISOGapEvidence",
+        "mimeType": "application/vnd.google-apps.folder",
+        "modifiedTime": "2025-08-11T10:19:41.881Z",
+        "url": "https://drive.google.com/drive/folders/1qVcfeXZl8q3Lg5jcuXBoVkqNMkqOt4Zk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
+        "name": "Notes - Commerce<>Product Weekly",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-23T15:42:45.549Z",
+        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "1hiV4HmwL5fdZAZAJGmcJkCTqqeKVZBESaECDhqBYWhY",
         "name": "Partnership applications",
         "mimeType": "application/vnd.google-apps.document",
@@ -358,14 +374,6 @@
         "lastModifiedBy": "Johann Rozario"
       },
       {
-        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
-        "name": "Notes - Commerce<>Product Weekly",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-18T10:38:37.496Z",
-        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
         "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
         "name": "Supplied_SALES_Revenue_Costs_Master_File",
         "mimeType": "application/vnd.google-apps.spreadsheet",
@@ -388,14 +396,6 @@
         "modifiedTime": "2026-03-16T10:32:11.519Z",
         "url": "https://docs.google.com/document/d/1KNwfaUpHj4e0mbh8KiUmYXND8-yValjCl7TZpK8mLrE/edit?usp=drivesdk",
         "lastModifiedBy": "Julio Lindveld"
-      },
-      {
-        "id": "1ubwRQff2htbItm1hpLZNtVLUSM9m2xlHjowZYQGPKdA",
-        "name": "Product and Engineering Roadmap Supplied",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-02-27T14:21:40.414Z",
-        "url": "https://docs.google.com/spreadsheets/d/1ubwRQff2htbItm1hpLZNtVLUSM9m2xlHjowZYQGPKdA/edit?usp=drivesdk",
-        "lastModifiedBy": "Vladimir Ivanov"
       }
     ]
   },
