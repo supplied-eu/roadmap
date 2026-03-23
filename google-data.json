@@ -1,14 +1,32 @@
 {
-  "refreshedAt": "2026-03-23T15:53:46.215Z",
+  "refreshedAt": "2026-03-23T15:58:09.388Z",
   "gmail": {
     "threads": [
       {
-        "id": "19ce7f12f8358ef7",
+        "id": "19d1ad8532f913ef",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
+        "snippet": "Hi Teddy, I wanted to introduce you to Johann Rozario, founder and CEO of Supplied. Supplied is an up-and-coming Fintech company based in the Netherlands. Their main business proposition is to partner",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d1ad8532f913ef",
+        "unread": true
+      },
+      {
+        "id": "19cded4a75632083",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
+        "unread": true
+      },
+      {
+        "id": "19cde516ee128e60",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
         "unread": true
       },
       {
@@ -30,12 +48,21 @@
         "unread": true
       },
       {
-        "id": "19ce0214716b0ff0",
+        "id": "19cf4de5565b3976",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "unread": true
+      },
+      {
+        "id": "19ce82e9d0fab621",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
         "unread": true
       },
       {
@@ -48,33 +75,6 @@
         "unread": true
       },
       {
-        "id": "19d1ae936fab43e6",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "AWS logo Dear AWS Customer, You recently requested AWS Fargate in Europe (Ireland) Region(s) that required additional validation. Your request has now been validated. If you did not make this request",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d1ae936fab43e6",
-        "unread": true
-      },
-      {
-        "id": "19cde516ee128e60",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
-        "unread": true
-      },
-      {
-        "id": "19d0f4a35f0e8cd4",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "English below. Hi, Jouw aangifte loonheffingen over de hieronder aangegeven periode is aangemaakt. Je kan de loonaangifte vinden onder het overzicht &#39;loonaangifte&#39;. Onderstaand vind je de",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d0f4a35f0e8cd4",
-        "unread": true
-      },
-      {
         "id": "19cfc73957f9533b",
         "subject": "(no subject)",
         "from": "",
@@ -84,12 +84,12 @@
         "unread": true
       },
       {
-        "id": "19cf4de5565b3976",
+        "id": "19ce0214716b0ff0",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
         "unread": true
       },
       {
@@ -102,12 +102,21 @@
         "unread": true
       },
       {
-        "id": "19ce6606ba2e3745",
+        "id": "19d0f4a35f0e8cd4",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "snippet": "English below. Hi, Jouw aangifte loonheffingen over de hieronder aangegeven periode is aangemaakt. Je kan de loonaangifte vinden onder het overzicht &#39;loonaangifte&#39;. Onderstaand vind je de",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d0f4a35f0e8cd4",
+        "unread": true
+      },
+      {
+        "id": "19ce7f12f8358ef7",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
         "unread": true
       }
     ],
