@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-23T16:11:47.648Z",
+  "refreshedAt": "2026-03-24T09:28:02.556Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -883,7 +883,7 @@
     },
     {
       "id": "474917819587",
-      "subject": "Reach out to Интерн��т Хостинг Центр",
+      "subject": "Reach out to Интернет Хостинг Центр",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
@@ -1344,6 +1344,39 @@
       "ownerName": "Bas Bogerd"
     },
     {
+      "id": "480071084256",
+      "subject": "Reach out to STRAX GmbH",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-26",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "480081880275",
+      "subject": "Reach out to BDN Expertise",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-26",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "480157871312",
+      "subject": "Reach out to WaterWipes",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-26",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
       "id": "479982222584",
       "subject": "Follow-up with Daan",
       "status": "NOT_STARTED",
@@ -1744,17 +1777,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 11
+      "count": 2
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 44
+      "count": 4
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 2
+      "count": 1
     },
     {
       "key": "salesqualifiedlead",
@@ -1764,12 +1797,382 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 428
+      "count": 91
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 35
+      "count": 2
+    }
+  ],
+  "trafficSources": [
+    {
+      "key": "PAID_SOCIAL",
+      "thisWeek": 5,
+      "lastWeek": 5,
+      "contacts": [
+        {
+          "id": "741349508286",
+          "name": "Björg Kjartansdóttir",
+          "email": "bjorg.kjartansdottir@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-21"
+        },
+        {
+          "id": "739756525811",
+          "name": "Boris Shestopalov",
+          "email": "boris.shestopalov@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-18"
+        },
+        {
+          "id": "739263274174",
+          "name": "Andrey Kagarlytskiy",
+          "email": "a.kagarlytskiy@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-18"
+        },
+        {
+          "id": "738889455817",
+          "name": "Michalis Kyriazis",
+          "email": "mfk@kmfas.eu",
+          "stage": "opportunity",
+          "createdAt": "2026-03-18"
+        },
+        {
+          "id": "738585448652",
+          "name": "Christos Stavrou",
+          "email": "c.stavrou@akshotels.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-17"
+        },
+        {
+          "id": "736359985399",
+          "name": "Johnelyn Anenon",
+          "email": "jaanenon@yahoo.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-13"
+        },
+        {
+          "id": "735941745885",
+          "name": "Ilias Avgoustidis",
+          "email": "ili.avgoustidis@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-13"
+        },
+        {
+          "id": "735466082505",
+          "name": "Natalija Janušauskienė",
+          "email": "natalija.janusauskiene@modusmobility.group",
+          "stage": "opportunity",
+          "createdAt": "2026-03-12"
+        },
+        {
+          "id": "735460677821",
+          "name": "Christian Ölund",
+          "email": "christian@campcation.com",
+          "stage": "lead",
+          "createdAt": "2026-03-12"
+        },
+        {
+          "id": "733505879286",
+          "name": "Tim Vlas",
+          "email": "tim.vlasyuk@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-10"
+        },
+        {
+          "id": "732947589355",
+          "name": "Dorian Memo",
+          "email": "dorian_memo@yahoo.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-10"
+        },
+        {
+          "id": "732454216897",
+          "name": "Dusko Grkov",
+          "email": "dgrkov72@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-09"
+        },
+        {
+          "id": "729956367590",
+          "name": "Neda Orozovic, CFE",
+          "email": "nelulence@yahoo.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-08"
+        },
+        {
+          "id": "729744093378",
+          "name": "Tomaž Sitar",
+          "email": "tomaz.sitar@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-07"
+        },
+        {
+          "id": "728246822129",
+          "name": "George J",
+          "email": "georgejohnjoseph365@gmail.com",
+          "stage": "lead",
+          "createdAt": "2026-03-06"
+        },
+        {
+          "id": "705744216284",
+          "name": "Andrii Onopriienko",
+          "email": "onopriyenko@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-19"
+        },
+        {
+          "id": "704395079877",
+          "name": "Esmée Meeusen",
+          "email": "esmee_jasmijn@hotmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-18"
+        },
+        {
+          "id": "691079706817",
+          "name": "Sophie Magalhaes MARTINS",
+          "email": "paul@bms-inter.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-10"
+        },
+        {
+          "id": "689808586940",
+          "name": "Neal Harm",
+          "email": "harm@fci.nl",
+          "stage": "opportunity",
+          "createdAt": "2026-02-09"
+        },
+        {
+          "id": "685750095064",
+          "name": "Mualla Jonkman",
+          "email": "mualla@corendon.nl",
+          "stage": "opportunity",
+          "createdAt": "2026-02-07"
+        },
+        {
+          "id": "682248250578",
+          "name": "Vita Liepiņa",
+          "email": "vita.liepina@liaa.gov.lv",
+          "stage": "opportunity",
+          "createdAt": "2026-02-05"
+        },
+        {
+          "id": "678899361007",
+          "name": "Aida Escrivá Ordines",
+          "email": "aida@meili.travel",
+          "stage": "opportunity",
+          "createdAt": "2026-02-03"
+        },
+        {
+          "id": "677753857241",
+          "name": "Volodymyr Samborskyi",
+          "email": "v.samborskiy@finmap.online",
+          "stage": "opportunity",
+          "createdAt": "2026-02-02"
+        },
+        {
+          "id": "656831817927",
+          "name": "Christiaan van Dijk",
+          "email": "christiaan@mealtime.nl",
+          "stage": "opportunity",
+          "createdAt": "2026-01-09"
+        },
+        {
+          "id": "656831818949",
+          "name": "Jeffrey Meijer",
+          "email": "jeffrey@aikapitein.com",
+          "stage": "opportunity",
+          "createdAt": "2026-01-07"
+        }
+      ],
+      "label": "Paid Social",
+      "icon": "📢"
+    },
+    {
+      "key": "OFFLINE",
+      "thisWeek": 3,
+      "lastWeek": 2,
+      "contacts": [
+        {
+          "id": "742406726870",
+          "name": "santiago@techleap.nl",
+          "email": "santiago@techleap.nl",
+          "stage": "opportunity",
+          "createdAt": "2026-03-23"
+        },
+        {
+          "id": "742065029357",
+          "name": "Teddy Ludmer",
+          "email": "teddy.ludmer@tipalti.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-23"
+        },
+        {
+          "id": "739260842180",
+          "name": "Daan Kleiman",
+          "email": "d.kleiman@dutchcleantech.nl",
+          "stage": "opportunity",
+          "createdAt": "2026-03-18"
+        },
+        {
+          "id": "737811595503",
+          "name": "Casey Colb",
+          "email": "casey@lunacy.audio",
+          "stage": "opportunity",
+          "createdAt": "2026-03-16"
+        },
+        {
+          "id": "736094240963",
+          "name": "Jack van Asbeck",
+          "email": "jack.asbeck@gmail.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-13"
+        },
+        {
+          "id": "731692557540",
+          "name": "Folkert Trouw",
+          "email": "folkert@qhome.fr",
+          "stage": "opportunity",
+          "createdAt": "2026-03-09"
+        },
+        {
+          "id": "731312491763",
+          "name": "Vladimir Chesnokov",
+          "email": "v.chesnokov@mellow.io",
+          "stage": "opportunity",
+          "createdAt": "2026-03-09"
+        },
+        {
+          "id": "728268680392",
+          "name": "Yasin Tipiler",
+          "email": "yasin@ugc.nl",
+          "stage": "opportunity",
+          "createdAt": "2026-03-06"
+        },
+        {
+          "id": "712530707643",
+          "name": "jason@markbryn.com",
+          "email": "jason@markbryn.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-24"
+        },
+        {
+          "id": "712531150025",
+          "name": "Helene McElroy",
+          "email": "hmcelroy@multimediallc.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-24"
+        },
+        {
+          "id": "712586291438",
+          "name": "Ledia Dworkin",
+          "email": "ledia@multimediallc.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-24"
+        },
+        {
+          "id": "712586750197",
+          "name": "jwhite@multimediallc.com",
+          "email": "jwhite@multimediallc.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-24"
+        },
+        {
+          "id": "710892268752",
+          "name": "James Flynn",
+          "email": "jamesflynn@tridentholidayhomes.ie",
+          "stage": "opportunity",
+          "createdAt": "2026-02-23"
+        },
+        {
+          "id": "703892650175",
+          "name": "Sander  Pielkenrood",
+          "email": "sander@pielkenrood.net",
+          "stage": "opportunity",
+          "createdAt": "2026-02-18"
+        },
+        {
+          "id": "704158376125",
+          "name": "gijs.beumkes@aic4nl.nl",
+          "email": "gijs.beumkes@aic4nl.nl",
+          "stage": "opportunity",
+          "createdAt": "2026-02-18"
+        },
+        {
+          "id": "702782871794",
+          "name": "Giel Hendriks",
+          "email": "giel.hendrikx@bookingexperts.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-18"
+        },
+        {
+          "id": "702695687396",
+          "name": "Wietze Bootsma",
+          "email": "wietze@bookingexperts.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-18"
+        },
+        {
+          "id": "702693528770",
+          "name": "Marion Dufour",
+          "email": "marion_dufour@loewe.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-18"
+        },
+        {
+          "id": "702748097734",
+          "name": "c_hm8bs2gs5nt9h0j5qq1fke24mo@group.calendar.google.com",
+          "email": "c_hm8bs2gs5nt9h0j5qq1fke24mo@group.calendar.google.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-17"
+        },
+        {
+          "id": "702782633154",
+          "name": "Vym Devabhai",
+          "email": "vym.devabhai@avalara.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-17"
+        },
+        {
+          "id": "698766028007",
+          "name": "Robin Tjassens",
+          "email": "robin.tjassens@oostnl.nl",
+          "stage": "subscriber",
+          "createdAt": "2026-02-16"
+        },
+        {
+          "id": "695354886331",
+          "name": "alexandre@lincolninvest-ag.com",
+          "email": "alexandre@lincolninvest-ag.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-12"
+        },
+        {
+          "id": "695345501431",
+          "name": "benjamin@ruppfinance.com",
+          "email": "benjamin@ruppfinance.com",
+          "stage": "opportunity",
+          "createdAt": "2026-02-12"
+        },
+        {
+          "id": "693722224883",
+          "name": "jonas.janssen@dtcp.capital",
+          "email": "jonas.janssen@dtcp.capital",
+          "stage": "opportunity",
+          "createdAt": "2026-02-11"
+        },
+        {
+          "id": "690752273647",
+          "name": "Melvin van Jaarsveld",
+          "email": "mja@nahv.nl",
+          "stage": "opportunity",
+          "createdAt": "2026-02-10"
+        }
+      ],
+      "label": "Offline",
+      "icon": "📴"
     }
   ],
   "closedDealStats": {
@@ -1777,5 +2180,6 @@
     "wonValue": 38341,
     "lostCount": 4,
     "lostValue": 17940
-  }
+  },
+  "companies": []
 }
