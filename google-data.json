@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T14:06:06.206Z",
+  "refreshedAt": "2026-03-24T15:29:56.640Z",
   "gmail": {
     "threads": [
       {
@@ -12,21 +12,30 @@
         "unread": true
       },
       {
-        "id": "19cded4a75632083",
+        "id": "19ce6606ba2e3745",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
+        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
         "unread": true
       },
       {
-        "id": "19cfedcbae96beb5",
+        "id": "19ce82e9d0fab621",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Nagenieten: vertel ons over jouw vakantie‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cfedcbae96beb5",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "unread": true
+      },
+      {
+        "id": "19cde516ee128e60",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
         "unread": true
       },
       {
@@ -57,12 +66,30 @@
         "unread": true
       },
       {
-        "id": "19cf4de5565b3976",
+        "id": "19cc2fcaa76e484f",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "snippet": "Hi Willem, I am aware of the interest; as previously mentioned, this was already explained (see the image below). It is common practice during fiscal closing to provide explanations for small, short-",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cc2fcaa76e484f",
+        "unread": true
+      },
+      {
+        "id": "19d20409cb832818",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "You have 1 unread notification on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emails: https://linear.app/unsubscribe?token=",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d20409cb832818",
+        "unread": true
+      },
+      {
+        "id": "19cded4a75632083",
+        "subject": "(no subject)",
+        "from": "",
+        "date": null,
+        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
         "unread": true
       },
       {
@@ -75,43 +102,16 @@
         "unread": true
       },
       {
-        "id": "19cde516ee128e60",
+        "id": "19cf4de5565b3976",
         "subject": "(no subject)",
         "from": "",
         "date": null,
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
-        "unread": true
-      },
-      {
-        "id": "19ce82e9d0fab621",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
-        "unread": true
-      },
-      {
-        "id": "19cc2fcaa76e484f",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Hi Willem, I am aware of the interest; as previously mentioned, this was already explained (see the image below). It is common practice during fiscal closing to provide explanations for small, short-",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cc2fcaa76e484f",
-        "unread": true
-      },
-      {
-        "id": "19ce6606ba2e3745",
-        "subject": "(no subject)",
-        "from": "",
-        "date": null,
-        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
         "unread": true
       }
     ],
-    "unreadCount": 34
+    "unreadCount": 35
   },
   "calendar": {
     "today": [
@@ -293,7 +293,7 @@
         "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
         "name": "Notes - Commerce<>Product Weekly",
         "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-24T13:49:12.067Z",
+        "modifiedTime": "2026-03-24T15:22:15.455Z",
         "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
       },

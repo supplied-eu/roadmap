@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T14:06:05.249Z",
+  "refreshedAt": "2026-03-24T15:29:55.726Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -883,7 +883,7 @@
     },
     {
       "id": "474917819587",
-      "subject": "Reach out to Интернет Хостинг Центр",
+      "subject": "Reach out to Интер��ет Хостинг Центр",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
@@ -1486,7 +1486,7 @@
       "amount": 9588,
       "closeDate": "2026-01-31",
       "createDate": "2026-01-07",
-      "modifiedDate": "2026-03-22",
+      "modifiedDate": "2026-03-24",
       "ownerId": "687091984",
       "probability": 0.4,
       "stageLabel": "Negotiation & Evaluation",
@@ -1514,7 +1514,7 @@
       "amount": 10000,
       "closeDate": "2026-03-31",
       "createDate": "2026-02-20",
-      "modifiedDate": "2026-03-23",
+      "modifiedDate": "2026-03-24",
       "ownerId": "687091984",
       "probability": 0.4,
       "stageLabel": "Negotiation & Evaluation",
@@ -1570,7 +1570,7 @@
       "amount": 25000,
       "closeDate": "2026-04-30",
       "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-23",
+      "modifiedDate": "2026-03-24",
       "ownerId": "29853062",
       "probability": 0.2,
       "stageLabel": "Discovery call scheduled",
@@ -1845,7 +1845,7 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 91
+      "count": 429
     },
     {
       "key": "customer",
@@ -1856,8 +1856,8 @@
   "trafficSources": [
     {
       "key": "PAID_SOCIAL",
-      "thisWeek": 5,
-      "lastWeek": 4,
+      "thisWeek": 4,
+      "lastWeek": 5,
       "contacts": [
         {
           "id": "741349508286",
@@ -2040,9 +2040,16 @@
     },
     {
       "key": "OFFLINE",
-      "thisWeek": 3,
+      "thisWeek": 4,
       "lastWeek": 2,
       "contacts": [
+        {
+          "id": "743288673473",
+          "name": "Anna Mihnovica",
+          "email": "a.mihnovica@mellow.io",
+          "stage": "opportunity",
+          "createdAt": "2026-03-24"
+        },
         {
           "id": "742406726870",
           "name": "santiago@techleap.nl",
@@ -2210,13 +2217,6 @@
           "email": "jonas.janssen@dtcp.capital",
           "stage": "opportunity",
           "createdAt": "2026-02-11"
-        },
-        {
-          "id": "690752273647",
-          "name": "Melvin van Jaarsveld",
-          "email": "mja@nahv.nl",
-          "stage": "opportunity",
-          "createdAt": "2026-02-10"
         }
       ],
       "label": "Offline",

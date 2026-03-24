@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T14:06:02.242Z",
+  "refreshedAt": "2026-03-24T15:29:53.285Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -5855,8 +5855,8 @@
               "id": "ad02cb78-a954-4e28-aaa9-dba7d73d2b8b",
               "identifier": "SUP-1229",
               "title": "Increase Memory Capacity for Tarisio data import to 4gb",
-              "status": "Todo",
-              "start": null,
+              "status": "In Progress",
+              "start": "2026-03-24",
               "end": "2026-03-24",
               "assignee": "Ivan Tiniakov",
               "priority": "Urgent",
