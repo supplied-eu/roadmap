@@ -1209,41 +1209,50 @@ function renderGantt(){
   populateGanttInsights();
 }
 
-// ── Deal Close Dates (HubSpot) shown in Gantt alongside commitments ───────────
+// ── Deal Close Dates (HubSpot) — proper Gantt bars aligned with timeline ──────
 function renderDealCloseDates(container){
   if(!HS_DATA||!HS_DATA.deals||!HS_DATA.deals.length) return;
-  // Only show active deals with a close date, sorted soonest first
   const DONE=new Set(["closedwon","closedlost","closed won","closed lost"]);
   const active=HS_DATA.deals
     .filter(d=>d.closeDate&&!DONE.has((d.stageLabel||d.stage||"").toLowerCase()))
     .sort((a,b)=>new Date(a.closeDate)-new Date(b.closeDate));
   if(!active.length) return;
+
+  // Sub-header row styled the same as section headers but smaller
   const subHdr=document.createElement("div");
-  subHdr.style.cssText="padding:4px 12px 2px;font-size:10px;color:var(--text-muted);letter-spacing:.5px;font-weight:600;text-transform:uppercase;margin-top:6px;";
-  subHdr.textContent="💼 HubSpot Deals — Close Dates";
+  subHdr.style.cssText="padding:6px 12px 2px;font-size:9px;color:var(--text-muted);letter-spacing:.8px;font-weight:700;text-transform:uppercase;margin-top:4px;display:flex;gap:8px;";
+  subHdr.textContent="\uD83D\uDCBC  HubSpot pipeline close dates";
   container.appendChild(subHdr);
-  const tree=document.createElement("div"); tree.className="ini-tree"; container.appendChild(tree);
-  for(const d of active.slice(0,12)){
-    const row=document.createElement("div"); row.className="ini-row";
-    const hdr=document.createElement("div"); hdr.className="ini-hdr";
-    const name=document.createElement("span"); name.className="ini-name"; name.textContent=d.name||"(untitled)";
+
+  const amt=(d)=>d.amount?(HS_DATA.currency||"\u20AC")+Number(d.amount).toLocaleString("en"):"";
+  for(const d of active.slice(0,15)){
     const dd=daysDiff(d.closeDate);
     const isPast=dd<0;
-    const isSoon=dd>=0&&dd<=14;
-    const dateBadge=document.createElement("span");
-    dateBadge.className="ini-hdr-count";
-    dateBadge.style.cssText=isPast?"color:#ef4444;font-weight:600;":isSoon?"color:#f97316;font-weight:600;":"";
-    dateBadge.textContent=(isPast?"\u26A0\uFE0F overdue \u00b7 ":isSoon?"\u23F0 soon \u00b7 ":"")+fmtDate(d.closeDate);
-    const stage=document.createElement("span");
-    stage.style.cssText="font-size:9px;padding:1px 6px;border-radius:9px;background:var(--bg-card);color:var(--text-muted);margin-left:4px;flex-shrink:0;";
-    stage.textContent=d.stageLabel||d.stage||"";
-    const amt=document.createElement("span");
-    amt.style.cssText="font-size:10px;color:var(--accent);margin-left:auto;flex-shrink:0;padding-right:4px;";
-    if(d.amount) amt.textContent=(HS_DATA.currency||"\u20AC")+Number(d.amount).toLocaleString("en");
-    hdr.appendChild(name); hdr.appendChild(stage); hdr.appendChild(amt); hdr.appendChild(dateBadge);
-    if(HS_DATA.portalId){ row.style.cursor="pointer"; hdr.addEventListener("click",()=>window.open(\`https://app.hubspot.com/contacts/\${HS_DATA.portalId}/deal/\${d.id}\`,"_blank")); }
-    row.appendChild(hdr);
-    tree.appendChild(row);
+    const isSoon=!isPast&&dd<=14;
+    // Color: red = overdue, orange = ≤14d, blue = future
+    const color=isPast?"#ef4444":isSoon?"#f97316":"#3b82f6";
+    // Bar spans from createDate (or 30 days before close) → closeDate
+    const barStart=d.createDate||new Date(new Date(d.closeDate)-30*864e5).toISOString().split("T")[0];
+    const stageStr=d.stageLabel||d.stage||"";
+    const amtStr=amt(d);
+    const label=d.name+(amtStr?" · "+amtStr:"")+(stageStr?" ["+stageStr+"]":"");
+    const hubUrl=HS_DATA.portalId?\`https://app.hubspot.com/contacts/\${HS_DATA.portalId}/deal/\${d.id}\`:null;
+    const row=makeGanttRow({
+      indent:0,
+      label:d.name+(amtStr?" · "+amtStr:""),
+      status:stageStr,
+      color,
+      start:barStart,
+      end:d.closeDate,
+      url:hubUrl,
+      hasChildren:false,
+      isExpanded:false,
+      isIni:false,
+      barClickable:!!hubUrl,
+      overdueFlag:isPast,
+      barData:{label,status:stageStr,start:barStart,end:d.closeDate,url:hubUrl,clickable:!!hubUrl},
+    });
+    container.appendChild(row);
   }
 }
 
