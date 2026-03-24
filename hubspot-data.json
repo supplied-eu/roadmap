@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T09:28:02.556Z",
+  "refreshedAt": "2026-03-24T09:31:53.308Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1777,17 +1777,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 2
+      "count": 11
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 4
+      "count": 44
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 1
+      "count": 2
     },
     {
       "key": "salesqualifiedlead",
@@ -1797,12 +1797,12 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 91
+      "count": 428
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 2
+      "count": 35
     }
   ],
   "trafficSources": [
@@ -1813,7 +1813,7 @@
       "contacts": [
         {
           "id": "741349508286",
-          "name": "Björg Kjartansdóttir",
+          "name": "Björg Kjartansd��ttir",
           "email": "bjorg.kjartansdottir@gmail.com",
           "stage": "opportunity",
           "createdAt": "2026-03-21"
