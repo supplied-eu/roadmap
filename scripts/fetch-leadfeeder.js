@@ -26,14 +26,15 @@ if (!API_KEY) {
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 
-function lfGet(urlPath, params = {}) {
+function lfGet(urlPath, params = {}, authHeader = null) {
   const qs = new URLSearchParams(params).toString();
   const url = `https://api.leadfeeder.com${urlPath}${qs ? "?" + qs : ""}`;
+  const auth = authHeader || `Token token=${API_KEY}`;
   return new Promise((resolve, reject) => {
     const req = https.request(url, {
       method: "GET",
       headers: {
-        "Authorization": `Token token=${API_KEY}`,
+        "Authorization": auth,
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
@@ -41,8 +42,8 @@ function lfGet(urlPath, params = {}) {
       let body = "";
       res.on("data", d => body += d);
       res.on("end", () => {
-        try { resolve({ status: res.statusCode, data: JSON.parse(body) }); }
-        catch (e) { reject(new Error(`JSON parse error for ${url}: ${e.message}\nBody: ${body.slice(0,200)}`)); }
+        try { resolve({ status: res.statusCode, data: JSON.parse(body), raw: body }); }
+        catch (e) { resolve({ status: res.statusCode, data: {}, raw: body }); }
       });
     });
     req.on("error", reject);
@@ -59,34 +60,67 @@ function daysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return d
 
 async function fetchAccountId() {
   console.log("→ Fetching Leadfeeder accounts...");
-  const { status, data } = await lfGet("/accounts");
-  if (status !== 200) throw new Error(`Accounts fetch failed: HTTP ${status}`);
-  // JSON:API: data.data is the array; legacy: data.accounts
-  const accounts = data.data || data.accounts || [];
-  if (!accounts.length) {
-    console.log("  Raw response keys:", Object.keys(data).join(", "));
-    throw new Error("No Leadfeeder accounts found");
+
+  // Try both auth styles — old API uses "Token token=X", new may use "Bearer X"
+  const authStyles = [
+    `Token token=${API_KEY}`,
+    `Bearer ${API_KEY}`,
+  ];
+
+  let lastStatus, lastRaw;
+  for (const auth of authStyles) {
+    const { status, data, raw } = await lfGet("/accounts", {}, auth);
+    lastStatus = status; lastRaw = raw;
+    console.log(`  Auth [${auth.split(" ")[0]}]: HTTP ${status}`);
+
+    if (status !== 200) {
+      console.log(`  Response (first 300): ${raw.slice(0, 300)}`);
+      continue;
+    }
+
+    // Log full response shape for debugging
+    console.log(`  Response keys: ${Object.keys(data).join(", ")}`);
+    console.log(`  Response (first 500): ${raw.slice(0, 500)}`);
+
+    // Handle multiple response shapes:
+    // 1. JSON:API  { data: [{id, attributes:{}}] }
+    // 2. Legacy    { accounts: [{identifier, name}] }
+    // 3. Single    { id, name } or { identifier, name }
+    let accounts = [];
+    if (Array.isArray(data.data))     accounts = data.data;
+    else if (Array.isArray(data.accounts)) accounts = data.accounts;
+    else if (data.id || data.identifier) accounts = [data]; // single account response
+
+    if (!accounts.length) {
+      console.log("  No accounts found with this auth style, trying next...");
+      continue;
+    }
+
+    const acct   = accounts[0];
+    const attrs  = acct.attributes || acct;
+    const id     = acct.id || attrs.identifier || attrs.id;
+    console.log(`  ✓ Account: ${attrs.name || id} (id: ${id})`);
+    // Stash auth style for subsequent requests
+    fetchAccountId._auth = auth;
+    return id;
   }
-  const acct = accounts[0];
-  // JSON:API puts fields in attributes; legacy puts them at top level
-  const attrs = acct.attributes || acct;
-  const id = acct.id || attrs.identifier;
-  console.log(`  Using account: ${attrs.name || id} (id: ${id})`);
-  return id;
+
+  throw new Error(`No Leadfeeder accounts found (HTTP ${lastStatus}). Response: ${lastRaw.slice(0, 200)}`);
 }
 
 // ─── fetch leads (company visitors) ──────────────────────────────────────────
 
 async function fetchLeads(accountId, dateFrom, dateTo, page = 1) {
-  const { status, data } = await lfGet(`/accounts/${accountId}/leads`, {
+  const auth = fetchAccountId._auth || undefined;
+  const { status, data, raw } = await lfGet(`/accounts/${accountId}/leads`, {
     date_from: dateFrom,
     date_to:   dateTo,
     sort:      "-last_visit_date",
     per_page:  100,
     page,
-  });
+  }, auth);
   if (status !== 200) {
-    console.warn(`  Leads fetch HTTP ${status} — body keys: ${Object.keys(data).join(", ")}`);
+    console.warn(`  Leads fetch HTTP ${status} — ${raw.slice(0, 200)}`);
     return { leads: [], totalPages: 0 };
   }
   // JSON:API format: results in data.data, each item has .attributes
