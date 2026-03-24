@@ -55,16 +55,24 @@ function toISO(d) { return d.toISOString().split("T")[0]; }
 function daysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return d; }
 
 // ─── fetch account ID ─────────────────────────────────────────────────────────
+// Leadfeeder API uses JSON:API format: { data: [{ id, type, attributes:{} }] }
 
 async function fetchAccountId() {
   console.log("→ Fetching Leadfeeder accounts...");
   const { status, data } = await lfGet("/accounts");
   if (status !== 200) throw new Error(`Accounts fetch failed: HTTP ${status}`);
-  const accounts = data.accounts || [];
-  if (!accounts.length) throw new Error("No Leadfeeder accounts found");
+  // JSON:API: data.data is the array; legacy: data.accounts
+  const accounts = data.data || data.accounts || [];
+  if (!accounts.length) {
+    console.log("  Raw response keys:", Object.keys(data).join(", "));
+    throw new Error("No Leadfeeder accounts found");
+  }
   const acct = accounts[0];
-  console.log(`  Using account: ${acct.name || acct.identifier} (id: ${acct.identifier})`);
-  return acct.identifier;
+  // JSON:API puts fields in attributes; legacy puts them at top level
+  const attrs = acct.attributes || acct;
+  const id = acct.id || attrs.identifier;
+  console.log(`  Using account: ${attrs.name || id} (id: ${id})`);
+  return id;
 }
 
 // ─── fetch leads (company visitors) ──────────────────────────────────────────
@@ -78,12 +86,19 @@ async function fetchLeads(accountId, dateFrom, dateTo, page = 1) {
     page,
   });
   if (status !== 200) {
-    console.warn(`  Leads fetch HTTP ${status}`);
+    console.warn(`  Leads fetch HTTP ${status} — body keys: ${Object.keys(data).join(", ")}`);
     return { leads: [], totalPages: 0 };
   }
-  const leads = data.leads || [];
-  const meta  = data.meta  || {};
-  return { leads, totalPages: meta.total_pages || 1 };
+  // JSON:API format: results in data.data, each item has .attributes
+  const rawLeads = data.data || data.leads || [];
+  // Flatten JSON:API items: merge id + attributes into a flat object
+  const leads = rawLeads.map(item => {
+    if (item.attributes) return { id: item.id, ...item.attributes };
+    return item; // already flat (legacy format)
+  });
+  const meta = data.meta || {};
+  const totalPages = meta.total_pages || meta.totalPages || 1;
+  return { leads, totalPages };
 }
 
 async function fetchAllLeads(accountId, dateFrom, dateTo) {
@@ -163,12 +178,13 @@ async function main() {
     srcMapThis[s.key].count++;
     if (!srcContactsThis[s.key]) srcContactsThis[s.key] = [];
     if (srcContactsThis[s.key].length < 20) {
+      const coName = lead.organization_name || lead.company_name || lead.name || "(unknown company)";
       srcContactsThis[s.key].push({
-        name:       lead.organization_name || lead.name || "(unknown company)",
-        website:    lead.website           || null,
-        visits:     lead.visits            || 1,
-        lastVisit:  lead.last_visit_date   ? lead.last_visit_date.split("T")[0] : null,
-        leadId:     lead.id                || null,
+        name:      coName,
+        website:   lead.website || null,
+        visits:    lead.visits  || lead.visit_count || 1,
+        lastVisit: (lead.last_visit_date || lead.last_visited_at || "").split("T")[0] || null,
+        leadId:    lead.id || null,
       });
     }
   }
@@ -193,18 +209,19 @@ async function main() {
   }).sort((a, b) => b.thisWeek - a.thisWeek);
 
   // Top visiting companies (this week)
-  const topCompanies = thisWeekLeads
-    .sort((a, b) => (b.page_views_count || b.visits || 0) - (a.page_views_count || a.visits || 0))
+  const topCompanies = [...thisWeekLeads]
+    .sort((a, b) => (b.page_views_count || b.page_views || b.visits || b.visit_count || 0)
+                  - (a.page_views_count || a.page_views || a.visits || a.visit_count || 0))
     .slice(0, 20)
     .map(lead => ({
-      name:       lead.organization_name || lead.name || "(unknown)",
+      name:       lead.organization_name || lead.company_name || lead.name || "(unknown)",
       website:    lead.website           || null,
-      visits:     lead.visits            || 1,
-      pageViews:  lead.page_views_count  || null,
-      firstVisit: lead.first_visit_date  ? lead.first_visit_date.split("T")[0] : null,
-      lastVisit:  lead.last_visit_date   ? lead.last_visit_date.split("T")[0]  : null,
+      visits:     lead.visits            || lead.visit_count  || 1,
+      pageViews:  lead.page_views_count  || lead.page_views   || null,
+      firstVisit: (lead.first_visit_date || lead.first_visited_at || "").split("T")[0] || null,
+      lastVisit:  (lead.last_visit_date  || lead.last_visited_at  || "").split("T")[0] || null,
       source:     normaliseSource(lead).label,
-      leadId:     lead.id                || null,
+      leadId:     lead.id || null,
     }));
 
   const output = {
