@@ -1183,6 +1183,7 @@ function renderGantt(){
   // ── SECTION 1: Customer Commitments (drag-to-reorder projects) ───────────
   ganttBody.appendChild(makeSectionHdr("🤝  CUSTOMER COMMITMENTS","contract dates · drag ⠿ to reorder · click project to expand issues"));
   renderCustomerCommitments(ganttBody);
+  renderDealCloseDates(ganttBody);
   const custGap=document.createElement("div"); custGap.className="section-gap"; ganttBody.appendChild(custGap);
 
   // ── SECTION 2: Initiative Tree (all product initiatives, drag-to-reorder) ──
@@ -1190,6 +1191,44 @@ function renderGantt(){
   renderInitiativeTree(ganttBody);
 
   populateGanttInsights();
+}
+
+// ── Deal Close Dates (HubSpot) shown in Gantt alongside commitments ───────────
+function renderDealCloseDates(container){
+  if(!HS_DATA||!HS_DATA.deals||!HS_DATA.deals.length) return;
+  // Only show active deals with a close date, sorted soonest first
+  const DONE=new Set(["closedwon","closedlost","closed won","closed lost"]);
+  const active=HS_DATA.deals
+    .filter(d=>d.closeDate&&!DONE.has((d.stageLabel||d.stage||"").toLowerCase()))
+    .sort((a,b)=>new Date(a.closeDate)-new Date(b.closeDate));
+  if(!active.length) return;
+  const subHdr=document.createElement("div");
+  subHdr.style.cssText="padding:4px 12px 2px;font-size:10px;color:var(--text-muted);letter-spacing:.5px;font-weight:600;text-transform:uppercase;margin-top:6px;";
+  subHdr.textContent="💼 HubSpot Deals — Close Dates";
+  container.appendChild(subHdr);
+  const tree=document.createElement("div"); tree.className="ini-tree"; container.appendChild(tree);
+  for(const d of active.slice(0,12)){
+    const row=document.createElement("div"); row.className="ini-row";
+    const hdr=document.createElement("div"); hdr.className="ini-hdr";
+    const name=document.createElement("span"); name.className="ini-name"; name.textContent=d.name||"(untitled)";
+    const dd=daysDiff(d.closeDate);
+    const isPast=dd<0;
+    const isSoon=dd>=0&&dd<=14;
+    const dateBadge=document.createElement("span");
+    dateBadge.className="ini-hdr-count";
+    dateBadge.style.cssText=isPast?"color:#ef4444;font-weight:600;":isSoon?"color:#f97316;font-weight:600;":"";
+    dateBadge.textContent=(isPast?"⚠️ overdue · ":isSoon?"⏰ soon · ":"")+fmtDate(d.closeDate);
+    const stage=document.createElement("span");
+    stage.style.cssText="font-size:9px;padding:1px 6px;border-radius:9px;background:var(--bg-card);color:var(--text-muted);margin-left:4px;flex-shrink:0;";
+    stage.textContent=d.stageLabel||d.stage||"";
+    const amt=document.createElement("span");
+    amt.style.cssText="font-size:10px;color:var(--accent);margin-left:auto;flex-shrink:0;padding-right:4px;";
+    if(d.amount) amt.textContent=(HS_DATA.currency||"€")+Number(d.amount).toLocaleString("en");
+    hdr.appendChild(name); hdr.appendChild(stage); hdr.appendChild(amt); hdr.appendChild(dateBadge);
+    if(HS_DATA.portalId){ row.style.cursor="pointer"; hdr.addEventListener("click",()=>window.open(`https://app.hubspot.com/contacts/${HS_DATA.portalId}/deal/${d.id}`,"_blank")); }
+    row.appendChild(hdr);
+    tree.appendChild(row);
+  }
 }
 
 // ── Customer Commitments (drag-to-reorder projects) ───────────────────────────
@@ -2819,7 +2858,7 @@ function renderMyDay(){
         <span class="myday-coming-icon">📧</span>
         <div class="myday-coming-text">
           <div class="myday-coming-title">GMAIL</div>
-          <div class="myday-coming-desc">Run "Morning Brief" task to populate</div>
+          <div class="myday-coming-desc">Connect Google account &amp; run workflow to populate</div>
         </div>
       </div>`;
   }
@@ -2882,7 +2921,7 @@ function renderMyDay(){
         <span class="myday-coming-icon">📄</span>
         <div class="myday-coming-text">
           <div class="myday-coming-title">GOOGLE DRIVE</div>
-          <div class="myday-coming-desc">Run "Morning Brief" task to populate</div>
+          <div class="myday-coming-desc">Connect Google account &amp; run workflow to populate</div>
         </div>
       </div>`;
   }
@@ -2893,8 +2932,8 @@ function renderMyDay(){
 
     // ── Sidebar ───────────────────────────────────────────────────────────────
   sidebar.innerHTML = "";
-  const showPipeline = MYDAY_SECTION==="all"||MYDAY_SECTION==="tasks"||MYDAY_SECTION==="inbox";
-  const showCal      = MYDAY_SECTION==="all"||MYDAY_SECTION==="cal"||MYDAY_SECTION==="tasks";
+  const showPipeline = MYDAY_SECTION==="all"||MYDAY_SECTION==="tasks"; // removed inbox — keep inbox sidebar as calendar only
+  const showCal      = MYDAY_SECTION==="all"||MYDAY_SECTION==="cal"||MYDAY_SECTION==="tasks"||MYDAY_SECTION==="inbox";
 
   if(showPipeline && HS_DATA && HS_DATA.deals && HS_DATA.deals.length){
     const soonDeals = HS_DATA.deals
@@ -2951,7 +2990,7 @@ function renderMyDay(){
     } else {
       const noCal = document.createElement("div");
       noCal.className = "myday-coming-card";
-      noCal.innerHTML = `<span class="myday-coming-icon">📅</span><div class="myday-coming-text"><div class="myday-coming-title">GOOGLE CALENDAR</div><div class="myday-coming-desc">Run "Morning Brief" task to populate</div></div>`;
+      noCal.innerHTML = `<span class="myday-coming-icon">📅</span><div class="myday-coming-text"><div class="myday-coming-title">GOOGLE CALENDAR</div><div class="myday-coming-desc">Connect Google account &amp; run workflow to populate</div></div>`;
       sidebar.appendChild(noCal);
     }
 
