@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T10:10:01.645Z",
+  "refreshedAt": "2026-03-24T10:58:15.650Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -883,7 +883,7 @@
     },
     {
       "id": "474917819587",
-      "subject": "Reach out to Инт��рнет Хостинг Центр",
+      "subject": "Reach out to Интернет Хостинг Центр",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
@@ -1825,17 +1825,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 11
+      "count": 2
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 44
+      "count": 4
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 2
+      "count": 1
     },
     {
       "key": "salesqualifiedlead",
@@ -1845,12 +1845,12 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 428
+      "count": 91
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 35
+      "count": 2
     }
   ],
   "trafficSources": [
@@ -1861,7 +1861,7 @@
       "contacts": [
         {
           "id": "741349508286",
-          "name": "Björg Kjartansdóttir",
+          "name": "Björg Kjartansd��ttir",
           "email": "bjorg.kjartansdottir@gmail.com",
           "stage": "opportunity",
           "createdAt": "2026-03-21"

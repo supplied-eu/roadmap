@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T10:09:59.328Z",
+  "refreshedAt": "2026-03-24T10:58:15.027Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -761,8 +761,8 @@
               "id": "46e0fb69-7456-4192-bd33-624e4daab1b0",
               "identifier": "SUP-829",
               "title": "Clean backward compatibility code for legacy earnings",
-              "status": "Todo",
-              "start": null,
+              "status": "In Review",
+              "start": "2026-03-24",
               "end": "2026-09-03",
               "assignee": "Ivan Tiniakov",
               "priority": "Low",
@@ -5002,9 +5002,9 @@
               "id": "92c2406a-63d5-4926-b8da-ef886ee1f992",
               "identifier": "SUP-1142",
               "title": "Personal Tin Format Verification",
-              "status": "In Review",
+              "status": "Done",
               "start": "2026-02-17",
-              "end": null,
+              "end": "2026-03-24",
               "assignee": "Vladimir Ivanov",
               "priority": "No priority",
               "estimate": 2,
