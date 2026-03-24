@@ -208,6 +208,8 @@ async function fetchDeals() {
       "hs_deal_stage_probability",
       "hs_is_closed",
       "hs_is_closed_won",
+      "createdate",
+      "hs_lastmodifieddate",
     ],
     sorts: [{ propertyName: "closedate", direction: "ASCENDING" }],
     limit: 200,
@@ -227,7 +229,9 @@ async function fetchDeals() {
         stage: p.dealstage || "unknown",
         pipeline: p.pipeline || null,
         amount: amount,
-        closeDate: p.closedate ? p.closedate.split("T")[0] : null,
+        closeDate:    p.closedate           ? p.closedate.split("T")[0]           : null,
+        createDate:   p.createdate          ? p.createdate.split("T")[0]          : null,
+        modifiedDate: p.hs_lastmodifieddate ? p.hs_lastmodifieddate.split("T")[0] : null,
         ownerId: p.hubspot_owner_id ? String(p.hubspot_owner_id) : null,
         probability: p.hs_deal_stage_probability
           ? parseFloat(p.hs_deal_stage_probability)

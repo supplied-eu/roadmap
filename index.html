@@ -1679,14 +1679,17 @@ function renderSalesFunnels(){
       }
     }
   }
-  // Count deals per stage, keep deal list for expand
+  // Count deals per stage, keep deal list + weekly activity for expand
+  const weekAgo=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
   const stageDeals={};
   for(const d of openDeals){
     const sl=d.stageLabel||d.stage||"Unknown";
-    if(!stageDeals[sl]) stageDeals[sl]={count:0,value:0,prob:d.probability,deals:[]};
+    if(!stageDeals[sl]) stageDeals[sl]={count:0,value:0,prob:d.probability,deals:[],newThisWeek:0,movedThisWeek:0};
     stageDeals[sl].count++;
     stageDeals[sl].value+=(d.amount||0);
     stageDeals[sl].deals.push(d);
+    if(d.createDate&&d.createDate>=weekAgo) stageDeals[sl].newThisWeek++;
+    else if(d.modifiedDate&&d.modifiedDate>=weekAgo) stageDeals[sl].movedThisWeek++;
   }
   // Build rows: use orderedStages if available, else derive from deals
   const funnelStages=orderedStages.length
@@ -1708,10 +1711,22 @@ function renderSalesFunnels(){
     bar.appendChild(barLbl); barWrap.appendChild(bar);
     const meta=document.createElement("div"); meta.className="funnel-meta";
     meta.textContent=s.value>0?cur+Math.round(s.value/1000)+"k":"—";
+    // Weekly activity badge
+    const weekBadge=document.createElement("span");
+    weekBadge.style.cssText="font-size:9px;flex-shrink:0;margin-left:4px;";
+    if(s.newThisWeek>0){
+      weekBadge.style.color="#10b981"; weekBadge.title="New this week";
+      weekBadge.textContent="+"+s.newThisWeek+" new";
+    } else if(s.movedThisWeek>0){
+      weekBadge.style.color="#f59e0b"; weekBadge.title="Updated this week";
+      weekBadge.textContent="~"+s.movedThisWeek+" updated";
+    }
     const chevron=document.createElement("span");
     chevron.textContent="▸";
     chevron.style.cssText="font-size:9px;color:var(--text-muted);margin-left:4px;flex-shrink:0;transition:transform .2s;";
-    row.appendChild(lbl); row.appendChild(barWrap); row.appendChild(meta); row.appendChild(chevron);
+    row.appendChild(lbl); row.appendChild(barWrap); row.appendChild(meta);
+    if(s.newThisWeek||s.movedThisWeek) row.appendChild(weekBadge);
+    row.appendChild(chevron);
 
     // Expandable deals list
     const dealsList=document.createElement("div");
@@ -1755,15 +1770,20 @@ function renderSalesFunnels(){
     block.appendChild(row); block.appendChild(dealsList);
     dealPanel.appendChild(block);
   });
-  // Won/lost footer
+  // Won/lost footer + weekly pipeline activity
   const cls=HS_DATA.closedDealStats||{wonCount:0,wonValue:0,lostCount:0,lostValue:0};
   const total90=cls.wonCount+cls.lostCount;
   const winRate=total90>0?Math.round((cls.wonCount/total90)*100):null;
+  // Weekly pipeline stats from open deals
+  const newDealsWeek=openDeals.filter(d=>d.createDate&&d.createDate>=weekAgo).length;
+  const updatedDealsWeek=openDeals.filter(d=>d.modifiedDate&&d.modifiedDate>=weekAgo&&!(d.createDate&&d.createDate>=weekAgo)).length;
   const wonRow=document.createElement("div"); wonRow.className="funnel-won-row";
   [
-    {label:"WON (90d)",val:cls.wonCount?cur+Math.round(cls.wonValue/1000)+"k ("+cls.wonCount+")":"—",cls_:cls.wonCount?"green":""},
-    {label:"LOST (90d)",val:cls.lostCount?cls.lostCount+" deals":"—",cls_:cls.lostCount?"red":""},
-    {label:"WIN RATE",val:winRate!=null?winRate+"%":"—",cls_:winRate!=null&&winRate>=50?"green":winRate!=null?"red":""},
+    {label:"WON (90d)",   val:cls.wonCount?cur+Math.round(cls.wonValue/1000)+"k ("+cls.wonCount+")":"—", cls_:cls.wonCount?"green":""},
+    {label:"LOST (90d)",  val:cls.lostCount?cls.lostCount+" deals":"—",                                  cls_:cls.lostCount?"red":""},
+    {label:"WIN RATE",    val:winRate!=null?winRate+"%":"—",                                              cls_:winRate!=null&&winRate>=50?"green":winRate!=null?"red":""},
+    {label:"NEW THIS WK", val:newDealsWeek>0?"+"+newDealsWeek+" deals":"—",                               cls_:newDealsWeek?"green":""},
+    {label:"MOVED THIS WK",val:updatedDealsWeek>0?updatedDealsWeek+" deals":"—",                          cls_:updatedDealsWeek?"":""},
   ].forEach(k=>{
     const kpi=document.createElement("div"); kpi.className="funnel-won-kpi";
     const kl=document.createElement("div"); kl.className="funnel-won-kpi-label"; kl.textContent=k.label;
@@ -1773,42 +1793,9 @@ function renderSalesFunnels(){
   dealPanel.appendChild(wonRow);
   wrap.appendChild(dealPanel);
 
-  // ── MARKETING FUNNEL ─────────────────────────────────────────────────────
-  const mktPanel=document.createElement("div"); mktPanel.className="funnel-panel";
-  const mktTitle=document.createElement("div"); mktTitle.className="funnel-title";
-  const lifecycle=HS_DATA.contactLifecycle||[];
-  const totalContacts=lifecycle.reduce((s,l)=>s+l.count,0);
-  mktTitle.innerHTML=`<span>🧲  MARKETING FUNNEL</span><span class="funnel-title-kpi">${totalContacts.toLocaleString()} contacts</span>`;
-  mktPanel.appendChild(mktTitle);
-  const MKT_COLORS=["#06b6d4","#0ea5e9","#3b82f6","#6366f1","#8b5cf6","#10b981"];
-  const maxLC=Math.max(1,...lifecycle.map(l=>l.count));
-  lifecycle.forEach((lc,i)=>{
-    if(!lc.count) return;
-    const row=document.createElement("div"); row.className="funnel-row";
-    const lbl=document.createElement("div"); lbl.className="funnel-label"; lbl.textContent=lc.label;
-    const barWrap=document.createElement("div"); barWrap.className="funnel-bar-wrap";
-    const bar=document.createElement("div"); bar.className="funnel-bar";
-    const pct=Math.round((lc.count/maxLC)*100);
-    bar.style.cssText=`width:${pct}%;background:${MKT_COLORS[i%MKT_COLORS.length]}`;
-    const barLbl=document.createElement("span"); barLbl.className="funnel-bar-label"; barLbl.textContent=lc.count;
-    bar.appendChild(barLbl); barWrap.appendChild(bar);
-    // Conversion to next stage
-    const nextLc=lifecycle.slice(i+1).find(l=>l.count>0);
-    const convPct=nextLc?Math.round((nextLc.count/lc.count)*100):null;
-    const meta=document.createElement("div"); meta.className="funnel-meta";
-    meta.textContent=convPct!=null?"→ "+convPct+"%":"";
-    row.appendChild(lbl); row.appendChild(barWrap); row.appendChild(meta);
-    mktPanel.appendChild(row);
-  });
-  if(!lifecycle.some(l=>l.count)){
-    const em=document.createElement("div"); em.style.cssText="font-size:11px;color:var(--text-dim);padding:20px 0";
-    em.textContent="No contact lifecycle data available yet."; mktPanel.appendChild(em);
-  }
-  wrap.appendChild(mktPanel);
-
-  // ── WEBSITE TRAFFIC SOURCES (Leadfeeder) ─────────────────────────────────
+  // ── WEBSITE TRAFFIC (Leadfeeder) — replaces Marketing Funnel ─────────────
   const srcPanel=document.createElement("div"); srcPanel.className="funnel-panel";
-  srcPanel.style.cssText="min-width:320px;flex:1.2";
+  srcPanel.style.cssText="min-width:340px;flex:1.4;";
   const srcTitle=document.createElement("div"); srcTitle.className="funnel-title";
   const lfAvail=LF_DATA&&LF_DATA.available;
   const trafficSources=lfAvail?(LF_DATA.trafficSources||[]):[];
