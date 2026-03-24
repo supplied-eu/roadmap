@@ -98,6 +98,18 @@ const ISSUES_QUERY = `
           startedAt
           completedAt
           assignee { name }
+          children(first: 20) {
+            nodes {
+              id identifier title url
+              state { name }
+              priority
+              estimate
+              dueDate
+              startedAt
+              completedAt
+              assignee { name }
+            }
+          }
         }
       }
     }
@@ -159,19 +171,32 @@ async function main() {
         const d = await gql(ISSUES_QUERY, { id: proj.id, after });
         return d.project?.issues ?? null;
       });
-      issuesByProject[proj.id] = issues.map(iss => ({
-        id: iss.id,
-        identifier: iss.identifier,
-        title: iss.title,
-        status: iss.state?.name || "",
-        start: (iss.startedAt || iss.completedAt)?.split("T")[0] || null,
-        end: iss.dueDate || (iss.completedAt ? iss.completedAt.split("T")[0] : null),
-        assignee: iss.assignee?.name || null,
-        priority: priorityName(iss.priority),
-        estimate: iss.estimate || null,
-        url: iss.url,
-      }));
-      console.log(`  ✓ ${proj.name}: ${issuesByProject[proj.id].length} issues`);
+      function mapIss(iss, parentId = null) {
+        return {
+          id: iss.id,
+          identifier: iss.identifier,
+          title: iss.title,
+          status: iss.state?.name || "",
+          start: (iss.startedAt || iss.completedAt)?.split("T")[0] || null,
+          end: iss.dueDate || (iss.completedAt ? iss.completedAt.split("T")[0] : null),
+          assignee: iss.assignee?.name || null,
+          priority: priorityName(iss.priority),
+          estimate: iss.estimate || null,
+          url: iss.url,
+          parentId: parentId || null,
+        };
+      }
+      // Flatten: parent issues followed immediately by their sub-issues
+      const flat = [];
+      for (const iss of issues) {
+        flat.push(mapIss(iss));
+        for (const child of (iss.children?.nodes || [])) {
+          flat.push(mapIss(child, iss.id));
+        }
+      }
+      issuesByProject[proj.id] = flat;
+      const subCount = flat.filter(i => i.parentId).length;
+      console.log(`  ✓ ${proj.name}: ${flat.length} issues (${subCount} sub-issues)`);
     } catch(e) {
       console.error(`  ✗ Failed "${proj.name}": ${e.message}`);
       issuesByProject[proj.id] = [];

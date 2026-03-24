@@ -98,10 +98,20 @@ async function fetchAccountId() {
 
     const acct   = accounts[0];
     const attrs  = acct.attributes || acct;
-    const id     = acct.id || attrs.identifier || attrs.id;
-    console.log(`  ✓ Account: ${attrs.name || id} (id: ${id})`);
-    // Stash auth style for subsequent requests
-    fetchAccountId._auth = auth;
+    // Log ALL attribute keys so we can see every identifier field
+    console.log(`  Account fields: ${Object.keys(attrs).join(", ")}`);
+    console.log(`  acct.id=${acct.id} | attrs.identifier=${attrs.identifier} | attrs.id=${attrs.id}`);
+
+    // Leadfeeder API: the URL slug (identifier like "supplied-eu") may be needed,
+    // not the numeric id. Store both so fetchLeads can try each.
+    const numericId  = acct.id || attrs.id || null;
+    const slugId     = attrs.identifier || attrs.companyIdentifier || attrs.slug || null;
+    const id = numericId || slugId;
+    console.log(`  ✓ Account: ${attrs.name || id} (numericId: ${numericId}, slugId: ${slugId})`);
+    // Stash auth style + both IDs for subsequent requests
+    fetchAccountId._auth      = auth;
+    fetchAccountId._numericId = numericId;
+    fetchAccountId._slugId    = slugId;
     return id;
   }
 
@@ -113,35 +123,37 @@ async function fetchAccountId() {
 async function fetchLeads(accountId, dateFrom, dateTo, page = 1) {
   const auth = fetchAccountId._auth || undefined;
 
-  // Leadfeeder/Dealfront API supports two param styles — try both:
-  // Style A (legacy): date_from / date_to
-  // Style B (JSON:API filter): filter[date_from] / filter[date_to]
+  // Try all combinations of account ID (numeric vs slug) and param styles
+  const ids = [accountId];
+  if (fetchAccountId._slugId && fetchAccountId._slugId !== accountId) ids.push(fetchAccountId._slugId);
+  if (fetchAccountId._numericId && fetchAccountId._numericId !== accountId) ids.push(fetchAccountId._numericId);
+
   const paramStyles = [
     { date_from: dateFrom, date_to: dateTo, per_page: 100, page },
     { "filter[date_from]": dateFrom, "filter[date_to]": dateTo, "page[size]": 100, "page[number]": page },
   ];
 
+  for (const tryId of ids) {
   for (let si = 0; si < paramStyles.length; si++) {
-    const { status, data, raw } = await lfGet(`/accounts/${accountId}/leads`, paramStyles[si], auth);
+    const { status, data, raw } = await lfGet(`/accounts/${tryId}/leads`, paramStyles[si], auth);
 
     if (status !== 200) {
-      if (si === 0) { console.warn(`  Style A HTTP ${status} — trying style B`); continue; }
-      console.warn(`  Leads fetch HTTP ${status} — ${raw.slice(0, 300)}`);
-      return { leads: [], totalPages: 0 };
+      console.warn(`  [id:${tryId} style:${si===0?"A":"B"}] HTTP ${status} — ${raw.slice(0,120)}`);
+      continue;
     }
 
-    // Log on first page + first working style
+    // Log on first page
     if (page === 1) {
-      console.log(`  Leads (style ${si===0?"A":"B"}) keys: ${Object.keys(data).join(", ")}`);
+      console.log(`  [id:${tryId} style:${si===0?"A":"B"}] keys: ${Object.keys(data).join(", ")}`);
       console.log(`  data.data: ${Array.isArray(data.data)?data.data.length+" items":"not array"} | data.leads: ${Array.isArray(data.leads)?data.leads.length+" items":"not array"}`);
       console.log(`  meta: ${JSON.stringify(data.meta||data.pagination||{})}`);
-      if (!(data.data||data.leads)) console.log(`  raw (first 500): ${raw.slice(0, 500)}`);
+      if (!data.data && !data.leads) console.log(`  raw (first 500): ${raw.slice(0, 500)}`);
     }
 
     const rawLeads = data.data || data.leads || [];
-    if (rawLeads.length === 0 && si === 0) {
-      console.log(`  Style A returned 0 leads — trying style B`);
-      continue; // try the other param style
+    if (rawLeads.length === 0) {
+      console.log(`  → 0 leads with id:${tryId} style:${si===0?"A":"B"} — trying next`);
+      continue;
     }
 
     const leads = rawLeads.map(item => {
@@ -150,10 +162,10 @@ async function fetchLeads(accountId, dateFrom, dateTo, page = 1) {
     });
     const meta = data.meta || data.pagination || {};
     const totalPages = meta.total_pages || meta.totalPages || meta.last_page || 1;
-    // Stash working style for subsequent pages
-    fetchLeads._style = si;
+    console.log(`  ✓ Working combo: id=${tryId} style=${si===0?"A":"B"} — ${rawLeads.length} leads`);
     return { leads, totalPages };
-  }
+  } // end paramStyles loop
+  } // end ids loop
 
   return { leads: [], totalPages: 0 };
 }

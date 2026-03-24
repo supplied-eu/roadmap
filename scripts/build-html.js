@@ -1314,15 +1314,17 @@ function renderCustomerCommitments(container){
       if(projExp && activeIss.length){
         for(const iss of activeIss){
           const issOd=isOverdue(iss.end,iss.status);
+          const isSubIssue=!!iss.parentId;
           // Use issue start→end if available, fall back to project targetDate as end
           const issStart=iss.start||iss.end||proj.targetDate||null;
           const issEnd=iss.end||proj.targetDate||null;
-          const issLabel=(iss.identifier?iss.identifier+" ":"")+iss.title;
+          // Sub-issues get a ↳ prefix and deeper indent
+          const issLabel=(isSubIssue?"↳ ":"")+(iss.identifier?iss.identifier+" ":"")+iss.title;
           const issRow=makeGanttRow({
-            indent:1,
+            indent:isSubIssue?2:1,
             label:issLabel,
             status:iss.status,
-            color:sc(iss.status),
+            color:isSubIssue?sc(iss.status)+"bb":sc(iss.status), // slightly muted for sub-issues
             start:issStart,
             end:issEnd,
             url:iss.url,
