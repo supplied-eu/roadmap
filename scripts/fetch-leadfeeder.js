@@ -120,8 +120,13 @@ async function fetchLeads(accountId, dateFrom, dateTo, page = 1) {
     page,
   }, auth);
   if (status !== 200) {
-    console.warn(`  Leads fetch HTTP ${status} — ${raw.slice(0, 200)}`);
+    console.warn(`  Leads fetch HTTP ${status} — ${raw.slice(0, 300)}`);
     return { leads: [], totalPages: 0 };
+  }
+  // Debug: log response shape on first page
+  if (page === 1) {
+    console.log(`  Leads response keys: ${Object.keys(data).join(", ")}`);
+    console.log(`  Leads raw (first 400): ${raw.slice(0, 400)}`);
   }
   // JSON:API format: results in data.data, each item has .attributes
   const rawLeads = data.data || data.leads || [];

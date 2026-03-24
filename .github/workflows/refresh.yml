@@ -41,7 +41,11 @@ jobs:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
-        run: node scripts/fetch-google.js
+        run: |
+          node scripts/fetch-google.js
+          # Copy to person-specific file so the dashboard loads Johann's fresh data
+          # (dashboard prefers google-data-{name}.json over google-data.json)
+          cp google-data.json google-data-johann.json
         # If Google secrets are not set, fetch-google.js preserves the existing
         # google-data.json and exits 0, so this step never blocks the build.
 
@@ -58,7 +62,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html gantt-data.json hubspot-data.json google-data.json leadfeeder-data.json
+          git add index.html gantt-data.json hubspot-data.json google-data.json google-data-johann.json leadfeeder-data.json
           git diff --staged --quiet || git commit -m "🔄 Refresh dashboard $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase -X theirs origin main
           git push

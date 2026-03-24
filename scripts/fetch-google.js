@@ -146,12 +146,10 @@ async function fetchGmail(token) {
   const threads = [];
 
   await Promise.all(toFetch.map(async msg => {
-    const url = `https://gmail.googleapis.com/gmail/v1/users/me/messages/${msg.id}?` +
-      new URLSearchParams({
-        format: "metadata",
-        metadataHeaders: ["Subject", "From", "Date"].join(","),
-        fields: "id,threadId,snippet,labelIds,internalDate,payload/headers",
-      });
+    // metadataHeaders must be repeated params, NOT comma-joined (Gmail API rejects single value)
+    const msgParams = new URLSearchParams({ format: "metadata", fields: "id,threadId,snippet,labelIds,internalDate,payload/headers" });
+    ["Subject", "From", "Date"].forEach(h => msgParams.append("metadataHeaders", h));
+    const url = `https://gmail.googleapis.com/gmail/v1/users/me/messages/${msg.id}?` + msgParams;
     const r = await get(url, token);
     if (r.status !== 200) return;
     const m = r.body;
