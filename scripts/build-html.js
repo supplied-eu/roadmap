@@ -1449,9 +1449,10 @@ function populateGanttInsights(){
 // ═══════════════════════════════════════════════════════════════════════════
 // SALES & OPS (HUBSPOT)
 // ═══════════════════════════════════════════════════════════════════════════
-let HS_DATA     = null;
-let GOOGLE_DATA = null;
-let OPS_OWNER   = "all"; // "all" or ownerId string
+let HS_DATA       = null;
+let GOOGLE_DATA   = null;
+let LF_DATA       = null; // Leadfeeder website visitor data
+let OPS_OWNER     = "all"; // "all" or ownerId string
 
 function opsComputeStats(data){
   const tasks = data.tasks||[];
@@ -1694,13 +1695,14 @@ function renderSalesFunnels(){
       }
     }
   }
-  // Count deals per stage
+  // Count deals per stage, keep deal list for expand
   const stageDeals={};
   for(const d of openDeals){
     const sl=d.stageLabel||d.stage||"Unknown";
-    if(!stageDeals[sl]) stageDeals[sl]={count:0,value:0,prob:d.probability};
+    if(!stageDeals[sl]) stageDeals[sl]={count:0,value:0,prob:d.probability,deals:[]};
     stageDeals[sl].count++;
     stageDeals[sl].value+=(d.amount||0);
+    stageDeals[sl].deals.push(d);
   }
   // Build rows: use orderedStages if available, else derive from deals
   const funnelStages=orderedStages.length
@@ -1708,8 +1710,11 @@ function renderSalesFunnels(){
     : Object.entries(stageDeals).map(([label,v])=>({label,...v}));
   const maxCount=Math.max(1,...funnelStages.map(s=>s.count));
   const COLORS=["#6366f1","#8b5cf6","#a78bfa","#7c3aed","#4f46e5","#3b82f6","#0ea5e9"];
+  const portalIdDeals=HS_DATA.portalId||"";
   funnelStages.forEach((s,i)=>{
+    const block=document.createElement("div"); block.style.cssText="margin-bottom:2px;";
     const row=document.createElement("div"); row.className="funnel-row";
+    row.style.cssText="cursor:pointer;user-select:none;";
     const lbl=document.createElement("div"); lbl.className="funnel-label"; lbl.textContent=s.label; lbl.title=s.label;
     const barWrap=document.createElement("div"); barWrap.className="funnel-bar-wrap";
     const bar=document.createElement("div"); bar.className="funnel-bar";
@@ -1719,8 +1724,52 @@ function renderSalesFunnels(){
     bar.appendChild(barLbl); barWrap.appendChild(bar);
     const meta=document.createElement("div"); meta.className="funnel-meta";
     meta.textContent=s.value>0?cur+Math.round(s.value/1000)+"k":"—";
-    row.appendChild(lbl); row.appendChild(barWrap); row.appendChild(meta);
-    dealPanel.appendChild(row);
+    const chevron=document.createElement("span");
+    chevron.textContent="▸";
+    chevron.style.cssText="font-size:9px;color:var(--text-muted);margin-left:4px;flex-shrink:0;transition:transform .2s;";
+    row.appendChild(lbl); row.appendChild(barWrap); row.appendChild(meta); row.appendChild(chevron);
+
+    // Expandable deals list
+    const dealsList=document.createElement("div");
+    dealsList.style.cssText="display:none;padding:5px 0 5px 16px;border-left:2px solid var(--border);margin-left:4px;margin-bottom:4px;";
+    (s.deals||[]).sort((a,b)=>(b.amount||0)-(a.amount||0)).forEach(d=>{
+      const dr=document.createElement("div");
+      dr.style.cssText="display:flex;align-items:center;gap:6px;padding:3px 0;font-size:11px;border-bottom:1px solid var(--border);";
+      const dealUrl=portalIdDeals?\`https://app.hubspot.com/contacts/\${portalIdDeals}/deal/\${d.id}\`:\`#\`;
+      const link=document.createElement("a");
+      link.href=dealUrl; link.target="_blank"; link.rel="noopener";
+      link.style.cssText="color:var(--accent);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;";
+      link.textContent=d.name||"(unnamed deal)";
+      link.addEventListener("mouseover",()=>link.style.textDecoration="underline");
+      link.addEventListener("mouseout",()=>link.style.textDecoration="none");
+      const amt=document.createElement("span");
+      amt.style.cssText="color:#10b981;font-weight:600;font-size:10px;flex-shrink:0;";
+      amt.textContent=d.amount?cur+d.amount.toLocaleString():"—";
+      const owner=document.createElement("span");
+      owner.style.cssText="color:var(--text-muted);font-size:10px;flex-shrink:0;";
+      owner.textContent=d.ownerName?(d.ownerName.split(" ")[0]):"";
+      const closeDate=document.createElement("span");
+      closeDate.style.cssText="color:var(--text-dim);font-size:10px;flex-shrink:0;";
+      if(d.closeDate){
+        const cd=new Date(d.closeDate);
+        const isPast=cd<new Date();
+        closeDate.style.color=isPast?"#ef4444":"var(--text-dim)";
+        closeDate.textContent=cd.toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+      }
+      dr.appendChild(link); dr.appendChild(amt); dr.appendChild(owner); dr.appendChild(closeDate);
+      dealsList.appendChild(dr);
+    });
+
+    let expanded=false;
+    row.addEventListener("click",()=>{
+      expanded=!expanded;
+      dealsList.style.display=expanded?"block":"none";
+      chevron.style.transform=expanded?"rotate(90deg)":"";
+      row.style.background=expanded?"rgba(255,255,255,.04)":"";
+      row.style.borderRadius=expanded?"4px":"";
+    });
+    block.appendChild(row); block.appendChild(dealsList);
+    dealPanel.appendChild(block);
   });
   // Won/lost footer
   const cls=HS_DATA.closedDealStats||{wonCount:0,wonValue:0,lostCount:0,lostValue:0};
@@ -1773,117 +1822,138 @@ function renderSalesFunnels(){
   }
   wrap.appendChild(mktPanel);
 
-  // ── TRAFFIC SOURCES PANEL ─────────────────────────────────────────────────
+  // ── WEBSITE TRAFFIC SOURCES (Leadfeeder) ─────────────────────────────────
   const srcPanel=document.createElement("div"); srcPanel.className="funnel-panel";
   srcPanel.style.cssText="min-width:320px;flex:1.2";
   const srcTitle=document.createElement("div"); srcTitle.className="funnel-title";
-  const trafficSources=HS_DATA.trafficSources||[];
-  const totalThisWeek=trafficSources.reduce((s,t)=>s+t.thisWeek,0);
-  const totalLastWeek=trafficSources.reduce((s,t)=>s+t.lastWeek,0);
+  const lfAvail=LF_DATA&&LF_DATA.available;
+  const trafficSources=lfAvail?(LF_DATA.trafficSources||[]):[];
+  const totalThisWeek=lfAvail?(LF_DATA.thisWeekTotal||0):0;
+  const totalLastWeek=lfAvail?(LF_DATA.lastWeekTotal||0):0;
   const weekTrend=totalLastWeek>0?Math.round(((totalThisWeek-totalLastWeek)/totalLastWeek)*100):null;
   const weekTrendHtml=weekTrend!=null
     ?\`<span style="font-size:10px;color:\${weekTrend>=0?"#10b981":"#ef4444"};margin-left:8px;">\${weekTrend>=0?"↑":"↓"}\${Math.abs(weekTrend)}% w/w</span>\`:"";
-  srcTitle.innerHTML=\`<span>📡  TRAFFIC SOURCES</span><span class="funnel-title-kpi">\${totalThisWeek} this week\${weekTrendHtml}</span>\`;
+  srcTitle.innerHTML=\`<span>🌐  WEBSITE TRAFFIC</span><span class="funnel-title-kpi">\${lfAvail?totalThisWeek+" companies this week":"via Leadfeeder"}\${weekTrendHtml}</span>\`;
   srcPanel.appendChild(srcTitle);
 
-  if(!trafficSources.length){
+  if(!lfAvail){
+    // Leadfeeder not connected — show setup card
+    const setup=document.createElement("div");
+    setup.style.cssText="padding:12px 0;font-size:11px;line-height:1.7;";
+    setup.innerHTML=\`
+      <div style="font-size:12px;color:var(--text);margin-bottom:8px;font-weight:600;">Connect Leadfeeder to see live website visitor data</div>
+      <div style="color:var(--text-muted);margin-bottom:10px;">This panel will show which companies are visiting your website, broken down by traffic source, with week-on-week trends.</div>
+      <div style="background:rgba(255,255,255,.06);border-radius:6px;padding:10px 12px;font-size:10px;line-height:2;">
+        <div style="color:var(--text);font-weight:600;margin-bottom:2px;">To activate:</div>
+        <div>1. Go to Leadfeeder → Settings → <b>API tokens</b> → create a token</div>
+        <div>2. Add it as <code style="background:rgba(255,255,255,.12);padding:1px 5px;border-radius:3px;">LEADFEEDER_API_KEY</code> in your GitHub repo secrets</div>
+        <div>3. Run the <b>Refresh Gantt Dashboard</b> workflow</div>
+      </div>\`;
+    srcPanel.appendChild(setup);
+  } else if(!trafficSources.length){
     const em=document.createElement("div"); em.style.cssText="font-size:11px;color:var(--text-dim);padding:20px 0";
-    em.textContent="No traffic source data available — run data refresh to populate."; srcPanel.appendChild(em);
+    em.textContent="No traffic data yet — run data refresh to populate."; srcPanel.appendChild(em);
   } else {
-    const portalId=HS_DATA.portalId||"";
-    const maxSrcWeek=Math.max(1,...trafficSources.map(t=>t.thisWeek+t.lastWeek));
+    const maxSrcWeek=Math.max(1,...trafficSources.map(t=>t.thisWeek));
 
     trafficSources.forEach((src)=>{
-      const total=src.thisWeek+src.lastWeek;
-      if(!total&&!src.contacts.length) return;
-      const wowPct=src.lastWeek>0?Math.round(((src.thisWeek-src.lastWeek)/src.lastWeek)*100):(src.thisWeek>0?null:null);
+      if(!src.thisWeek&&!src.lastWeek) return;
+      const wowPct=src.lastWeek>0?Math.round(((src.thisWeek-src.lastWeek)/src.lastWeek)*100):null;
       const wowColor=wowPct==null?"#6b7280":wowPct>=0?"#10b981":"#ef4444";
       const wowText=wowPct==null?(src.thisWeek>0?"new":"—"):(wowPct>=0?"↑"+Math.abs(wowPct)+"%":"↓"+Math.abs(wowPct)+"%");
 
-      const srcBlock=document.createElement("div");
-      srcBlock.style.cssText="margin-bottom:6px;";
-
-      // Header row
-      const srcRow=document.createElement("div");
-      srcRow.className="funnel-row";
-      srcRow.style.cssText="cursor:pointer;user-select:none;align-items:center;";
+      const srcBlock=document.createElement("div"); srcBlock.style.cssText="margin-bottom:6px;";
+      const srcRow=document.createElement("div"); srcRow.className="funnel-row";
+      srcRow.style.cssText="cursor:pointer;user-select:none;";
       const srcLbl=document.createElement("div"); srcLbl.className="funnel-label";
       srcLbl.style.cssText="display:flex;align-items:center;gap:6px;min-width:140px;";
       srcLbl.innerHTML=\`<span style="font-size:13px">\${src.icon||"📊"}</span><span>\${src.label}</span>\`;
 
       const barWrap=document.createElement("div"); barWrap.className="funnel-bar-wrap";
       const bar=document.createElement("div"); bar.className="funnel-bar";
-      const barPct=Math.round((src.thisWeek/Math.max(1,maxSrcWeek))*100)||2;
-      bar.style.cssText=\`width:\${barPct}%;background:#3b82f6;min-width:4px\`;
-      const barLbl=document.createElement("span"); barLbl.className="funnel-bar-label"; barLbl.textContent=src.thisWeek;
+      bar.style.cssText=\`width:\${Math.round((src.thisWeek/maxSrcWeek)*100)||2}%;background:#3b82f6;min-width:4px\`;
+      const barLbl=document.createElement("span"); barLbl.className="funnel-bar-label";
+      barLbl.textContent=src.thisWeek+" co.";
       bar.appendChild(barLbl); barWrap.appendChild(bar);
 
       const wowBadge=document.createElement("div"); wowBadge.className="funnel-meta";
       wowBadge.innerHTML=\`<span style="color:\${wowColor};font-weight:600;font-size:10px;">\${wowText}</span>\`;
-
       const chevron=document.createElement("span");
       chevron.textContent="▸";
-      chevron.style.cssText="font-size:9px;color:var(--text-muted);margin-left:4px;transition:transform .2s;";
+      chevron.style.cssText="font-size:9px;color:var(--text-muted);margin-left:4px;transition:transform .2s;flex-shrink:0;";
+      srcRow.appendChild(srcLbl); srcRow.appendChild(barWrap); srcRow.appendChild(wowBadge); srcRow.appendChild(chevron);
 
-      srcRow.appendChild(srcLbl);
-      srcRow.appendChild(barWrap);
-      srcRow.appendChild(wowBadge);
-      srcRow.appendChild(chevron);
-
-      // Expandable contacts list
-      const contactsList=document.createElement("div");
-      contactsList.style.cssText="display:none;padding:6px 0 6px 20px;border-left:2px solid var(--border);margin-left:8px;margin-top:4px;";
-
-      if(src.contacts&&src.contacts.length){
+      // Expandable company list
+      const coList=document.createElement("div");
+      coList.style.cssText="display:none;padding:6px 0 6px 16px;border-left:2px solid var(--border);margin-left:6px;margin-top:3px;";
+      const companies=src.companies||[];
+      if(companies.length){
         const listHdr=document.createElement("div");
         listHdr.style.cssText="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;";
-        listHdr.textContent="Recent contacts — click to open in HubSpot";
-        contactsList.appendChild(listHdr);
-
-        for(const ct of src.contacts){
-          const ctRow=document.createElement("div");
-          ctRow.style.cssText="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11px;border-bottom:1px solid var(--border);";
-          const link=document.createElement("a");
-          link.href=portalId?\`https://app.hubspot.com/contacts/\${portalId}/contact/\${ct.id}\`:\`https://app.hubspot.com/contacts/\${ct.id}\`;
-          link.target="_blank";
-          link.rel="noopener";
-          link.style.cssText="color:var(--accent);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
-          link.textContent=ct.name;
-          link.addEventListener("mouseover",()=>link.style.textDecoration="underline");
-          link.addEventListener("mouseout",()=>link.style.textDecoration="none");
-          const stage=document.createElement("span");
-          stage.style.cssText="color:var(--text-muted);font-size:9px;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;";
-          stage.textContent=ct.stage?ct.stage.replace(/([a-z])([A-Z])/g,"$1 $2").replace("qualifiedlead"," QL"):"";
-          const date=document.createElement("span");
-          date.style.cssText="color:var(--text-dim);font-size:9px;flex-shrink:0;";
-          date.textContent=ct.createdAt||"";
-          ctRow.appendChild(link); ctRow.appendChild(stage); ctRow.appendChild(date);
-          contactsList.appendChild(ctRow);
-        }
-        if(src.contacts.length>=25){
-          const moreNote=document.createElement("div");
-          moreNote.style.cssText="font-size:9px;color:var(--text-muted);margin-top:4px;font-style:italic;";
-          moreNote.textContent="Showing top 25 most recent contacts";
-          contactsList.appendChild(moreNote);
+        listHdr.textContent="Companies visiting this week";
+        coList.appendChild(listHdr);
+        for(const co of companies){
+          const coRow=document.createElement("div");
+          coRow.style.cssText="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11px;border-bottom:1px solid var(--border);";
+          const coName=document.createElement(co.website?"a":"span");
+          if(co.website){ coName.href=co.website.startsWith("http")?co.website:"https://"+co.website; coName.target="_blank"; coName.rel="noopener"; }
+          coName.style.cssText="color:var(--accent);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
+          coName.textContent=co.name;
+          if(co.website){
+            coName.addEventListener("mouseover",()=>coName.style.textDecoration="underline");
+            coName.addEventListener("mouseout",()=>coName.style.textDecoration="none");
+          }
+          const visits=document.createElement("span");
+          visits.style.cssText="color:var(--text-muted);font-size:10px;flex-shrink:0;";
+          visits.textContent=(co.visits||1)+" visit"+(co.visits!==1?"s":"");
+          const lastSeen=document.createElement("span");
+          lastSeen.style.cssText="color:var(--text-dim);font-size:9px;flex-shrink:0;";
+          lastSeen.textContent=co.lastVisit||"";
+          coRow.appendChild(coName); coRow.appendChild(visits); coRow.appendChild(lastSeen);
+          coList.appendChild(coRow);
         }
       } else {
-        const em=document.createElement("div");
-        em.style.cssText="font-size:11px;color:var(--text-dim);padding:4px 0;";
-        em.textContent="No recent contacts from this source.";
-        contactsList.appendChild(em);
+        const em=document.createElement("div"); em.style.cssText="font-size:11px;color:var(--text-dim);padding:4px 0;";
+        em.textContent="No company data for this source."; coList.appendChild(em);
       }
 
       let expanded=false;
       srcRow.addEventListener("click",()=>{
         expanded=!expanded;
-        contactsList.style.display=expanded?"block":"none";
+        coList.style.display=expanded?"block":"none";
         chevron.style.transform=expanded?"rotate(90deg)":"";
       });
-
-      srcBlock.appendChild(srcRow);
-      srcBlock.appendChild(contactsList);
+      srcBlock.appendChild(srcRow); srcBlock.appendChild(coList);
       srcPanel.appendChild(srcBlock);
     });
+
+    // Top companies this week
+    const topCos=LF_DATA.topCompanies||[];
+    if(topCos.length){
+      const divider=document.createElement("div");
+      divider.style.cssText="border-top:1px solid var(--border);margin:12px 0 8px;";
+      srcPanel.appendChild(divider);
+      const topHdr=document.createElement("div");
+      topHdr.style.cssText="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:600;";
+      topHdr.textContent="\uD83C\uDFE2 Top Visiting Companies This Week";
+      srcPanel.appendChild(topHdr);
+      for(const co of topCos.slice(0,8)){
+        const coRow=document.createElement("div");
+        coRow.style.cssText="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px;border-bottom:1px solid var(--border);";
+        const coName=document.createElement(co.website?"a":"span");
+        if(co.website){ coName.href=co.website.startsWith("http")?co.website:"https://"+co.website; coName.target="_blank"; coName.rel="noopener"; }
+        coName.style.cssText="color:var(--text);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;";
+        coName.textContent=co.name;
+        const coSrc=document.createElement("span");
+        coSrc.style.cssText="color:var(--text-dim);font-size:9px;flex-shrink:0;";
+        coSrc.textContent=co.source||"";
+        const pv=document.createElement("span");
+        pv.style.cssText="color:#3b82f6;font-size:10px;font-weight:600;flex-shrink:0;";
+        pv.textContent=(co.pageViews||co.visits||1)+" pv";
+        coRow.appendChild(coName); coRow.appendChild(coSrc); coRow.appendChild(pv);
+        srcPanel.appendChild(coRow);
+      }
+    }
   }
   wrap.appendChild(srcPanel);
 }
@@ -3170,6 +3240,16 @@ async function init(){
       } else { renderOpsEmpty(); }
     } else { renderOpsEmpty(); }
   } catch(e){ renderOpsEmpty(); }
+
+  // Load Leadfeeder data (optional — traffic sources panel)
+  try {
+    const lr=await fetch('./leadfeeder-data.json?t='+Date.now());
+    if(lr.ok){
+      LF_DATA=await lr.json();
+      // Re-render funnels panel now that Leadfeeder data is loaded
+      if(HS_DATA) renderSalesFunnels();
+    }
+  } catch(e){ /* Leadfeeder data not available */ }
 
   // Load Google data for current person (google-data-{name}.json → fallback google-data.json)
   // detectMyName() may return null if data not loaded yet — loadGoogleDataFor handles that
