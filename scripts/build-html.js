@@ -1273,71 +1273,73 @@ function renderCustomerCommitments(container){
   if(!custIni||DONE_STATES.has(custIni.status||"")) return;
   const activeProjs=(custIni.projects||[]).filter(p=>!DONE_STATES.has(p.status||""));
   if(!activeProjs.length) return;
-  const PRIO_COLORS={Urgent:"#ef4444",High:"#f97316",Medium:"#eab308",Low:"#3b82f6","No priority":"#94a3b8"};
   const PRIO_RANK={Urgent:0,High:1,Medium:2,Low:3,"No priority":4};
   const STATUS_RANK={Blocked:0,"In Test":1,"In Review":2,"In Progress":3,Todo:4,Backlog:5};
   let orderedProjs=getCustOrder(activeProjs);
-  let dragSrcIdx=null;
-  const tree=document.createElement("div"); tree.className="ini-tree";
+
+  // Wrapper preserves position in container during rebuilds
+  const wrapper=document.createElement("div"); wrapper.dataset.custWrapper="1";
+  container.appendChild(wrapper);
+
   function rebuildCust(){
-    tree.innerHTML="";
-    for(let idx=0;idx<orderedProjs.length;idx++){
-      const proj=orderedProjs[idx];
+    wrapper.innerHTML="";
+    for(const proj of orderedProjs){
       const projKey="cust_"+proj.id;
-      const projExp=expanded[projKey]!==undefined?expanded[projKey]:false;
-      const hasIssues=proj.issues&&proj.issues.length>0;
-      const row=document.createElement("div"); row.className="ini-row"; row.draggable=true;
-      // ── Drag & drop ────────────────────────────────────────────────────────
-      row.addEventListener("dragstart",function(e){ dragSrcIdx=idx; row.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; });
-      row.addEventListener("dragend",function(){ row.classList.remove("dragging"); tree.querySelectorAll(".drag-over").forEach(el=>el.classList.remove("drag-over")); });
-      row.addEventListener("dragover",function(e){ e.preventDefault(); e.dataTransfer.dropEffect="move"; if(dragSrcIdx!==idx) row.classList.add("drag-over"); });
-      row.addEventListener("dragleave",function(){ row.classList.remove("drag-over"); });
-      row.addEventListener("drop",function(e){ e.preventDefault(); row.classList.remove("drag-over"); if(dragSrcIdx===null||dragSrcIdx===idx) return; const moved=orderedProjs.splice(dragSrcIdx,1)[0]; orderedProjs.splice(idx,0,moved); dragSrcIdx=null; saveCustOrder(orderedProjs); rebuildCust(); });
-      // ── Project header ─────────────────────────────────────────────────────
-      const hdr=document.createElement("div"); hdr.className="ini-hdr";
-      const drag=document.createElement("span"); drag.className="ini-drag"; drag.textContent="\u283f"; drag.title="Drag to reorder";
-      const arr=document.createElement("span"); arr.className="ini-arr"; arr.textContent=hasIssues?(projExp?"\u25BC":"\u25B6"):"\u2013";
-      const name=document.createElement("span"); name.className="ini-name"; name.textContent=proj.name;
-      const badge=document.createElement("span"); badge.className="ini-hdr-badge"; badge.style.background=sc(proj.status||"Active")+"22"; badge.style.color=sc(proj.status||"Active"); badge.textContent=proj.status||"Active";
-      if(proj.targetDate){
-        const today=TODAY_STR;
-        const od=proj.targetDate<today;
-        const dateBadge=document.createElement("span"); dateBadge.className="ini-hdr-count"; dateBadge.style.cssText=od?"color:#ef4444;":"";
-        dateBadge.textContent=(od?"\u26A0\uFE0F overdue \u00b7 ":"")+fmtDate(proj.targetDate);
-        hdr.appendChild(drag); hdr.appendChild(arr); hdr.appendChild(name); hdr.appendChild(badge); hdr.appendChild(dateBadge);
-      } else {
-        hdr.appendChild(drag); hdr.appendChild(arr); hdr.appendChild(name); hdr.appendChild(badge);
-      }
-      if(proj.url){
-        const openBtn=document.createElement("a"); openBtn.href=proj.url; openBtn.target="_blank"; openBtn.className="ini-open-link"; openBtn.textContent="\u2197"; openBtn.title="Open in Linear";
-        openBtn.addEventListener("click",function(e){ e.stopPropagation(); });
-        hdr.appendChild(openBtn);
-      }
-      hdr.addEventListener("click",function(e){ if(e.target.classList.contains("ini-drag")||e.target.classList.contains("ini-open-link")) return; if(hasIssues){ expanded[projKey]=!projExp; rebuildCust(); } else if(proj.url) window.open(proj.url,"_blank"); });
-      row.appendChild(hdr);
-      // ── Issues ────────────────────────────────────────────────────────────
-      if(projExp&&hasIssues){
-        const sorted=[...proj.issues].filter(i=>!DONE_STATES.has(i.status||"")).sort((a,b)=>{ const pa=PRIO_RANK[a.priority]??99,pb=PRIO_RANK[b.priority]??99; return pa!==pb?pa-pb:(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99); });
-        for(const iss of sorted){
-          const od=isOverdue(iss.end,iss.status);
-          const issRow=document.createElement("div"); issRow.className="ini-issue"+(od?" ini-iss-overdue":"");
-          const pDot=document.createElement("span"); pDot.className="ini-iss-prio"; pDot.style.background=PRIO_COLORS[iss.priority]||"#94a3b8"; pDot.title=iss.priority||"No priority";
-          const idEl=document.createElement("span"); idEl.className="ini-iss-id"; idEl.textContent=iss.identifier||"";
-          const titleEl=document.createElement("span"); titleEl.className="ini-iss-title"; titleEl.textContent=iss.title;
-          if(iss.url) issRow.style.cursor="pointer";
-          issRow.addEventListener("click",function(){ if(iss.url) window.open(iss.url,"_blank"); });
-          const stBadge=document.createElement("span"); stBadge.className="ini-iss-status"; stBadge.style.background=sc(iss.status)+"22"; stBadge.style.color=sc(iss.status); stBadge.textContent=iss.status;
-          const ownerEl=document.createElement("span"); ownerEl.className="ini-iss-owner"; ownerEl.textContent=iss.assignee?(iss.assignee.split(" ")[0]):"";
-          const estEl=document.createElement("span"); estEl.className="ini-iss-est"; estEl.textContent=iss.estimate!=null?iss.estimate+"pt":"";
-          issRow.appendChild(pDot); issRow.appendChild(idEl); issRow.appendChild(titleEl); issRow.appendChild(stBadge); issRow.appendChild(ownerEl); issRow.appendChild(estEl);
-          row.appendChild(issRow);
+      const projExp=expanded[projKey]!==undefined?expanded[projKey]:true; // expanded by default
+      const activeIss=(proj.issues||[]).filter(i=>!DONE_STATES.has(i.status||""))
+        .sort((a,b)=>{ const pa=PRIO_RANK[a.priority]??99,pb=PRIO_RANK[b.priority]??99; return pa!==pb?pa-pb:(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99); });
+      const od=proj.targetDate&&proj.targetDate<TODAY_STR;
+      const projColor=od?"#ef4444":sc(proj.status||"In Progress");
+
+      // ── Project row as Gantt bar: today → targetDate ──────────────────────
+      const projRow=makeGanttRow({
+        indent:0,
+        label:proj.name,
+        status:proj.status||"In Progress",
+        color:projColor,
+        start:TODAY_STR,           // bar starts at today
+        end:proj.targetDate||null, // bar ends at contract date
+        url:proj.url,
+        hasChildren:activeIss.length>0,
+        isExpanded:projExp,
+        isIni:true,
+        barClickable:false,        // click label to expand/collapse
+        overdueFlag:od,
+        barData:{label:proj.name,status:proj.status||"",start:TODAY_STR,end:proj.targetDate,url:proj.url,clickable:false},
+        onClick:()=>{ expanded[projKey]=!projExp; rebuildCust(); },
+      });
+      wrapper.appendChild(projRow);
+
+      // ── Issues as indented Gantt bars ─────────────────────────────────────
+      if(projExp && activeIss.length){
+        for(const iss of activeIss){
+          const issOd=isOverdue(iss.end,iss.status);
+          // Use issue start→end if available, fall back to project targetDate as end
+          const issStart=iss.start||iss.end||proj.targetDate||null;
+          const issEnd=iss.end||proj.targetDate||null;
+          const issLabel=(iss.identifier?iss.identifier+" ":"")+iss.title;
+          const issRow=makeGanttRow({
+            indent:1,
+            label:issLabel,
+            status:iss.status,
+            color:sc(iss.status),
+            start:issStart,
+            end:issEnd,
+            url:iss.url,
+            hasChildren:false,
+            isIni:false,
+            barClickable:!!iss.url,
+            overdueFlag:issOd,
+            assignee:iss.assignee,
+            priority:iss.priority,
+            barData:{label:issLabel,status:iss.status,start:issStart,end:issEnd,url:iss.url,clickable:!!iss.url,assignee:iss.assignee,priority:iss.priority},
+          });
+          wrapper.appendChild(issRow);
         }
       }
-      tree.appendChild(row);
     }
   }
   rebuildCust();
-  container.appendChild(tree);
 }
 
 // ── Initiative Tree ───────────────────────────────────────────────────────────

@@ -112,35 +112,50 @@ async function fetchAccountId() {
 
 async function fetchLeads(accountId, dateFrom, dateTo, page = 1) {
   const auth = fetchAccountId._auth || undefined;
-  // Try standard Leadfeeder params (no sort — some API versions reject unknown sort fields)
-  const { status, data, raw } = await lfGet(`/accounts/${accountId}/leads`, {
-    date_from: dateFrom,
-    date_to:   dateTo,
-    per_page:  100,
-    page,
-  }, auth);
-  if (status !== 200) {
-    console.warn(`  Leads fetch HTTP ${status} — ${raw.slice(0, 400)}`);
-    return { leads: [], totalPages: 0 };
+
+  // Leadfeeder/Dealfront API supports two param styles — try both:
+  // Style A (legacy): date_from / date_to
+  // Style B (JSON:API filter): filter[date_from] / filter[date_to]
+  const paramStyles = [
+    { date_from: dateFrom, date_to: dateTo, per_page: 100, page },
+    { "filter[date_from]": dateFrom, "filter[date_to]": dateTo, "page[size]": 100, "page[number]": page },
+  ];
+
+  for (let si = 0; si < paramStyles.length; si++) {
+    const { status, data, raw } = await lfGet(`/accounts/${accountId}/leads`, paramStyles[si], auth);
+
+    if (status !== 200) {
+      if (si === 0) { console.warn(`  Style A HTTP ${status} — trying style B`); continue; }
+      console.warn(`  Leads fetch HTTP ${status} — ${raw.slice(0, 300)}`);
+      return { leads: [], totalPages: 0 };
+    }
+
+    // Log on first page + first working style
+    if (page === 1) {
+      console.log(`  Leads (style ${si===0?"A":"B"}) keys: ${Object.keys(data).join(", ")}`);
+      console.log(`  data.data: ${Array.isArray(data.data)?data.data.length+" items":"not array"} | data.leads: ${Array.isArray(data.leads)?data.leads.length+" items":"not array"}`);
+      console.log(`  meta: ${JSON.stringify(data.meta||data.pagination||{})}`);
+      if (!(data.data||data.leads)) console.log(`  raw (first 500): ${raw.slice(0, 500)}`);
+    }
+
+    const rawLeads = data.data || data.leads || [];
+    if (rawLeads.length === 0 && si === 0) {
+      console.log(`  Style A returned 0 leads — trying style B`);
+      continue; // try the other param style
+    }
+
+    const leads = rawLeads.map(item => {
+      if (item.attributes) return { id: item.id, ...item.attributes };
+      return item;
+    });
+    const meta = data.meta || data.pagination || {};
+    const totalPages = meta.total_pages || meta.totalPages || meta.last_page || 1;
+    // Stash working style for subsequent pages
+    fetchLeads._style = si;
+    return { leads, totalPages };
   }
-  // Debug: always log response shape so we can see what the API returns
-  if (page === 1) {
-    console.log(`  Leads response keys: ${Object.keys(data).join(", ")}`);
-    const arr = data.data || data.leads || [];
-    console.log(`  data.data length: ${Array.isArray(data.data)?data.data.length:"(not array)"}, data.leads length: ${Array.isArray(data.leads)?data.leads.length:"(not array)"}`);
-    console.log(`  meta: ${JSON.stringify(data.meta||data.pagination||{})}`);
-    console.log(`  Leads raw (first 500): ${raw.slice(0, 500)}`);
-  }
-  // JSON:API format: results in data.data, each item has .attributes
-  const rawLeads = data.data || data.leads || [];
-  // Flatten JSON:API items: merge id + attributes into a flat object
-  const leads = rawLeads.map(item => {
-    if (item.attributes) return { id: item.id, ...item.attributes };
-    return item; // already flat (legacy format)
-  });
-  const meta = data.meta || data.pagination || {};
-  const totalPages = meta.total_pages || meta.totalPages || meta.last_page || 1;
-  return { leads, totalPages };
+
+  return { leads: [], totalPages: 0 };
 }
 
 async function fetchAllLeads(accountId, dateFrom, dateTo) {
@@ -184,13 +199,12 @@ async function main() {
 
   const today       = new Date();
   const thisWeekEnd   = toISO(today);
-  const thisWeekStart = toISO(daysAgo(7));
-  const lastWeekStart = toISO(daysAgo(14));
-  const lastWeekEnd   = toISO(daysAgo(8));
+  const thisWeekStart = toISO(daysAgo(14));  // 14 days = "this period" (matches Leadfeeder UI default ~30d)
+  const lastWeekStart = toISO(daysAgo(28));
+  const lastWeekEnd   = toISO(daysAgo(15));
 
-  // Quick diagnostic: also try a 30-day range to see if there's any data at all
-  console.log(`  Date range (this week): ${thisWeekStart} → ${thisWeekEnd}`);
-  console.log(`  Date range (last week): ${lastWeekStart} → ${lastWeekEnd}`);
+  console.log(`  Date range (this period): ${thisWeekStart} → ${thisWeekEnd}`);
+  console.log(`  Date range (last period): ${lastWeekStart} → ${lastWeekEnd}`);
 
   // Fetch this week and last week in parallel
   const [thisWeekLeads, lastWeekLeads] = await Promise.all([
