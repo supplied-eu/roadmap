@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T12:54:08.336Z",
+  "refreshedAt": "2026-03-24T14:06:05.249Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1857,7 +1857,7 @@
     {
       "key": "PAID_SOCIAL",
       "thisWeek": 5,
-      "lastWeek": 5,
+      "lastWeek": 4,
       "contacts": [
         {
           "id": "741349508286",
