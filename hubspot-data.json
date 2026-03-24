@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T09:31:53.308Z",
+  "refreshedAt": "2026-03-24T09:56:00.911Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1493,6 +1493,18 @@
       "probability": 0,
       "stageLabel": "Closed Lost",
       "ownerName": "Julio Lindveld"
+    },
+    {
+      "id": "495029916887",
+      "name": "Tipatli ",
+      "stage": "4874399933",
+      "pipeline": "3557407943",
+      "amount": 100000,
+      "closeDate": "2026-03-31",
+      "ownerId": "901168591",
+      "probability": 0.2,
+      "stageLabel": "Discovery call scheduled",
+      "ownerName": "Johann Rozario"
     },
     {
       "id": "475464711375",
