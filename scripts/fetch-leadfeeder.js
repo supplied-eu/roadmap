@@ -128,9 +128,11 @@ async function fetchLeads(accountId, dateFrom, dateTo, page = 1) {
   if (fetchAccountId._slugId && fetchAccountId._slugId !== accountId) ids.push(fetchAccountId._slugId);
   if (fetchAccountId._numericId && fetchAccountId._numericId !== accountId) ids.push(fetchAccountId._numericId);
 
+  // Discovered from API errors:
+  //   "Invalid page format" → needs page[number]/page[size]
+  //   "Required parameter 'start_date' is missing" → needs start_date/end_date
   const paramStyles = [
-    { date_from: dateFrom, date_to: dateTo, per_page: 100, page },
-    { "filter[date_from]": dateFrom, "filter[date_to]": dateTo, "page[size]": 100, "page[number]": page },
+    { start_date: dateFrom, end_date: dateTo, "page[size]": 100, "page[number]": page },
   ];
 
   for (const tryId of ids) {

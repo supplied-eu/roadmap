@@ -339,6 +339,8 @@ body {
   white-space: normal; flex: 1; line-height: 1.4;
 }
 .row.initiative .row-name { color: var(--text); font-weight: 500; }
+.row-name-link { text-decoration: none; color: inherit; cursor: pointer; }
+.row-name-link:hover { text-decoration: underline; color: var(--accent, #3b82f6); }
 .row-badge {
   font-size: 7px; border-radius: 3px; padding: 1px 5px; flex-shrink: 0;
   white-space: nowrap; letter-spacing: 0.3px;
@@ -460,6 +462,7 @@ body {
 .ini-drag:hover{opacity:1;}
 .ini-arr{flex-shrink:0;font-size:9px;color:var(--text-muted);width:12px;}
 .ini-name{flex:1;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--text);text-transform:uppercase;}
+.ini-name-link{text-decoration:none;color:inherit;cursor:pointer;}.ini-name-link:hover{text-decoration:underline;color:var(--accent,#3b82f6);}
 .ini-hdr-badge{font-size:9px;padding:1px 7px;border-radius:3px;font-weight:600;}
 .ini-hdr-count{flex-shrink:0;font-size:10px;color:var(--text-muted);}
 .ini-proj{border-top:1px solid var(--border);}
@@ -467,6 +470,7 @@ body {
 .ini-proj-hdr:hover{filter:brightness(.97);}
 .ini-proj-arr{flex-shrink:0;font-size:9px;color:var(--text-muted);width:10px;}
 .ini-proj-name{flex:1;font-size:11px;color:var(--text);font-weight:600;}
+.ini-proj-name-link{text-decoration:none;color:inherit;cursor:pointer;}.ini-proj-name-link:hover{text-decoration:underline;color:var(--accent,#3b82f6);}
 .ini-proj-badge{font-size:9px;padding:1px 6px;border-radius:3px;font-weight:600;}
 .ini-proj-count{font-size:10px;color:var(--text-muted);}
 .ini-prio-grp{display:flex;align-items:center;gap:6px;padding:3px 14px 3px 52px;background:var(--surface2);border-top:1px solid var(--border);}
@@ -1162,7 +1166,12 @@ function makeGanttRow({indent,label,status,color,start,end,url,hasChildren,isExp
   const lc=document.createElement("div"); lc.className="row-label"; lc.style.paddingLeft=(10+indent*14)+"px";
   if(hasChildren){ const arr=document.createElement("span"); arr.className="row-arrow"+(isExpanded?" open":""); arr.textContent="▶"; lc.appendChild(arr); }
   const dot=document.createElement("span"); dot.className="row-dot"; dot.style.background=color||sc(status); lc.appendChild(dot);
-  const nm=document.createElement("span"); nm.className="row-name"; nm.textContent=label; nm.title=label; lc.appendChild(nm);
+  if(url){
+    const nm=document.createElement("a"); nm.className="row-name row-name-link"; nm.textContent=label; nm.title=label; nm.href=url; nm.target="_blank"; nm.rel="noopener";
+    nm.addEventListener("click",function(ev){ ev.stopPropagation(); }); lc.appendChild(nm);
+  } else {
+    const nm=document.createElement("span"); nm.className="row-name"; nm.textContent=label; nm.title=label; lc.appendChild(nm);
+  }
   if(!isIni&&priLevel==="urgent"){ const pt=document.createElement("span"); pt.className="pri-tag pri-urgent"; pt.textContent="URGENT"; lc.appendChild(pt); }
   else if(!isIni&&priLevel==="high"){ const pt=document.createElement("span"); pt.className="pri-tag pri-high"; pt.textContent="HIGH"; lc.appendChild(pt); }
   if(!isIni&&overdueFlag){ const ot=document.createElement("span"); ot.className="overdue-tag"; ot.textContent="OVERDUE"; lc.appendChild(ot); }
@@ -1271,13 +1280,16 @@ function renderCustomerCommitments(container){
   if(!GANTT_DATA) return;
   const custIni=GANTT_DATA.initiatives.find(ini=>ini.name.indexOf("Customer")!==-1||ini.name.indexOf("Go Live")!==-1);
   if(!custIni||DONE_STATES.has(custIni.status||"")) return;
-  const activeProjs=(custIni.projects||[]).filter(p=>!DONE_STATES.has(p.status||""));
+  // Show ALL projects that have active issues (not just non-done projects)
+  const activeProjs=(custIni.projects||[]).filter(p=>{
+    if(DONE_STATES.has(p.status||"")) return false;
+    return (p.issues||[]).some(i=>!DONE_STATES.has(i.status||""));
+  });
   if(!activeProjs.length) return;
   const PRIO_RANK={Urgent:0,High:1,Medium:2,Low:3,"No priority":4};
   const STATUS_RANK={Blocked:0,"In Test":1,"In Review":2,"In Progress":3,Todo:4,Backlog:5};
   let orderedProjs=getCustOrder(activeProjs);
 
-  // Wrapper preserves position in container during rebuilds
   const wrapper=document.createElement("div"); wrapper.dataset.custWrapper="1";
   container.appendChild(wrapper);
 
@@ -1285,46 +1297,42 @@ function renderCustomerCommitments(container){
     wrapper.innerHTML="";
     for(const proj of orderedProjs){
       const projKey="cust_"+proj.id;
-      const projExp=expanded[projKey]!==undefined?expanded[projKey]:true; // expanded by default
+      const projExp=expanded[projKey]!==undefined?expanded[projKey]:true;
       const activeIss=(proj.issues||[]).filter(i=>!DONE_STATES.has(i.status||""))
         .sort((a,b)=>{ const pa=PRIO_RANK[a.priority]??99,pb=PRIO_RANK[b.priority]??99; return pa!==pb?pa-pb:(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99); });
       const od=proj.targetDate&&proj.targetDate<TODAY_STR;
       const projColor=od?"#ef4444":sc(proj.status||"In Progress");
 
-      // ── Project row as Gantt bar: today → targetDate ──────────────────────
       const projRow=makeGanttRow({
         indent:0,
         label:proj.name,
         status:proj.status||"In Progress",
         color:projColor,
-        start:TODAY_STR,           // bar starts at today
-        end:proj.targetDate||null, // bar ends at contract date
+        start:TODAY_STR,
+        end:proj.targetDate||null,
         url:proj.url,
         hasChildren:activeIss.length>0,
         isExpanded:projExp,
         isIni:true,
-        barClickable:false,        // click label to expand/collapse
+        barClickable:false,
         overdueFlag:od,
         barData:{label:proj.name,status:proj.status||"",start:TODAY_STR,end:proj.targetDate,url:proj.url,clickable:false},
         onClick:()=>{ expanded[projKey]=!projExp; rebuildCust(); },
       });
       wrapper.appendChild(projRow);
 
-      // ── Issues as indented Gantt bars ─────────────────────────────────────
       if(projExp && activeIss.length){
         for(const iss of activeIss){
           const issOd=isOverdue(iss.end,iss.status);
           const isSubIssue=!!iss.parentId;
-          // Use issue start→end if available, fall back to project targetDate as end
           const issStart=iss.start||iss.end||proj.targetDate||null;
           const issEnd=iss.end||proj.targetDate||null;
-          // Sub-issues get a ↳ prefix and deeper indent
-          const issLabel=(isSubIssue?"↳ ":"")+(iss.identifier?iss.identifier+" ":"")+iss.title;
+          const issLabel=(isSubIssue?"\u21b3 ":"")+(iss.identifier?iss.identifier+" ":"")+iss.title;
           const issRow=makeGanttRow({
             indent:isSubIssue?2:1,
             label:issLabel,
             status:iss.status,
-            color:isSubIssue?sc(iss.status)+"bb":sc(iss.status), // slightly muted for sub-issues
+            color:isSubIssue?sc(iss.status)+"bb":sc(iss.status),
             start:issStart,
             end:issEnd,
             url:iss.url,
@@ -1384,7 +1392,7 @@ function renderInitiativeTree(container){
       const hdr=document.createElement("div"); hdr.className="ini-hdr";
       const drag=document.createElement("span"); drag.className="ini-drag"; drag.textContent="\u283f"; drag.title="Drag to reorder";
       const arr=document.createElement("span"); arr.className="ini-arr"; arr.textContent=iniExp?"\u25BC":"\u25B6";
-      const name=document.createElement("span"); name.className="ini-name"; name.textContent=ini.name;
+      let name; if(ini.url){ name=document.createElement("a"); name.className="ini-name ini-name-link"; name.textContent=ini.name; name.href=ini.url; name.target="_blank"; name.rel="noopener"; name.addEventListener("click",function(ev){ ev.stopPropagation(); }); } else { name=document.createElement("span"); name.className="ini-name"; name.textContent=ini.name; }
       const badge=document.createElement("span"); badge.className="ini-hdr-badge"; badge.style.background=sc(ini.status||"Active")+"22"; badge.style.color=sc(ini.status||"Active"); badge.textContent=ini.status||"Active";
       const count=document.createElement("span"); count.className="ini-hdr-count"; count.textContent=totalIssues+" issues";
       hdr.appendChild(drag); hdr.appendChild(arr); hdr.appendChild(name); hdr.appendChild(badge); hdr.appendChild(count);
@@ -1401,7 +1409,7 @@ function renderInitiativeTree(container){
           const projEl=document.createElement("div"); projEl.className="ini-proj";
           const projHdr=document.createElement("div"); projHdr.className="ini-proj-hdr";
           const pArr=document.createElement("span"); pArr.className="ini-proj-arr"; pArr.textContent=projExp?"\u25BC":"\u25B6";
-          const pName=document.createElement("span"); pName.className="ini-proj-name"; pName.textContent=proj.name;
+          let pName; if(proj.url){ pName=document.createElement("a"); pName.className="ini-proj-name ini-proj-name-link"; pName.textContent=proj.name; pName.href=proj.url; pName.target="_blank"; pName.rel="noopener"; pName.addEventListener("click",function(ev){ ev.stopPropagation(); }); } else { pName=document.createElement("span"); pName.className="ini-proj-name"; pName.textContent=proj.name; }
           const pBadge=document.createElement("span"); pBadge.className="ini-proj-badge"; pBadge.style.background=sc(proj.status||"Active")+"22"; pBadge.style.color=sc(proj.status||"Active"); pBadge.textContent=proj.status||"Active";
           const pCount=document.createElement("span"); pCount.className="ini-proj-count"; pCount.textContent=activeIssues.length+" issues";
           projHdr.appendChild(pArr); projHdr.appendChild(pName); projHdr.appendChild(pBadge); projHdr.appendChild(pCount);
