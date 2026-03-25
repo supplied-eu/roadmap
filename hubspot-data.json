@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-24T15:29:55.726Z",
+  "refreshedAt": "2026-03-25T09:18:42.548Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -883,7 +883,7 @@
     },
     {
       "id": "474917819587",
-      "subject": "Reach out to Интер��ет Хостинг Центр",
+      "subject": "Reach out to Интернет Хостинг Центр",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
@@ -1388,6 +1388,50 @@
       "ownerName": "Bas Bogerd"
     },
     {
+      "id": "480357521599",
+      "subject": "Reach out to GB Manchester: Technology Integration and Custom Solutions",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-27",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "480379397317",
+      "subject": "Reach out to Watch Forward",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-27",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "480449038582",
+      "subject": "Reach out to Ascential – Part of the Informa Group",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-27",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "480458752231",
+      "subject": "Reach out to Farchase",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-27",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
       "id": "479956280508",
       "subject": "Follow-Up Koos",
       "status": "NOT_STARTED",
@@ -1528,7 +1572,7 @@
       "amount": 1788,
       "closeDate": "2026-03-31",
       "createDate": "2026-03-06",
-      "modifiedDate": "2026-03-23",
+      "modifiedDate": "2026-03-25",
       "ownerId": "29853062",
       "probability": 0.8,
       "stageLabel": "Contract Sent",
@@ -1825,17 +1869,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 2
+      "count": 11
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 4
+      "count": 44
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 1
+      "count": 2
     },
     {
       "key": "salesqualifiedlead",
@@ -1850,14 +1894,14 @@
     {
       "key": "customer",
       "label": "Customer",
-      "count": 2
+      "count": 35
     }
   ],
   "trafficSources": [
     {
       "key": "PAID_SOCIAL",
-      "thisWeek": 4,
-      "lastWeek": 5,
+      "thisWeek": 3,
+      "lastWeek": 6,
       "contacts": [
         {
           "id": "741349508286",
