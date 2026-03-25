@@ -430,6 +430,10 @@ body {
 .swim-title{font-size:11px;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .swim-assignee{font-size:9px;color:var(--text-muted);flex-shrink:0;padding:0 4px;}
 .swim-badge{font-size:8px;font-weight:600;padding:1px 5px;border-radius:3px;flex-shrink:0;letter-spacing:.4px;text-transform:uppercase;}
+/* ── Customer Project Drag ────────────────────────────────────────────── */
+.cust-proj-wrap{transition:opacity .15s;}
+.cust-proj-wrap.dragging{opacity:.35;}
+.cust-proj-wrap.drag-over{box-shadow:inset 0 2px 0 var(--accent);}
 /* ── Initiative Tree ──────────────────────────────────────────────────── */
 .ini-row{border-bottom:1px solid var(--border);transition:opacity .15s;}
 .ini-row.dragging{opacity:.35;}
@@ -1264,28 +1268,40 @@ function renderCustomerCommitments(container){
   if(!GANTT_DATA) return;
   const custIni=GANTT_DATA.initiatives.find(ini=>ini.name.indexOf("Customer")!==-1||ini.name.indexOf("Go Live")!==-1);
   if(!custIni||DONE_STATES.has(custIni.status||"")) return;
-  // Show ALL projects that have active issues (not just non-done projects)
+  // Exclude completed, backlog, and planned projects; only show those with truly active issues
+  const INACTIVE=new Set([...DONE_STATES,"Backlog","Planned","Triage"]);
   const activeProjs=(custIni.projects||[]).filter(p=>{
-    if(DONE_STATES.has(p.status||"")) return false;
-    return (p.issues||[]).some(i=>!DONE_STATES.has(i.status||""));
+    if(INACTIVE.has(p.status||"")) return false;
+    return (p.issues||[]).some(i=>!INACTIVE.has(i.status||"")&&!DONE_STATES.has(i.status||""));
   });
   if(!activeProjs.length) return;
   const PRIO_RANK={Urgent:0,High:1,Medium:2,Low:3,"No priority":4};
   const STATUS_RANK={Blocked:0,"In Test":1,"In Review":2,"In Progress":3,Todo:4,Backlog:5};
   let orderedProjs=getCustOrder(activeProjs);
+  let dragSrcIdx=null;
 
   const wrapper=document.createElement("div"); wrapper.dataset.custWrapper="1";
   container.appendChild(wrapper);
 
   function rebuildCust(){
     wrapper.innerHTML="";
-    for(const proj of orderedProjs){
+    for(let idx=0;idx<orderedProjs.length;idx++){
+      const proj=orderedProjs[idx];
       const projKey="cust_"+proj.id;
       const projExp=expanded[projKey]!==undefined?expanded[projKey]:true;
-      const activeIss=(proj.issues||[]).filter(i=>!DONE_STATES.has(i.status||""))
+      // Only show issues that are actively being worked (exclude Backlog, Done, Canceled, etc.)
+      const activeIss=(proj.issues||[]).filter(i=>!INACTIVE.has(i.status||"")&&!DONE_STATES.has(i.status||""))
         .sort((a,b)=>{ const pa=PRIO_RANK[a.priority]??99,pb=PRIO_RANK[b.priority]??99; return pa!==pb?pa-pb:(STATUS_RANK[a.status]??99)-(STATUS_RANK[b.status]??99); });
       const od=proj.targetDate&&proj.targetDate<TODAY_STR;
       const projColor=od?"#ef4444":sc(proj.status||"In Progress");
+
+      // ── Draggable project wrapper ───────────────────────────────────────
+      const projWrap=document.createElement("div"); projWrap.draggable=true; projWrap.className="cust-proj-wrap";
+      projWrap.addEventListener("dragstart",function(e){ dragSrcIdx=idx; projWrap.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; });
+      projWrap.addEventListener("dragend",function(){ projWrap.classList.remove("dragging"); wrapper.querySelectorAll(".drag-over").forEach(el=>el.classList.remove("drag-over")); });
+      projWrap.addEventListener("dragover",function(e){ e.preventDefault(); e.dataTransfer.dropEffect="move"; if(dragSrcIdx!==idx) projWrap.classList.add("drag-over"); });
+      projWrap.addEventListener("dragleave",function(){ projWrap.classList.remove("drag-over"); });
+      projWrap.addEventListener("drop",function(e){ e.preventDefault(); projWrap.classList.remove("drag-over"); if(dragSrcIdx===null||dragSrcIdx===idx) return; const moved=orderedProjs.splice(dragSrcIdx,1)[0]; orderedProjs.splice(idx,0,moved); dragSrcIdx=null; saveCustOrder(orderedProjs); rebuildCust(); });
 
       const projRow=makeGanttRow({
         indent:0,
@@ -1303,7 +1319,7 @@ function renderCustomerCommitments(container){
         barData:{label:proj.name,status:proj.status||"",start:TODAY_STR,end:proj.targetDate,url:proj.url,clickable:false},
         onClick:()=>{ expanded[projKey]=!projExp; rebuildCust(); },
       });
-      wrapper.appendChild(projRow);
+      projWrap.appendChild(projRow);
 
       if(projExp && activeIss.length){
         for(const iss of activeIss){
@@ -1328,9 +1344,10 @@ function renderCustomerCommitments(container){
             priority:iss.priority,
             barData:{label:issLabel,status:iss.status,start:issStart,end:issEnd,url:iss.url,clickable:!!iss.url,assignee:iss.assignee,priority:iss.priority},
           });
-          wrapper.appendChild(issRow);
+          projWrap.appendChild(issRow);
         }
       }
+      wrapper.appendChild(projWrap);
     }
   }
   rebuildCust();
