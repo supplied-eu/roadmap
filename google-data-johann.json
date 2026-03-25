@@ -1,7 +1,25 @@
 {
-  "refreshedAt": "2026-03-25T09:40:03.713Z",
+  "refreshedAt": "2026-03-25T10:11:50.715Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d20c620bc8f0e6",
+        "subject": "Re: Johann - quick q",
+        "from": "Alex Samoilenko <samoilenko5@cgsteamadvisory.info>",
+        "date": "2026-03-25T10:10:47.000Z",
+        "snippet": "Johann, noted we&#39;ve built 120+ MVPs — case in point: Health24 needed a medical app that would clear compliance review first time. We delivered. If Supplied has something similar on the roadmap,",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d20c620bc8f0e6",
+        "unread": true
+      },
+      {
+        "id": "19d2473c4d196546",
+        "subject": "Customer Success Standup",
+        "from": "Optiverse <mail@optiverse.ai>",
+        "date": "2026-03-25T10:04:19.000Z",
+        "snippet": "Meeting Summary General Summary De vergadering besprak de hoge prijzen van supermarktproducten in verschillende landen en de uitdagingen rondom brandstofkosten en transport. Julio en Bas bespraken ook",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2473c4d196546",
+        "unread": true
+      },
       {
         "id": "19d0f4a455062f23",
         "subject": "Loonaangifte voor BlueJay Ventures B.V. is aangemaakt.",
@@ -91,27 +109,9 @@
         "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
         "unread": true
-      },
-      {
-        "id": "19cde516ee128e60",
-        "subject": "Your certificate is ready",
-        "from": "notifications@scrut.io",
-        "date": "2026-03-11T19:18:24.000Z",
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
-        "unread": true
-      },
-      {
-        "id": "19cda0433ba07fa8",
-        "subject": "Inside the Diligence Process: What We Actually Look For When Evaluating a Deal",
-        "from": "Matthew Sciarra <msciarra@solensoftwaregroup.com>",
-        "date": "2026-03-10T23:10:32.000Z",
-        "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
-        "unread": true
       }
     ],
-    "unreadCount": 34
+    "unreadCount": 36
   },
   "calendar": {
     "today": [
@@ -175,6 +175,16 @@
         "location": null,
         "numAttendees": 0,
         "url": "https://www.google.com/calendar/event?eid=MmllYzJxMHJjNTVvdWRhdmNma3BrMTlzMDNfMjAyNjAzMjZUMDYzMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "allDay": false
+      },
+      {
+        "id": "3go7oi7f8qkp846v2o7e86p8rq",
+        "title": "Villasud <> Supplied - Check Calculations",
+        "start": "2026-03-26T10:30:00+01:00",
+        "end": "2026-03-26T11:15:00+01:00",
+        "location": null,
+        "numAttendees": 4,
+        "url": "https://www.google.com/calendar/event?eid=M2dvN29pN2Y4cWtwODQ2djJvN2U4NnA4cnEgam9oYW5uQHN1cHBsaWVkLmV1",
         "allDay": false
       },
       {
@@ -256,16 +266,6 @@
         "numAttendees": 2,
         "url": "https://www.google.com/calendar/event?eid=Z3ZyMms3ZThoYzJiZW1ia2JhcDZsaWIzZGcgam9oYW5uQHN1cHBsaWVkLmV1",
         "allDay": false
-      },
-      {
-        "id": "_60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g6so34g9g6h336ga3890k8gpg64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g8p2k2dpg60rjec26612k2d9k8os34e9l70qj6c9n8kpk6h236ss0",
-        "title": "GASTREOAI Team Meeting",
-        "start": "2026-03-27T12:00:00+01:00",
-        "end": "2026-03-27T13:00:00+01:00",
-        "location": "Microsoft Teams Meeting",
-        "numAttendees": 14,
-        "url": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc2c28zNGc5ZzZoMzM2Z2EzODkwazhncGc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnOHAyazJkcGc2MHJqZWMyNjYxMmsyZDlrOG9zMzRlOWw3MHFqNmM5bjhrcGs2aDIzNnNzMCBqb2hhbm5Ac3VwcGxpZWQuZXU",
-        "allDay": false
       }
     ]
   },
@@ -307,7 +307,7 @@
         "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
         "name": " Customer success standup notes",
         "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-25T09:38:25.667Z",
+        "modifiedTime": "2026-03-25T10:00:14.712Z",
         "url": "https://docs.google.com/document/d/17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY/edit?usp=drivesdk",
         "lastModifiedBy": "Julio Lindveld"
       },
@@ -389,6 +389,26 @@
       "threadId": "19ce0214716b0ff0",
       "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
       "id": "email-19ce0214716b0ff0"
+    },
+    {
+      "action": "reply",
+      "subject": "Re: Johann - quick q",
+      "reason": "Johann, noted we&#39;ve built 120+ MVPs — case in point: Health24 needed a medical app that would clear compliance revie",
+      "from": "Alex Samoilenko <samoilenko5@cgsteamadvisory.info>",
+      "ageDays": 0,
+      "threadId": "19d20c620bc8f0e6",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d20c620bc8f0e6",
+      "id": "email-19d20c620bc8f0e6"
+    },
+    {
+      "action": "reply",
+      "subject": "Customer Success Standup",
+      "reason": "Meeting Summary General Summary De vergadering besprak de hoge prijzen van supermarktproducten in verschillende landen e",
+      "from": "Optiverse <mail@optiverse.ai>",
+      "ageDays": 0,
+      "threadId": "19d2473c4d196546",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2473c4d196546",
+      "id": "email-19d2473c4d196546"
     },
     {
       "action": "reply",

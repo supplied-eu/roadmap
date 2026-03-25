@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-25T09:40:01.740Z",
+  "refreshedAt": "2026-03-25T10:11:49.105Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -7344,6 +7344,30 @@
       "targetDate": "2026-12-31",
       "projects": [
         {
+          "id": "101f30f2-7311-431c-aaea-b4fb90bfd650",
+          "name": "Dutch Cleantech",
+          "status": "Backlog",
+          "color": "#bec2c8",
+          "url": "https://linear.app/supplied/project/dutch-cleantech-1ac65793689d",
+          "startDate": null,
+          "targetDate": null,
+          "issues": [
+            {
+              "id": "f5217ef1-46cf-4d83-bbf6-018b4fb1eafe",
+              "identifier": "SUP-1233",
+              "title": "Evaluate flow chart for Dutch CleanTech",
+              "status": "Todo",
+              "start": null,
+              "end": "2026-03-27",
+              "assignee": "Vladimir Ivanov",
+              "priority": "Urgent",
+              "estimate": 1,
+              "url": "https://linear.app/supplied/issue/SUP-1233/evaluate-flow-chart-for-dutch-cleantech",
+              "parentId": null
+            }
+          ]
+        },
+        {
           "id": "5a6a20e8-8be5-44a7-865e-e0ead6a5b51e",
           "name": "Chaletplus",
           "status": "In Progress",
@@ -8252,7 +8276,7 @@
               "id": "ad02cb78-a954-4e28-aaa9-dba7d73d2b8b",
               "identifier": "SUP-1229",
               "title": "Increase Memory Capacity for Tarisio data import to 4gb",
-              "status": "In Test",
+              "status": "Done",
               "start": "2026-03-24",
               "end": "2026-03-24",
               "assignee": "Ivan Tiniakov",
