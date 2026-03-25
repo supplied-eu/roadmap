@@ -1,16 +1,7 @@
 {
-  "refreshedAt": "2026-03-25T09:18:43.607Z",
+  "refreshedAt": "2026-03-25T09:40:03.713Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d2439cf21ce277",
-        "subject": "Last Call: Tune into our Quarterly Releases Show & Tell!",
-        "from": "\"Steph @ Twilio\" <teamtwilio@team.twilio.com>",
-        "date": "2026-03-25T09:00:56.000Z",
-        "snippet": "Hi there, Interested in seeing what we&#39;ve been building over the last few months? Well, it&#39;s not too late! Join me—and a slew of other Twilio experts—tomorrow to see our newest feature updates",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d2439cf21ce277",
-        "unread": true
-      },
       {
         "id": "19d0f4a455062f23",
         "subject": "Loonaangifte voor BlueJay Ventures B.V. is aangemaakt.",
@@ -109,9 +100,18 @@
         "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
         "unread": true
+      },
+      {
+        "id": "19cda0433ba07fa8",
+        "subject": "Inside the Diligence Process: What We Actually Look For When Evaluating a Deal",
+        "from": "Matthew Sciarra <msciarra@solensoftwaregroup.com>",
+        "date": "2026-03-10T23:10:32.000Z",
+        "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
+        "unread": true
       }
     ],
-    "unreadCount": 35
+    "unreadCount": 34
   },
   "calendar": {
     "today": [
@@ -273,10 +273,18 @@
     "recent": [
       {
         "id": "1j8hfDG76usb_keiDz9qrXuSnsdlBlHLLXwT66nRuZC0",
-        "name": "Supplied Operations Data Mapping - TarisioComplete ",
+        "name": "Supplied Operations Data Mapping - Tarisio_Complete ",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-24T19:43:35.751Z",
+        "modifiedTime": "2026-03-25T09:20:30.468Z",
         "url": "https://docs.google.com/spreadsheets/d/1j8hfDG76usb_keiDz9qrXuSnsdlBlHLLXwT66nRuZC0/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
+        "name": "Notes - Commerce<>Product Weekly",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-24T15:22:15.455Z",
+        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
       },
       {
@@ -296,26 +304,10 @@
         "lastModifiedBy": "Bas Bogerd"
       },
       {
-        "id": "1Q9bbOwIceGsE1DhCNcQThcyoO1eyo8--tCemg5VY4WA",
-        "name": "Tarisio - Supplied Operations Data Mapping Template ",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-01-07T15:24:53.657Z",
-        "url": "https://docs.google.com/spreadsheets/d/1Q9bbOwIceGsE1DhCNcQThcyoO1eyo8--tCemg5VY4WA/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
-        "name": "Notes - Commerce<>Product Weekly",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-24T15:22:15.455Z",
-        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
         "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
         "name": " Customer success standup notes",
         "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-25T08:58:18.102Z",
+        "modifiedTime": "2026-03-25T09:38:25.667Z",
         "url": "https://docs.google.com/document/d/17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY/edit?usp=drivesdk",
         "lastModifiedBy": "Julio Lindveld"
       },
@@ -366,6 +358,14 @@
         "modifiedTime": "2026-03-24T13:56:53.218Z",
         "url": "https://docs.google.com/document/d/1KNwfaUpHj4e0mbh8KiUmYXND8-yValjCl7TZpK8mLrE/edit?usp=drivesdk",
         "lastModifiedBy": "Julio Lindveld"
+      },
+      {
+        "id": "1ubwRQff2htbItm1hpLZNtVLUSM9m2xlHjowZYQGPKdA",
+        "name": "Product and Engineering Roadmap Supplied",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-02-27T14:21:40.414Z",
+        "url": "https://docs.google.com/spreadsheets/d/1ubwRQff2htbItm1hpLZNtVLUSM9m2xlHjowZYQGPKdA/edit?usp=drivesdk",
+        "lastModifiedBy": "Vladimir Ivanov"
       }
     ]
   },
@@ -389,16 +389,6 @@
       "threadId": "19ce0214716b0ff0",
       "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
       "id": "email-19ce0214716b0ff0"
-    },
-    {
-      "action": "reply",
-      "subject": "Last Call: Tune into our Quarterly Releases Show & Tell!",
-      "reason": "Hi there, Interested in seeing what we&#39;ve been building over the last few months? Well, it&#39;s not too late! Join ",
-      "from": "\"Steph @ Twilio\" <teamtwilio@team.twilio.com>",
-      "ageDays": 0,
-      "threadId": "19d2439cf21ce277",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d2439cf21ce277",
-      "id": "email-19d2439cf21ce277"
     },
     {
       "action": "reply",

@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-25T09:18:42.548Z",
+  "refreshedAt": "2026-03-25T09:40:02.794Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -88,17 +88,6 @@
       "ownerId": "29853062",
       "body": null,
       "ownerName": "Bas Bogerd"
-    },
-    {
-      "id": "381893363900",
-      "subject": "Find contacts and similar companies",
-      "status": "NOT_STARTED",
-      "type": "TODO",
-      "priority": "NONE",
-      "dueDate": "2025-12-07",
-      "ownerId": "901168591",
-      "body": null,
-      "ownerName": "Johann Rozario"
     },
     {
       "id": "361248214241",
@@ -915,17 +904,6 @@
       "ownerName": "Bas Bogerd"
     },
     {
-      "id": "456955074799",
-      "subject": "Follow up with Chesta Hooda",
-      "status": "NOT_STARTED",
-      "type": "TODO",
-      "priority": "NONE",
-      "dueDate": "2026-03-11",
-      "ownerId": "901168591",
-      "body": "<div style=\"\" dir=\"auto\" data-top-level=\"true\"><p style=\"margin:0;\">Regarding note logged on Tuesday, February 17, 2026 3:08 PM</p></div>",
-      "ownerName": "Johann Rozario"
-    },
-    {
       "id": "476670942448",
       "subject": "Reach out to Federal Office of Metrology and Surveying (BEV)",
       "status": "NOT_STARTED",
@@ -1443,17 +1421,6 @@
       "ownerName": "Bas Bogerd"
     },
     {
-      "id": "361003004127",
-      "subject": "Try to meet them at next techleap event",
-      "status": "NOT_STARTED",
-      "type": "TODO",
-      "priority": "NONE",
-      "dueDate": "2026-04-15",
-      "ownerId": "901168591",
-      "body": null,
-      "ownerName": "Johann Rozario"
-    },
-    {
       "id": "375030088948",
       "subject": "Follow up with CoinJar on plans for CARF repporting",
       "status": "NOT_STARTED",
@@ -1670,7 +1637,7 @@
       "amount": 100000,
       "closeDate": "2026-06-01",
       "createDate": "2026-03-24",
-      "modifiedDate": "2026-03-24",
+      "modifiedDate": "2026-03-25",
       "ownerId": "901168591",
       "probability": 0.2,
       "stageLabel": "Discovery call scheduled",
@@ -1869,17 +1836,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 11
+      "count": 2
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 44
+      "count": 13
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 2
+      "count": 1
     },
     {
       "key": "salesqualifiedlead",
@@ -1889,12 +1856,12 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 429
+      "count": 181
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 35
+      "count": 3
     }
   ],
   "trafficSources": [
