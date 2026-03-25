@@ -1,10 +1,538 @@
 {
-  "refreshedAt": "2026-03-25T10:11:52.164Z",
+  "refreshedAt": "2026-03-25T12:48:51.171Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 0,
-  "lastWeekTotal": 0,
-  "trafficSources": [],
-  "topCompanies": [],
-  "dailyVisits": []
+  "thisWeekTotal": 65,
+  "lastWeekTotal": 51,
+  "trafficSources": [
+    {
+      "key": "DIRECT",
+      "label": "Direct",
+      "icon": "🏠",
+      "thisWeek": 65,
+      "lastWeek": 51,
+      "companies": [
+        {
+          "name": "Twelveoakstuition.Co.Uk",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-25",
+          "leadId": "84089ada-2838-11f1-a18d-4d2e7453b66e_135c0820-2ee0-11e9-874d-3f25ecb06faa"
+        },
+        {
+          "name": "UnternehmerTUM",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-25",
+          "leadId": "33bbb118-2892-11ea-98db-07b20c5eaec6_6knD4mE7nnte1rWKPhh6Je"
+        },
+        {
+          "name": "Ipspace   Servicehost",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-25",
+          "leadId": "975af9dc-4510-11ef-8cf0-7f42ee5170a4_qQcqMoRWHAUjrwmRQ66J7b"
+        },
+        {
+          "name": "Ascential – Part of the Informa Group",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-24",
+          "leadId": "d892fa2a-c74d-11ea-a3b4-2120eba07ee1_p6q3nDbB2C4m9KjK9gndy"
+        },
+        {
+          "name": "Theviewercompany.Com",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-24",
+          "leadId": "c6145ac2-277a-11f1-9035-09290061dfb8_h4YTgDV9d8UP9ZyUWXVMrB"
+        },
+        {
+          "name": "BDN Expertise",
+          "website": null,
+          "visits": 2,
+          "lastVisit": "2026-03-24",
+          "leadId": "22df2196-569d-11e7-97bb-29d23f522575_iqJY1yrHd99ZA4hwnBFRG3"
+        },
+        {
+          "name": "Booking Experts B.V.",
+          "website": null,
+          "visits": 2,
+          "lastVisit": "2026-03-24",
+          "leadId": "fc32e90e-e7cc-4da3-a126-b84e5a4e1133_4tx8yhdLA5JdnpuzsQnvdW"
+        },
+        {
+          "name": "Watch Forward",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-24",
+          "leadId": "e9cb94dc-b77a-11f0-abbe-075eba2db062_h4YTgDV9d8UP9ZyUWXVMrB"
+        },
+        {
+          "name": "GB Manchester: Technology Integration and Custom Solutions",
+          "website": null,
+          "visits": 2,
+          "lastVisit": "2026-03-24",
+          "leadId": "fcade7fb-14a0-4c82-8f22-a1928129a017_q7mSTX7jNGyEFSCzxotW6h"
+        },
+        {
+          "name": "Farchase",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-24",
+          "leadId": "5d379710-1dfa-11f0-a5bb-4f0207564ded_7EKyz84mJpoEk5rEvjyNj2"
+        },
+        {
+          "name": "Multi Media",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-23",
+          "leadId": "f62015b4-23af-11eb-8126-53cd456b03d3_4yPUV85U5YiztGE22Jm4gQ"
+        },
+        {
+          "name": "DFF Ventures",
+          "website": null,
+          "visits": 3,
+          "lastVisit": "2026-03-23",
+          "leadId": "12f074ee-1619-11f0-9a25-41fe763d0a57_8KKvyBiSeKRkp23TC37b99"
+        },
+        {
+          "name": "Qonto",
+          "website": null,
+          "visits": 2,
+          "lastVisit": "2026-03-23",
+          "leadId": "32b1abc2-18ad-11eb-b2a8-354a649c2572_6f118eec-e682-11e9-931f-510851ab1241"
+        },
+        {
+          "name": "STRAX GmbH",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-23",
+          "leadId": "tTtrgSUgYeFVXXo1qaS9av_7h59hLbCzufgC6iSDh4xea"
+        },
+        {
+          "name": "WaterWipes",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-23",
+          "leadId": "28f8fd9a-ab1a-4499-9717-eec069e176c6_eccf0280-e6d0-11e9-9b3f-2fe890320230"
+        },
+        {
+          "name": "Technians",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-22",
+          "leadId": "b6befc8e-08da-11ed-93a0-330ab87bfd1d_f9RMxbMEHXDzdtwUDZbMWW"
+        },
+        {
+          "name": "TU Technische Universität Kaiserslautern",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-22",
+          "leadId": "5c1509fe-1571-11e5-b049-0f55f1da803b_89c79ec4-37ef-11eb-9ae6-492dd2c24a8c"
+        },
+        {
+          "name": "Houseofwind.Nl",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-21",
+          "leadId": "4ec631ea-f131-11f0-9214-3b55945a0eab_8KKvyBiSeKRkp23TC37b99"
+        },
+        {
+          "name": "LU-CIX Management",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-21",
+          "leadId": "531ccb12-e588-40ba-8f0b-7dd7efaffd9f_0e9bdf2c-ee61-11e9-9b3f-2fe890320230"
+        },
+        {
+          "name": "AUSTEVOLL KRAFTLAG SA",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-21",
+          "leadId": "iTwZVCN2cZimvHs6cp8iqY_5236b748-3786-11ea-995c-173e61b1cf62"
+        }
+      ]
+    }
+  ],
+  "topCompanies": [
+    {
+      "name": "DFF Ventures",
+      "website": null,
+      "visits": 3,
+      "pageViews": null,
+      "firstVisit": "2026-03-10",
+      "lastVisit": "2026-03-23",
+      "source": "Direct",
+      "leadId": "12f074ee-1619-11f0-9a25-41fe763d0a57_8KKvyBiSeKRkp23TC37b99"
+    },
+    {
+      "name": "Lixux Ou",
+      "website": null,
+      "visits": 3,
+      "pageViews": null,
+      "firstVisit": "2026-01-02",
+      "lastVisit": "2026-03-17",
+      "source": "Direct",
+      "leadId": "4e52c732-17cb-11e5-a78c-4552df138820_6cb0bb8c-e682-11e9-931f-510851ab1241"
+    },
+    {
+      "name": "BDN Expertise",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-23",
+      "lastVisit": "2026-03-24",
+      "source": "Direct",
+      "leadId": "22df2196-569d-11e7-97bb-29d23f522575_iqJY1yrHd99ZA4hwnBFRG3"
+    },
+    {
+      "name": "Booking Experts B.V.",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-02-24",
+      "lastVisit": "2026-03-24",
+      "source": "Direct",
+      "leadId": "fc32e90e-e7cc-4da3-a126-b84e5a4e1133_4tx8yhdLA5JdnpuzsQnvdW"
+    },
+    {
+      "name": "GB Manchester: Technology Integration and Custom Solutions",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-24",
+      "lastVisit": "2026-03-24",
+      "source": "Direct",
+      "leadId": "fcade7fb-14a0-4c82-8f22-a1928129a017_q7mSTX7jNGyEFSCzxotW6h"
+    },
+    {
+      "name": "Qonto",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-16",
+      "lastVisit": "2026-03-23",
+      "source": "Direct",
+      "leadId": "32b1abc2-18ad-11eb-b2a8-354a649c2572_6f118eec-e682-11e9-931f-510851ab1241"
+    },
+    {
+      "name": "Orient Software Development",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-18",
+      "lastVisit": "2026-03-20",
+      "source": "Direct",
+      "leadId": "d3826542-8bd4-11eb-b243-0b588a09aad2_a982db1e-1b6e-11ea-937c-67d17a051f8b"
+    },
+    {
+      "name": "Fortino Capital",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-13",
+      "lastVisit": "2026-03-19",
+      "source": "Direct",
+      "leadId": "7b8e635c-c5bb-11ea-bbc8-31eab70eca51_i8eEcSjPn2mRmqrmQZWgAE"
+    },
+    {
+      "name": "Brenger",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2025-12-02",
+      "lastVisit": "2026-03-19",
+      "source": "Direct",
+      "leadId": "28a13a95-c5cc-4c4c-a695-30746ee4cbb0_iqJY1yrHd99ZA4hwnBFRG3"
+    },
+    {
+      "name": "Truman Hoyle",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-02-11",
+      "lastVisit": "2026-03-18",
+      "source": "Direct",
+      "leadId": "wi2rFLLoQFRRV5PnrnvMok_p6q3nDbB2C4m9KjK9gndy"
+    },
+    {
+      "name": "Vetaion",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-12",
+      "lastVisit": "2026-03-12",
+      "source": "Direct",
+      "leadId": "b2077ed4-c7bb-11f0-830d-4f26e987a320_qQcqMoRWHAUjrwmRQ66J7b"
+    },
+    {
+      "name": "Up Luxembourg",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-11",
+      "lastVisit": "2026-03-11",
+      "source": "Direct",
+      "leadId": "ce70507a-b05f-11ee-91e4-4b3cf5780b56_n5bdx8AspbnEDekSxU1vcM"
+    },
+    {
+      "name": "Twelveoakstuition.Co.Uk",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-25",
+      "lastVisit": "2026-03-25",
+      "source": "Direct",
+      "leadId": "84089ada-2838-11f1-a18d-4d2e7453b66e_135c0820-2ee0-11e9-874d-3f25ecb06faa"
+    },
+    {
+      "name": "UnternehmerTUM",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-25",
+      "lastVisit": "2026-03-25",
+      "source": "Direct",
+      "leadId": "33bbb118-2892-11ea-98db-07b20c5eaec6_6knD4mE7nnte1rWKPhh6Je"
+    },
+    {
+      "name": "Ipspace   Servicehost",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-25",
+      "lastVisit": "2026-03-25",
+      "source": "Direct",
+      "leadId": "975af9dc-4510-11ef-8cf0-7f42ee5170a4_qQcqMoRWHAUjrwmRQ66J7b"
+    },
+    {
+      "name": "Ascential – Part of the Informa Group",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-24",
+      "lastVisit": "2026-03-24",
+      "source": "Direct",
+      "leadId": "d892fa2a-c74d-11ea-a3b4-2120eba07ee1_p6q3nDbB2C4m9KjK9gndy"
+    },
+    {
+      "name": "Theviewercompany.Com",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-24",
+      "lastVisit": "2026-03-24",
+      "source": "Direct",
+      "leadId": "c6145ac2-277a-11f1-9035-09290061dfb8_h4YTgDV9d8UP9ZyUWXVMrB"
+    },
+    {
+      "name": "Watch Forward",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-24",
+      "lastVisit": "2026-03-24",
+      "source": "Direct",
+      "leadId": "e9cb94dc-b77a-11f0-abbe-075eba2db062_h4YTgDV9d8UP9ZyUWXVMrB"
+    },
+    {
+      "name": "Farchase",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-24",
+      "lastVisit": "2026-03-24",
+      "source": "Direct",
+      "leadId": "5d379710-1dfa-11f0-a5bb-4f0207564ded_7EKyz84mJpoEk5rEvjyNj2"
+    },
+    {
+      "name": "Multi Media",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-01-23",
+      "lastVisit": "2026-03-23",
+      "source": "Direct",
+      "leadId": "f62015b4-23af-11eb-8126-53cd456b03d3_4yPUV85U5YiztGE22Jm4gQ"
+    }
+  ],
+  "dailyVisits": [
+    {
+      "date": "2025-11-10",
+      "visits": 1
+    },
+    {
+      "date": "2025-11-18",
+      "visits": 1
+    },
+    {
+      "date": "2025-11-20",
+      "visits": 1
+    },
+    {
+      "date": "2025-11-24",
+      "visits": 1
+    },
+    {
+      "date": "2025-12-02",
+      "visits": 2
+    },
+    {
+      "date": "2025-12-05",
+      "visits": 1
+    },
+    {
+      "date": "2025-12-16",
+      "visits": 2
+    },
+    {
+      "date": "2025-12-18",
+      "visits": 2
+    },
+    {
+      "date": "2026-01-02",
+      "visits": 2
+    },
+    {
+      "date": "2026-01-05",
+      "visits": 1
+    },
+    {
+      "date": "2026-01-23",
+      "visits": 1
+    },
+    {
+      "date": "2026-01-26",
+      "visits": 1
+    },
+    {
+      "date": "2026-02-01",
+      "visits": 1
+    },
+    {
+      "date": "2026-02-05",
+      "visits": 2
+    },
+    {
+      "date": "2026-02-11",
+      "visits": 1
+    },
+    {
+      "date": "2026-02-18",
+      "visits": 1
+    },
+    {
+      "date": "2026-02-24",
+      "visits": 1
+    },
+    {
+      "date": "2026-02-25",
+      "visits": 6
+    },
+    {
+      "date": "2026-02-26",
+      "visits": 11
+    },
+    {
+      "date": "2026-02-27",
+      "visits": 3
+    },
+    {
+      "date": "2026-02-28",
+      "visits": 1
+    },
+    {
+      "date": "2026-03-01",
+      "visits": 2
+    },
+    {
+      "date": "2026-03-02",
+      "visits": 20
+    },
+    {
+      "date": "2026-03-03",
+      "visits": 6
+    },
+    {
+      "date": "2026-03-04",
+      "visits": 6
+    },
+    {
+      "date": "2026-03-05",
+      "visits": 2
+    },
+    {
+      "date": "2026-03-07",
+      "visits": 12
+    },
+    {
+      "date": "2026-03-08",
+      "visits": 2
+    },
+    {
+      "date": "2026-03-09",
+      "visits": 12
+    },
+    {
+      "date": "2026-03-10",
+      "visits": 5
+    },
+    {
+      "date": "2026-03-11",
+      "visits": 12
+    },
+    {
+      "date": "2026-03-12",
+      "visits": 12
+    },
+    {
+      "date": "2026-03-13",
+      "visits": 7
+    },
+    {
+      "date": "2026-03-14",
+      "visits": 2
+    },
+    {
+      "date": "2026-03-16",
+      "visits": 11
+    },
+    {
+      "date": "2026-03-17",
+      "visits": 6
+    },
+    {
+      "date": "2026-03-18",
+      "visits": 5
+    },
+    {
+      "date": "2026-03-19",
+      "visits": 18
+    },
+    {
+      "date": "2026-03-20",
+      "visits": 8
+    },
+    {
+      "date": "2026-03-21",
+      "visits": 10
+    },
+    {
+      "date": "2026-03-22",
+      "visits": 4
+    },
+    {
+      "date": "2026-03-23",
+      "visits": 9
+    },
+    {
+      "date": "2026-03-24",
+      "visits": 12
+    },
+    {
+      "date": "2026-03-25",
+      "visits": 6
+    }
+  ]
 }

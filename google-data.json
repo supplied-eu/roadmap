@@ -1,23 +1,14 @@
 {
-  "refreshedAt": "2026-03-25T10:11:50.715Z",
+  "refreshedAt": "2026-03-25T12:48:48.791Z",
   "gmail": {
     "threads": [
       {
-        "id": "19d20c620bc8f0e6",
-        "subject": "Re: Johann - quick q",
-        "from": "Alex Samoilenko <samoilenko5@cgsteamadvisory.info>",
-        "date": "2026-03-25T10:10:47.000Z",
-        "snippet": "Johann, noted we&#39;ve built 120+ MVPs — case in point: Health24 needed a medical app that would clear compliance review first time. We delivered. If Supplied has something similar on the roadmap,",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d20c620bc8f0e6",
-        "unread": true
-      },
-      {
-        "id": "19d2473c4d196546",
-        "subject": "Customer Success Standup",
-        "from": "Optiverse <mail@optiverse.ai>",
-        "date": "2026-03-25T10:04:19.000Z",
-        "snippet": "Meeting Summary General Summary De vergadering besprak de hoge prijzen van supermarktproducten in verschillende landen en de uitdagingen rondom brandstofkosten en transport. Julio en Bas bespraken ook",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d2473c4d196546",
+        "id": "19d24a90e5c549b3",
+        "subject": "Reminder omzetbelasting Q1-2026",
+        "from": "\"Suijkerbuijk+Co\" <info@suijkerbuijk-co.nl>",
+        "date": "2026-03-25T11:02:29.000Z",
+        "snippet": "(Read English below) Eind deze maand moet de aangifte omzetbelasting (BTW) over Q1-2026 ingediend en betaald zijn. Hier heb ik je eerder over gemaild en toen heb ik je gevraagd alles uiterlijk 7",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d24a90e5c549b3",
         "unread": true
       },
       {
@@ -109,9 +100,18 @@
         "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
         "unread": true
+      },
+      {
+        "id": "19cde516ee128e60",
+        "subject": "Your certificate is ready",
+        "from": "notifications@scrut.io",
+        "date": "2026-03-11T19:18:24.000Z",
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
+        "unread": true
       }
     ],
-    "unreadCount": 36
+    "unreadCount": 35
   },
   "calendar": {
     "today": [
@@ -153,6 +153,16 @@
         "location": null,
         "numAttendees": 7,
         "url": "https://www.google.com/calendar/event?eid=ZjBtMGhhNWNzb3VpYnIwbG5mZHFxZTVqZ21fMjAyNjAzMjVUMTEwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "allDay": false
+      },
+      {
+        "id": "2m76li793oofm2a1r0ano6q3cr",
+        "title": "New Data Orchestration & Report Builder Design",
+        "start": "2026-03-25T14:30:00+01:00",
+        "end": "2026-03-25T14:45:00+01:00",
+        "location": null,
+        "numAttendees": 3,
+        "url": "https://www.google.com/calendar/event?eid=Mm03NmxpNzkzb29mbTJhMXIwYW5vNnEzY3Igam9oYW5uQHN1cHBsaWVkLmV1",
         "allDay": false
       },
       {
@@ -272,12 +282,36 @@
   "drive": {
     "recent": [
       {
+        "id": "1hiV4HmwL5fdZAZAJGmcJkCTqqeKVZBESaECDhqBYWhY",
+        "name": "Partnership applications",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-25T12:48:22.975Z",
+        "url": "https://docs.google.com/document/d/1hiV4HmwL5fdZAZAJGmcJkCTqqeKVZBESaECDhqBYWhY/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1CYZ_uLDjCcCha7WyEm7rfRBBHGPb71ci",
+        "name": "NEWSuppliedFullLogoWhite.png",
+        "mimeType": "image/png",
+        "modifiedTime": "2025-10-17T08:54:47.000Z",
+        "url": "https://drive.google.com/file/d/1CYZ_uLDjCcCha7WyEm7rfRBBHGPb71ci/view?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1l5FukcbqAxmmLQ5Y6kly2lfnKoWOBEWU",
+        "name": "SuppliedLogos",
+        "mimeType": "application/vnd.google-apps.folder",
+        "modifiedTime": "2026-03-22T10:57:51.638Z",
+        "url": "https://drive.google.com/drive/folders/1l5FukcbqAxmmLQ5Y6kly2lfnKoWOBEWU",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "1j8hfDG76usb_keiDz9qrXuSnsdlBlHLLXwT66nRuZC0",
         "name": "Supplied Operations Data Mapping - Tarisio_Complete ",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-25T09:20:30.468Z",
+        "modifiedTime": "2026-03-25T11:26:09.080Z",
         "url": "https://docs.google.com/spreadsheets/d/1j8hfDG76usb_keiDz9qrXuSnsdlBlHLLXwT66nRuZC0/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
+        "lastModifiedBy": "Martha Forrester"
       },
       {
         "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
@@ -294,14 +328,6 @@
         "modifiedTime": "2026-03-24T11:45:55.929Z",
         "url": "https://docs.google.com/document/d/1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY/edit?usp=drivesdk",
         "lastModifiedBy": "Nitya Shukla Paharia"
-      },
-      {
-        "id": "1hiV4HmwL5fdZAZAJGmcJkCTqqeKVZBESaECDhqBYWhY",
-        "name": "Partnership applications",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-23T14:16:56.741Z",
-        "url": "https://docs.google.com/document/d/1hiV4HmwL5fdZAZAJGmcJkCTqqeKVZBESaECDhqBYWhY/edit?usp=drivesdk",
-        "lastModifiedBy": "Bas Bogerd"
       },
       {
         "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
@@ -350,22 +376,6 @@
         "modifiedTime": "2026-03-20T13:41:49.168Z",
         "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
         "lastModifiedBy": "Jelena Hmeltnitski"
-      },
-      {
-        "id": "1KNwfaUpHj4e0mbh8KiUmYXND8-yValjCl7TZpK8mLrE",
-        "name": "Multimedia LLC <> Supplied Technologies",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-24T13:56:53.218Z",
-        "url": "https://docs.google.com/document/d/1KNwfaUpHj4e0mbh8KiUmYXND8-yValjCl7TZpK8mLrE/edit?usp=drivesdk",
-        "lastModifiedBy": "Julio Lindveld"
-      },
-      {
-        "id": "1ubwRQff2htbItm1hpLZNtVLUSM9m2xlHjowZYQGPKdA",
-        "name": "Product and Engineering Roadmap Supplied",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-02-27T14:21:40.414Z",
-        "url": "https://docs.google.com/spreadsheets/d/1ubwRQff2htbItm1hpLZNtVLUSM9m2xlHjowZYQGPKdA/edit?usp=drivesdk",
-        "lastModifiedBy": "Vladimir Ivanov"
       }
     ]
   },
@@ -392,23 +402,13 @@
     },
     {
       "action": "reply",
-      "subject": "Re: Johann - quick q",
-      "reason": "Johann, noted we&#39;ve built 120+ MVPs — case in point: Health24 needed a medical app that would clear compliance revie",
-      "from": "Alex Samoilenko <samoilenko5@cgsteamadvisory.info>",
+      "subject": "Reminder omzetbelasting Q1-2026",
+      "reason": "(Read English below) Eind deze maand moet de aangifte omzetbelasting (BTW) over Q1-2026 ingediend en betaald zijn. Hier ",
+      "from": "\"Suijkerbuijk+Co\" <info@suijkerbuijk-co.nl>",
       "ageDays": 0,
-      "threadId": "19d20c620bc8f0e6",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d20c620bc8f0e6",
-      "id": "email-19d20c620bc8f0e6"
-    },
-    {
-      "action": "reply",
-      "subject": "Customer Success Standup",
-      "reason": "Meeting Summary General Summary De vergadering besprak de hoge prijzen van supermarktproducten in verschillende landen e",
-      "from": "Optiverse <mail@optiverse.ai>",
-      "ageDays": 0,
-      "threadId": "19d2473c4d196546",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d2473c4d196546",
-      "id": "email-19d2473c4d196546"
+      "threadId": "19d24a90e5c549b3",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d24a90e5c549b3",
+      "id": "email-19d24a90e5c549b3"
     },
     {
       "action": "reply",

@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-25T10:11:49.809Z",
+  "refreshedAt": "2026-03-25T12:48:47.905Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1867,8 +1867,8 @@
   "trafficSources": [
     {
       "key": "PAID_SOCIAL",
-      "thisWeek": 3,
-      "lastWeek": 6,
+      "thisWeek": 2,
+      "lastWeek": 7,
       "contacts": [
         {
           "id": "741349508286",
@@ -2051,8 +2051,8 @@
     },
     {
       "key": "OFFLINE",
-      "thisWeek": 4,
-      "lastWeek": 2,
+      "thisWeek": 3,
+      "lastWeek": 3,
       "contacts": [
         {
           "id": "743288673473",
@@ -2063,7 +2063,7 @@
         },
         {
           "id": "742406726870",
-          "name": "santiago@techleap.nl",
+          "name": "Santiago García",
           "email": "santiago@techleap.nl",
           "stage": "opportunity",
           "createdAt": "2026-03-23"
