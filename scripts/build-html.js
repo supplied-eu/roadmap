@@ -259,6 +259,10 @@ body {
 .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 .legend-today  { display: flex; align-items: center; gap: 4px; font-size: 9px; color: #ef4444; }
 .legend-today-line { width: 2px; height: 10px; background: #ef4444; }
+.gantt-zoom-bar { display:flex; gap:2px; margin-left:8px; background:var(--surface); border-radius:6px; padding:2px; border:1px solid var(--border); }
+.gantt-zoom-btn { font-size:9px; padding:3px 10px; border:none; border-radius:4px; background:transparent; color:var(--text-muted); cursor:pointer; font-weight:600; letter-spacing:.3px; transition:all .15s; }
+.gantt-zoom-btn:hover { background:var(--border); color:var(--text); }
+.gantt-zoom-btn.active { background:var(--accent); color:#fff; box-shadow:0 1px 3px rgba(99,102,241,.3); }
 .legend-hint { margin-left: auto; font-size: 9px; color: var(--text-dim); }
 
 /* ── GANTT LAYOUT ───────────────────────────────────────────────────────── */
@@ -1005,6 +1009,11 @@ body {
     ${[["Todo","#6366f1"],["In Progress","#f59e0b"],["In Review","#fb923c"],["In Test","#a78bfa"],["Blocked","#ef4444"],["Planned","#8b5cf6"],["Backlog","#334155"]].map(([s,c])=>`
     <div class="legend-item"><span class="legend-swatch" style="background:${c}"></span>${s}</div>`).join("")}
     <div class="legend-today"><span class="legend-today-line"></span>Today</div>
+    <div class="gantt-zoom-bar">
+      <button class="gantt-zoom-btn" data-zoom="week" onclick="setGanttZoom('week')">Week</button>
+      <button class="gantt-zoom-btn" data-zoom="month" onclick="setGanttZoom('month')">Month</button>
+      <button class="gantt-zoom-btn" data-zoom="quarter" onclick="setGanttZoom('quarter')">Quarter</button>
+    </div>
     <div class="legend-hint">Click issue bar → open in Linear · Click row → expand</div>
   </div>
 
@@ -1219,26 +1228,110 @@ document.addEventListener("mousemove", e=>{ if(tipVisible) moveTip(e); });
 // ═══════════════════════════════════════════════════════════════════════════
 // ROADMAP (LINEAR GANTT)
 // ═══════════════════════════════════════════════════════════════════════════
-const RANGE_START = (()=>{ const d=new Date(); d.setMonth(d.getMonth()-3,1); return d.toISOString().split("T")[0]; })();
-const RANGE_END   = (()=>{ const d=new Date(); d.setFullYear(d.getFullYear()+1); d.setMonth(d.getMonth()+2,28); return d.toISOString().split("T")[0]; })();
-const TOTAL_MS    = new Date(RANGE_END)-new Date(RANGE_START);
-const dPct = s => { if(!s) return null; return Math.max(0,Math.min(100,(new Date(s)-new Date(RANGE_START))/TOTAL_MS*100)); };
-const TODAY_PCT = dPct(TODAY_STR);
-
-// Ticks
-const ticksEl = document.getElementById("ticks");
-const curT = new Date(RANGE_START); curT.setDate(1);
-const endD = new Date(RANGE_END);
-while(curT <= endD){
-  const pct = dPct(curT.toISOString().split("T")[0]);
-  const t = document.createElement("div");
-  t.className = "tick"+(curT.getDate()===1&&curT.getMonth()%3===0?" major":"");
-  t.style.left=pct+"%";
-  const s = document.createElement("span");
-  s.textContent = curT.toLocaleString("default",{month:"short",year:"2-digit"});
-  t.appendChild(s); ticksEl.appendChild(t);
-  curT.setMonth(curT.getMonth()+1);
+// ── Zoom state ────────────────────────────────────────────────────────────
+let GANTT_ZOOM = localStorage.getItem("supplied_gantt_zoom") || "month"; // "week" | "month" | "quarter"
+function ganttZoomRange(zoom){
+  const now=new Date();
+  let rs,re;
+  if(zoom==="week"){
+    // 1 week back, 3 weeks forward (4-week window)
+    const s=new Date(now); s.setDate(s.getDate()-7);
+    const e=new Date(now); e.setDate(e.getDate()+21);
+    rs=s.toISOString().split("T")[0]; re=e.toISOString().split("T")[0];
+  } else if(zoom==="quarter"){
+    // 6 months back, 18 months forward
+    const s=new Date(now); s.setMonth(s.getMonth()-6,1);
+    const e=new Date(now); e.setFullYear(e.getFullYear()+1); e.setMonth(e.getMonth()+6,28);
+    rs=s.toISOString().split("T")[0]; re=e.toISOString().split("T")[0];
+  } else {
+    // month (default): 3 months back, 14 months forward
+    const s=new Date(now); s.setMonth(s.getMonth()-3,1);
+    const e=new Date(now); e.setFullYear(e.getFullYear()+1); e.setMonth(e.getMonth()+2,28);
+    rs=s.toISOString().split("T")[0]; re=e.toISOString().split("T")[0];
+  }
+  return {start:rs,end:re};
 }
+let _zr=ganttZoomRange(GANTT_ZOOM);
+let RANGE_START=_zr.start, RANGE_END=_zr.end;
+let TOTAL_MS=new Date(RANGE_END)-new Date(RANGE_START);
+let dPct = s => { if(!s) return null; return Math.max(0,Math.min(100,(new Date(s)-new Date(RANGE_START))/TOTAL_MS*100)); };
+let TODAY_PCT = dPct(TODAY_STR);
+
+function rebuildTicks(){
+  const ticksEl=document.getElementById("ticks"); if(!ticksEl) return;
+  ticksEl.innerHTML="";
+  if(GANTT_ZOOM==="week"){
+    // Show individual day ticks
+    const cur=new Date(RANGE_START);
+    const end=new Date(RANGE_END);
+    while(cur<=end){
+      const iso=cur.toISOString().split("T")[0];
+      const pct=dPct(iso);
+      const t=document.createElement("div");
+      const dow=cur.getDay();
+      t.className="tick"+(dow===1?" major":""); // Monday = major
+      t.style.left=pct+"%";
+      const s=document.createElement("span");
+      s.textContent=cur.toLocaleString("default",{weekday:"short",day:"numeric"});
+      t.appendChild(s); ticksEl.appendChild(t);
+      cur.setDate(cur.getDate()+1);
+    }
+  } else if(GANTT_ZOOM==="quarter"){
+    // Show quarterly ticks
+    const cur=new Date(RANGE_START); cur.setDate(1);
+    const end=new Date(RANGE_END);
+    while(cur<=end){
+      const pct=dPct(cur.toISOString().split("T")[0]);
+      const t=document.createElement("div");
+      t.className="tick"+(cur.getMonth()%3===0?" major":"");
+      t.style.left=pct+"%";
+      const s=document.createElement("span");
+      if(cur.getMonth()%3===0){
+        s.textContent="Q"+(Math.floor(cur.getMonth()/3)+1)+" "+cur.getFullYear().toString().slice(2);
+      } else {
+        s.textContent=cur.toLocaleString("default",{month:"short"});
+      }
+      t.appendChild(s); ticksEl.appendChild(t);
+      cur.setMonth(cur.getMonth()+1);
+    }
+  } else {
+    // Monthly ticks (default)
+    const cur=new Date(RANGE_START); cur.setDate(1);
+    const end=new Date(RANGE_END);
+    while(cur<=end){
+      const pct=dPct(cur.toISOString().split("T")[0]);
+      const t=document.createElement("div");
+      t.className="tick"+(cur.getDate()===1&&cur.getMonth()%3===0?" major":"");
+      t.style.left=pct+"%";
+      const s=document.createElement("span");
+      s.textContent=cur.toLocaleString("default",{month:"short",year:"2-digit"});
+      t.appendChild(s); ticksEl.appendChild(t);
+      cur.setMonth(cur.getMonth()+1);
+    }
+  }
+}
+
+function setGanttZoom(zoom){
+  GANTT_ZOOM=zoom;
+  localStorage.setItem("supplied_gantt_zoom",zoom);
+  const zr=ganttZoomRange(zoom);
+  RANGE_START=zr.start; RANGE_END=zr.end;
+  TOTAL_MS=new Date(RANGE_END)-new Date(RANGE_START);
+  dPct = s => { if(!s) return null; return Math.max(0,Math.min(100,(new Date(s)-new Date(RANGE_START))/TOTAL_MS*100)); };
+  TODAY_PCT=dPct(TODAY_STR);
+  rebuildTicks();
+  renderGantt();
+  // Update zoom button active states
+  document.querySelectorAll(".gantt-zoom-btn").forEach(b=>{
+    b.classList.toggle("active",b.dataset.zoom===zoom);
+  });
+}
+
+// Initial tick render + zoom button active state
+rebuildTicks();
+document.querySelectorAll(".gantt-zoom-btn").forEach(b=>{
+  b.classList.toggle("active",b.dataset.zoom===GANTT_ZOOM);
+});
 
 const expanded = {};
 let GANTT_DATA  = null;
