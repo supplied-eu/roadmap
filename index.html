@@ -3255,29 +3255,87 @@ function renderMyDay(){
   const showCal      = MYDAY_SECTION==="all"||MYDAY_SECTION==="cal"||MYDAY_SECTION==="tasks"||MYDAY_SECTION==="inbox";
 
   if(showPipeline && HS_DATA && HS_DATA.deals && HS_DATA.deals.length){
-    const soonDeals = HS_DATA.deals
-      .filter(d=>!DONE_STATES.has(d.stage||"") && d.closeDate)
-      .sort((a,b)=>new Date(a.closeDate)-new Date(b.closeDate))
-      .slice(0,10);
-    if(soonDeals.length){
+    const cur=HS_DATA.currency||"€";
+    const openDeals=HS_DATA.deals.filter(d=>!isDoneStage(d.stageLabel));
+    const totalPipeVal=openDeals.reduce((s,d)=>s+(d.amount||0),0);
+
+    // Build ordered stages from pipeline data (same logic as Sales & Ops)
+    const pipelines=HS_DATA.pipelines||[];
+    let orderedStages=[];
+    if(pipelines.length){
+      const seen=new Set();
+      for(const pipe of pipelines)
+        for(const s of (pipe.stages||[]))
+          if(!seen.has(s.label)){ seen.add(s.label); orderedStages.push(s); }
+    }
+    // Group deals by stage
+    const stageDeals={};
+    for(const d of openDeals){
+      const sl=d.stageLabel||d.stage||"Unknown";
+      if(!stageDeals[sl]) stageDeals[sl]={count:0,value:0,deals:[]};
+      stageDeals[sl].count++;
+      stageDeals[sl].value+=(d.amount||0);
+      stageDeals[sl].deals.push(d);
+    }
+    const stages=orderedStages.length
+      ? orderedStages.filter(s=>stageDeals[s.label]).map(s=>({label:s.label,...stageDeals[s.label]}))
+      : Object.entries(stageDeals).map(([label,v])=>({label,...v}));
+
+    if(stages.length){
       const sideHdr = document.createElement("div");
       sideHdr.className = "myday-sidebar-hdr";
-      sideHdr.textContent = "🏆 PIPELINE CLOSING SOON";
+      sideHdr.innerHTML=`🏆 PIPELINE <span style="float:right;font-size:9px;color:var(--accent)">${cur}${totalPipeVal.toLocaleString()}</span>`;
       sidebar.appendChild(sideHdr);
-      for(const d of soonDeals){
-        const dr = document.createElement("div");
-        dr.className = "myday-deal-row";
-        const dd2 = daysDiff(d.closeDate);
-        const dCls = dd2<0?"overdue":dd2<=14?"soon":"";
-        const amt = d.amount ? (HS_DATA.currency||"€")+Number(d.amount).toLocaleString("en") : "";
-        if(HS_DATA.portalId){ dr.style.cursor="pointer"; dr.addEventListener("click",()=>window.open(`https://app.hubspot.com/contacts/${HS_DATA.portalId}/deal/${d.id}`,"_blank")); }
-        dr.innerHTML = `
-          <span class="myday-deal-name">${d.name||"(untitled)"}</span>
-          ${amt?'<span class="myday-deal-amt">'+amt+'</span>':""}
-          <span class="myday-deal-date ${dCls}">${dd2===0?"Today":dd2<0?Math.abs(dd2)+"d ago":fmtDate(d.closeDate)}</span>
-        `;
-        sidebar.appendChild(dr);
-      }
+
+      const STAGE_COLORS=["#f59e0b","#22c55e","#3b82f6","#8b5cf6","#ef4444","#06b6d4","#ec4899","#64748b"];
+      stages.forEach((stg,si)=>{
+        // Stage header row
+        const stgRow=document.createElement("div");
+        stgRow.style.cssText="display:flex;align-items:center;gap:6px;padding:4px 12px;cursor:pointer;user-select:none;";
+        const dot=document.createElement("span");
+        const c=STAGE_COLORS[si%STAGE_COLORS.length];
+        dot.style.cssText=`width:6px;height:6px;border-radius:50%;background:${c};flex-shrink:0;`;
+        const stgLabel=document.createElement("span");
+        stgLabel.style.cssText="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;flex:1;";
+        stgLabel.textContent=stg.label+" ("+stg.count+")";
+        const stgVal=document.createElement("span");
+        stgVal.style.cssText=`font-size:9px;color:${c};font-weight:600;`;
+        stgVal.textContent=cur+stg.value.toLocaleString();
+        const chevron=document.createElement("span");
+        chevron.textContent="▸";
+        chevron.style.cssText="font-size:8px;color:var(--text-muted);transition:transform .2s;";
+        stgRow.appendChild(dot); stgRow.appendChild(stgLabel); stgRow.appendChild(stgVal); stgRow.appendChild(chevron);
+
+        // Deal rows (collapsed by default)
+        const dealList=document.createElement("div");
+        dealList.style.display="none";
+        for(const d of stg.deals.sort((a,b)=>(b.amount||0)-(a.amount||0))){
+          const dr=document.createElement("div");
+          dr.className="myday-deal-row";
+          dr.style.paddingLeft="22px";
+          const amt=d.amount?cur+Number(d.amount).toLocaleString():"";
+          const owner=(d.ownerName||"").split(" ")[0];
+          const closeStr=d.closeDate?fmtDate(d.closeDate):"";
+          if(HS_DATA.portalId){ dr.style.cursor="pointer"; dr.addEventListener("click",()=>window.open(`https://app.hubspot.com/contacts/${HS_DATA.portalId}/deal/${d.id}`,"_blank")); }
+          dr.innerHTML=`
+            <span class="myday-deal-name">${d.name||"(untitled)"}</span>
+            ${amt?'<span class="myday-deal-amt">'+amt+'</span>':""}
+            ${owner?'<span style="font-size:8px;color:var(--text-dim);background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">'+owner+'</span>':""}
+            ${closeStr?'<span class="myday-deal-date">'+closeStr+'</span>':""}
+          `;
+          dealList.appendChild(dr);
+        }
+
+        let expanded=false;
+        stgRow.addEventListener("click",()=>{
+          expanded=!expanded;
+          dealList.style.display=expanded?"block":"none";
+          chevron.style.transform=expanded?"rotate(90deg)":"";
+        });
+
+        sidebar.appendChild(stgRow);
+        sidebar.appendChild(dealList);
+      });
     }
   }
 
