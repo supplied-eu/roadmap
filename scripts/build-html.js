@@ -1523,12 +1523,13 @@ function renderCustomerCommitments(container){
   if(!GANTT_DATA) return;
   const custIni=GANTT_DATA.initiatives.find(ini=>ini.name.indexOf("Customer")!==-1||ini.name.indexOf("Go Live")!==-1);
   if(!custIni||DONE_STATES.has(custIni.status||"")) return;
-  // Show projects that are In Progress or Started at the project level (respect Linear project status)
-  const PROJ_EXCLUDE=new Set([...DONE_STATES,"Planned","Triage"]);
+  // Only show projects with open issues; hide if all issues are done/completed or if backlog
   const INACTIVE=new Set([...DONE_STATES,"Backlog","Planned","Triage"]);
   const activeProjs=(custIni.projects||[]).filter(p=>{
-    if(PROJ_EXCLUDE.has(p.status||"")) return false;
-    return true;
+    if(DONE_STATES.has(p.status||"")) return false;
+    if(p.status==="Backlog") return false;
+    // Must have at least one active (non-done, non-canceled, non-backlog) issue
+    return (p.issues||[]).some(i=>isActive(i.status));
   });
   if(!activeProjs.length) return;
   const PRIO_RANK={Urgent:0,High:1,Medium:2,Low:3,"No priority":4};

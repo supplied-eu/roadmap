@@ -152,12 +152,31 @@ async function main() {
     return d.projects;
   });
 
-  // Build initiative → project map
+  // Build initiative → project map (use BOTH directions to catch all links)
   const projsByInitiative = {};
+  const projById = Object.fromEntries(projectNodes.map(p => [p.id, p]));
+
+  // Direction 1: project → initiative (from project query)
   for (const proj of projectNodes) {
     for (const ini of (proj.initiatives?.nodes || [])) {
       if (!projsByInitiative[ini.id]) projsByInitiative[ini.id] = [];
-      projsByInitiative[ini.id].push(proj);
+      if (!projsByInitiative[ini.id].some(p => p.id === proj.id)) {
+        projsByInitiative[ini.id].push(proj);
+      }
+    }
+  }
+
+  // Direction 2: initiative → project (from initiative query — catches projects
+  // where the reverse link isn't populated in the API response)
+  for (const ini of initiativeNodes) {
+    for (const projRef of (ini.projects?.nodes || [])) {
+      const proj = projById[projRef.id];
+      if (!proj) continue; // project exists in initiative but wasn't fetched (unlikely)
+      if (!projsByInitiative[ini.id]) projsByInitiative[ini.id] = [];
+      if (!projsByInitiative[ini.id].some(p => p.id === proj.id)) {
+        projsByInitiative[ini.id].push(proj);
+        console.log(`  ℹ Linked "${proj.name}" to "${ini.name}" via initiative→project direction`);
+      }
     }
   }
 
