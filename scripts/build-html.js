@@ -1338,29 +1338,64 @@ function renderCustomerCommitments(container){
       projWrap.appendChild(projRow);
 
       if(projExp && activeIss.length){
-        for(const iss of activeIss){
+        // Build parent→children map for expandable sub-issues
+        const childMap={};
+        for(const iss of activeIss){ if(iss.parentId){ if(!childMap[iss.parentId]) childMap[iss.parentId]=[]; childMap[iss.parentId].push(iss); } }
+        // Only render top-level issues (non-sub-issues), sub-issues render when parent is expanded
+        const topIss=activeIss.filter(i=>!i.parentId);
+        for(const iss of topIss){
           const issOd=isOverdue(iss.end,iss.status);
-          const isSubIssue=!!iss.parentId;
           const issStart=iss.start||iss.end||proj.targetDate||null;
           const issEnd=iss.end||proj.targetDate||null;
-          const issLabel=(isSubIssue?"\u21b3 ":"")+(iss.identifier?iss.identifier+" ":"")+iss.title;
+          const issLabel=(iss.identifier?iss.identifier+" ":"")+iss.title;
+          const children=childMap[iss.id]||[];
+          const issKey="iss_"+iss.id;
+          const issExp=expanded[issKey]!==undefined?expanded[issKey]:false;
           const issRow=makeGanttRow({
-            indent:isSubIssue?2:1,
+            indent:1,
             label:issLabel,
             status:iss.status,
-            color:isSubIssue?sc(iss.status)+"bb":sc(iss.status),
+            color:sc(iss.status),
             start:issStart,
             end:issEnd,
             url:iss.url,
-            hasChildren:false,
+            hasChildren:children.length>0,
+            isExpanded:issExp,
             isIni:false,
             barClickable:!!iss.url,
             overdueFlag:issOd,
             assignee:iss.assignee,
             priority:iss.priority,
             barData:{label:issLabel,status:iss.status,start:issStart,end:issEnd,url:iss.url,clickable:!!iss.url,assignee:iss.assignee,priority:iss.priority},
+            onClick:children.length>0?(()=>{ expanded[issKey]=!issExp; rebuildCust(); }):null,
           });
           projWrap.appendChild(issRow);
+          // Render sub-issues when parent is expanded
+          if(issExp && children.length){
+            for(const sub of children){
+              const subOd=isOverdue(sub.end,sub.status);
+              const subStart=sub.start||sub.end||issEnd||proj.targetDate||null;
+              const subEnd=sub.end||issEnd||proj.targetDate||null;
+              const subLabel="\u21b3 "+(sub.identifier?sub.identifier+" ":"")+sub.title;
+              const subRow=makeGanttRow({
+                indent:2,
+                label:subLabel,
+                status:sub.status,
+                color:sc(sub.status)+"bb",
+                start:subStart,
+                end:subEnd,
+                url:sub.url,
+                hasChildren:false,
+                isIni:false,
+                barClickable:!!sub.url,
+                overdueFlag:subOd,
+                assignee:sub.assignee,
+                priority:sub.priority,
+                barData:{label:subLabel,status:sub.status,start:subStart,end:subEnd,url:sub.url,clickable:!!sub.url,assignee:sub.assignee,priority:sub.priority},
+              });
+              projWrap.appendChild(subRow);
+            }
+          }
         }
       }
       wrapper.appendChild(projWrap);
@@ -1970,10 +2005,13 @@ function renderSalesFunnels(){
           const visits=document.createElement("span");
           visits.style.cssText="color:var(--text-muted);font-size:10px;flex-shrink:0;";
           visits.textContent=(co.visits||1)+" visit"+(co.visits!==1?"s":"");
+          const coSrcTag=document.createElement("span");
+          coSrcTag.style.cssText="color:var(--text-dim);font-size:9px;flex-shrink:0;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;";
+          coSrcTag.textContent=co.source||src.label||"";
           const lastSeen=document.createElement("span");
           lastSeen.style.cssText="color:var(--text-dim);font-size:9px;flex-shrink:0;";
           lastSeen.textContent=co.lastVisit||"";
-          coRow.appendChild(coName); coRow.appendChild(visits); coRow.appendChild(lastSeen);
+          coRow.appendChild(coName); coRow.appendChild(coSrcTag); coRow.appendChild(visits); coRow.appendChild(lastSeen);
           coList.appendChild(coRow);
         }
       } else {

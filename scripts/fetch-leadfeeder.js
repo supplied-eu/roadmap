@@ -183,6 +183,42 @@ async function fetchAllLeads(accountId, dateFrom, dateTo) {
   return all;
 }
 
+// ─── fetch visits per lead to get traffic source ──────────────────────────────
+
+async function enrichLeadsWithSource(accountId, leads) {
+  const auth = fetchAccountId._auth || undefined;
+  console.log(`  Enriching ${leads.length} leads with visit/source data...`);
+  let enriched = 0;
+
+  // Process in batches of 5 to avoid rate limiting
+  for (let i = 0; i < leads.length; i += 5) {
+    const batch = leads.slice(i, i + 5);
+    await Promise.all(batch.map(async (lead) => {
+      if (!lead.id) return;
+      try {
+        const { status, data } = await lfGet(
+          `/accounts/${accountId}/leads/${lead.id}/visits`,
+          { "page[size]": 1, "page[number]": 1 },
+          auth
+        );
+        if (status === 200) {
+          const visits = data.data || data.visits || [];
+          if (visits.length > 0) {
+            const visit = visits[0];
+            const attrs = visit.attributes || visit;
+            lead.source   = attrs.source   || attrs.referring_source || lead.source || null;
+            lead.medium   = attrs.medium   || attrs.referring_medium || lead.medium || null;
+            lead.referrer = attrs.referrer  || attrs.referring_url   || lead.referrer || null;
+            if (lead.source || lead.medium || lead.referrer) enriched++;
+          }
+        }
+      } catch (e) { /* skip — don't block on individual visit errors */ }
+    }));
+  }
+  console.log(`  ✓ Enriched ${enriched}/${leads.length} leads with source data`);
+  return leads;
+}
+
 // ─── source normaliser ────────────────────────────────────────────────────────
 
 function normaliseSource(lead) {
@@ -228,6 +264,10 @@ async function main() {
 
   console.log(`  This week: ${thisWeekLeads.length} companies | Last week: ${lastWeekLeads.length} companies`);
 
+  // Enrich leads with visit-level source data (source, medium, referrer)
+  await enrichLeadsWithSource(accountId, thisWeekLeads);
+  await enrichLeadsWithSource(accountId, lastWeekLeads);
+
   // Daily breakdown (last 14 days)
   const dailyMap = {}; // "YYYY-MM-DD" → visit count
   for (const lead of [...thisWeekLeads, ...lastWeekLeads]) {
@@ -259,6 +299,7 @@ async function main() {
         visits:    lead.visits  || lead.visit_count || 1,
         lastVisit: (lead.last_visit_date || lead.last_visited_at || "").split("T")[0] || null,
         leadId:    lead.id || null,
+        source:    s.label,
       });
     }
   }
