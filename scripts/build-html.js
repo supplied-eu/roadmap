@@ -2087,9 +2087,6 @@ function renderOps(){
   taskHeader.innerHTML=\`<span>☑ TASKS</span> <span class="ops-section-count">\${tasks.length}</span>\`;
   tasksCol.appendChild(taskHeader);
 
-  // ── MEETING SUMMARIES (right after tasks header, always visible) ──
-  if(MTG_DATA&&MTG_DATA.meetings&&MTG_DATA.meetings.length) renderMeetingSummaries();
-
   if(tasks.length===0){
     const em=document.createElement("div"); em.style.cssText="padding:32px 20px;font-size:11px;color:var(--text-dim);text-align:center";
     em.textContent=OPS_OWNER!=="all"?"No tasks assigned to this person.":"All tasks complete — nothing outstanding!";
@@ -2373,21 +2370,17 @@ function renderKPIs(){
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// MEETING SUMMARIES (inserted into tasks column)
+// MEETING SUMMARIES (renders into My Day sidebar next to calendar)
 // ═══════════════════════════════════════════════════════════════════════════
-function renderMeetingSummaries(){
-  const tasksCol=document.getElementById("ops-tasks-col");
-  if(!tasksCol||!MTG_DATA||!MTG_DATA.meetings||!MTG_DATA.meetings.length) return;
-
-  // Divider
-  const divider=document.createElement("div");
-  divider.style.cssText="border-top:2px solid var(--border);margin:16px 0 0;";
-  tasksCol.appendChild(divider);
+function renderMeetingSummaries(container){
+  if(!container||!MTG_DATA||!MTG_DATA.meetings||!MTG_DATA.meetings.length) return;
 
   // Section header
-  const hdr=document.createElement("div"); hdr.className="ops-section-header";
-  hdr.innerHTML=\`<span>\u{1F4DD} MEETING SUMMARIES</span> <span class="ops-section-count">\${MTG_DATA.meetings.length}</span>\`;
-  tasksCol.appendChild(hdr);
+  const hdr=document.createElement("div");
+  hdr.className="myday-sidebar-hdr";
+  hdr.style.marginTop="12px";
+  hdr.textContent="\u{1F4DD} MEETING NOTES";
+  container.appendChild(hdr);
 
   const PRIO_COLORS={high:"#f59e0b",medium:"#3b82f6",low:"#64748b"};
   const CAT_ICONS={customer:"\u{1F91D}",engineering:"\u{1F527}",compliance:"\u{1F4CB}",finance:"\u{1F4B0}",product:"\u{1F4E6}",sales:"\u{1F4B5}",process:"\u{2699}\u{FE0F}",networking:"\u{1F310}"};
@@ -2396,44 +2389,36 @@ function renderMeetingSummaries(){
   const meetings=[...MTG_DATA.meetings].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
 
   for(const mtg of meetings){
-    // Meeting row (expandable)
-    const mtgBlock=document.createElement("div");
-    mtgBlock.style.cssText="border-bottom:1px solid var(--border);";
-
     const mtgRow=document.createElement("div");
-    mtgRow.style.cssText="display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;user-select:none;";
-    mtgRow.addEventListener("mouseover",()=>mtgRow.style.background="var(--surface2)");
-    mtgRow.addEventListener("mouseout",()=>mtgRow.style.background="");
-
-    const chevron=document.createElement("span");
-    chevron.textContent="\u25B8";
-    chevron.style.cssText="font-size:9px;color:var(--text-muted);transition:transform .2s;flex-shrink:0;width:10px;";
-
-    const srcBadge=document.createElement("span");
-    srcBadge.style.cssText="font-size:8px;background:rgba(59,130,246,.15);color:#60a5fa;padding:1px 5px;border-radius:3px;flex-shrink:0;letter-spacing:.3px;";
-    srcBadge.textContent=mtg.source||"Meeting";
+    mtgRow.className="myday-deal-row";
+    mtgRow.style.cssText="cursor:pointer;user-select:none;flex-wrap:wrap;gap:4px;";
 
     const title=document.createElement("span");
-    title.style.cssText="font-size:11px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;";
-    title.textContent=mtg.title;
+    title.className="myday-deal-name";
+    title.style.cssText="display:flex;align-items:center;gap:5px;";
+    const chevron=document.createElement("span");
+    chevron.textContent="\u25B8";
+    chevron.style.cssText="font-size:8px;color:var(--text-muted);transition:transform .2s;";
+    const titleText=document.createElement("span");
+    titleText.textContent=mtg.title;
+    title.appendChild(chevron);
+    title.appendChild(titleText);
+
+    const taskBadge=document.createElement("span");
+    taskBadge.style.cssText="font-size:7px;color:var(--accent);background:rgba(59,130,246,.1);padding:1px 4px;border-radius:3px;flex-shrink:0;";
+    taskBadge.textContent=(mtg.suggestedTasks||[]).length+" tasks";
 
     const dateEl=document.createElement("span");
-    dateEl.style.cssText="font-size:9px;color:var(--text-dim);flex-shrink:0;";
+    dateEl.className="myday-deal-date";
     dateEl.textContent=mtg.date?fmtDate(mtg.date):"";
 
-    const taskCount=document.createElement("span");
-    taskCount.style.cssText="font-size:8px;color:var(--text-muted);background:var(--surface2);padding:1px 5px;border-radius:8px;flex-shrink:0;";
-    taskCount.textContent=(mtg.suggestedTasks||[]).length+" tasks";
-
-    mtgRow.appendChild(chevron);
-    mtgRow.appendChild(srcBadge);
     mtgRow.appendChild(title);
-    mtgRow.appendChild(taskCount);
+    mtgRow.appendChild(taskBadge);
     mtgRow.appendChild(dateEl);
 
     // Expandable detail panel
     const detail=document.createElement("div");
-    detail.style.cssText="display:none;padding:4px 16px 12px 26px;";
+    detail.style.cssText="display:none;padding:6px 12px 8px 12px;";
 
     // Summary
     if(mtg.summary){
@@ -2486,9 +2471,8 @@ function renderMeetingSummaries(){
       chevron.style.transform=expanded?"rotate(90deg)":"";
     });
 
-    mtgBlock.appendChild(mtgRow);
-    mtgBlock.appendChild(detail);
-    tasksCol.appendChild(mtgBlock);
+    container.appendChild(mtgRow);
+    container.appendChild(detail);
   }
 }
 
@@ -3366,6 +3350,9 @@ function renderMyDay(){
       }
     }
   }
+
+  // Meeting Notes section in sidebar
+  renderMeetingSummaries(sidebar);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3623,8 +3610,8 @@ async function init(){
     const mr=await fetch('./meeting-summaries.json?t='+Date.now());
     if(mr.ok){
       MTG_DATA=await mr.json();
-      // Re-render ops so meeting summaries appear inside the tasks column
-      if(MTG_DATA&&MTG_DATA.meetings&&HS_DATA) renderOps();
+      // Re-render My Day so meeting summaries appear in the sidebar
+      if(MTG_DATA&&MTG_DATA.meetings&&currentTab==="myday") renderMyDay();
     }
   } catch(e){ /* Meeting summaries not available */ }
 
