@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-26T12:47:54.940Z",
+  "refreshedAt": "2026-03-26T13:13:03.881Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1555,7 +1555,7 @@
     {
       "key": "lead",
       "label": "Lead",
-      "count": 4
+      "count": 13
     },
     {
       "key": "marketingqualifiedlead",
@@ -1570,20 +1570,27 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 91
+      "count": 181
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 2
+      "count": 3
     }
   ],
   "trafficSources": [
     {
       "key": "OFFLINE",
-      "thisWeek": 5,
+      "thisWeek": 6,
       "lastWeek": 3,
       "contacts": [
+        {
+          "id": "744798988528",
+          "name": "info@twelveoakstuition.co.uk",
+          "email": "info@twelveoakstuition.co.uk",
+          "stage": "opportunity",
+          "createdAt": "2026-03-26"
+        },
         {
           "id": "744648815836",
           "name": "leonore@villasud.nl",
@@ -1751,13 +1758,6 @@
           "email": "robin.tjassens@oostnl.nl",
           "stage": "subscriber",
           "createdAt": "2026-02-16"
-        },
-        {
-          "id": "695354886331",
-          "name": "alexandre@lincolninvest-ag.com",
-          "email": "alexandre@lincolninvest-ag.com",
-          "stage": "opportunity",
-          "createdAt": "2026-02-12"
         }
       ],
       "label": "Offline",
@@ -1766,7 +1766,7 @@
     {
       "key": "PAID_SOCIAL",
       "thisWeek": 1,
-      "lastWeek": 7,
+      "lastWeek": 6,
       "contacts": [
         {
           "id": "741349508286",
