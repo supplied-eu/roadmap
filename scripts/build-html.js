@@ -1456,18 +1456,13 @@ function renderGantt(){
   }
 
   // ── SECTION 1: Customer Commitments (drag-to-reorder projects) ───────────
-  ganttBody.appendChild(makeSectionHdr("🤝  CUSTOMER COMMITMENTS","contract dates \u00b7 drag \u283f to reorder \u00b7 click project to expand issues"));
+  ganttBody.appendChild(makeSectionHdr("🤝  CUSTOMER COMMITMENTS","drag \u283f to reorder \u00b7 click project to expand issues"));
   renderCustomerCommitments(ganttBody);
   const custGap=document.createElement("div"); custGap.className="section-gap"; ganttBody.appendChild(custGap);
 
   // ── SECTION 2: Product Priorities ──────────────────────────────────────────
   ganttBody.appendChild(makeSectionHdr("⚡  PRODUCT PRIORITIES","all initiatives \u00b7 drag \u283f to reorder \u00b7 click project to expand issues"));
   renderInitiativeTree(ganttBody);
-  const prodGap=document.createElement("div"); prodGap.className="section-gap"; ganttBody.appendChild(prodGap);
-
-  // ── SECTION 3: Pipeline Close Dates (HubSpot) ─────────────────────────────
-  ganttBody.appendChild(makeSectionHdr("💼  PIPELINE CLOSE DATES","HubSpot deals \u00b7 click to open in HubSpot"));
-  renderDealCloseDates(ganttBody);
 
   populateGanttInsights();
 }
@@ -1528,11 +1523,12 @@ function renderCustomerCommitments(container){
   if(!GANTT_DATA) return;
   const custIni=GANTT_DATA.initiatives.find(ini=>ini.name.indexOf("Customer")!==-1||ini.name.indexOf("Go Live")!==-1);
   if(!custIni||DONE_STATES.has(custIni.status||"")) return;
-  // Exclude completed, backlog, and planned projects; only show those with truly active issues
+  // Show projects that are In Progress or Started at the project level (respect Linear project status)
+  const PROJ_EXCLUDE=new Set([...DONE_STATES,"Planned","Triage"]);
   const INACTIVE=new Set([...DONE_STATES,"Backlog","Planned","Triage"]);
   const activeProjs=(custIni.projects||[]).filter(p=>{
-    if(INACTIVE.has(p.status||"")) return false;
-    return (p.issues||[]).some(i=>!INACTIVE.has(i.status||"")&&!DONE_STATES.has(i.status||""));
+    if(PROJ_EXCLUDE.has(p.status||"")) return false;
+    return true;
   });
   if(!activeProjs.length) return;
   const PRIO_RANK={Urgent:0,High:1,Medium:2,Low:3,"No priority":4};
