@@ -1817,13 +1817,43 @@ function renderAccountManagement(){
   const container=document.getElementById("accounts-main");
   if(!container) return;
   container.innerHTML="";
-  const companies=(HS_DATA&&HS_DATA.companies)||[];
+  let companies=(HS_DATA&&HS_DATA.companies)||[];
+  // Fallback: if no companies from HubSpot lifecycle stage filter, derive from deals
+  if(!companies.length && HS_DATA && HS_DATA.deals && HS_DATA.deals.length){
+    const dealCos=new Map();
+    for(const d of HS_DATA.deals){
+      const dn=d.name||"";
+      const cn=d.companyName||dn.split(/\s*[-–—]\s*/)[0].trim();
+      if(!cn) continue;
+      if(!dealCos.has(cn)){
+        dealCos.set(cn,{
+          id:"derived-"+cn.replace(/\s+/g,"-").toLowerCase(),
+          name:cn, domain:null, ownerId:d.ownerId||null,
+          ownerName:d.ownerName||null, contacts:0,
+          openDeals:0, recentDealAmount:null, daysSinceContact:null,
+          lastContacted:null, notes:[], createdAt:null,
+        });
+      }
+      const co=dealCos.get(cn);
+      if(!isDoneStage(d.stageLabel)) co.openDeals++;
+      if(d.amount&&(!co.recentDealAmount||d.amount>co.recentDealAmount)) co.recentDealAmount=d.amount;
+      if(d.modifiedDate){
+        const dt=(d.modifiedDate||"").split("T")[0];
+        if(!co.lastContacted||dt>co.lastContacted){ co.lastContacted=dt; co.daysSinceContact=Math.floor((Date.now()-new Date(dt))/86400000); }
+      }
+    }
+    companies=[...dealCos.values()];
+  }
   if(!companies.length){
-    container.innerHTML=`<div style="padding:60px;text-align:center;color:var(--text-dim);font-size:12px;">No customer companies found in HubSpot.<br><br>Make sure companies are marked with lifecycle stage <strong>Customer</strong>.</div>`;
+    container.innerHTML=`<div style="padding:60px;text-align:center;color:var(--text-dim);font-size:12px;">No customer data found.<br><br>Make sure companies are marked with lifecycle stage <strong>Customer</strong> in HubSpot, or check that deals have been loaded.</div>`;
     return;
   }
   const portalId=HS_DATA&&HS_DATA.portalId||"";
   const cur=HS_DATA&&HS_DATA.currency||"€";
+  // Resolve owner names from owner IDs
+  const ownerMap={};
+  if(HS_DATA&&HS_DATA.owners) HS_DATA.owners.forEach(o=>{ ownerMap[o.id]=o.name; });
+  for(const c of companies){ if(!c.ownerName&&c.ownerId&&ownerMap[c.ownerId]) c.ownerName=ownerMap[c.ownerId]; }
   // Local storage keys for plans and tasks
   const ACCT_PLANS_KEY="supplied_acct_plans";
   const ACCT_TASKS_KEY="supplied_acct_tasks";
@@ -2694,6 +2724,147 @@ function renderKPIs(){
     tblWrap.appendChild(tbl);
     main.appendChild(tblWrap);
   }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SCENARIO MODELLING
+  // ═══════════════════════════════════════════════════════════════════════════
+  const scenarioWrap=document.createElement("div");
+  scenarioWrap.style.cssText="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:16px;";
+
+  const scenarioHdr=document.createElement("div");
+  scenarioHdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;";
+  scenarioHdr.innerHTML=`<div style="font-size:12px;font-weight:600;color:var(--text);">🔮 Scenario Modelling</div><div style="font-size:9px;color:var(--text-dim);">Adjust inputs to project runway & cash position</div>`;
+  scenarioWrap.appendChild(scenarioHdr);
+
+  // Input sliders / fields
+  const baseM=m;
+  const inputs={
+    mrr:      {label:"Monthly Revenue (MRR)",   val:baseM.contractedMRR||0, min:0, max:50000, step:500, fmt:v=>cur+v.toLocaleString()},
+    burn:     {label:"Monthly Net Burn",         val:baseM.avgNetBurn||0,    min:0, max:200000,step:5000, fmt:v=>cur+v.toLocaleString()},
+    newCust:  {label:"New Customers / Month",    val:baseM.newCustomersSigned||0, min:0, max:10, step:1, fmt:v=>String(v)},
+    acv:      {label:"ACV per New Customer",     val:baseM.acv||0,           min:0, max:10000, step:100, fmt:v=>cur+v.toLocaleString()},
+    cashStart:{label:"Starting Cash",            val:baseM.cash||0,          min:0, max:5000000,step:50000, fmt:v=>cur+v.toLocaleString()},
+    hires:    {label:"New Hires (added cost/mo)",val:0,                      min:0, max:50000, step:2500, fmt:v=>cur+v.toLocaleString()},
+  };
+
+  const inputGrid=document.createElement("div");
+  inputGrid.style.cssText="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:20px;";
+
+  const vals={};
+  const updateFns=[];
+
+  for(const [key,cfg] of Object.entries(inputs)){
+    vals[key]=cfg.val;
+    const cell=document.createElement("div"); cell.style.cssText="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;";
+    const lbl=document.createElement("div"); lbl.style.cssText="font-size:8px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);margin-bottom:6px;"; lbl.textContent=cfg.label;
+    const valDisp=document.createElement("div"); valDisp.style.cssText="font-size:16px;font-weight:700;color:var(--accent);margin-bottom:6px;"; valDisp.textContent=cfg.fmt(cfg.val);
+    const slider=document.createElement("input"); slider.type="range"; slider.min=cfg.min; slider.max=cfg.max; slider.step=cfg.step; slider.value=cfg.val;
+    slider.style.cssText="width:100%;accent-color:var(--accent);cursor:pointer;";
+    slider.addEventListener("input",()=>{
+      vals[key]=parseFloat(slider.value);
+      valDisp.textContent=cfg.fmt(vals[key]);
+      recompute();
+    });
+    cell.appendChild(lbl); cell.appendChild(valDisp); cell.appendChild(slider);
+    inputGrid.appendChild(cell);
+  }
+  scenarioWrap.appendChild(inputGrid);
+
+  // Output: projected metrics
+  const outputWrap=document.createElement("div");
+  outputWrap.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:16px;";
+
+  // Left: summary KPIs
+  const summaryPanel=document.createElement("div"); summaryPanel.id="scenario-summary";
+  summaryPanel.style.cssText="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;";
+
+  // Right: 12-month projection chart (ASCII-style table)
+  const chartPanel=document.createElement("div"); chartPanel.id="scenario-chart";
+  chartPanel.style.cssText="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;overflow-x:auto;";
+
+  outputWrap.appendChild(summaryPanel);
+  outputWrap.appendChild(chartPanel);
+  scenarioWrap.appendChild(outputWrap);
+  main.appendChild(scenarioWrap);
+
+  function recompute(){
+    const months=18;
+    let cash=vals.cashStart;
+    let mrr=vals.mrr;
+    const projections=[];
+    const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const startDate=new Date();
+
+    for(let i=0;i<months;i++){
+      const d=new Date(startDate.getFullYear(),startDate.getMonth()+i,1);
+      const monthLabel=monthNames[d.getMonth()]+" "+String(d.getFullYear()).slice(2);
+      // Add new customer MRR each month
+      const newMRR=vals.newCust * (vals.acv / 12);
+      mrr += newMRR;
+      const totalBurn = vals.burn + vals.hires;
+      const netCashFlow = mrr - totalBurn;
+      cash += netCashFlow;
+      projections.push({month:monthLabel,mrr:Math.round(mrr),burn:totalBurn,net:Math.round(netCashFlow),cash:Math.round(cash)});
+    }
+
+    // Find runway (month where cash goes negative)
+    const runwayMonth=projections.findIndex(p=>p.cash<=0);
+    const runwayMonths=runwayMonth===-1?">"+months:String(runwayMonth+1);
+    const endCash=projections[projections.length-1].cash;
+    const breakEvenMonth=projections.findIndex(p=>p.net>=0);
+    const breakEvenStr=breakEvenMonth===-1?"Not in "+months+"mo":"Month "+(breakEvenMonth+1);
+
+    // Summary
+    summaryPanel.innerHTML=`
+      <div style="font-size:10px;font-weight:600;color:var(--text);margin-bottom:12px;">📊 Projected Outcomes</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="text-align:center;padding:10px;background:var(--bg);border-radius:6px;">
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;">Runway</div>
+          <div style="font-size:20px;font-weight:700;color:${runwayMonth!==-1&&runwayMonth<12?"#ef4444":"#10b981"}">${runwayMonths} mo</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg);border-radius:6px;">
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;">Break Even</div>
+          <div style="font-size:20px;font-weight:700;color:${breakEvenMonth!==-1?"#10b981":"#f59e0b"}">${breakEvenStr}</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg);border-radius:6px;">
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;">End Cash (${months}mo)</div>
+          <div style="font-size:20px;font-weight:700;color:${endCash>0?"#10b981":"#ef4444"}">${cur}${endCash>=1e6?(endCash/1e6).toFixed(1)+"M":endCash>=1e3?Math.round(endCash/1e3)+"k":endCash.toLocaleString()}</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg);border-radius:6px;">
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;">End MRR</div>
+          <div style="font-size:20px;font-weight:700;color:#3b82f6">${cur}${Math.round(projections[projections.length-1].mrr).toLocaleString()}</div>
+        </div>
+      </div>
+    `;
+
+    // Chart table
+    let tblHtml='<div style="font-size:10px;font-weight:600;color:var(--text);margin-bottom:10px;">📈 Monthly Projection</div>';
+    tblHtml+='<table style="width:100%;border-collapse:collapse;font-size:9px;">';
+    tblHtml+='<thead><tr style="border-bottom:1px solid var(--border);color:var(--text-muted);">';
+    tblHtml+='<th style="text-align:left;padding:4px 6px;">Month</th><th style="text-align:right;padding:4px 6px;">MRR</th><th style="text-align:right;padding:4px 6px;">Burn</th><th style="text-align:right;padding:4px 6px;">Net</th><th style="text-align:right;padding:4px 6px;">Cash</th>';
+    tblHtml+='</tr></thead><tbody>';
+    for(const p of projections){
+      const cashColor=p.cash>0?"#10b981":"#ef4444";
+      const netColor=p.net>=0?"#10b981":"#f59e0b";
+      // Cash bar (proportional)
+      const maxCash=Math.max(...projections.map(x=>Math.abs(x.cash)),1);
+      const barW=Math.round(Math.abs(p.cash)/maxCash*80);
+      tblHtml+=`<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+        <td style="padding:4px 6px;color:var(--text);">${p.month}</td>
+        <td style="padding:4px 6px;text-align:right;color:#3b82f6;">${cur}${p.mrr>=1e3?Math.round(p.mrr/1e3)+"k":p.mrr}</td>
+        <td style="padding:4px 6px;text-align:right;color:#f59e0b;">${cur}${p.burn>=1e3?Math.round(p.burn/1e3)+"k":p.burn}</td>
+        <td style="padding:4px 6px;text-align:right;color:${netColor};">${p.net>=0?"+":""}${cur}${Math.abs(p.net)>=1e3?Math.round(p.net/1e3)+"k":p.net}</td>
+        <td style="padding:4px 6px;text-align:right;position:relative;">
+          <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);height:4px;width:${barW}%;background:${cashColor}30;border-radius:2px;"></span>
+          <span style="position:relative;color:${cashColor};font-weight:600;">${cur}${Math.abs(p.cash)>=1e6?(p.cash/1e6).toFixed(1)+"M":Math.abs(p.cash)>=1e3?Math.round(p.cash/1e3)+"k":p.cash}</span>
+        </td>
+      </tr>`;
+    }
+    tblHtml+='</tbody></table>';
+    chartPanel.innerHTML=tblHtml;
+  }
+
+  recompute();
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
