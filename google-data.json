@@ -1,23 +1,23 @@
 {
-  "refreshedAt": "2026-03-26T11:24:49.596Z",
+  "refreshedAt": "2026-03-26T12:19:12.724Z",
   "gmail": {
     "threads": [
       {
-        "id": "19d29dcf3e8e6db9",
-        "subject": "Jero replied to a thread in Supplied - Merging & Linking Data",
-        "from": "Jero via Figma <comments-UmVV49DVGYTqvUpecopp3G@email.figma.com>",
-        "date": "2026-03-26T11:17:18.000Z",
-        "snippet": "&quot;These are more pain points and closer to How might we statements. Jobs to be done normally comes from research, and is framed as &quot;When [situation], I want to [motivation], so I can [expected",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d29dcf3e8e6db9",
+        "id": "19d2a108af2537a4",
+        "subject": "Vladimir Ivanov changed status to Done for [SUP-1247] [Booking Experts] Use...",
+        "from": "Linear <notifications@linear.app>",
+        "date": "2026-03-26T12:13:40.000Z",
+        "snippet": "You have 1 unread notification on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emails: https://linear.app/unsubscribe?token=",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2a108af2537a4",
         "unread": true
       },
       {
-        "id": "19d29d712725a621",
-        "subject": "Important Notice: Updates within Regus",
-        "from": "Zwolle Tradecentre <Zwolle.Tradecentre@regus.com>",
-        "date": "2026-03-26T11:10:47.000Z",
-        "snippet": "Dear tenants and day office visitors, We would like to inform you about several updates and important points within Regus. Coffee Pass A recent adjustment has been made to the pricing of the coffee",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d29d712725a621",
+        "id": "19d2a1410383e601",
+        "subject": "ANVR Ledennieuws 26-3-2026",
+        "from": "nieuwsbrief@anvr.nl",
+        "date": "2026-03-26T12:13:11.000Z",
+        "snippet": "",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2a1410383e601",
         "unread": true
       },
       {
@@ -292,18 +292,34 @@
   "drive": {
     "recent": [
       {
+        "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
+        "name": "Supplied_Technologies_Budget_2026",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-03-13T10:10:52.499Z",
+        "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
+        "lastModifiedBy": "Jelena Hmeltnitski"
+      },
+      {
+        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
+        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-19T10:25:55.880Z",
+        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "17RY29LiHvkh5xf8sj6DgRxxYWf_VrVGyxGXNzhiktqc",
         "name": "Guesty Requirements Scoping",
         "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-26T10:38:52.263Z",
+        "modifiedTime": "2026-03-26T11:51:52.977Z",
         "url": "https://docs.google.com/document/d/17RY29LiHvkh5xf8sj6DgRxxYWf_VrVGyxGXNzhiktqc/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
+        "lastModifiedBy": "Vladimir Ivanov"
       },
       {
         "id": "11ejH_pvXPdDi3QB-7J_cNXn3mJ21YWHPxWQ-THhdKPQ",
         "name": "villasud_numbers",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-26T10:58:55.158Z",
+        "modifiedTime": "2026-03-26T12:17:44.150Z",
         "url": "https://docs.google.com/spreadsheets/d/11ejH_pvXPdDi3QB-7J_cNXn3mJ21YWHPxWQ-THhdKPQ/edit?usp=drivesdk",
         "lastModifiedBy": ""
       },
@@ -370,22 +386,6 @@
         "modifiedTime": "2026-03-22T10:57:51.638Z",
         "url": "https://drive.google.com/drive/folders/1l5FukcbqAxmmLQ5Y6kly2lfnKoWOBEWU",
         "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1j8hfDG76usb_keiDz9qrXuSnsdlBlHLLXwT66nRuZC0",
-        "name": "Supplied Operations Data Mapping - Tarisio_Complete ",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-25T11:26:09.080Z",
-        "url": "https://docs.google.com/spreadsheets/d/1j8hfDG76usb_keiDz9qrXuSnsdlBlHLLXwT66nRuZC0/edit?usp=drivesdk",
-        "lastModifiedBy": "Martha Forrester"
-      },
-      {
-        "id": "1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY",
-        "name": "Supplied Video - Batch 2",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-24T11:45:55.929Z",
-        "url": "https://docs.google.com/document/d/1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY/edit?usp=drivesdk",
-        "lastModifiedBy": "Nitya Shukla Paharia"
       }
     ]
   },
@@ -412,23 +412,23 @@
     },
     {
       "action": "reply",
-      "subject": "Jero replied to a thread in Supplied - Merging & Linking Data",
-      "reason": "&quot;These are more pain points and closer to How might we statements. Jobs to be done normally comes from research, an",
-      "from": "Jero via Figma <comments-UmVV49DVGYTqvUpecopp3G@email.figma.com>",
+      "subject": "Vladimir Ivanov changed status to Done for [SUP-1247] [Booking Experts] Use...",
+      "reason": "You have 1 unread notification on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emai",
+      "from": "Linear <notifications@linear.app>",
       "ageDays": 0,
-      "threadId": "19d29dcf3e8e6db9",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d29dcf3e8e6db9",
-      "id": "email-19d29dcf3e8e6db9"
+      "threadId": "19d2a108af2537a4",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2a108af2537a4",
+      "id": "email-19d2a108af2537a4"
     },
     {
       "action": "reply",
-      "subject": "Important Notice: Updates within Regus",
-      "reason": "Dear tenants and day office visitors, We would like to inform you about several updates and important points within Regu",
-      "from": "Zwolle Tradecentre <Zwolle.Tradecentre@regus.com>",
+      "subject": "ANVR Ledennieuws 26-3-2026",
+      "reason": "Unread message",
+      "from": "nieuwsbrief@anvr.nl",
       "ageDays": 0,
-      "threadId": "19d29d712725a621",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d29d712725a621",
-      "id": "email-19d29d712725a621"
+      "threadId": "19d2a1410383e601",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2a1410383e601",
+      "id": "email-19d2a1410383e601"
     },
     {
       "action": "reply",
