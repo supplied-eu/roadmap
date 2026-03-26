@@ -423,9 +423,12 @@ async function fetchCompanies() {
   console.log("→ Fetching companies...");
   try {
     const raw = await searchAll("companies", {
-      filterGroups: [{ filters: [{ propertyName: "lifecyclestage", operator: "EQ", value: "customer" }] }],
+      filterGroups: [
+        { filters: [{ propertyName: "customer_status", operator: "EQ", value: "Active Customer" }] },
+        { filters: [{ propertyName: "lifecyclestage", operator: "EQ", value: "customer" }] },
+      ],
       properties: [
-        "name", "domain", "lifecyclestage", "hs_lastmodifieddate",
+        "name", "domain", "lifecyclestage", "customer_status", "hs_lastmodifieddate",
         "notes_last_updated", "notes_last_contacted", "num_associated_contacts",
         "num_associated_deals", "annualrevenue", "hs_lead_status",
         "hubspot_owner_id", "createdate", "hs_num_open_deals",
