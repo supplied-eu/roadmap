@@ -868,9 +868,47 @@ body {
   font-size: 10px; background: var(--surface2); border: 1px solid var(--border);
   border-radius: 4px; padding: 8px 16px; color: var(--text); letter-spacing: 0.3px;
 }
+/* ── User Selector Overlay ───────────────────────────────────────────────── */
+.user-select-overlay {
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,.7); backdrop-filter:blur(8px);
+  align-items:center; justify-content:center;
+}
+.user-select-overlay.open { display:flex; }
+.user-select-box {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:32px; min-width:320px; max-width:420px; text-align:center;
+}
+.user-select-title { font-size:16px; font-weight:600; color:var(--text); margin-bottom:4px; }
+.user-select-sub { font-size:11px; color:var(--text-muted); margin-bottom:20px; }
+.user-select-grid { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+.user-select-btn {
+  padding:8px 18px; border-radius:8px; border:1px solid var(--border);
+  background:var(--surface2); color:var(--text); font-size:12px; font-weight:500;
+  cursor:pointer; transition:all .15s;
+}
+.user-select-btn:hover { border-color:var(--accent); background:rgba(99,102,241,.1); }
+.user-select-btn.active { border-color:var(--accent); background:var(--accent); color:#fff; }
+/* ── Current User Indicator ──────────────────────────────────────────────── */
+.current-user-ind {
+  display:inline-flex; align-items:center; gap:4px; padding:3px 10px;
+  border-radius:6px; font-size:10px; font-weight:500; color:var(--accent);
+  background:rgba(99,102,241,.1); cursor:pointer; border:1px solid transparent;
+  transition:all .15s;
+}
+.current-user-ind:hover { border-color:var(--accent); }
 </style>
 </head>
 <body>
+
+<!-- ══ USER SELECTOR OVERLAY ══════════════════════════════════════════════ -->
+<div class="user-select-overlay" id="user-select-overlay">
+  <div class="user-select-box">
+    <div class="user-select-title">👋 Who are you?</div>
+    <div class="user-select-sub">Select your name to personalise your dashboard</div>
+    <div class="user-select-grid" id="user-select-grid"></div>
+  </div>
+</div>
 
 <div class="header">
   <div class="header-logo"><svg width="22" height="22" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><circle cx="10" cy="11" r="6" fill="#6c63f7"/><circle cx="25" cy="9" r="8" fill="#6c63f7"/><circle cx="14" cy="27" r="8" fill="#6c63f7"/><circle cx="29" cy="29" r="5" fill="#6c63f7"/></svg> Supplied</div>
@@ -898,6 +936,7 @@ body {
       <span class="spin">↻</span> REFRESH
     </button>
     <button class="refresh-btn" title="Update GitHub token" onclick="openPatModal()" style="padding:3px 7px;">⚙</button>
+    <span class="current-user-ind" id="current-user-indicator" onclick="openUserSelector()" title="Switch user" style="display:none"></span>
     <div class="refresh-badge">
       <span class="dot"></span>
       <span id="refresh-time">LOADING…</span>
@@ -1026,6 +1065,59 @@ const SC = {
 };
 const sc = s => SC[s]||"#475569";
 const TODAY_STR  = new Date().toISOString().split("T")[0];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// USER ACCESS CONTROL
+// ═══════════════════════════════════════════════════════════════════════════
+let CURRENT_USER = localStorage.getItem("supplied_current_user") || null;
+function isAdmin(){ return CURRENT_USER && CURRENT_USER.toLowerCase()==="johann"; }
+function setCurrentUser(name){
+  CURRENT_USER = name;
+  localStorage.setItem("supplied_current_user", name);
+  applyAccessControl();
+  closeUserSelector();
+  // Force My Day to own view for non-admins
+  if(!isAdmin()){
+    MYDAY_PERSON = name;
+    localStorage.setItem("myday_person", name);
+  }
+  renderMyDay();
+}
+function applyAccessControl(){
+  // KPIs tab visibility
+  const kpiBtn=document.getElementById("tab-kpis-btn");
+  if(kpiBtn) kpiBtn.style.display=isAdmin()?"":"none";
+  // Person bar in My Day
+  const pbar=document.getElementById("myday-person-bar");
+  if(pbar) pbar.style.display=isAdmin()?"":"none";
+  // User indicator in header
+  const userInd=document.getElementById("current-user-indicator");
+  if(userInd){
+    userInd.textContent=CURRENT_USER||"";
+    userInd.style.display=CURRENT_USER?"inline-flex":"none";
+  }
+}
+function openUserSelector(){ const ov=document.getElementById("user-select-overlay"); if(ov) ov.classList.add("open"); }
+function closeUserSelector(){ const ov=document.getElementById("user-select-overlay"); if(ov) ov.classList.remove("open"); }
+function buildUserOptions(){
+  const grid=document.getElementById("user-select-grid"); if(!grid) return;
+  grid.innerHTML="";
+  // Gather all known people from data
+  const names=new Set();
+  names.add("Johann");
+  if(HS_DATA&&HS_DATA.owners) HS_DATA.owners.forEach(o=>{ if(o.name) names.add(o.name.split(" ")[0]); });
+  const linIssues=typeof getLinearIssues==="function"?getLinearIssues():[];
+  linIssues.forEach(i=>{ if(i.assignee) names.add(i.assignee.split(" ")[0]); });
+  // Build buttons
+  for(const name of Array.from(names).sort()){
+    const btn=document.createElement("button");
+    btn.className="user-select-btn"+(CURRENT_USER===name?" active":"");
+    btn.textContent=name;
+    btn.addEventListener("click",()=>setCurrentUser(name));
+    grid.appendChild(btn);
+  }
+}
+
 const DONE_STATES = new Set(["Done","Completed","Cancelled","Canceled","Duplicate","Won","Closed","Closed Won","Closed Lost","closedwon","closedlost"]);
 function isActive(status){ return !DONE_STATES.has(status); }
 function isDoneStage(s){ const v=(s||"").toLowerCase(); return DONE_STATES.has(s)||v.includes("closed")||v.includes("won")||v.includes("lost"); }
@@ -1039,6 +1131,8 @@ function fmtDate(d){ if(!d) return ""; const [y,m,day]=d.split("-"); return \`\$
 // ═══════════════════════════════════════════════════════════════════════════
 let currentTab = "myday";
 function switchTab(tab){
+  // Guard: non-admins cannot access KPIs
+  if(tab==="kpis" && !isAdmin()) return;
   currentTab = tab;
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
   document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
@@ -2583,18 +2677,26 @@ function renderMyDay(){
   const myName = detectMyName();
 
   // ── Person filter pill bar ──────────────────────────────────────────────
-  pbar.innerHTML = '<span class="owner-strip-label">SHOWING FOR</span>';
-  const allPill = document.createElement("button");
-  allPill.className = "owner-pill"+(MYDAY_PERSON==="all"?" active":"");
-  allPill.textContent = "All";
-  allPill.addEventListener("click",()=>switchToPersonAndRender("all"));
-  pbar.appendChild(allPill);
-  for(const p of Array.from(people).filter(x=>x!=="me")){
-    const pill = document.createElement("button");
-    pill.className = "owner-pill"+(MYDAY_PERSON===p?" active":"");
-    pill.textContent = p==="me"? (myName||"Me") : p;
-    pill.addEventListener("click",()=>switchToPersonAndRender(p));
-    pbar.appendChild(pill);
+  // Person bar: only admins can switch between team members
+  if(isAdmin()){
+    pbar.style.display="";
+    pbar.innerHTML = '<span class="owner-strip-label">SHOWING FOR</span>';
+    const allPill = document.createElement("button");
+    allPill.className = "owner-pill"+(MYDAY_PERSON==="all"?" active":"");
+    allPill.textContent = "All";
+    allPill.addEventListener("click",()=>switchToPersonAndRender("all"));
+    pbar.appendChild(allPill);
+    for(const p of Array.from(people).filter(x=>x!=="me")){
+      const pill = document.createElement("button");
+      pill.className = "owner-pill"+(MYDAY_PERSON===p?" active":"");
+      pill.textContent = p==="me"? (myName||"Me") : p;
+      pill.addEventListener("click",()=>switchToPersonAndRender(p));
+      pbar.appendChild(pill);
+    }
+  } else {
+    pbar.style.display="none";
+    // Force non-admins to their own view
+    MYDAY_PERSON = CURRENT_USER || "me";
   }
 
   // ── Section filter pills ─────────────────────────────────────────────────
@@ -3617,6 +3719,8 @@ function renderClaudeBrief(container,personName,tabKey){
 async function init(){
   const btn=document.getElementById("refresh-btn");
   if(btn) btn.classList.add("loading");
+  // Apply access control on load
+  applyAccessControl();
   renderGantt();
   try {
     // Load Linear gantt data
@@ -3679,6 +3783,11 @@ async function init(){
     : MYDAY_PERSON==="me" ? detectMyName()
     : MYDAY_PERSON;
   await loadGoogleDataFor(myPersonKey);
+
+  // Build user options now that data is loaded, show selector if no user set
+  buildUserOptions();
+  if(!CURRENT_USER) openUserSelector();
+  applyAccessControl();
 
   // Always render My Day (works with whatever data has loaded)
   renderMyDay();
