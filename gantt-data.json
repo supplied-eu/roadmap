@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-26T11:09:44.383Z",
+  "refreshedAt": "2026-03-26T11:24:48.300Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8754,7 +8754,7 @@
               "id": "921254c7-1962-4006-9f9e-091cf1a1eaca",
               "identifier": "SUP-1247",
               "title": "[Booking Experts] Use lot number instead of registration number for land registration",
-              "status": "In Test",
+              "status": "Done",
               "start": "2026-03-25",
               "end": "2026-03-25",
               "assignee": "andrei@supplied.eu",
@@ -8832,7 +8832,7 @@
               "id": "921254c7-1962-4006-9f9e-091cf1a1eaca",
               "identifier": "SUP-1247",
               "title": "[Booking Experts] Use lot number instead of registration number for land registration",
-              "status": "In Test",
+              "status": "Done",
               "start": "2026-03-25",
               "end": "2026-03-25",
               "assignee": "andrei@supplied.eu",
