@@ -64,7 +64,8 @@ body {
   align-items: stretch;
   gap: 0;
   position: sticky; top: 0; z-index: 50;
-  min-height: 48px;
+  min-height: 52px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
 }
 .header-logo {
   font-family: 'Syne', sans-serif;
@@ -82,19 +83,19 @@ body {
 }
 .tab-btn {
   font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 0.5px;
+  font-size: 10.5px; letter-spacing: 0.4px;
   color: var(--text-muted);
   background: none; border: none;
-  border-bottom: 2px solid transparent;
-  padding: 0 18px;
+  border-bottom: 2.5px solid transparent;
+  padding: 0 20px;
   cursor: pointer; white-space: nowrap;
-  display: flex; align-items: center; gap: 6px;
-  transition: color 0.15s, border-color 0.15s;
+  display: flex; align-items: center; gap: 7px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
   margin-bottom: -1px;
 }
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-.tab-btn .tab-icon { font-size: 12px; }
+.tab-btn:hover { color: var(--text); background: rgba(59,130,246,.03); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+.tab-btn .tab-icon { font-size: 13px; }
 .header-right {
   margin-left: auto; display: flex; align-items: center; gap: 10px;
   flex-shrink: 0; padding-left: 16px;
@@ -391,8 +392,8 @@ body {
 .tooltip-overdue  { font-size: 9px; color: #f59e0b; font-weight: 600; }
 
 /* ── CLAUDE BRIEF PANEL ─────────────────────────────────────────────────── */
-.claude-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden;}
-.claude-panel-hdr{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(99,102,241,.07) 0%,transparent 60%);font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-muted);}
+.claude-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.claude-panel-hdr{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(99,102,241,.1) 0%,rgba(59,130,246,.04) 60%);font-size:11px;font-weight:700;letter-spacing:0.8px;color:#6366f1;}
 .cpanel-key-btn{margin-left:auto;background:none;border:1px solid var(--border);border-radius:4px;color:var(--text-dim);font-size:9px;padding:2px 7px;cursor:pointer;letter-spacing:.5px;}.cpanel-key-btn:hover{border-color:var(--accent);color:var(--accent);}
 .claude-msgs{padding:12px 16px;min-height:56px;max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
 .claude-msg-text{font-size:12.5px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;}
@@ -403,8 +404,8 @@ body {
 .claude-input-row input:focus{border-color:var(--accent);}.claude-input-row input::placeholder{color:var(--text-dim);}
 .claude-send-btn{background:var(--accent);border:none;border-radius:6px;color:#fff;font-size:10px;font-weight:700;letter-spacing:.8px;padding:6px 14px;cursor:pointer;}.claude-send-btn:disabled{opacity:.4;cursor:not-allowed;}
 /* ── SIMPLE CHECKLIST ────────────────────────────────────────────────────── */
-.checklist-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
-.checklist-hdr{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-muted);}
+.checklist-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:0 12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.checklist-hdr{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;letter-spacing:0.5px;color:var(--text);background:linear-gradient(135deg,rgba(16,185,129,.06) 0%,transparent 60%);}
 .cl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);transition:background .12s;user-select:none;position:relative;}
 .cl-item:last-child{border-bottom:none;}.cl-item:hover{background:var(--surface2);}
 .cl-item.cl-done{opacity:.32;}.cl-item.cl-done .cl-title{text-decoration:line-through;}
@@ -501,8 +502,8 @@ body {
   grid-template-columns: 3fr 2fr;
   gap: 0;
 }
-.myday-main { padding: 0 0 60px 0; border-right: 1px solid var(--border); overflow-y: auto; height: 100%; }
-.myday-sidebar { overflow-y: auto; height: 100%; background: var(--surface); }
+.myday-main { padding: 6px 0 60px 0; border-right: 1px solid var(--border); overflow-y: auto; height: 100%; background: var(--bg); }
+.myday-sidebar { overflow-y: auto; height: 100%; background: var(--surface); border-left: 1px solid var(--border); }
 .myday-greeting {
   padding: 20px 24px 16px;
   border-bottom: 1px solid var(--border);
@@ -588,10 +589,12 @@ body {
 .myday-coming-title { color: var(--text-dim); font-weight: 600; font-size: 9px; letter-spacing: .5px; margin-bottom: 2px; }
 .myday-coming-desc  { color: var(--text-dim); opacity: .6; font-size: 9px; }
 .myday-sidebar-hdr {
-  padding: 6px 16px;
-  font-size: 8px; letter-spacing: 1.2px; font-weight: 600;
-  background: var(--surface2);
+  padding: 10px 16px;
+  font-size: 10px; letter-spacing: 1px; font-weight: 700;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%);
   border-bottom: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   display: flex; align-items: center; gap: 6px;
   position: sticky; top: 0; z-index: 5;
 }
@@ -610,26 +613,27 @@ body {
 .myday-person-bar {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  padding: 8px 20px;
+  padding: 10px 20px;
   display: flex; gap: 6px; align-items: center;
   overflow-x: auto; position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 1px 2px rgba(0,0,0,.03);
 }
 .myday-section-bar {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  padding: 6px 20px;
-  display: flex; gap: 4px; align-items: center;
-  overflow-x: auto; position: sticky; top: 41px; z-index: 9;
+  padding: 8px 20px;
+  display: flex; gap: 5px; align-items: center;
+  overflow-x: auto; position: sticky; top: 43px; z-index: 9;
 }
 .section-pill {
-  padding: 3px 10px; border-radius: 999px;
+  padding: 5px 14px; border-radius: 999px;
   border: 1px solid var(--border); background: transparent;
-  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
-  color: var(--text-dim); cursor: pointer; white-space: nowrap;
-  transition: all 0.15s;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.3px;
+  color: var(--text-muted); cursor: pointer; white-space: nowrap;
+  transition: all 0.15s; font-family: inherit;
 }
-.section-pill:hover { border-color: var(--accent); color: var(--accent); }
-.section-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.section-pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,.04); }
+.section-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 1px 4px rgba(59,130,246,.25); }
 .myday-stats-bar {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -670,7 +674,7 @@ body {
 }
 .owner-strip-label { font-size: 8px; color: var(--text-dim); letter-spacing: 1px; margin-right: 4px; flex-shrink: 0; }
 .owner-pill {
-  font-size: 9px; border-radius: 20px; padding: 3px 12px;
+  font-size: 10px; border-radius: 20px; padding: 4px 14px;
   border: 1px solid var(--border); cursor: pointer;
   font-family: 'DM Mono', monospace; letter-spacing: 0.3px;
   background: var(--bg); color: var(--text-muted);
@@ -1176,8 +1180,16 @@ function switchTab(tab){
     const cont=document.getElementById("panel-"+tab);
     if(cont) renderClaudeBrief(cont, CLAUDE_VIEW_NAME||"Johann", tab);
   }
-  if(tab==="accounts") renderAccountManagement();
-  if(tab==="kpis") renderKPIs();
+  if(tab==="accounts"){
+    renderAccountManagement();
+    const cont=document.getElementById("panel-accounts");
+    if(cont) renderClaudeBrief(cont, CLAUDE_VIEW_NAME||"Johann", "accounts");
+  }
+  if(tab==="kpis"){
+    renderKPIs();
+    const cont=document.getElementById("panel-kpis");
+    if(cont) renderClaudeBrief(cont, CLAUDE_VIEW_NAME||"Johann", "kpis");
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3954,7 +3966,7 @@ function renderMyDay(){
 // CLAUDE AI DAILY BRIEF
 // ═══════════════════════════════════════════════════════════════════════════
 const CLAUDE_KEY_STORAGE = "anthropic_api_key_supplied";
-const CLAUDE_HISTORIES = {myday:[], roadmap:[], sales:[]};
+const CLAUDE_HISTORIES = {myday:[], roadmap:[], sales:[], accounts:[], kpis:[]};
 let CLAUDE_VIEW_NAME = null;
 
 function getClaudeKey(){ return localStorage.getItem(CLAUDE_KEY_STORAGE)||""; }
@@ -3982,7 +3994,7 @@ function saveClaudeKey(){
 }
 function buildDataContext(tabKey){
   const tk=tabKey||"myday";
-  const inclHubspot=(tk==="myday"||tk==="sales");
+  const inclHubspot=(tk==="myday"||tk==="sales"||tk==="accounts");
   const inclGoogle=(tk==="myday");
   // Read what the user has already ticked off today
   const donedToday=new Set(JSON.parse(localStorage.getItem("supplied_auto_done_"+TODAY_STR)||"[]"));
@@ -4050,6 +4062,39 @@ function buildDataContext(tabKey){
     const dp=(GOOGLE_DATA.drive_priorities||[]).filter(d=>!isDismissed("dp-"+d.id)).slice(0,3);
     if(dp.length){ lines.push("\\nDRIVE PRIORITIES:"); for(const d of dp) lines.push("  ["+d.action.toUpperCase()+"] "+d.subject); }
   }
+  if(tk==="accounts"&&HS_DATA){
+    const companies=HS_DATA.companies||[];
+    const deals=HS_DATA.deals||[];
+    if(companies.length){
+      lines.push("\\nACTIVE CUSTOMERS ("+companies.length+"):");
+      for(const c of companies) lines.push("  "+c.name+(c.domain?" ("+c.domain+")":"")+(c.owner?" | owner:"+c.owner:""));
+    }
+    if(deals.length){
+      lines.push("\\nALL DEALS ("+deals.length+"):");
+      for(const d of deals.slice(0,20)) lines.push("  "+d.name+" | "+d.stageLabel+" | "+(d.amount?"\\u20AC"+Number(d.amount).toLocaleString():"no amount")+(d.closeDate?" | close:"+d.closeDate.slice(0,10):""));
+    }
+    const plans=JSON.parse(localStorage.getItem("supplied_acct_plans")||"{}");
+    const planKeys=Object.keys(plans).filter(k=>plans[k]);
+    if(planKeys.length){
+      lines.push("\\nACCOUNT PLANS:");
+      for(const k of planKeys) lines.push("  "+k+": "+plans[k].slice(0,200));
+    }
+  }
+  if(tk==="kpis"&&typeof KPI_DATA!=="undefined"&&KPI_DATA&&KPI_DATA.months){
+    const months=[...KPI_DATA.months].sort((a,b)=>(b.month||"").localeCompare(a.month||""));
+    const latest=months[0]||{};
+    lines.push("\\nKPI SNAPSHOT ("+KPI_DATA.months.length+" months of data):");
+    lines.push("  Latest month: "+(latest.label||latest.month||"?"));
+    if(latest.mrr!==undefined) lines.push("  MRR: \\u20AC"+Number(latest.mrr).toLocaleString());
+    if(latest.cash!==undefined) lines.push("  Cash: \\u20AC"+Number(latest.cash).toLocaleString());
+    if(latest.burn!==undefined) lines.push("  Monthly Burn: \\u20AC"+Number(latest.burn).toLocaleString());
+    if(latest.customers!==undefined) lines.push("  Customers: "+latest.customers);
+    if(latest.runway_months!==undefined) lines.push("  Runway: "+latest.runway_months+" months");
+    lines.push("\\nMONTHLY TREND:");
+    for(const m of months.slice(0,6)){
+      lines.push("  "+(m.label||m.month)+": MRR="+(m.mrr?"\\u20AC"+Number(m.mrr).toLocaleString():"?")+" | Cash="+(m.cash?"\\u20AC"+Number(m.cash).toLocaleString():"?")+" | Burn="+(m.burn?"\\u20AC"+Number(m.burn).toLocaleString():"?"));
+    }
+  }
   return lines.join("\\n");
 }
 function buildSystemPrompt(tabKey){
@@ -4058,7 +4103,9 @@ function buildSystemPrompt(tabKey){
   const scope={
     myday:"Linear issues, HubSpot deals, calendar, and emails",
     roadmap:"Linear issues only (tickets, projects, initiatives). You have NO HubSpot or email data — do not invent or reference deals.",
-    sales:"HubSpot deals and tasks. You also have Linear issue data for cross-referencing delivery dependencies."
+    sales:"HubSpot deals and tasks. You also have Linear issue data for cross-referencing delivery dependencies.",
+    accounts:"HubSpot companies (active customers), their deals, tasks, and related Linear issues. Help the user manage customer accounts, plan actions, and identify risks.",
+    kpis:"Financial KPIs, MRR, burn rate, runway, and cash position. Help the user understand their financial health, model scenarios, and make strategic decisions."
   };
   const nowTime=new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
   return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\\n\\nData scope for this view: "+(scope[tk]||scope.myday)+"\\n\\nYou have full visibility of their Linear issues (id, title, status, priority, assignee, project, initiative, due date). Use this data to answer specific questions accurately.\\n\\nCurrent work data:\\n"+buildDataContext(tk)+"\\n\\nIMPORTANT TIME CONTEXT: The current time right now is "+nowTime+". When the user asks what to do 'right now' or 'next', only suggest UPCOMING items. Meetings and events that have already finished (marked [ALREADY FINISHED]) should NOT be suggested as actions \u2014 instead reference them as completed context if relevant. Focus on what is still ahead today.\\n\\nStyle rules: be concise but complete when asked specific questions. No flattery. Plain text only. When asked about specific issues, list them with their identifier and key attributes. Never say you lack visibility into individual issues — you have the full list above.\\n\\nTASK CREATION: If the user asks you to add a task, create a task, remind them of something, or says something like 'add X to my list', wrap each task in [[TASK:task description here]]. You can include multiple [[TASK:...]] tags. Always confirm which tasks you added.";
@@ -4146,19 +4193,22 @@ function sendClaudeMsg(tabKey){
   if(!getClaudeKey()){ openClaudeKeyModal(); return; }
   streamClaudeReply(msg,false,tk);
 }
+let INIT_COMPLETE=false;
 function renderClaudeBrief(container,personName,tabKey){
   const tk=tabKey||"myday";
   if(personName) CLAUDE_VIEW_NAME=personName;
-  // Don\u2019t re-render if panel already exists for this tab
+  // Don\u2019t re-render if panel already exists in current DOM
   if(document.getElementById("claude-panel-"+tk)) return;
-  const BRIEF_LABELS={myday:"DAILY BRIEF",roadmap:"ROADMAP BRIEF",sales:"SALES BRIEF"};
+  const BRIEF_LABELS={myday:"DAILY BRIEF",roadmap:"ROADMAP BRIEF",sales:"SALES BRIEF",accounts:"ACCOUNTS BRIEF",kpis:"KPI BRIEF"};
   const DEFAULT_PROMPTS={
     myday:"Give me a sharp daily brief \u2014 what are my top 3-4 most important actions right now? Be direct and specific.",
     roadmap:"Give me a sharp roadmap brief focused purely on delivery. Look at Linear tickets only \u2014 which ones linked to customer initiatives are overdue or blocked, and could any of them delay a customer go-live? Then list the top product priority items the team should pick up this sprint. Do not mention HubSpot deals or sales pipeline \u2014 that belongs in Sales & Ops.",
-    sales:"Give me a sharp sales brief \u2014 which deals need action this week, what\u2019s at risk of slipping, and what should I prioritise in the pipeline?"
+    sales:"Give me a sharp sales brief \u2014 which deals need action this week, what\u2019s at risk of slipping, and what should I prioritise in the pipeline?",
+    accounts:"Give me a quick accounts brief \u2014 which active customers need attention? Any at-risk accounts, overdue tasks, or upcoming renewals? Be specific with names and actions.",
+    kpis:"Give me a sharp financial brief \u2014 what\u2019s my current runway, how is MRR trending, and are there any red flags in the burn rate or cash position?"
   };
   const autoPrompt=DEFAULT_PROMPTS[tk]||DEFAULT_PROMPTS.myday;
-  const placeholders={myday:"Ask me anything about your day\u2026",roadmap:"Ask about roadmap, customer risks, priorities\u2026",sales:"Ask about deals, pipeline, follow-ups\u2026"};
+  const placeholders={myday:"Ask me anything about your day\u2026",roadmap:"Ask about roadmap, customer risks, priorities\u2026",sales:"Ask about deals, pipeline, follow-ups\u2026",accounts:"Ask about customers, account plans, risks\u2026",kpis:"Ask about MRR, runway, cash, scenarios\u2026"};
   const panel=document.createElement("div"); panel.className="claude-panel"; panel.id="claude-panel-"+tk;
   const hdr=document.createElement("div"); hdr.className="claude-panel-hdr";
   const lbl=document.createElement("span"); lbl.textContent="\uD83E\uDD16  CLAUDE \u00B7 "+(BRIEF_LABELS[tk]||"BRIEF");
@@ -4176,8 +4226,12 @@ function renderClaudeBrief(container,personName,tabKey){
     const noKey=document.createElement("div"); noKey.className="claude-msg-text"; noKey.style.cssText="color:var(--text-dim);font-size:11.5px;";
     noKey.textContent="Connect your Anthropic API key (\u2699 above) to get a personalised brief and ask follow-up questions.";
     msgs.appendChild(noKey);
-  } else if(CLAUDE_HISTORIES[tk].length===0){
+  } else if(CLAUDE_HISTORIES[tk].length===0 && INIT_COMPLETE){
     streamClaudeReply(autoPrompt,true,tk);
+  } else if(CLAUDE_HISTORIES[tk].length===0 && !INIT_COMPLETE){
+    const waiting=document.createElement("div"); waiting.className="claude-msg-text"; waiting.style.cssText="color:var(--text-dim);font-size:11px;";
+    waiting.textContent="Loading data\u2026 brief will generate automatically.";
+    msgs.appendChild(waiting);
   } else {
     for(const m of CLAUDE_HISTORIES[tk]){ if(m.role==="assistant") appendClaudeMsg("assistant",m.content,tk); }
   }
@@ -4257,6 +4311,9 @@ async function init(){
   buildUserOptions();
   if(!CURRENT_USER) openUserSelector();
   applyAccessControl();
+
+  // Mark init complete so Claude brief can auto-fire with full data
+  INIT_COMPLETE=true;
 
   // Always render My Day (works with whatever data has loaded)
   renderMyDay();
