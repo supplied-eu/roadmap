@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-26T14:19:27.283Z",
+  "refreshedAt": "2026-03-26T14:49:57.285Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -473,7 +473,7 @@
               "id": "24e565e5-4849-4d5a-a60e-d57b895ed777",
               "identifier": "SUP-1176",
               "title": "Backfill phase",
-              "status": "In Test",
+              "status": "In Progress",
               "start": "2026-03-25",
               "end": null,
               "assignee": null,
@@ -8615,7 +8615,7 @@
               "title": "Chaletplus – Umlaut characters not displaying correctly in Excel export",
               "status": "Todo",
               "start": null,
-              "end": null,
+              "end": "2026-03-27",
               "assignee": "Vladimir Ivanov",
               "priority": "High",
               "estimate": null,
@@ -8819,9 +8819,9 @@
               "id": "b35f0262-ec7a-412a-affb-e84a29c4885d",
               "identifier": "IMP-153",
               "title": "mapping of cadastral number (kavelnummer) from BEX object data",
-              "status": "In Progress",
+              "status": "Done",
               "start": "2026-03-25",
-              "end": null,
+              "end": "2026-03-26",
               "assignee": "Vladimir Ivanov",
               "priority": "High",
               "estimate": null,

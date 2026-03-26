@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-26T14:19:28.087Z",
+  "refreshedAt": "2026-03-26T14:49:59.713Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1570,7 +1570,7 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 91
+      "count": 432
     },
     {
       "key": "customer",
