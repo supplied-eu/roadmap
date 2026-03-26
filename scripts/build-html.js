@@ -2732,6 +2732,7 @@ function renderOpsEmpty(){
 // KPIs TAB
 // ═══════════════════════════════════════════════════════════════════════════
 let KPI_DATA = null;
+let COST_DATA = null;
 
 function renderKPIs(){
   const main=document.getElementById("kpis-main");
@@ -2861,26 +2862,32 @@ function renderKPIs(){
 
   const scenarioHdr=document.createElement("div");
   scenarioHdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;";
-  scenarioHdr.innerHTML=\`<div style="font-size:12px;font-weight:600;color:var(--text);">\u{1F52E} Scenario Modelling</div><div style="font-size:9px;color:var(--text-dim);">Adjust inputs to project runway & cash position</div>\`;
+  scenarioHdr.innerHTML=\`<div style="font-size:12px;font-weight:600;color:var(--text);">\u{1F52E} Scenario Modelling</div><div style="font-size:9px;color:var(--text-dim);">Adjust revenue & cost items to project runway</div>\`;
   scenarioWrap.appendChild(scenarioHdr);
 
-  // Input sliders / fields
+  // Base month definitions
+  const allMonthsBase=['Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26','Jul-26','Aug-26','Sep-26','Oct-26','Nov-26','Dec-26','Jan-27','Feb-27','Mar-27','Apr-27','May-27','Jun-27'];
+
+  // Load saved scenario state from localStorage
+  let savedScenario={};
+  try {
+    const saved=localStorage.getItem('supplied_cost_scenario');
+    if(saved) savedScenario=JSON.parse(saved);
+  } catch(e){ /* ignore */ }
+
+  // Input sliders for revenue (no burn/hires inputs now)
   const baseM=m;
   const inputs={
     mrr:      {label:"Monthly Revenue (MRR)",   val:baseM.contractedMRR||0, min:0, max:50000, step:500, fmt:v=>cur+v.toLocaleString()},
-    burn:     {label:"Monthly Net Burn",         val:baseM.avgNetBurn||0,    min:0, max:200000,step:5000, fmt:v=>cur+v.toLocaleString()},
     newCust:  {label:"New Customers / Month",    val:baseM.newCustomersSigned||0, min:0, max:10, step:1, fmt:v=>String(v)},
     acv:      {label:"ACV per New Customer",     val:baseM.acv||0,           min:0, max:10000, step:100, fmt:v=>cur+v.toLocaleString()},
     cashStart:{label:"Starting Cash",            val:baseM.cash||0,          min:0, max:5000000,step:50000, fmt:v=>cur+v.toLocaleString()},
-    hires:    {label:"New Hires (added cost/mo)",val:0,                      min:0, max:50000, step:2500, fmt:v=>cur+v.toLocaleString()},
   };
 
   const inputGrid=document.createElement("div");
   inputGrid.style.cssText="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:20px;";
 
   const vals={};
-  const updateFns=[];
-
   for(const [key,cfg] of Object.entries(inputs)){
     vals[key]=cfg.val;
     const cell=document.createElement("div"); cell.style.cssText="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;";
@@ -2898,6 +2905,120 @@ function renderKPIs(){
   }
   scenarioWrap.appendChild(inputGrid);
 
+  // Cost items section
+  const costItems=COST_DATA&&COST_DATA.items?[...COST_DATA.items]:[];
+  const costWrap=document.createElement("div");
+  costWrap.style.cssText="margin-bottom:20px;";
+
+  const costHdr=document.createElement("div");
+  costHdr.style.cssText="font-size:10px;font-weight:600;color:var(--text);margin-bottom:12px;";
+  costHdr.textContent="Cost Items";
+  costWrap.appendChild(costHdr);
+
+  // Group costs by category
+  const costsByCategory={};
+  const CAT_NAMES={engineering:"Engineering",management:"Management",software:"Software",cogs:"COGS",marketing:"Marketing"};
+  for(const item of costItems){
+    const cat=item.cat||"software";
+    if(!costsByCategory[cat]) costsByCategory[cat]=[];
+    costsByCategory[cat].push(item);
+  }
+
+  // Render cost items grouped by category
+  for(const [catKey,catLabel] of Object.entries(CAT_NAMES)){
+    if(!costsByCategory[catKey]||!costsByCategory[catKey].length) continue;
+
+    const catSec=document.createElement("div");
+    catSec.style.cssText="margin-bottom:12px;";
+
+    const catHdrDiv=document.createElement("div");
+    catHdrDiv.style.cssText="font-size:9px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:6px 0;margin-bottom:6px;border-bottom:1px solid var(--border);";
+    catHdrDiv.textContent=catLabel;
+    catSec.appendChild(catHdrDiv);
+
+    for(const item of costsByCategory[catKey]){
+      const itemId=item.label.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+      const isPipeline=item.pipeline||false;
+
+      // Get first month with data
+      const monthsWithData=Object.keys(item.monthly||{});
+      const firstMonth=monthsWithData.length>0?monthsWithData[0]:'Jan-26';
+
+      // Restore saved state
+      const savedState=savedScenario[itemId]||{};
+      let itemEnabled=savedState.enabled!==undefined?savedState.enabled:!isPipeline;
+      let startMonth=savedState.startMonth||firstMonth;
+
+      // Calculate average monthly cost
+      const monthlyData=item.monthly||{};
+      const monthlyValues=Object.values(monthlyData).filter(v=>typeof v==='number');
+      const avgMonthly=monthlyValues.length>0?Math.round(monthlyValues.reduce((a,b)=>a+b,0)/monthlyValues.length):0;
+
+      const itemRow=document.createElement("div");
+      itemRow.style.cssText="display:flex;align-items:center;gap:10px;padding:8px 10px;background:"+
+        (isPipeline?"rgba(100,116,139,0.1)":"rgba(255,255,255,0.01)")+
+        ";border:1px solid var(--border);border-radius:6px;margin-bottom:6px;";
+
+      // Checkbox
+      const chk=document.createElement("input");
+      chk.type="checkbox";
+      chk.checked=itemEnabled;
+      chk.style.cssText="cursor:pointer;accent-color:var(--accent);flex-shrink:0;";
+      if(isPipeline) chk.disabled=true;
+      chk.addEventListener("change",()=>{
+        itemEnabled=chk.checked;
+        saveScenarioState();
+        recompute();
+      });
+
+      // Label + avg monthly
+      const labelDiv=document.createElement("div");
+      labelDiv.style.cssText="flex:1;min-width:0;";
+      let labelHtml=\`<div style="font-size:10px;font-weight:500;color:var(--text);">\${item.label}</div>\`;
+      if(isPipeline) labelHtml+=\`<div style="font-size:8px;color:#8b5cf6;margin-top:2px;"><span style="background:rgba(139,92,246,0.2);padding:1px 5px;border-radius:3px;">pipeline</span></div>\`;
+      labelDiv.innerHTML=labelHtml;
+
+      // Monthly amount
+      const amountDiv=document.createElement("div");
+      amountDiv.style.cssText="font-size:10px;font-weight:600;color:var(--text);min-width:70px;text-align:right;";
+      amountDiv.textContent=cur+avgMonthly.toLocaleString()+"/mo";
+
+      // Start month dropdown
+      const dropdown=document.createElement("select");
+      dropdown.style.cssText="font-size:9px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--text);cursor:pointer;";
+      for(const m of allMonthsBase){
+        const opt=document.createElement("option");
+        opt.value=m;
+        opt.textContent=m;
+        if(m===startMonth) opt.selected=true;
+        dropdown.appendChild(opt);
+      }
+      dropdown.addEventListener("change",()=>{
+        startMonth=dropdown.value;
+        saveScenarioState();
+        recompute();
+      });
+
+      itemRow.appendChild(chk);
+      itemRow.appendChild(labelDiv);
+      itemRow.appendChild(amountDiv);
+      itemRow.appendChild(dropdown);
+      catSec.appendChild(itemRow);
+    }
+
+    costWrap.appendChild(catSec);
+  }
+
+  // If no cost items, show placeholder
+  if(costItems.length===0){
+    const emptyMsg=document.createElement("div");
+    emptyMsg.style.cssText="font-size:9px;color:var(--text-muted);padding:10px;text-align:center;border:1px dashed var(--border);border-radius:6px;";
+    emptyMsg.textContent="No cost items loaded. Add cost-data.json to enable itemized cost projection.";
+    costWrap.appendChild(emptyMsg);
+  }
+
+  scenarioWrap.appendChild(costWrap);
+
   // Output: projected metrics
   const outputWrap=document.createElement("div");
   outputWrap.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:16px;";
@@ -2906,7 +3027,7 @@ function renderKPIs(){
   const summaryPanel=document.createElement("div"); summaryPanel.id="scenario-summary";
   summaryPanel.style.cssText="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;";
 
-  // Right: 12-month projection chart (ASCII-style table)
+  // Right: 18-month projection chart
   const chartPanel=document.createElement("div"); chartPanel.id="scenario-chart";
   chartPanel.style.cssText="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;overflow-x:auto;";
 
@@ -2915,24 +3036,73 @@ function renderKPIs(){
   scenarioWrap.appendChild(outputWrap);
   main.appendChild(scenarioWrap);
 
+  function saveScenarioState(){
+    const state={};
+    for(const item of costItems){
+      const itemId=item.label.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+      const row=Array.from(document.querySelectorAll("input[type='checkbox']")).find(el=>el.closest('[data-item-id]')?.getAttribute('data-item-id')===itemId);
+      // Find the actual state by looking at the cost section
+      const allRows=costWrap.querySelectorAll("input[type='checkbox']");
+      let idx=0;
+      for(let i=0;i<allRows.length;i++){
+        const rowParent=allRows[i].closest("div");
+        if(rowParent&&Array.from(rowParent.querySelectorAll("span")).some(s=>s.textContent===item.label)){
+          state[itemId]={enabled:allRows[i].checked,startMonth:allRows[i].parentElement.querySelector("select")?.value||'Jan-26'};
+          break;
+        }
+      }
+    }
+    localStorage.setItem('supplied_cost_scenario',JSON.stringify(state));
+  }
+
   function recompute(){
     const months=18;
     let cash=vals.cashStart;
     let mrr=vals.mrr;
     const projections=[];
-    const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const startDate=new Date();
+
+    // Build monthly cost map
+    const monthlyCosts={};
+    for(const m of allMonthsBase) monthlyCosts[m]=0;
+
+    // Add costs from enabled items
+    for(const item of costItems){
+      const itemId=item.label.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+      // Find checkbox and dropdown for this item
+      let isEnabled=!item.pipeline;
+      let startMo='Jan-26';
+      const rows=costWrap.querySelectorAll("input[type='checkbox']");
+      let rowCount=0;
+      for(let i=0;i<rows.length;i++){
+        const rowDiv=rows[i].parentElement;
+        const rowLabel=rowDiv.querySelector("div");
+        if(rowLabel&&rowLabel.textContent.includes(item.label)){
+          isEnabled=rows[i].checked;
+          startMo=rowDiv.querySelector("select")?.value||'Jan-26';
+          break;
+        }
+      }
+
+      if(isEnabled){
+        const monthlyData=item.monthly||{};
+        const startMonthIndex=allMonthsBase.indexOf(startMo);
+        for(const [monthKey,amount] of Object.entries(monthlyData)){
+          const monthIndex=allMonthsBase.indexOf(monthKey);
+          if(monthIndex>=startMonthIndex&&monthIndex<startMonthIndex+months){
+            monthlyCosts[allMonthsBase[monthIndex]]+=amount||0;
+          }
+        }
+      }
+    }
 
     for(let i=0;i<months;i++){
-      const d=new Date(startDate.getFullYear(),startDate.getMonth()+i,1);
-      const monthLabel=monthNames[d.getMonth()]+" "+String(d.getFullYear()).slice(2);
-      // Add new customer MRR each month
+      const monthLabel=allMonthsBase[i];
+      const costs=monthlyCosts[monthLabel]||0;
       const newMRR=vals.newCust * (vals.acv / 12);
       mrr += newMRR;
-      const totalBurn = vals.burn + vals.hires;
-      const netCashFlow = mrr - totalBurn;
+      const netCashFlow = mrr - costs;
       cash += netCashFlow;
-      projections.push({month:monthLabel,mrr:Math.round(mrr),burn:totalBurn,net:Math.round(netCashFlow),cash:Math.round(cash)});
+      projections.push({month:monthLabel,mrr:Math.round(mrr),costs:Math.round(costs),net:Math.round(netCashFlow),cash:Math.round(cash)});
     }
 
     // Find runway (month where cash goes negative)
@@ -2966,21 +3136,20 @@ function renderKPIs(){
     \`;
 
     // Chart table
-    let tblHtml='<div style="font-size:10px;font-weight:600;color:var(--text);margin-bottom:10px;">\u{1F4C8} Monthly Projection</div>';
+    let tblHtml='<div style="font-size:10px;font-weight:600;color:var(--text);margin-bottom:10px;">\u{1F4C8} 18-Month Projection</div>';
     tblHtml+='<table style="width:100%;border-collapse:collapse;font-size:9px;">';
     tblHtml+='<thead><tr style="border-bottom:1px solid var(--border);color:var(--text-muted);">';
-    tblHtml+='<th style="text-align:left;padding:4px 6px;">Month</th><th style="text-align:right;padding:4px 6px;">MRR</th><th style="text-align:right;padding:4px 6px;">Burn</th><th style="text-align:right;padding:4px 6px;">Net</th><th style="text-align:right;padding:4px 6px;">Cash</th>';
+    tblHtml+='<th style="text-align:left;padding:4px 6px;">Month</th><th style="text-align:right;padding:4px 6px;">MRR</th><th style="text-align:right;padding:4px 6px;">Costs</th><th style="text-align:right;padding:4px 6px;">Net</th><th style="text-align:right;padding:4px 6px;">Cash</th>';
     tblHtml+='</tr></thead><tbody>';
     for(const p of projections){
       const cashColor=p.cash>0?"#10b981":"#ef4444";
       const netColor=p.net>=0?"#10b981":"#f59e0b";
-      // Cash bar (proportional)
       const maxCash=Math.max(...projections.map(x=>Math.abs(x.cash)),1);
       const barW=Math.round(Math.abs(p.cash)/maxCash*80);
       tblHtml+=\`<tr style="border-bottom:1px solid rgba(255,255,255,.04);">
         <td style="padding:4px 6px;color:var(--text);">\${p.month}</td>
         <td style="padding:4px 6px;text-align:right;color:#3b82f6;">\${cur}\${p.mrr>=1e3?Math.round(p.mrr/1e3)+"k":p.mrr}</td>
-        <td style="padding:4px 6px;text-align:right;color:#f59e0b;">\${cur}\${p.burn>=1e3?Math.round(p.burn/1e3)+"k":p.burn}</td>
+        <td style="padding:4px 6px;text-align:right;color:#f59e0b;">\${cur}\${p.costs>=1e3?Math.round(p.costs/1e3)+"k":p.costs}</td>
         <td style="padding:4px 6px;text-align:right;color:\${netColor};">\${p.net>=0?"+":""}\${cur}\${Math.abs(p.net)>=1e3?Math.round(p.net/1e3)+"k":p.net}</td>
         <td style="padding:4px 6px;text-align:right;position:relative;">
           <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);height:4px;width:\${barW}%;background:\${cashColor}30;border-radius:2px;"></span>
@@ -4389,6 +4558,12 @@ async function init(){
     const kr=await fetch('./kpi-data.json?t='+Date.now());
     if(kr.ok){ KPI_DATA=await kr.json(); }
   } catch(e){ /* KPI data not available */ }
+
+  // Load cost data (optional)
+  try {
+    const cr=await fetch('./cost-data.json?t='+Date.now());
+    if(cr.ok){ COST_DATA=await cr.json(); }
+  } catch(e){ /* Cost data not available */ }
 
   // Load meeting summaries data (optional)
   try {

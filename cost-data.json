@@ -1,0 +1,25 @@
+{
+  "refreshedAt": "2026-03-26T00:00:00Z",
+  "currency": "€",
+  "months": ["Jan-26","Feb-26","Mar-26","Apr-26","May-26","Jun-26","Jul-26","Aug-26","Sep-26","Oct-26","Nov-26","Dec-26"],
+  "items": [
+    {"cat":"engineering","label":"NewEngineer1","monthly":{"Jul-26":5833.33,"Aug-26":5833.33,"Sep-26":5833.33,"Oct-26":5833.33,"Nov-26":5833.33,"Dec-26":5833.33},"pipeline":true},
+    {"cat":"engineering","label":"NewEngineer2","monthly":{"May-26":5833.33,"Jun-26":5833.33,"Jul-26":5833.33,"Aug-26":5833.33,"Sep-26":5833.33,"Oct-26":5833.33,"Nov-26":5833.33,"Dec-26":5833.33},"pipeline":true},
+    {"cat":"engineering","label":"NewEngineer3","monthly":{"May-26":8333.33,"Jun-26":8333.33,"Jul-26":8333.33,"Aug-26":8333.33,"Sep-26":8333.33,"Oct-26":8333.33,"Nov-26":8333.33,"Dec-26":8333.33},"pipeline":true},
+    {"cat":"engineering","label":"Engineer1","monthly":{"Jan-26":7084,"Feb-26":7084,"Mar-26":7084,"Apr-26":7084,"May-26":7084,"Jun-26":7084,"Jul-26":7084,"Aug-26":7084,"Sep-26":7084,"Oct-26":7084,"Nov-26":7084,"Dec-26":7084},"pipeline":false},
+    {"cat":"engineering","label":"Engineer2","monthly":{"Jan-26":6293.33,"Feb-26":3000},"pipeline":false},
+    {"cat":"engineering","label":"Engineer3","monthly":{"Jan-26":3000,"Feb-26":3000,"Mar-26":3000,"Apr-26":3000,"May-26":3000,"Jun-26":3000,"Jul-26":3000,"Aug-26":3000,"Sep-26":3000,"Oct-26":3000,"Nov-26":3000,"Dec-26":3000},"pipeline":false},
+    {"cat":"engineering","label":"Engineer4","monthly":{"Jan-26":8333.33,"Feb-26":8333.33,"Mar-26":8333.33,"Apr-26":8333.33,"May-26":8333.33,"Jun-26":8333.33,"Jul-26":8333.33,"Aug-26":8333.33,"Sep-26":8333.33,"Oct-26":8333.33,"Nov-26":8333.33,"Dec-26":8333.33},"pipeline":false},
+    {"cat":"engineering","label":"Engineer5","monthly":{"Jan-26":4000,"Feb-26":4000,"Mar-26":4000,"Apr-26":4000,"May-26":4000,"Jun-26":4000,"Jul-26":4000,"Aug-26":4000,"Sep-26":4000,"Oct-26":4000,"Nov-26":4000,"Dec-26":4000},"pipeline":false},
+    {"cat":"engineering","label":"Engineer6","monthly":{"Jan-26":6666.67,"Feb-26":6666.67,"Mar-26":6666.67,"Apr-26":6666.67,"May-26":6666.67,"Jun-26":6666.67,"Jul-26":6666.67,"Aug-26":6666.67,"Sep-26":6666.67,"Oct-26":6666.67,"Nov-26":6666.67,"Dec-26":6666.67},"pipeline":false},
+    {"cat":"engineering","label":"Engineer7","monthly":{"Jan-26":10000,"Feb-26":10000,"Mar-26":10000,"Apr-26":10000,"May-26":10000,"Jun-26":10000,"Jul-26":10000,"Aug-26":10000,"Sep-26":10000,"Oct-26":10000,"Nov-26":10000,"Dec-26":10000},"pipeline":false},
+    {"cat":"engineering","label":"Engineer8","monthly":{"Jan-26":2200,"Feb-26":2200,"Mar-26":2200,"Apr-26":2200,"May-26":2200,"Jun-26":2200,"Jul-26":2200,"Aug-26":2200,"Sep-26":2200,"Oct-26":2200,"Nov-26":2200,"Dec-26":2200},"pipeline":false},
+    {"cat":"management","label":"ManagementFee1","monthly":{"Jan-26":2000,"Feb-26":2000,"Mar-26":2000,"Apr-26":2000,"May-26":2000,"Jun-26":2000,"Jul-26":2000,"Aug-26":2000,"Sep-26":2000,"Oct-26":2000,"Nov-26":2000,"Dec-26":2000},"pipeline":false},
+    {"cat":"management","label":"ManagementFee2","monthly":{"Jan-26":5000,"Feb-26":3500,"Mar-26":3500,"Apr-26":5000,"May-26":3500,"Jun-26":3500,"Jul-26":5000,"Aug-26":3500,"Sep-26":3500,"Oct-26":5000,"Nov-26":3500,"Dec-26":3500},"pipeline":false},
+    {"cat":"management","label":"ManagementFee3","monthly":{"May-26":6666.67,"Jun-26":6666.67,"Jul-26":6666.67,"Aug-26":6666.67,"Sep-26":6666.67,"Oct-26":6666.67,"Nov-26":6666.67,"Dec-26":6666.67},"pipeline":false},
+    {"cat":"management","label":"ManagementFee4","monthly":{"Jan-26":550,"Feb-26":550,"Mar-26":550,"Apr-26":550,"May-26":550,"Jun-26":550,"Jul-26":550,"Aug-26":550,"Sep-26":550,"Oct-26":550,"Nov-26":550,"Dec-26":550},"pipeline":false},
+    {"cat":"software","label":"Software","monthly":{"Jan-26":251,"Feb-26":251,"Mar-26":251,"Apr-26":251,"May-26":251,"Jun-26":251,"Jul-26":251,"Aug-26":251,"Sep-26":251,"Oct-26":251,"Nov-26":251,"Dec-26":251},"pipeline":false,"aggregate":true},
+    {"cat":"cogs","label":"DirectCosts","monthly":{"Jan-26":486,"Feb-26":486,"Mar-26":486,"Apr-26":486,"May-26":486,"Jun-26":486,"Jul-26":486,"Aug-26":486,"Sep-26":486,"Oct-26":486,"Nov-26":486,"Dec-26":486},"pipeline":false,"aggregate":true},
+    {"cat":"marketing","label":"Marketing","monthly":{"Jan-26":627,"Feb-26":627,"Mar-26":627,"Apr-26":627,"May-26":627,"Jun-26":627,"Jul-26":627,"Aug-26":627,"Sep-26":627,"Oct-26":627,"Nov-26":627,"Dec-26":627},"pipeline":false,"aggregate":true}
+  ]
+}
