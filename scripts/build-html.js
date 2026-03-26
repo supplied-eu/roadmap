@@ -1564,6 +1564,7 @@ function populateGanttInsights(){
 let HS_DATA       = null;
 let GOOGLE_DATA   = null;
 let LF_DATA       = null; // Leadfeeder website visitor data
+let MTG_DATA      = null; // Meeting summaries from Optiverse/Gemini
 let OPS_OWNER     = "all"; // "all" or ownerId string
 
 function opsComputeStats(data){
@@ -2231,6 +2232,126 @@ function renderOpsEmpty(){
     </div>
     <div class="ops-empty-cmd">HUBSPOT_API_KEY → repo Settings → Secrets &amp; variables → Actions</div>
   </div>\`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MEETING SUMMARIES (inserted into tasks column)
+// ═══════════════════════════════════════════════════════════════════════════
+function renderMeetingSummaries(){
+  const tasksCol=document.getElementById("ops-tasks-col");
+  if(!tasksCol||!MTG_DATA||!MTG_DATA.meetings||!MTG_DATA.meetings.length) return;
+
+  // Divider
+  const divider=document.createElement("div");
+  divider.style.cssText="border-top:2px solid var(--border);margin:16px 0 0;";
+  tasksCol.appendChild(divider);
+
+  // Section header
+  const hdr=document.createElement("div"); hdr.className="ops-section-header";
+  hdr.innerHTML=\`<span>\u{1F4DD} MEETING SUMMARIES</span> <span class="ops-section-count">\${MTG_DATA.meetings.length}</span>\`;
+  tasksCol.appendChild(hdr);
+
+  const PRIO_COLORS={high:"#f59e0b",medium:"#3b82f6",low:"#64748b"};
+  const CAT_ICONS={customer:"\u{1F91D}",engineering:"\u{1F527}",compliance:"\u{1F4CB}",finance:"\u{1F4B0}",product:"\u{1F4E6}",sales:"\u{1F4B5}",process:"\u{2699}\u{FE0F}",networking:"\u{1F310}"};
+
+  // Sort meetings newest first
+  const meetings=[...MTG_DATA.meetings].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+
+  for(const mtg of meetings){
+    // Meeting row (expandable)
+    const mtgBlock=document.createElement("div");
+    mtgBlock.style.cssText="border-bottom:1px solid var(--border);";
+
+    const mtgRow=document.createElement("div");
+    mtgRow.style.cssText="display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;user-select:none;";
+    mtgRow.addEventListener("mouseover",()=>mtgRow.style.background="var(--surface2)");
+    mtgRow.addEventListener("mouseout",()=>mtgRow.style.background="");
+
+    const chevron=document.createElement("span");
+    chevron.textContent="\u25B8";
+    chevron.style.cssText="font-size:9px;color:var(--text-muted);transition:transform .2s;flex-shrink:0;width:10px;";
+
+    const srcBadge=document.createElement("span");
+    srcBadge.style.cssText="font-size:8px;background:rgba(59,130,246,.15);color:#60a5fa;padding:1px 5px;border-radius:3px;flex-shrink:0;letter-spacing:.3px;";
+    srcBadge.textContent=mtg.source||"Meeting";
+
+    const title=document.createElement("span");
+    title.style.cssText="font-size:11px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;";
+    title.textContent=mtg.title;
+
+    const dateEl=document.createElement("span");
+    dateEl.style.cssText="font-size:9px;color:var(--text-dim);flex-shrink:0;";
+    dateEl.textContent=mtg.date?fmtDate(mtg.date):"";
+
+    const taskCount=document.createElement("span");
+    taskCount.style.cssText="font-size:8px;color:var(--text-muted);background:var(--surface2);padding:1px 5px;border-radius:8px;flex-shrink:0;";
+    taskCount.textContent=(mtg.suggestedTasks||[]).length+" tasks";
+
+    mtgRow.appendChild(chevron);
+    mtgRow.appendChild(srcBadge);
+    mtgRow.appendChild(title);
+    mtgRow.appendChild(taskCount);
+    mtgRow.appendChild(dateEl);
+
+    // Expandable detail panel
+    const detail=document.createElement("div");
+    detail.style.cssText="display:none;padding:4px 16px 12px 26px;";
+
+    // Summary
+    if(mtg.summary){
+      const sum=document.createElement("div");
+      sum.style.cssText="font-size:10px;color:var(--text-muted);line-height:1.5;margin-bottom:8px;padding:6px 10px;background:var(--surface2);border-radius:6px;border-left:2px solid var(--accent);";
+      sum.textContent=mtg.summary;
+      detail.appendChild(sum);
+    }
+
+    // Suggested tasks sub-header
+    if(mtg.suggestedTasks&&mtg.suggestedTasks.length){
+      const taskHdr=document.createElement("div");
+      taskHdr.style.cssText="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;";
+      taskHdr.textContent="\u{1F4A1} Suggested tasks";
+      detail.appendChild(taskHdr);
+
+      for(const st of mtg.suggestedTasks){
+        const stRow=document.createElement("div");
+        stRow.style.cssText="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:10px;border-bottom:1px solid rgba(255,255,255,.04);";
+
+        const catIcon=document.createElement("span");
+        catIcon.style.cssText="font-size:11px;flex-shrink:0;width:16px;text-align:center;";
+        catIcon.textContent=CAT_ICONS[st.category]||"\u2611";
+
+        const stName=document.createElement("span");
+        stName.style.cssText="color:var(--text);flex:1;line-height:1.4;";
+        stName.textContent=st.task;
+
+        const priBadge=document.createElement("span");
+        const pc=PRIO_COLORS[st.priority]||"#64748b";
+        priBadge.style.cssText=\`font-size:7px;text-transform:uppercase;letter-spacing:.5px;padding:1px 5px;border-radius:3px;flex-shrink:0;color:\${pc};border:1px solid \${pc}40;background:\${pc}15;\`;
+        priBadge.textContent=st.priority||"";
+
+        const catBadge=document.createElement("span");
+        catBadge.style.cssText="font-size:7px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;";
+        catBadge.textContent=st.category||"";
+
+        stRow.appendChild(catIcon);
+        stRow.appendChild(stName);
+        stRow.appendChild(priBadge);
+        stRow.appendChild(catBadge);
+        detail.appendChild(stRow);
+      }
+    }
+
+    let expanded=false;
+    mtgRow.addEventListener("click",()=>{
+      expanded=!expanded;
+      detail.style.display=expanded?"block":"none";
+      chevron.style.transform=expanded?"rotate(90deg)":"";
+    });
+
+    mtgBlock.appendChild(mtgRow);
+    mtgBlock.appendChild(detail);
+    tasksCol.appendChild(mtgBlock);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3352,6 +3473,15 @@ async function init(){
       if(HS_DATA) renderSalesFunnels();
     }
   } catch(e){ /* Leadfeeder data not available */ }
+
+  // Load meeting summaries data (optional)
+  try {
+    const mr=await fetch('./meeting-summaries.json?t='+Date.now());
+    if(mr.ok){
+      MTG_DATA=await mr.json();
+      if(MTG_DATA&&MTG_DATA.meetings) renderMeetingSummaries();
+    }
+  } catch(e){ /* Meeting summaries not available */ }
 
   // Load Google data for current person (google-data-{name}.json → fallback google-data.json)
   // detectMyName() may return null if data not loaded yet — loadGoogleDataFor handles that

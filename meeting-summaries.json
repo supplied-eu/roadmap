@@ -1,0 +1,76 @@
+{
+  "refreshedAt": "2026-03-26T12:00:00.000Z",
+  "available": true,
+  "meetings": [
+    {
+      "id": "villasud-check-calc-20260326",
+      "title": "Villasud <> Supplied - Check Calculations",
+      "date": "2026-03-26",
+      "source": "Optiverse",
+      "summary": "Discussed discrepancies in financial reports for Villasud — calculation methods, discount handling, and property number formats for French tax compliance.",
+      "suggestedTasks": [
+        { "task": "Resolve discount/commission calculation discrepancies in Villasud statements", "priority": "high", "category": "customer" },
+        { "task": "Clarify property number format for French tax reports", "priority": "medium", "category": "compliance" },
+        { "task": "Set up shared Google Sheet for real-time data reconciliation with Villasud", "priority": "medium", "category": "process" }
+      ]
+    },
+    {
+      "id": "villasud-meeting-prep-20260326",
+      "title": "Villasud - Meeting Prep",
+      "date": "2026-03-26",
+      "source": "Optiverse",
+      "summary": "Clarified IMP-to-engineering ticket linking, land registration vs lot number formats, and calculation method alignment with Villasud.",
+      "suggestedTasks": [
+        { "task": "Link IMP tickets to corresponding engineering tickets for tracking", "priority": "high", "category": "engineering" },
+        { "task": "Clarify land registration vs lot number formats per region", "priority": "medium", "category": "compliance" },
+        { "task": "Confirm calculation method with Villasud to avoid cost surprises", "priority": "high", "category": "customer" }
+      ]
+    },
+    {
+      "id": "cs-standup-20260325",
+      "title": "Customer Success Standup",
+      "date": "2026-03-25",
+      "source": "Optiverse",
+      "summary": "Discussed lot number format issues for reports, escalation communication gaps, and a missed e-commerce event due to poor internal coordination.",
+      "suggestedTasks": [
+        { "task": "Fix lot number format issues in customer reports", "priority": "high", "category": "engineering" },
+        { "task": "Improve escalation communication process", "priority": "medium", "category": "process" }
+      ]
+    },
+    {
+      "id": "founder-circle-20260323",
+      "title": "Join a Circle - Intro Call",
+      "date": "2026-03-23",
+      "source": "Optiverse",
+      "summary": "Explored founder circle concept with Santiago García — quarterly meetings, English sessions, mix of international participants for deeper connections.",
+      "suggestedTasks": [
+        { "task": "Confirm participation in founder circle kickoff session", "priority": "low", "category": "networking" }
+      ]
+    },
+    {
+      "id": "friday-review-20260320",
+      "title": "Friday Review",
+      "date": "2026-03-20",
+      "source": "Optiverse",
+      "summary": "Covered PostgreSQL migration, Stripe marketplace app progress, data export issues with Excel special characters, and DAG 7 multi-bank payment handling.",
+      "suggestedTasks": [
+        { "task": "Address data export issues — Excel with special characters", "priority": "high", "category": "engineering" },
+        { "task": "Verify Stripe marketplace app data sufficiency for clients", "priority": "medium", "category": "product" },
+        { "task": "Decide on multi-bank account payment handling under DAG 7 rules", "priority": "high", "category": "compliance" },
+        { "task": "Follow up on major client demo — prepare offer proposal", "priority": "high", "category": "sales" }
+      ]
+    },
+    {
+      "id": "reporting-catchup-20260320",
+      "title": "Catchup on Reporting",
+      "date": "2026-03-20",
+      "source": "Optiverse",
+      "summary": "Reviewed MRR periodization discrepancies with Jelena — contract durations in Sales Master file, variable vs expected revenue classification.",
+      "suggestedTasks": [
+        { "task": "Review Sales Master file periodization and contract durations", "priority": "high", "category": "finance" },
+        { "task": "Separate MRR calculations for extensions vs pipeline/expected revenue", "priority": "medium", "category": "finance" },
+        { "task": "Classify variable revenue under expected revenue in reporting", "priority": "medium", "category": "finance" }
+      ]
+    }
+  ]
+}

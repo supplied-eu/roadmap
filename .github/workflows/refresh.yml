@@ -62,7 +62,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html gantt-data.json hubspot-data.json google-data.json google-data-johann.json leadfeeder-data.json
+          git add index.html gantt-data.json hubspot-data.json google-data.json google-data-johann.json leadfeeder-data.json meeting-summaries.json
           git diff --staged --quiet || git commit -m "🔄 Refresh dashboard $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase -X theirs origin main
           git push
