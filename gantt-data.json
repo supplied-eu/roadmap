@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-26T14:49:57.285Z",
+  "refreshedAt": "2026-03-26T15:08:19.256Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8369,6 +8369,30 @@
       "targetDate": "2026-12-31",
       "projects": [
         {
+          "id": "cf69d6f4-59cf-4a03-8e2c-ab4885095616",
+          "name": "MultiMedia LLC",
+          "status": "In Progress",
+          "color": "#bec2c8",
+          "url": "https://linear.app/supplied/project/multimedia-llc-3c085f9d6e94",
+          "startDate": "2026-03-13",
+          "targetDate": null,
+          "issues": [
+            {
+              "id": "e9819367-bfc1-4493-9852-caf5c41e444f",
+              "identifier": "IMP-154",
+              "title": "Multimedia – Prepare mapping environment for testing uploaded dataset",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": null,
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-154/multimedia-prepare-mapping-environment-for-testing-uploaded-dataset",
+              "parentId": null
+            }
+          ]
+        },
+        {
           "id": "101f30f2-7311-431c-aaea-b4fb90bfd650",
           "name": "Dutch Cleantech",
           "status": "In Progress",
@@ -8393,6 +8417,30 @@
           ]
         },
         {
+          "id": "941204d2-bde4-42d9-aeac-a7710843e9c1",
+          "name": "Guesty",
+          "status": "Backlog",
+          "color": "#bec2c8",
+          "url": "https://linear.app/supplied/project/guesty-6b3e96668d06",
+          "startDate": null,
+          "targetDate": "2026-04-03",
+          "issues": [
+            {
+              "id": "ded3cb13-55c2-4bda-8f95-d39bb8d0cee0",
+              "identifier": "IMP-156",
+              "title": "Review Requirements for Guesty and send proposal",
+              "status": "In Progress",
+              "start": "2026-03-26",
+              "end": "2026-04-06",
+              "assignee": "bas@supplied.eu",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-156/review-requirements-for-guesty-and-send-proposal",
+              "parentId": null
+            }
+          ]
+        },
+        {
           "id": "5a6a20e8-8be5-44a7-865e-e0ead6a5b51e",
           "name": "Chaletplus",
           "status": "In Progress",
@@ -8401,6 +8449,19 @@
           "startDate": "2026-01-19",
           "targetDate": "2026-01-30",
           "issues": [
+            {
+              "id": "2e220548-f2f7-446d-bfdb-b0ae27f2dccc",
+              "identifier": "SUP-1251",
+              "title": "UTF-8 BOM Missing from CSV Exports Causes Umlaut Corruption in Excel",
+              "status": "In Progress",
+              "start": "2026-03-26",
+              "end": null,
+              "assignee": null,
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-1251/utf-8-bom-missing-from-csv-exports-causes-umlaut-corruption-in-excel",
+              "parentId": null
+            },
             {
               "id": "7b1803db-26bf-466e-adf2-b3b26a3354f7",
               "identifier": "SUP-1249",
@@ -9244,7 +9305,7 @@
         {
           "id": "db1d221e-3118-450e-bbcc-6094b27bafc8",
           "name": "Dormio",
-          "status": "In Progress",
+          "status": "Completed",
           "color": "#bec2c8",
           "url": "https://linear.app/supplied/project/dormio-b224e993f474",
           "startDate": "2025-10-31",
