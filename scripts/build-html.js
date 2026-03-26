@@ -1458,12 +1458,16 @@ function renderGantt(){
   // ── SECTION 1: Customer Commitments (drag-to-reorder projects) ───────────
   ganttBody.appendChild(makeSectionHdr("🤝  CUSTOMER COMMITMENTS","contract dates \u00b7 drag \u283f to reorder \u00b7 click project to expand issues"));
   renderCustomerCommitments(ganttBody);
-  renderDealCloseDates(ganttBody);
   const custGap=document.createElement("div"); custGap.className="section-gap"; ganttBody.appendChild(custGap);
 
-  // ── SECTION 2: Initiative Tree (all product initiatives, drag-to-reorder) ──
+  // ── SECTION 2: Product Priorities ──────────────────────────────────────────
   ganttBody.appendChild(makeSectionHdr("⚡  PRODUCT PRIORITIES","all initiatives \u00b7 drag \u283f to reorder \u00b7 click project to expand issues"));
   renderInitiativeTree(ganttBody);
+  const prodGap=document.createElement("div"); prodGap.className="section-gap"; ganttBody.appendChild(prodGap);
+
+  // ── SECTION 3: Pipeline Close Dates (HubSpot) ─────────────────────────────
+  ganttBody.appendChild(makeSectionHdr("💼  PIPELINE CLOSE DATES","HubSpot deals \u00b7 click to open in HubSpot"));
+  renderDealCloseDates(ganttBody);
 
   populateGanttInsights();
 }
@@ -1476,12 +1480,6 @@ function renderDealCloseDates(container){
     .filter(d=>d.closeDate&&!DONE.has((d.stageLabel||d.stage||"").toLowerCase()))
     .sort((a,b)=>new Date(a.closeDate)-new Date(b.closeDate));
   if(!active.length) return;
-
-  // Sub-header row styled the same as section headers but smaller
-  const subHdr=document.createElement("div");
-  subHdr.style.cssText="padding:6px 12px 2px;font-size:9px;color:var(--text-muted);letter-spacing:.8px;font-weight:700;text-transform:uppercase;margin-top:4px;display:flex;gap:8px;";
-  subHdr.textContent="\uD83D\uDCBC  HubSpot pipeline close dates";
-  container.appendChild(subHdr);
 
   const amt=(d)=>d.amount?(HS_DATA.currency||"\u20AC")+Number(d.amount).toLocaleString("en"):"";
   for(const d of active.slice(0,15)){
