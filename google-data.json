@@ -1,16 +1,7 @@
 {
-  "refreshedAt": "2026-03-26T10:41:19.447Z",
+  "refreshedAt": "2026-03-26T10:53:45.448Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d29b5142f2115f",
-        "subject": "Villasud <> Supplied - Check Calculations",
-        "from": "Optiverse <mail@optiverse.ai>",
-        "date": "2026-03-26T10:33:45.000Z",
-        "snippet": "Meeting Summary General Summary The meeting focused on the discrepancies found in the financial reports for Villasud and Supplied, specifically concerning calculation methods and data reconciliation.",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d29b5142f2115f",
-        "unread": true
-      },
       {
         "id": "19d261e199e703f4",
         "subject": "Role distribution for Accountmanager",
@@ -96,8 +87,8 @@
         "id": "19cde516ee128e60",
         "subject": "Your certificate is ready",
         "from": "notifications@scrut.io",
-        "date": "2026-03-11T19:13:11.000Z",
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed GDPR Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "date": "2026-03-11T19:18:24.000Z",
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
         "unread": true
       },
@@ -109,9 +100,18 @@
         "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
         "unread": true
+      },
+      {
+        "id": "19cc2fcaa76e484f",
+        "subject": "Re: Supplied cashback - cash in Jar balance",
+        "from": "Jelena Hmeltnitski <jelena@supplied.eu>",
+        "date": "2026-03-09T15:06:31.000Z",
+        "snippet": "Hi Willem, I am aware of the interest; as previously mentioned, this was already explained (see the image below). It is common practice during fiscal closing to provide explanations for small, short-",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cc2fcaa76e484f",
+        "unread": true
       }
     ],
-    "unreadCount": 34
+    "unreadCount": 33
   },
   "calendar": {
     "today": [
@@ -303,9 +303,9 @@
         "id": "11ejH_pvXPdDi3QB-7J_cNXn3mJ21YWHPxWQ-THhdKPQ",
         "name": "villasud_numbers",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-26T10:22:19.613Z",
+        "modifiedTime": "2026-03-26T10:51:16.126Z",
         "url": "https://docs.google.com/spreadsheets/d/11ejH_pvXPdDi3QB-7J_cNXn3mJ21YWHPxWQ-THhdKPQ/edit?usp=drivesdk",
-        "lastModifiedBy": "Julio Lindveld"
+        "lastModifiedBy": ""
       },
       {
         "id": "1nJgpsQ2iQyzdiSd-GpdRuMi4sO3-v8Ci",
@@ -409,16 +409,6 @@
       "threadId": "19ce0214716b0ff0",
       "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
       "id": "email-19ce0214716b0ff0"
-    },
-    {
-      "action": "reply",
-      "subject": "Villasud <> Supplied - Check Calculations",
-      "reason": "Meeting Summary General Summary The meeting focused on the discrepancies found in the financial reports for Villasud and",
-      "from": "Optiverse <mail@optiverse.ai>",
-      "ageDays": 0,
-      "threadId": "19d29b5142f2115f",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d29b5142f2115f",
-      "id": "email-19d29b5142f2115f"
     },
     {
       "action": "reply",
