@@ -833,6 +833,40 @@ body {
 .acct-next-text { font-size:10px; color:var(--text-muted); line-height:1.5; }
 .acct-owner-pill { font-size:8px; color:var(--text-dim); background:var(--surface2); border-radius:3px; padding:1px 5px; position:absolute; top:12px; right:12px; }
 .acct-expand-btn { font-size:9px; color:var(--accent); background:transparent; border:none; cursor:pointer; padding:2px 0; margin-top:4px; }
+/* Account detail panel */
+.acct-detail { display:none; background:var(--bg); border:1px solid var(--border); border-radius:8px; margin-top:-6px; margin-bottom:14px; overflow:hidden; }
+.acct-detail.open { display:block; }
+.acct-detail-tabs { display:flex; border-bottom:1px solid var(--border); background:var(--surface); }
+.acct-detail-tab { font-size:10px; padding:8px 14px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; letter-spacing:.3px; border-bottom:2px solid transparent; transition:all .15s; }
+.acct-detail-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.acct-detail-body { padding:14px; min-height:120px; }
+/* Account plan */
+.acct-plan-area { width:100%; min-height:80px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px; font-size:11px; color:var(--text); font-family:inherit; resize:vertical; outline:none; line-height:1.6; }
+.acct-plan-area:focus { border-color:var(--accent); }
+.acct-plan-save { font-size:9px; padding:4px 12px; border-radius:4px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:6px; float:right; }
+.acct-plan-hint { font-size:9px; color:var(--text-dim); margin-bottom:6px; }
+/* Account task list */
+.acct-task-row { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:10px; }
+.acct-task-row.done { opacity:.4; }
+.acct-task-check { accent-color:var(--accent); cursor:pointer; }
+.acct-task-title { flex:1; color:var(--text); }
+.acct-task-title.done { text-decoration:line-through; }
+.acct-task-add-row { display:flex; gap:6px; margin-top:8px; }
+.acct-task-add-inp { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:5px 8px; font-size:10px; color:var(--text); outline:none; }
+.acct-task-add-inp:focus { border-color:var(--accent); }
+.acct-task-add-btn { font-size:9px; padding:4px 10px; border-radius:4px; border:1px solid var(--border); background:var(--surface2); color:var(--accent); cursor:pointer; }
+/* Timeline */
+.acct-timeline-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.04); }
+.acct-timeline-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+.acct-timeline-content { flex:1; }
+.acct-timeline-title { font-size:10px; color:var(--text); font-weight:500; }
+.acct-timeline-meta { font-size:9px; color:var(--text-dim); margin-top:2px; }
+.acct-timeline-body { font-size:10px; color:var(--text-muted); margin-top:3px; line-height:1.5; }
+/* KPI chips in account */
+.acct-kpi-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+.acct-kpi-chip { font-size:10px; padding:4px 10px; border-radius:6px; background:var(--surface2); border:1px solid var(--border); }
+.acct-kpi-chip-label { font-size:8px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.5px; display:block; }
+.acct-kpi-chip-value { font-size:13px; font-weight:600; color:var(--text); }
 
 /* Empty/connect state */
 .ops-empty {
@@ -1788,6 +1822,48 @@ function renderAccountManagement(){
     container.innerHTML=`<div style="padding:60px;text-align:center;color:var(--text-dim);font-size:12px;">No customer companies found in HubSpot.<br><br>Make sure companies are marked with lifecycle stage <strong>Customer</strong>.</div>`;
     return;
   }
+  const portalId=HS_DATA&&HS_DATA.portalId||"";
+  const cur=HS_DATA&&HS_DATA.currency||"€";
+  // Local storage keys for plans and tasks
+  const ACCT_PLANS_KEY="supplied_acct_plans";
+  const ACCT_TASKS_KEY="supplied_acct_tasks";
+  const acctPlans=JSON.parse(localStorage.getItem(ACCT_PLANS_KEY)||"{}");
+  const acctTasks=JSON.parse(localStorage.getItem(ACCT_TASKS_KEY)||"{}");
+  function savePlans(){ localStorage.setItem(ACCT_PLANS_KEY, JSON.stringify(acctPlans)); }
+  function saveTasks(){ localStorage.setItem(ACCT_TASKS_KEY, JSON.stringify(acctTasks)); }
+
+  // Enrich companies with related data
+  const enriched=companies.map(c=>{
+    const h=computeHealthScore(c);
+    // Find related deals
+    const relDeals=(HS_DATA.deals||[]).filter(d=>{
+      if(d.companyId&&d.companyId===c.id) return true;
+      const dn=(d.name||"").toLowerCase(), cn=(c.name||"").toLowerCase();
+      return cn.length>3&&dn.includes(cn);
+    });
+    // Find related Linear issues (match by company name in initiative/project names)
+    const cn=(c.name||"").toLowerCase();
+    const relIssues=[];
+    if(GANTT_DATA&&cn.length>3){
+      for(const ini of (GANTT_DATA.initiatives||[])){
+        const iniMatch=(ini.name||"").toLowerCase().includes(cn);
+        for(const proj of (ini.projects||[])){
+          const projMatch=iniMatch||(proj.name||"").toLowerCase().includes(cn);
+          if(projMatch){
+            for(const iss of (proj.issues||[])){
+              if(isActive(iss.status)) relIssues.push({...iss,_proj:proj.name,_ini:ini.name});
+            }
+          }
+        }
+      }
+    }
+    // Revenue from closed deals
+    const closedDeals=relDeals.filter(d=>isDoneStage(d.stageLabel)&&(d.stageLabel||"").toLowerCase().includes("won"));
+    const totalRevenue=closedDeals.reduce((s,d)=>s+(d.amount||0),0);
+    const openPipeline=relDeals.filter(d=>!isDoneStage(d.stageLabel)).reduce((s,d)=>s+(d.amount||0),0);
+    return {...c,health:h,nextSteps:getNextSteps(c,h),relDeals,relIssues,totalRevenue,openPipeline,closedDeals};
+  });
+
   // Toolbar
   const toolbar=document.createElement("div"); toolbar.className="acct-toolbar";
   const title=document.createElement("span"); title.className="acct-toolbar-title"; title.textContent="🏢  ACCOUNT MANAGEMENT  —  "+companies.length+" customers";
@@ -1801,11 +1877,26 @@ function renderAccountManagement(){
     filterBtns.push(btn); toolbar.appendChild(btn);
   });
   toolbar.appendChild(title); toolbar.appendChild(search); container.appendChild(toolbar);
-  const grid=document.createElement("div"); grid.className="acct-grid"; container.appendChild(grid);
-  const enriched=companies.map(c=>({...c,health:computeHealthScore(c),nextSteps:getNextSteps(c,computeHealthScore(c))}));
+
+  // Summary KPIs
+  const kpiRow=document.createElement("div"); kpiRow.className="acct-kpi-row";
+  const totalRev=enriched.reduce((s,c)=>s+c.totalRevenue,0);
+  const totalPipe=enriched.reduce((s,c)=>s+c.openPipeline,0);
+  const healthyCt=enriched.filter(c=>c.health.cls==="green").length;
+  const atRiskCt=enriched.filter(c=>c.health.cls==="amber").length;
+  const needsAttCt=enriched.filter(c=>c.health.cls==="red").length;
+  [{l:"Total Customers",v:enriched.length},{l:"Healthy",v:healthyCt,c:"#10b981"},{l:"At Risk",v:atRiskCt,c:"#f59e0b"},{l:"Needs Attention",v:needsAttCt,c:"#ef4444"},{l:"Total Revenue",v:cur+totalRev.toLocaleString()},{l:"Open Pipeline",v:cur+totalPipe.toLocaleString()}].forEach(k=>{
+    const chip=document.createElement("div"); chip.className="acct-kpi-chip";
+    chip.innerHTML=`<span class="acct-kpi-chip-label">${k.l}</span><span class="acct-kpi-chip-value" style="${k.c?"color:"+k.c:""}">${k.v}</span>`;
+    kpiRow.appendChild(chip);
+  });
+  container.appendChild(kpiRow);
+
+  const listEl=document.createElement("div"); listEl.id="acct-list"; container.appendChild(listEl);
+
   function renderCards(){
     const q=(search.value||"").toLowerCase();
-    grid.innerHTML="";
+    listEl.innerHTML="";
     const visible=enriched.filter(c=>{
       if(q&&!c.name.toLowerCase().includes(q)&&!(c.domain||"").includes(q)) return false;
       if(activeFilter!=="all"&&c.health.cls!==activeFilter) return false;
@@ -1814,15 +1905,15 @@ function renderAccountManagement(){
       const rank={red:0,amber:1,grey:2,green:3};
       return (rank[a.health.cls]??9)-(rank[b.health.cls]??9);
     });
+
     for(const c of visible){
-      const card=document.createElement("div"); card.className="acct-card";
-      const hsUrl=HS_DATA&&HS_DATA.portalId?`https://app.hubspot.com/contacts/${HS_DATA.portalId}/company/${c.id}`:null;
-      if(hsUrl) card.addEventListener("click",()=>window.open(hsUrl,"_blank"));
+      // ── Card (summary row) ──────────────────────────────────────────
+      const card=document.createElement("div"); card.className="acct-card"; card.style.cursor="pointer";
       // Owner pill
       if(c.ownerName){
         const op=document.createElement("span"); op.className="acct-owner-pill"; op.textContent=c.ownerName.split(" ")[0]; card.appendChild(op);
       }
-      // Top row: avatar + name + health
+      // Top row
       const top=document.createElement("div"); top.className="acct-card-top";
       const av=document.createElement("div"); av.className="acct-avatar"; av.textContent=(c.name||"?")[0].toUpperCase();
       const nameWrap=document.createElement("div");
@@ -1834,35 +1925,193 @@ function renderAccountManagement(){
       hbadge.appendChild(hb);
       top.appendChild(av); top.appendChild(nameWrap); top.appendChild(hbadge);
       card.appendChild(top);
-      // Meta chips
+      // Meta row
       const metaRow=document.createElement("div"); metaRow.className="acct-meta-row";
       const dsc=c.daysSinceContact;
       const contactCls=dsc===null?"":dsc>30?"warn":"ok";
-      const contactTxt=dsc===null?"Never contacted":dsc===0?"Contacted today":dsc===1?"Contacted yesterday":""+dsc+"d since contact";
-      [{txt:contactTxt,cls:contactCls},{txt:c.contacts+" contact"+(c.contacts!==1?"s":""),cls:""},{txt:c.openDeals+" open deal"+(c.openDeals!==1?"s":""),cls:c.openDeals>0?"ok":""}].forEach(m=>{
+      const contactTxt=dsc===null?"Never contacted":dsc===0?"Today":dsc===1?"Yesterday":dsc+"d ago";
+      [{txt:contactTxt,cls:contactCls},{txt:c.contacts+" contact"+(c.contacts!==1?"s":"")},{txt:c.openDeals+" deal"+(c.openDeals!==1?"s":""),cls:c.openDeals>0?"ok":""},
+       {txt:c.relIssues.length+" issue"+(c.relIssues.length!==1?"s":"")},
+       ...(c.totalRevenue?[{txt:cur+c.totalRevenue.toLocaleString()+" revenue",cls:"ok"}]:[]),
+       ...(c.openPipeline?[{txt:cur+c.openPipeline.toLocaleString()+" pipeline"}]:[])
+      ].forEach(m=>{
         const ch=document.createElement("span"); ch.className="acct-meta-chip"+(m.cls?" "+m.cls:""); ch.textContent=m.txt; metaRow.appendChild(ch);
       });
       card.appendChild(metaRow);
-      // Recent notes
-      if(c.notes&&c.notes.length){
-        const nl=document.createElement("div"); nl.className="acct-section-label"; nl.textContent="RECENT NOTES"; card.appendChild(nl);
-        c.notes.slice(0,2).forEach(n=>{
-          const nd=document.createElement("div"); nd.className="acct-note";
-          if(n.date){ const dl=document.createElement("div"); dl.className="acct-note-date"; dl.textContent=fmtDate(n.date); nd.appendChild(dl); }
-          const nb=document.createElement("div"); nb.textContent=(n.body||"").slice(0,120)+(n.body&&n.body.length>120?"…":""); nd.appendChild(nb);
-          nl.parentNode&&nl.parentNode.appendChild(nd); card.appendChild(nd);
-        });
+      // Next step teaser
+      const ns=document.createElement("div"); ns.style.cssText="font-size:10px;color:var(--accent);margin-top:4px;";
+      ns.textContent="→ "+c.nextSteps;
+      card.appendChild(ns);
+
+      // ── Detail panel (hidden by default) ────────────────────────────
+      const detail=document.createElement("div"); detail.className="acct-detail";
+
+      // Tab bar
+      const detailTabs=document.createElement("div"); detailTabs.className="acct-detail-tabs";
+      const tabDefs=[{key:"plan",label:"📋 Plan"},{key:"tasks",label:"☑️ Tasks"},{key:"timeline",label:"🕰 Timeline"},{key:"deals",label:"💰 Deals"},{key:"issues",label:"🔧 Issues"}];
+      const detailBody=document.createElement("div"); detailBody.className="acct-detail-body";
+      let activeDetailTab="plan";
+
+      function renderDetailTab(tabKey){
+        activeDetailTab=tabKey;
+        detailBody.innerHTML="";
+        detailTabs.querySelectorAll(".acct-detail-tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===tabKey));
+
+        if(tabKey==="plan"){
+          // Editable plan
+          const hint=document.createElement("div"); hint.className="acct-plan-hint";
+          hint.textContent="Write your account plan, goals, and strategy for "+c.name;
+          detailBody.appendChild(hint);
+          const ta=document.createElement("textarea"); ta.className="acct-plan-area";
+          ta.value=acctPlans[c.id]||"";
+          ta.placeholder="e.g. Q2 goals: expand to 3 new departments, schedule QBR, renew contract by June...";
+          detailBody.appendChild(ta);
+          const saveBtn=document.createElement("button"); saveBtn.className="acct-plan-save"; saveBtn.textContent="Save Plan";
+          saveBtn.addEventListener("click",()=>{ acctPlans[c.id]=ta.value; savePlans(); saveBtn.textContent="✅ Saved"; setTimeout(()=>saveBtn.textContent="Save Plan",1500); });
+          detailBody.appendChild(saveBtn);
+          // Clear float
+          const cl=document.createElement("div"); cl.style.clear="both"; detailBody.appendChild(cl);
+        }
+
+        else if(tabKey==="tasks"){
+          // Per-account task list
+          if(!acctTasks[c.id]) acctTasks[c.id]=[];
+          const tasks=acctTasks[c.id];
+          function drawTasks(){
+            detailBody.innerHTML="";
+            if(!tasks.length){
+              const em=document.createElement("div"); em.style.cssText="font-size:10px;color:var(--text-dim);padding:10px 0;";
+              em.textContent="No tasks yet. Add one below."; detailBody.appendChild(em);
+            }
+            for(const [idx,t] of tasks.entries()){
+              const row=document.createElement("div"); row.className="acct-task-row"+(t.done?" done":"");
+              const cb=document.createElement("input"); cb.type="checkbox"; cb.checked=!!t.done; cb.className="acct-task-check";
+              cb.addEventListener("change",()=>{ t.done=cb.checked; saveTasks(); drawTasks(); });
+              const titleEl=document.createElement("span"); titleEl.className="acct-task-title"+(t.done?" done":""); titleEl.textContent=t.title;
+              const del=document.createElement("button"); del.style.cssText="font-size:9px;color:var(--text-dim);background:transparent;border:none;cursor:pointer;padding:2px 4px;"; del.textContent="✕";
+              del.addEventListener("click",()=>{ tasks.splice(idx,1); saveTasks(); drawTasks(); });
+              row.appendChild(cb); row.appendChild(titleEl); row.appendChild(del); detailBody.appendChild(row);
+            }
+            // Add task input
+            const addRow=document.createElement("div"); addRow.className="acct-task-add-row";
+            const inp=document.createElement("input"); inp.className="acct-task-add-inp"; inp.placeholder="Add a task for "+c.name+"…";
+            const addBtn=document.createElement("button"); addBtn.className="acct-task-add-btn"; addBtn.textContent="+ Add";
+            function doAdd(){ const v=(inp.value||"").trim(); if(!v) return; tasks.unshift({title:v,done:false,created:TODAY_STR}); saveTasks(); drawTasks(); }
+            addBtn.addEventListener("click",doAdd);
+            inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); doAdd(); }});
+            addRow.appendChild(inp); addRow.appendChild(addBtn); detailBody.appendChild(addRow);
+          }
+          drawTasks();
+        }
+
+        else if(tabKey==="timeline"){
+          // Timeline: notes + recent deal activity
+          const events=[];
+          if(c.notes) for(const n of c.notes) events.push({type:"note",date:n.date||"",title:"Note",body:n.body||"",color:"#3b82f6"});
+          for(const d of c.relDeals){
+            if(d.createDate) events.push({type:"deal",date:d.createDate.split("T")[0],title:"Deal created: "+d.name,body:d.amount?cur+Number(d.amount).toLocaleString():"",color:"#10b981"});
+            if(d.modifiedDate&&d.modifiedDate!==d.createDate) events.push({type:"deal",date:d.modifiedDate.split("T")[0],title:"Deal updated: "+d.name,body:"Stage: "+(d.stageLabel||d.stage||""),color:"#8b5cf6"});
+          }
+          events.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+          if(!events.length){
+            detailBody.innerHTML='<div style="font-size:10px;color:var(--text-dim);padding:10px 0;">No activity recorded yet.</div>';
+            return;
+          }
+          for(const ev of events.slice(0,15)){
+            const item=document.createElement("div"); item.className="acct-timeline-item";
+            const dot=document.createElement("div"); dot.className="acct-timeline-dot"; dot.style.background=ev.color;
+            const content=document.createElement("div"); content.className="acct-timeline-content";
+            const titleEl=document.createElement("div"); titleEl.className="acct-timeline-title"; titleEl.textContent=ev.title;
+            const meta=document.createElement("div"); meta.className="acct-timeline-meta"; meta.textContent=ev.date?fmtDate(ev.date):"";
+            content.appendChild(titleEl); content.appendChild(meta);
+            if(ev.body){ const body=document.createElement("div"); body.className="acct-timeline-body"; body.textContent=ev.body.slice(0,200); content.appendChild(body); }
+            item.appendChild(dot); item.appendChild(content); detailBody.appendChild(item);
+          }
+        }
+
+        else if(tabKey==="deals"){
+          if(!c.relDeals.length){
+            detailBody.innerHTML='<div style="font-size:10px;color:var(--text-dim);padding:10px 0;">No deals found for this account.</div>';
+            return;
+          }
+          // Group by open vs closed
+          const open=c.relDeals.filter(d=>!isDoneStage(d.stageLabel));
+          const closed=c.relDeals.filter(d=>isDoneStage(d.stageLabel));
+          function dealRow(d){
+            const row=document.createElement("div"); row.style.cssText="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:10px;cursor:pointer;";
+            if(portalId) row.addEventListener("click",()=>window.open("https://app.hubspot.com/contacts/"+portalId+"/deal/"+d.id,"_blank"));
+            const stage=document.createElement("span"); stage.style.cssText="font-size:8px;color:var(--text-dim);background:var(--surface2);padding:1px 5px;border-radius:3px;flex-shrink:0;"; stage.textContent=d.stageLabel||d.stage||"";
+            const nm=document.createElement("span"); nm.style.cssText="flex:1;color:var(--text);"; nm.textContent=d.name;
+            const amt=document.createElement("span"); amt.style.cssText="font-weight:600;color:var(--accent);"; amt.textContent=d.amount?cur+Number(d.amount).toLocaleString():"";
+            const dt=document.createElement("span"); dt.style.cssText="font-size:9px;color:var(--text-dim);"; dt.textContent=d.closeDate?fmtDate(d.closeDate):"";
+            row.appendChild(stage); row.appendChild(nm); row.appendChild(amt); row.appendChild(dt);
+            return row;
+          }
+          if(open.length){
+            const h=document.createElement("div"); h.className="acct-section-label"; h.textContent="OPEN ("+open.length+")"; detailBody.appendChild(h);
+            open.forEach(d=>detailBody.appendChild(dealRow(d)));
+          }
+          if(closed.length){
+            const h=document.createElement("div"); h.className="acct-section-label"; h.style.marginTop="12px"; h.textContent="CLOSED ("+closed.length+")"; detailBody.appendChild(h);
+            closed.forEach(d=>detailBody.appendChild(dealRow(d)));
+          }
+        }
+
+        else if(tabKey==="issues"){
+          if(!c.relIssues.length){
+            detailBody.innerHTML='<div style="font-size:10px;color:var(--text-dim);padding:10px 0;">No related Linear issues found. Issues are matched when the initiative or project name contains "'+c.name+'".</div>';
+            return;
+          }
+          for(const iss of c.relIssues.sort((a,b)=>{const r={Urgent:0,High:1,Medium:2,Low:3};return (r[a.priority]??4)-(r[b.priority]??4);})){
+            const row=document.createElement("div"); row.style.cssText="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:10px;cursor:pointer;";
+            if(iss.url) row.addEventListener("click",()=>window.open(iss.url,"_blank"));
+            const id=document.createElement("span"); id.style.cssText="font-size:9px;color:var(--text-dim);flex-shrink:0;font-family:monospace;"; id.textContent=iss.identifier||"";
+            const statusDot=document.createElement("span"); statusDot.style.cssText=`width:6px;height:6px;border-radius:50%;flex-shrink:0;background:${sc(iss.status)};`;
+            const ttl=document.createElement("span"); ttl.style.cssText="flex:1;color:var(--text);"; ttl.textContent=iss.title;
+            const pri=document.createElement("span");
+            const priCls=priorityLevel(iss.priority);
+            pri.style.cssText=`font-size:8px;padding:1px 5px;border-radius:3px;flex-shrink:0;color:${priCls==="urgent"?"#ef4444":priCls==="high"?"#f97316":"var(--text-dim)"};`;
+            pri.textContent=iss.priority||"";
+            const assignee=document.createElement("span"); assignee.style.cssText="font-size:8px;color:var(--text-dim);flex-shrink:0;"; assignee.textContent=iss.assignee?iss.assignee.split(" ")[0]:"";
+            row.appendChild(id); row.appendChild(statusDot); row.appendChild(ttl); row.appendChild(pri); row.appendChild(assignee);
+            detailBody.appendChild(row);
+          }
+        }
       }
-      // Next steps
-      const ns=document.createElement("div"); ns.className="acct-next-steps";
-      const nsl=document.createElement("div"); nsl.className="acct-next-label"; nsl.textContent="→ SUGGESTED NEXT STEP";
-      const nst=document.createElement("div"); nst.className="acct-next-text"; nst.textContent=c.nextSteps;
-      ns.appendChild(nsl); ns.appendChild(nst); card.appendChild(ns);
-      grid.appendChild(card);
+
+      for(const td of tabDefs){
+        const tabBtn=document.createElement("button"); tabBtn.className="acct-detail-tab"+(td.key==="plan"?" active":""); tabBtn.dataset.tab=td.key;
+        tabBtn.textContent=td.label;
+        tabBtn.addEventListener("click",(e)=>{ e.stopPropagation(); renderDetailTab(td.key); });
+        detailTabs.appendChild(tabBtn);
+      }
+      // HubSpot link
+      if(portalId){
+        const hsLink=document.createElement("a");
+        hsLink.style.cssText="font-size:9px;color:var(--accent);margin-left:auto;padding:8px 12px;text-decoration:none;display:flex;align-items:center;gap:3px;";
+        hsLink.href="https://app.hubspot.com/contacts/"+portalId+"/company/"+c.id;
+        hsLink.target="_blank"; hsLink.textContent="↗ HubSpot";
+        hsLink.addEventListener("click",e=>e.stopPropagation());
+        detailTabs.appendChild(hsLink);
+      }
+      detail.appendChild(detailTabs);
+      detail.appendChild(detailBody);
+
+      // Toggle expand
+      let expanded=false;
+      card.addEventListener("click",()=>{
+        expanded=!expanded;
+        detail.classList.toggle("open",expanded);
+        if(expanded) renderDetailTab(activeDetailTab);
+      });
+
+      listEl.appendChild(card);
+      listEl.appendChild(detail);
     }
+
     if(!visible.length){
-      const em=document.createElement("div"); em.style.cssText="grid-column:1/-1;padding:40px;text-align:center;color:var(--text-dim);font-size:11px;";
-      em.textContent="No accounts match your search or filter."; grid.appendChild(em);
+      const em=document.createElement("div"); em.style.cssText="padding:40px;text-align:center;color:var(--text-dim);font-size:11px;";
+      em.textContent="No accounts match your search or filter."; listEl.appendChild(em);
     }
   }
   search.addEventListener("input",renderCards);
@@ -2513,17 +2762,32 @@ function renderMeetingSummaries(container){
       taskHdr.textContent="💡 Suggested tasks";
       detail.appendChild(taskHdr);
 
-      for(const st of mtg.suggestedTasks){
-        const stRow=document.createElement("div");
-        stRow.style.cssText="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:10px;border-bottom:1px solid rgba(255,255,255,.04);";
+      const MTG_DONE_KEY="supplied_mtg_done";
+      const mtgDone=new Set(JSON.parse(localStorage.getItem(MTG_DONE_KEY)||"[]"));
+      function saveMtgDone(){ localStorage.setItem(MTG_DONE_KEY, JSON.stringify([...mtgDone])); }
 
-        const catIcon=document.createElement("span");
-        catIcon.style.cssText="font-size:11px;flex-shrink:0;width:16px;text-align:center;";
-        catIcon.textContent=CAT_ICONS[st.category]||"☑";
+      for(const st of mtg.suggestedTasks){
+        const taskId="mtg-"+mtg.date+"-"+(st.task||"").slice(0,30).replace(/\s+/g,"-").toLowerCase();
+        const isDone=mtgDone.has(taskId);
+        const stRow=document.createElement("div");
+        stRow.style.cssText="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:10px;border-bottom:1px solid rgba(255,255,255,.04);"+(isDone?"opacity:.4;":"");
+
+        const cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=isDone;
+        cb.style.cssText="flex-shrink:0;cursor:pointer;accent-color:var(--accent);width:13px;height:13px;";
 
         const stName=document.createElement("span");
-        stName.style.cssText="color:var(--text);flex:1;line-height:1.4;";
+        stName.style.cssText="color:var(--text);flex:1;line-height:1.4;"+(isDone?"text-decoration:line-through;":"");
         stName.textContent=st.task;
+
+        cb.addEventListener("change",function(){
+          if(cb.checked){ mtgDone.add(taskId); stRow.style.opacity=".4"; stName.style.textDecoration="line-through"; }
+          else { mtgDone.delete(taskId); stRow.style.opacity=""; stName.style.textDecoration=""; }
+          saveMtgDone();
+          // Update badge count
+          const remaining=mtg.suggestedTasks.filter(t=>!mtgDone.has("mtg-"+mtg.date+"-"+(t.task||"").slice(0,30).replace(/\s+/g,"-").toLowerCase())).length;
+          taskBadge.textContent=remaining+" tasks";
+        });
 
         const priBadge=document.createElement("span");
         const pc=PRIO_COLORS[st.priority]||"#64748b";
@@ -2534,7 +2798,7 @@ function renderMeetingSummaries(container){
         catBadge.style.cssText="font-size:7px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;";
         catBadge.textContent=st.category||"";
 
-        stRow.appendChild(catIcon);
+        stRow.appendChild(cb);
         stRow.appendChild(stName);
         stRow.appendChild(priBadge);
         stRow.appendChild(catBadge);
@@ -2688,9 +2952,8 @@ function renderMyDay(){
     secbar.innerHTML = "";
     const secDefs=[
       {key:"all",   label:"ALL"},
-      {key:"tasks", label:"📋 TASKS"},
+      {key:"tasks", label:"📋 TASKS & SCHEDULE"},
       {key:"inbox", label:"📧 INBOX"},
-      {key:"cal",   label:"📅 CALENDAR"},
       {key:"drive", label:"🗂 DRIVE"},
     ];
     for(const sd of secDefs){
@@ -3594,7 +3857,7 @@ function buildSystemPrompt(tabKey){
     roadmap:"Linear issues only (tickets, projects, initiatives). You have NO HubSpot or email data — do not invent or reference deals.",
     sales:"HubSpot deals and tasks. You also have Linear issue data for cross-referencing delivery dependencies."
   };
-  return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\n\nData scope for this view: "+(scope[tk]||scope.myday)+"\n\nYou have full visibility of their Linear issues (id, title, status, priority, assignee, project, initiative, due date). Use this data to answer specific questions accurately.\n\nCurrent work data:\n"+buildDataContext(tk)+"\n\nStyle rules: be concise but complete when asked specific questions. No flattery. Plain text only. When asked about specific issues, list them with their identifier and key attributes. Never say you lack visibility into individual issues — you have the full list above.";
+  return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\n\nData scope for this view: "+(scope[tk]||scope.myday)+"\n\nYou have full visibility of their Linear issues (id, title, status, priority, assignee, project, initiative, due date). Use this data to answer specific questions accurately.\n\nCurrent work data:\n"+buildDataContext(tk)+"\n\nStyle rules: be concise but complete when asked specific questions. No flattery. Plain text only. When asked about specific issues, list them with their identifier and key attributes. Never say you lack visibility into individual issues — you have the full list above.\n\nTASK CREATION: If the user asks you to add a task, create a task, remind them of something, or says something like 'add X to my list', wrap each task in [[TASK:task description here]]. You can include multiple [[TASK:...]] tags. Always confirm which tasks you added.";
 }
 async function callClaudeStream(messages,onChunk,onDone,onError,tabKey){
   const key=getClaudeKey();
@@ -3648,7 +3911,25 @@ function streamClaudeReply(userMsg,silent,tabKey){
       }
       full+=chunk; textEl.textContent=full; if(msgsEl) msgsEl.scrollTop=msgsEl.scrollHeight;
     },
-    ()=>{ CLAUDE_HISTORIES[tk].push({role:"assistant",content:full}); if(sendBtn) sendBtn.disabled=false; },
+    ()=>{
+      CLAUDE_HISTORIES[tk].push({role:"assistant",content:full});
+      // Detect [[TASK:...]] tags and add to custom tasks
+      const taskMatches=full.match(/\[\[TASK:([^\]]+)\]\]/g);
+      if(taskMatches&&taskMatches.length&&typeof CUSTOM_TASKS!=="undefined"){
+        for(const tm of taskMatches){
+          const title=tm.replace(/^\[\[TASK:/,"").replace(/\]\]$/,"").trim();
+          if(title){
+            const newTask={id:"custom-"+Date.now()+"-"+Math.random().toString(36).slice(2,6),title:title,url:null};
+            CUSTOM_TASKS.unshift(newTask); saveCustomTasks();
+          }
+        }
+        // Re-render My Day to show new tasks
+        if(currentTab==="myday") renderMyDay();
+      }
+      // Clean up [[TASK:...]] markers from displayed text
+      if(textEl&&taskMatches) textEl.textContent=full.replace(/\[\[TASK:([^\]]+)\]\]/g,"✅ $1");
+      if(sendBtn) sendBtn.disabled=false;
+    },
     (err)=>{ if(think.parentNode) think.remove(); appendClaudeMsg("assistant","⚠️ "+err,tk); if(sendBtn) sendBtn.disabled=false; },
     tk
   );
