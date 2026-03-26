@@ -1,7 +1,16 @@
 {
-  "refreshedAt": "2026-03-26T15:08:22.947Z",
+  "refreshedAt": "2026-03-26T15:23:30.588Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d2ab8bb5bcda19",
+        "subject": "New company created!",
+        "from": "support@supplied.eu",
+        "date": "2026-03-26T15:17:21.000Z",
+        "snippet": "The company 1 was created by test@farchase.com. Hooray!",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2ab8bb5bcda19",
+        "unread": true
+      },
       {
         "id": "19d2a96ce47edcf2",
         "subject": "Veo is here: create studio-quality video ads in a few clicks 🎥",
@@ -96,22 +105,13 @@
         "id": "19cde516ee128e60",
         "subject": "Your certificate is ready",
         "from": "notifications@scrut.io",
-        "date": "2026-03-11T19:18:24.000Z",
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "date": "2026-03-11T19:13:11.000Z",
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed GDPR Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
-        "unread": true
-      },
-      {
-        "id": "19cda0433ba07fa8",
-        "subject": "Inside the Diligence Process: What We Actually Look For When Evaluating a Deal",
-        "from": "Matthew Sciarra <msciarra@solensoftwaregroup.com>",
-        "date": "2026-03-10T23:10:32.000Z",
-        "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
         "unread": true
       }
     ],
-    "unreadCount": 34
+    "unreadCount": 35
   },
   "calendar": {
     "today": [
@@ -409,6 +409,16 @@
       "threadId": "19ce0214716b0ff0",
       "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
       "id": "email-19ce0214716b0ff0"
+    },
+    {
+      "action": "reply",
+      "subject": "New company created!",
+      "reason": "The company 1 was created by test@farchase.com. Hooray!",
+      "from": "support@supplied.eu",
+      "ageDays": 0,
+      "threadId": "19d2ab8bb5bcda19",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2ab8bb5bcda19",
+      "id": "email-19d2ab8bb5bcda19"
     },
     {
       "action": "reply",

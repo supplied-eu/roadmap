@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-26T15:08:19.256Z",
+  "refreshedAt": "2026-03-26T15:23:27.094Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8419,10 +8419,10 @@
         {
           "id": "941204d2-bde4-42d9-aeac-a7710843e9c1",
           "name": "Guesty",
-          "status": "Backlog",
+          "status": "In Progress",
           "color": "#bec2c8",
           "url": "https://linear.app/supplied/project/guesty-6b3e96668d06",
-          "startDate": null,
+          "startDate": "2026-03-26",
           "targetDate": "2026-04-03",
           "issues": [
             {
@@ -8453,7 +8453,7 @@
               "id": "2e220548-f2f7-446d-bfdb-b0ae27f2dccc",
               "identifier": "SUP-1251",
               "title": "UTF-8 BOM Missing from CSV Exports Causes Umlaut Corruption in Excel",
-              "status": "In Progress",
+              "status": "In Review",
               "start": "2026-03-26",
               "end": null,
               "assignee": null,
@@ -9625,7 +9625,7 @@
         {
           "id": "c8193ea2-8422-4cb1-b6fa-47b70986b4a6",
           "name": "Tarisio",
-          "status": "In Progress",
+          "status": "Completed",
           "color": "#bec2c8",
           "url": "https://linear.app/supplied/project/tarisio-5ca19cbb6b36",
           "startDate": "2025-03-01",
