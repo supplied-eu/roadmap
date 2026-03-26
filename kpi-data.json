@@ -1,0 +1,26 @@
+{
+  "refreshedAt": "2026-03-26T12:00:00.000Z",
+  "currency": "€",
+  "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?gid=744952295#gid=744952295",
+  "months": [
+    {
+      "month": "2026-03",
+      "label": "Mar 2026",
+      "current": true,
+      "metrics": {
+        "contractedARR": 107500,
+        "contractedMRR": 8960,
+        "cash": 1060000,
+        "avgNetBurn": 75000,
+        "runway": 15,
+        "activeCustomers": 30,
+        "newCustomersSigned": 0,
+        "acv": 1630,
+        "cac": 0,
+        "teamSize": 10,
+        "teamBreakdown": "9 contractors + 1 FTE"
+      },
+      "notes": "ARR lower than last month due to new process: figures now pulled directly from ERP. Reporting invoiced revenue going forward."
+    }
+  ]
+}

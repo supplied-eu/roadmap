@@ -888,6 +888,9 @@ body {
     <button class="tab-btn" id="tab-accounts-btn" onclick="switchTab('accounts')">
       <span class="tab-icon">🏢</span> ACCOUNTS
     </button>
+    <button class="tab-btn" id="tab-kpis-btn" onclick="switchTab('kpis')">
+      <span class="tab-icon">📈</span> KPIs
+    </button>
   </div>
 
   <div class="header-right">
@@ -966,6 +969,11 @@ body {
   <div id="accounts-main"></div>
 </div>
 
+<!-- ══ KPIs TAB ════════════════════════════════════════════════════════════ -->
+<div id="panel-kpis" class="tab-panel">
+  <div id="kpis-main" style="padding:20px;max-width:1200px;margin:0 auto;"></div>
+</div>
+
 <!-- Anthropic API key modal -->
 <div class="pat-overlay" id="claude-key-overlay">
   <div class="pat-modal">
@@ -1041,6 +1049,7 @@ function switchTab(tab){
     if(cont) renderClaudeBrief(cont, CLAUDE_VIEW_NAME||"Johann", tab);
   }
   if(tab==="accounts") renderAccountManagement();
+  if(tab==="kpis") renderKPIs();
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -2078,6 +2087,9 @@ function renderOps(){
   taskHeader.innerHTML=\`<span>☑ TASKS</span> <span class="ops-section-count">\${tasks.length}</span>\`;
   tasksCol.appendChild(taskHeader);
 
+  // ── MEETING SUMMARIES (right after tasks header, always visible) ──
+  if(MTG_DATA&&MTG_DATA.meetings&&MTG_DATA.meetings.length) renderMeetingSummaries();
+
   if(tasks.length===0){
     const em=document.createElement("div"); em.style.cssText="padding:32px 20px;font-size:11px;color:var(--text-dim);text-align:center";
     em.textContent=OPS_OWNER!=="all"?"No tasks assigned to this person.":"All tasks complete — nothing outstanding!";
@@ -2134,9 +2146,6 @@ function renderOps(){
       }
     }
   }
-
-  // ── MEETING SUMMARIES (below tasks, inside renderOps so it survives re-renders) ──
-  if(MTG_DATA&&MTG_DATA.meetings&&MTG_DATA.meetings.length) renderMeetingSummaries();
 
   // ── RIGHT: PIPELINE COLUMN ─────────────────────────────────────────────
   const allDeals=(HS_DATA.deals||[]).filter(dealMatchesFilters);
@@ -2235,6 +2244,132 @@ function renderOpsEmpty(){
     </div>
     <div class="ops-empty-cmd">HUBSPOT_API_KEY → repo Settings → Secrets &amp; variables → Actions</div>
   </div>\`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// KPIs TAB
+// ═══════════════════════════════════════════════════════════════════════════
+let KPI_DATA = null;
+
+function renderKPIs(){
+  const main=document.getElementById("kpis-main");
+  if(!main) return;
+  main.innerHTML="";
+
+  if(!KPI_DATA||!KPI_DATA.months||!KPI_DATA.months.length){
+    main.innerHTML=\`<div style="text-align:center;padding:60px 20px;color:var(--text-muted);">
+      <div style="font-size:32px;margin-bottom:12px;">\u{1F4CA}</div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:8px;">No KPI data yet</div>
+      <div style="font-size:11px;">Add kpi-data.json to populate this tab.</div>
+    </div>\`;
+    return;
+  }
+
+  const cur=KPI_DATA.currency||"\u20AC";
+  const sheetUrl=KPI_DATA.spreadsheetUrl||null;
+  const months=[...KPI_DATA.months].sort((a,b)=>(b.month||"").localeCompare(a.month||""));
+  const latest=months[0];
+  const prev=months[1]||null;
+  const m=latest.metrics;
+  const pm=prev?prev.metrics:null;
+
+  // Header
+  const hdr=document.createElement("div");
+  hdr.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;";
+  hdr.innerHTML=\`<div>
+    <div style="font-size:18px;font-weight:700;color:var(--text);">\u{1F4C8} Financial KPIs</div>
+    <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">\${latest.label} \u2014 Updated \${KPI_DATA.refreshedAt?new Date(KPI_DATA.refreshedAt).toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}):"—"}</div>
+  </div>
+  \${sheetUrl?\`<a href="\${sheetUrl}" target="_blank" rel="noopener" style="font-size:10px;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 10px;border-radius:6px;">Open Spreadsheet \u2197</a>\`:""}\`;
+  main.appendChild(hdr);
+
+  // Notes banner
+  if(latest.notes){
+    const note=document.createElement("div");
+    note.style.cssText="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:10px;color:#f59e0b;line-height:1.5;";
+    note.innerHTML=\`\u26A0\uFE0F \${latest.notes}\`;
+    main.appendChild(note);
+  }
+
+  // Helper: format currency
+  function fmtCur(v){ if(v>=1e6) return cur+Number((v/1e6).toFixed(2))+"M"; if(v>=1e3) return cur+Number((v/1e3).toFixed(1))+"k"; return cur+v; }
+  // Helper: trend badge
+  function trend(curr,prev){ if(!prev&&prev!==0) return ""; const pct=prev?Math.round(((curr-prev)/prev)*100):0; if(pct===0) return \`<span style="color:var(--text-dim);font-size:9px;">\u2192 flat</span>\`; return \`<span style="color:\${pct>0?"#10b981":"#ef4444"};font-size:9px;">\${pct>0?"\u2191":"\u2193"}\${Math.abs(pct)}% m/m</span>\`; }
+
+  // KPI Cards grid
+  const grid=document.createElement("div");
+  grid.style.cssText="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;";
+
+  const cards=[
+    { label:"Contracted ARR", value:fmtCur(m.contractedARR), trend:pm?trend(m.contractedARR,pm.contractedARR):"", color:"#3b82f6", icon:"\u{1F4B0}" },
+    { label:"Contracted MRR", value:fmtCur(m.contractedMRR), trend:pm?trend(m.contractedMRR,pm.contractedMRR):"", color:"#8b5cf6", icon:"\u{1F4C5}" },
+    { label:"Cash Position", value:fmtCur(m.cash), trend:pm?trend(m.cash,pm.cash):"", color:"#10b981", icon:"\u{1F3E6}" },
+    { label:"Avg. Net Burn", value:fmtCur(m.avgNetBurn)+"/mo", trend:pm?trend(m.avgNetBurn,pm.avgNetBurn):"", color:"#f59e0b", icon:"\u{1F525}" },
+    { label:"Runway", value:m.runway+" months", trend:"", color:m.runway<12?"#ef4444":"#10b981", icon:"\u{1F6E4}\uFE0F" },
+    { label:"Active Customers", value:m.activeCustomers, trend:pm?trend(m.activeCustomers,pm.activeCustomers):"", color:"#06b6d4", icon:"\u{1F465}" },
+    { label:"New Signed", value:m.newCustomersSigned, trend:"", color:m.newCustomersSigned>0?"#10b981":"#64748b", icon:"\u{1F4DD}" },
+    { label:"ACV", value:fmtCur(m.acv), trend:pm?trend(m.acv,pm.acv):"", color:"#3b82f6", icon:"\u{1F3AF}" },
+    { label:"CAC", value:m.cac===0?cur+"0":fmtCur(m.cac), trend:"", color:"#10b981", icon:"\u{1F4A1}" },
+    { label:"Team", value:m.teamSize+" total", sub:m.teamBreakdown||"", trend:"", color:"#8b5cf6", icon:"\u{1F46A}" },
+  ];
+
+  for(const c of cards){
+    const card=document.createElement("div");
+    card.style.cssText=\`background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;\`;
+
+    card.innerHTML=\`
+      <div style="position:absolute;top:8px;right:10px;font-size:20px;opacity:.12;">\${c.icon}</div>
+      <div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px;">\${c.label}</div>
+      <div style="font-size:22px;font-weight:700;color:\${c.color};line-height:1;">\${c.value}</div>
+      \${c.sub?\`<div style="font-size:9px;color:var(--text-dim);margin-top:3px;">\${c.sub}</div>\`:""}
+      \${c.trend?\`<div style="margin-top:4px;">\${c.trend}</div>\`:""}
+    \`;
+    grid.appendChild(card);
+  }
+  main.appendChild(grid);
+
+  // Monthly history table (if >1 month)
+  if(months.length>1){
+    const tblWrap=document.createElement("div");
+    tblWrap.style.cssText="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;overflow-x:auto;";
+    const tblHdr=document.createElement("div");
+    tblHdr.style.cssText="font-size:11px;font-weight:600;color:var(--text);margin-bottom:10px;";
+    tblHdr.textContent="\u{1F4CA} Monthly Trend";
+    tblWrap.appendChild(tblHdr);
+
+    const tbl=document.createElement("table");
+    tbl.style.cssText="width:100%;border-collapse:collapse;font-size:10px;";
+    const thead=document.createElement("thead");
+    thead.innerHTML=\`<tr style="border-bottom:1px solid var(--border);color:var(--text-muted);">
+      <th style="text-align:left;padding:6px 8px;font-weight:500;">Month</th>
+      <th style="text-align:right;padding:6px 8px;font-weight:500;">ARR</th>
+      <th style="text-align:right;padding:6px 8px;font-weight:500;">MRR</th>
+      <th style="text-align:right;padding:6px 8px;font-weight:500;">Cash</th>
+      <th style="text-align:right;padding:6px 8px;font-weight:500;">Burn</th>
+      <th style="text-align:right;padding:6px 8px;font-weight:500;">Runway</th>
+      <th style="text-align:right;padding:6px 8px;font-weight:500;">Customers</th>
+      <th style="text-align:right;padding:6px 8px;font-weight:500;">New</th>
+    </tr>\`;
+    tbl.appendChild(thead);
+    const tbody=document.createElement("tbody");
+    for(const mo of months){
+      const mm=mo.metrics;
+      const isCurrent=mo.current;
+      tbody.innerHTML+=\`<tr style="border-bottom:1px solid var(--border);\${isCurrent?"background:rgba(59,130,246,.06);font-weight:500;":""}">
+        <td style="padding:6px 8px;color:var(--text);">\${mo.label}\${isCurrent?" \u25C0":""}</td>
+        <td style="padding:6px 8px;text-align:right;color:#3b82f6;">\${fmtCur(mm.contractedARR)}</td>
+        <td style="padding:6px 8px;text-align:right;color:#8b5cf6;">\${fmtCur(mm.contractedMRR)}</td>
+        <td style="padding:6px 8px;text-align:right;color:#10b981;">\${fmtCur(mm.cash)}</td>
+        <td style="padding:6px 8px;text-align:right;color:#f59e0b;">\${fmtCur(mm.avgNetBurn)}</td>
+        <td style="padding:6px 8px;text-align:right;color:\${mm.runway<12?"#ef4444":"#10b981"};">\${mm.runway}mo</td>
+        <td style="padding:6px 8px;text-align:right;color:#06b6d4;">\${mm.activeCustomers}</td>
+        <td style="padding:6px 8px;text-align:right;color:\${mm.newCustomersSigned>0?"#10b981":"var(--text-dim)"};">\${mm.newCustomersSigned}</td>
+      </tr>\`;
+    }
+    tbl.appendChild(tbody);
+    tblWrap.appendChild(tbl);
+    main.appendChild(tblWrap);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3476,6 +3611,12 @@ async function init(){
       if(HS_DATA) renderSalesFunnels();
     }
   } catch(e){ /* Leadfeeder data not available */ }
+
+  // Load KPI data (optional)
+  try {
+    const kr=await fetch('./kpi-data.json?t='+Date.now());
+    if(kr.ok){ KPI_DATA=await kr.json(); }
+  } catch(e){ /* KPI data not available */ }
 
   // Load meeting summaries data (optional)
   try {
