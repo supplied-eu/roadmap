@@ -2119,6 +2119,9 @@ function renderOps(){
     }
   }
 
+  // ── MEETING SUMMARIES (below tasks, inside renderOps so it survives re-renders) ──
+  if(MTG_DATA&&MTG_DATA.meetings&&MTG_DATA.meetings.length) renderMeetingSummaries();
+
   // ── RIGHT: PIPELINE COLUMN ─────────────────────────────────────────────
   const allDeals=(HS_DATA.deals||[]).filter(dealMatchesFilters);
   const pipeHeader=document.createElement("div"); pipeHeader.className="ops-section-header";
@@ -3463,7 +3466,8 @@ async function init(){
     const mr=await fetch('./meeting-summaries.json?t='+Date.now());
     if(mr.ok){
       MTG_DATA=await mr.json();
-      if(MTG_DATA&&MTG_DATA.meetings) renderMeetingSummaries();
+      // Re-render ops so meeting summaries appear inside the tasks column
+      if(MTG_DATA&&MTG_DATA.meetings&&HS_DATA) renderOps();
     }
   } catch(e){ /* Meeting summaries not available */ }
 
