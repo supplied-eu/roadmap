@@ -1,17 +1,25 @@
 {
-  "refreshedAt": "2026-03-26T15:29:16.612Z",
+  "refreshedAt": "2026-03-26T16:42:37.885Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 65,
+  "thisWeekTotal": 66,
   "lastWeekTotal": 54,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 65,
+      "thisWeek": 66,
       "lastWeek": 54,
       "companies": [
+        {
+          "name": "Korton",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-26",
+          "leadId": "mZX77vRHZG5BnyLaSGB3mv_hz99jVi2ncNCdS874LtG8S",
+          "source": "Direct"
+        },
         {
           "name": "Deskbird",
           "website": null,
@@ -163,14 +171,6 @@
           "lastVisit": "2026-03-23",
           "leadId": "12f074ee-1619-11f0-9a25-41fe763d0a57_8KKvyBiSeKRkp23TC37b99",
           "source": "Direct"
-        },
-        {
-          "name": "Qonto",
-          "website": null,
-          "visits": 2,
-          "lastVisit": "2026-03-23",
-          "leadId": "32b1abc2-18ad-11eb-b2a8-354a649c2572_6f118eec-e682-11e9-931f-510851ab1241",
-          "source": "Direct"
         }
       ]
     }
@@ -287,6 +287,16 @@
       "leadId": "b2077ed4-c7bb-11f0-830d-4f26e987a320_qQcqMoRWHAUjrwmRQ66J7b"
     },
     {
+      "name": "Korton",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-26",
+      "lastVisit": "2026-03-26",
+      "source": "Direct",
+      "leadId": "mZX77vRHZG5BnyLaSGB3mv_hz99jVi2ncNCdS874LtG8S"
+    },
+    {
       "name": "Deskbird",
       "website": null,
       "visits": 1,
@@ -365,16 +375,6 @@
       "lastVisit": "2026-03-25",
       "source": "Direct",
       "leadId": "33bbb118-2892-11ea-98db-07b20c5eaec6_6knD4mE7nnte1rWKPhh6Je"
-    },
-    {
-      "name": "Ipspace   Servicehost",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-25",
-      "lastVisit": "2026-03-25",
-      "source": "Direct",
-      "leadId": "975af9dc-4510-11ef-8cf0-7f42ee5170a4_qQcqMoRWHAUjrwmRQ66J7b"
     }
   ],
   "dailyVisits": [
@@ -556,7 +556,7 @@
     },
     {
       "date": "2026-03-26",
-      "visits": 6
+      "visits": 8
     }
   ]
 }

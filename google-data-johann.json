@@ -1,7 +1,25 @@
 {
-  "refreshedAt": "2026-03-26T15:29:06.645Z",
+  "refreshedAt": "2026-03-26T16:42:20.344Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d2af8fca7056d5",
+        "subject": "Techleap Community Gathering — Tuesday, March 31st",
+        "from": "Florence Campbell <florence@techleap.nl>",
+        "date": "2026-03-26T16:27:32.000Z",
+        "snippet": "Hi Johann, Really excited to have you joining us next Tuesday, March 31st, for the Techleap Community Gathering at Miro! Before the day, we&#39;d love to know which session you&#39;d like to attend —",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2af8fca7056d5",
+        "unread": true
+      },
+      {
+        "id": "19d2acd7e6912a1f",
+        "subject": "Reminder: It’s time to upgrade your Auth0 plan",
+        "from": "Auth0 Support Team <no-reply-support@auth0.com>",
+        "date": "2026-03-26T15:40:02.000Z",
+        "snippet": "Auth0 Logo Reminder: It&#39;s time to upgrade your Auth0 plan Hey there, 👋 We haven&#39;t seen any changes to your plan. A lot of people are using your application, and your usage has exceeded your",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2acd7e6912a1f",
+        "unread": true
+      },
       {
         "id": "19d2ab8bb5bcda19",
         "subject": "New company created!",
@@ -91,27 +109,9 @@
         "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
         "unread": true
-      },
-      {
-        "id": "19cded4a75632083",
-        "subject": "New Event: Casey Coppock - 16:30 Thu, 19 Mar 2026 - 30 Minute Meeting",
-        "from": "Calendly <notifications@calendly.com>",
-        "date": "2026-03-11T21:36:43.000Z",
-        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
-        "unread": true
-      },
-      {
-        "id": "19cde516ee128e60",
-        "subject": "Your certificate is ready",
-        "from": "notifications@scrut.io",
-        "date": "2026-03-11T19:18:24.000Z",
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
-        "unread": true
       }
     ],
-    "unreadCount": 35
+    "unreadCount": 37
   },
   "calendar": {
     "today": [
@@ -292,20 +292,20 @@
   "drive": {
     "recent": [
       {
-        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
-        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-26T12:40:34.316Z",
-        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
         "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
         "name": "Supplied_Technologies_Budget_2026",
         "mimeType": "application/vnd.google-apps.spreadsheet",
         "modifiedTime": "2026-03-13T10:10:52.499Z",
         "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
         "lastModifiedBy": "Jelena Hmeltnitski"
+      },
+      {
+        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
+        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-26T12:40:34.316Z",
+        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
       },
       {
         "id": "17RY29LiHvkh5xf8sj6DgRxxYWf_VrVGyxGXNzhiktqc",
@@ -409,6 +409,26 @@
       "threadId": "19ce0214716b0ff0",
       "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
       "id": "email-19ce0214716b0ff0"
+    },
+    {
+      "action": "reply",
+      "subject": "Techleap Community Gathering — Tuesday, March 31st",
+      "reason": "Hi Johann, Really excited to have you joining us next Tuesday, March 31st, for the Techleap Community Gathering at Miro!",
+      "from": "Florence Campbell <florence@techleap.nl>",
+      "ageDays": 0,
+      "threadId": "19d2af8fca7056d5",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2af8fca7056d5",
+      "id": "email-19d2af8fca7056d5"
+    },
+    {
+      "action": "reply",
+      "subject": "Reminder: It’s time to upgrade your Auth0 plan",
+      "reason": "Auth0 Logo Reminder: It&#39;s time to upgrade your Auth0 plan Hey there, 👋 We haven&#39;t seen any changes to your plan",
+      "from": "Auth0 Support Team <no-reply-support@auth0.com>",
+      "ageDays": 0,
+      "threadId": "19d2acd7e6912a1f",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2acd7e6912a1f",
+      "id": "email-19d2acd7e6912a1f"
     },
     {
       "action": "reply",
