@@ -1,17 +1,25 @@
 {
-  "refreshedAt": "2026-03-26T13:13:15.896Z",
+  "refreshedAt": "2026-03-26T13:30:46.838Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 64,
+  "thisWeekTotal": 65,
   "lastWeekTotal": 54,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 64,
+      "thisWeek": 65,
       "lastWeek": 54,
       "companies": [
+        {
+          "name": "Deskbird",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-26",
+          "leadId": "68d88a3e-da78-11ec-909f-65355e8fbb21_c592830c-e6fa-11e9-9b3f-2fe890320230",
+          "source": "Direct"
+        },
         {
           "name": "Zedrox",
           "website": null,
@@ -163,14 +171,6 @@
           "lastVisit": "2026-03-23",
           "leadId": "32b1abc2-18ad-11eb-b2a8-354a649c2572_6f118eec-e682-11e9-931f-510851ab1241",
           "source": "Direct"
-        },
-        {
-          "name": "STRAX GmbH",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-23",
-          "leadId": "tTtrgSUgYeFVXXo1qaS9av_7h59hLbCzufgC6iSDh4xea",
-          "source": "Direct"
         }
       ]
     }
@@ -287,6 +287,16 @@
       "leadId": "b2077ed4-c7bb-11f0-830d-4f26e987a320_qQcqMoRWHAUjrwmRQ66J7b"
     },
     {
+      "name": "Deskbird",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-26",
+      "lastVisit": "2026-03-26",
+      "source": "Direct",
+      "leadId": "68d88a3e-da78-11ec-909f-65355e8fbb21_c592830c-e6fa-11e9-9b3f-2fe890320230"
+    },
+    {
       "name": "Zedrox",
       "website": null,
       "visits": 1,
@@ -365,16 +375,6 @@
       "lastVisit": "2026-03-25",
       "source": "Direct",
       "leadId": "975af9dc-4510-11ef-8cf0-7f42ee5170a4_qQcqMoRWHAUjrwmRQ66J7b"
-    },
-    {
-      "name": "Ascential – Part of the Informa Group",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-24",
-      "lastVisit": "2026-03-24",
-      "source": "Direct",
-      "leadId": "d892fa2a-c74d-11ea-a3b4-2120eba07ee1_p6q3nDbB2C4m9KjK9gndy"
     }
   ],
   "dailyVisits": [
@@ -556,7 +556,7 @@
     },
     {
       "date": "2026-03-26",
-      "visits": 4
+      "visits": 6
     }
   ]
 }
