@@ -3973,7 +3973,9 @@ function buildDataContext(tabKey){
   const snoozed=JSON.parse(localStorage.getItem("supplied_snooze")||"{}");
   function isDismissed(id){ return donedToday.has(id)||(snoozed[id]&&snoozed[id]>TODAY_STR); }
   const lines=[];
-  lines.push("TODAY: "+new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"}));
+  const now=new Date();
+  const nowHH=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+  lines.push("TODAY: "+now.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+" | CURRENT TIME: "+nowHH);
   if(donedToday.size) lines.push("ALREADY DONE TODAY (user ticked off): "+donedToday.size+" items — do not suggest these again.");
   if(GANTT_DATA){
     const allIss=[];
@@ -4013,7 +4015,21 @@ function buildDataContext(tabKey){
     if(ep.length){ lines.push("\nEMAILS TO ACTION:"); for(const e of ep) lines.push("  ["+e.action.toUpperCase()+"] "+e.subject+" - "+e.reason); }
     else lines.push("\nEMAILS: All actioned.");
     const cal=GOOGLE_DATA.calendar;
-    if(cal&&(cal.today||[]).length){ lines.push("\nMEETINGS TODAY:"); for(const ev of cal.today) lines.push("  "+ev.title+(ev.start?" @ "+ev.start:"")); }
+    if(cal&&(cal.today||[]).length){
+      lines.push("\nMEETINGS TODAY (current time is "+nowHH+"):");
+      for(const ev of cal.today){
+        // Determine if meeting is past, current, or upcoming
+        let timeTag="";
+        if(ev.start){
+          const evStart=ev.start.replace(/[^0-9:]/g,"").slice(0,5);
+          const evEnd=ev.end?ev.end.replace(/[^0-9:]/g,"").slice(0,5):null;
+          if(evEnd&&nowHH>=evEnd) timeTag=" [ALREADY FINISHED]";
+          else if(nowHH>=evStart) timeTag=" [HAPPENING NOW]";
+          else timeTag=" [UPCOMING]";
+        }
+        lines.push("  "+ev.title+(ev.start?" @ "+ev.start:"")+timeTag);
+      }
+    }
     else lines.push("\nMEETINGS: None today");
     const dp=(GOOGLE_DATA.drive_priorities||[]).filter(d=>!isDismissed("dp-"+d.id)).slice(0,3);
     if(dp.length){ lines.push("\nDRIVE PRIORITIES:"); for(const d of dp) lines.push("  ["+d.action.toUpperCase()+"] "+d.subject); }
@@ -4028,7 +4044,8 @@ function buildSystemPrompt(tabKey){
     roadmap:"Linear issues only (tickets, projects, initiatives). You have NO HubSpot or email data — do not invent or reference deals.",
     sales:"HubSpot deals and tasks. You also have Linear issue data for cross-referencing delivery dependencies."
   };
-  return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\n\nData scope for this view: "+(scope[tk]||scope.myday)+"\n\nYou have full visibility of their Linear issues (id, title, status, priority, assignee, project, initiative, due date). Use this data to answer specific questions accurately.\n\nCurrent work data:\n"+buildDataContext(tk)+"\n\nStyle rules: be concise but complete when asked specific questions. No flattery. Plain text only. When asked about specific issues, list them with their identifier and key attributes. Never say you lack visibility into individual issues — you have the full list above.\n\nTASK CREATION: If the user asks you to add a task, create a task, remind them of something, or says something like 'add X to my list', wrap each task in [[TASK:task description here]]. You can include multiple [[TASK:...]] tags. Always confirm which tasks you added.";
+  const nowTime=new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+  return "You are a direct, sharp personal productivity assistant for "+name+" at Supplied.eu (B2B SaaS company).\n\nData scope for this view: "+(scope[tk]||scope.myday)+"\n\nYou have full visibility of their Linear issues (id, title, status, priority, assignee, project, initiative, due date). Use this data to answer specific questions accurately.\n\nCurrent work data:\n"+buildDataContext(tk)+"\n\nIMPORTANT TIME CONTEXT: The current time right now is "+nowTime+". When the user asks what to do 'right now' or 'next', only suggest UPCOMING items. Meetings and events that have already finished (marked [ALREADY FINISHED]) should NOT be suggested as actions — instead reference them as completed context if relevant. Focus on what is still ahead today.\n\nStyle rules: be concise but complete when asked specific questions. No flattery. Plain text only. When asked about specific issues, list them with their identifier and key attributes. Never say you lack visibility into individual issues — you have the full list above.\n\nTASK CREATION: If the user asks you to add a task, create a task, remind them of something, or says something like 'add X to my list', wrap each task in [[TASK:task description here]]. You can include multiple [[TASK:...]] tags. Always confirm which tasks you added.";
 }
 async function callClaudeStream(messages,onChunk,onDone,onError,tabKey){
   const key=getClaudeKey();
