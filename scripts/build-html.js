@@ -843,6 +843,10 @@ body {
 .acct-card-top { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; }
 .acct-avatar { width:34px; height:34px; border-radius:6px; background:var(--accent)22; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--accent); flex-shrink:0; }
 .acct-name { font-size:12px; font-weight:600; color:var(--text); line-height:1.3; }
+.acct-name-link { text-decoration:none; color:var(--text); transition:color .15s; }
+.acct-name-link:hover { color:var(--accent); text-decoration:underline; }
+.acct-deal-row { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:10px; cursor:pointer; border-radius:4px; transition:background .12s; }
+.acct-deal-row:hover { background:rgba(99,102,241,.08); }
 .acct-domain { font-size:10px; color:var(--text-dim); margin-top:1px; }
 .acct-health { margin-left:auto; flex-shrink:0; }
 .health-badge { font-size:9px; font-weight:700; padding:3px 8px; border-radius:10px; letter-spacing:.5px; }
@@ -2068,7 +2072,15 @@ function renderAccountManagement(){
       const top=document.createElement("div"); top.className="acct-card-top";
       const av=document.createElement("div"); av.className="acct-avatar"; av.textContent=(c.name||"?")[0].toUpperCase();
       const nameWrap=document.createElement("div");
-      const nm=document.createElement("div"); nm.className="acct-name"; nm.textContent=c.name;
+      let nm;
+      if(portalId && c.id && !String(c.id).startsWith("derived-")){
+        nm=document.createElement("a"); nm.className="acct-name acct-name-link"; nm.textContent=c.name;
+        nm.href="https://app.hubspot.com/contacts/"+portalId+"/company/"+c.id;
+        nm.target="_blank"; nm.rel="noopener";
+        nm.addEventListener("click",e=>e.stopPropagation());
+      } else {
+        nm=document.createElement("div"); nm.className="acct-name"; nm.textContent=c.name;
+      }
       const dm=document.createElement("div"); dm.className="acct-domain"; dm.textContent=c.domain||"";
       nameWrap.appendChild(nm); nameWrap.appendChild(dm);
       const hbadge=document.createElement("div"); hbadge.className="acct-health";
@@ -2189,13 +2201,14 @@ function renderAccountManagement(){
           const open=c.relDeals.filter(d=>!isDoneStage(d.stageLabel));
           const closed=c.relDeals.filter(d=>isDoneStage(d.stageLabel));
           function dealRow(d){
-            const row=document.createElement("div"); row.style.cssText="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:10px;cursor:pointer;";
+            const row=document.createElement("div"); row.className="acct-deal-row";
             if(portalId) row.addEventListener("click",()=>window.open("https://app.hubspot.com/contacts/"+portalId+"/deal/"+d.id,"_blank"));
             const stage=document.createElement("span"); stage.style.cssText="font-size:8px;color:var(--text-dim);background:var(--surface2);padding:1px 5px;border-radius:3px;flex-shrink:0;"; stage.textContent=d.stageLabel||d.stage||"";
             const nm=document.createElement("span"); nm.style.cssText="flex:1;color:var(--text);"; nm.textContent=d.name;
             const amt=document.createElement("span"); amt.style.cssText="font-weight:600;color:var(--accent);"; amt.textContent=d.amount?cur+Number(d.amount).toLocaleString():"";
             const dt=document.createElement("span"); dt.style.cssText="font-size:9px;color:var(--text-dim);"; dt.textContent=d.closeDate?fmtDate(d.closeDate):"";
-            row.appendChild(stage); row.appendChild(nm); row.appendChild(amt); row.appendChild(dt);
+            const arrow=document.createElement("span"); arrow.style.cssText="font-size:9px;color:var(--text-dim);opacity:.5;"; arrow.textContent="\u2197";
+            row.appendChild(stage); row.appendChild(nm); row.appendChild(amt); row.appendChild(dt); row.appendChild(arrow);
             return row;
           }
           if(open.length){
@@ -2214,7 +2227,7 @@ function renderAccountManagement(){
             return;
           }
           for(const iss of c.relIssues.sort((a,b)=>{const r={Urgent:0,High:1,Medium:2,Low:3};return (r[a.priority]??4)-(r[b.priority]??4);})){
-            const row=document.createElement("div"); row.style.cssText="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:10px;cursor:pointer;";
+            const row=document.createElement("div"); row.className="acct-deal-row";
             if(iss.url) row.addEventListener("click",()=>window.open(iss.url,"_blank"));
             const id=document.createElement("span"); id.style.cssText="font-size:9px;color:var(--text-dim);flex-shrink:0;font-family:monospace;"; id.textContent=iss.identifier||"";
             const statusDot=document.createElement("span"); statusDot.style.cssText=\`width:6px;height:6px;border-radius:50%;flex-shrink:0;background:\${sc(iss.status)};\`;
