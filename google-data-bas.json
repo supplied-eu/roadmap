@@ -1,0 +1,17 @@
+{
+  "refreshedAt": "2026-03-27T12:07:42.986Z",
+  "gmail": {
+    "threads": [],
+    "unreadCount": 0
+  },
+  "calendar": {
+    "today": [],
+    "upcoming": []
+  },
+  "drive": {
+    "recent": []
+  },
+  "email_priorities": [],
+  "drive_priorities": [],
+  "task_priorities": []
+}

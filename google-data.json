@@ -1,14 +1,14 @@
 {
-  "refreshedAt": "2026-03-27T10:57:57.791Z",
+  "refreshedAt": "2026-03-27T12:07:42.897Z",
   "gmail": {
     "threads": [
       {
-        "id": "19d2eef528a44ff7",
-        "subject": "Re: Updated invitation: Jelena <> Johann weekly @ Tue Mar 31, 2026 11am - 11:45am (EEST) (Jelena Hmeltnitski)",
-        "from": "Jelena Hmeltnitski <jelena@supplied.eu>",
-        "date": "2026-03-27T10:55:28.000Z",
-        "snippet": "Thank you for your message. I`m on my annual leave with limited access to emails till 30th March. Will respond by return. -- Kind regards, Jelena Hmelnitski Finance Manager Supplied Technologies BV",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d2eef528a44ff7",
+        "id": "19d2f314a6cd054b",
+        "subject": "New sign-in detected on your Vercel account",
+        "from": "Vercel <notifications@vercel.com>",
+        "date": "2026-03-27T12:07:32.000Z",
+        "snippet": "Hi johann-6665, Your Vercel account johann@supplied.eu was recently signed-in from a new location, device or browser. Location Amsterdam, North Holland, The Netherlands Time Friday, March 27, 2026 at",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2f314a6cd054b",
         "unread": true
       },
       {
@@ -96,8 +96,8 @@
         "id": "19cde516ee128e60",
         "subject": "Your certificate is ready",
         "from": "notifications@scrut.io",
-        "date": "2026-03-11T19:13:11.000Z",
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed GDPR Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
+        "date": "2026-03-11T19:18:24.000Z",
+        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
         "unread": true
       },
@@ -111,7 +111,7 @@
         "unread": true
       }
     ],
-    "unreadCount": 34
+    "unreadCount": 33
   },
   "calendar": {
     "today": [
@@ -422,13 +422,13 @@
     },
     {
       "action": "reply",
-      "subject": "Re: Updated invitation: Jelena <> Johann weekly @ Tue Mar 31, 2026 11am - 11:45am (EEST) (Jelena Hmeltnitski)",
-      "reason": "Thank you for your message. I`m on my annual leave with limited access to emails till 30th March. Will respond by return",
-      "from": "Jelena Hmeltnitski <jelena@supplied.eu>",
+      "subject": "New sign-in detected on your Vercel account",
+      "reason": "Hi johann-6665, Your Vercel account johann@supplied.eu was recently signed-in from a new location, device or browser. Lo",
+      "from": "Vercel <notifications@vercel.com>",
       "ageDays": 0,
-      "threadId": "19d2eef528a44ff7",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d2eef528a44ff7",
-      "id": "email-19d2eef528a44ff7"
+      "threadId": "19d2f314a6cd054b",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2f314a6cd054b",
+      "id": "email-19d2f314a6cd054b"
     },
     {
       "action": "reply",
@@ -439,16 +439,6 @@
       "threadId": "19d261e199e703f4",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d261e199e703f4",
       "id": "email-19d261e199e703f4"
-    },
-    {
-      "action": "followup",
-      "subject": "Jack van Asbeck and Johann Rozario",
-      "reason": "Jack van Asbeck and Johann Rozario HI Jack - just checking whether we are still on for this meeting today at 1130cet? i ",
-      "from": "Johann Rozario <johann@supplied.eu>",
-      "ageDays": 0,
-      "threadId": "19d2ec12f378a9fe",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d2ec12f378a9fe",
-      "id": "email-19d2ec12f378a9fe"
     }
   ],
   "drive_priorities": [
