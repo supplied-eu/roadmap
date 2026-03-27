@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-26T16:42:19.556Z",
+  "refreshedAt": "2026-03-27T09:39:56.765Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1454,6 +1454,39 @@
       "ownerName": "Bas Bogerd"
     },
     {
+      "id": "481056005358",
+      "subject": "Reach out to Multi Montage",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-29",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "481127710965",
+      "subject": "Reach out to Korton",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-29",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "481143472317",
+      "subject": "Reach out to Deskbird",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-29",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
       "id": "479956280508",
       "subject": "Follow-Up Koos",
       "status": "NOT_STARTED",
@@ -1477,20 +1510,6 @@
     }
   ],
   "deals": [
-    {
-      "id": "379993066694",
-      "name": "Bookmatch",
-      "stage": "3190524122",
-      "pipeline": "2336720120",
-      "amount": 1788,
-      "closeDate": "2025-12-03",
-      "createDate": "2025-11-20",
-      "modifiedDate": "2026-03-26",
-      "ownerId": "687091984",
-      "probability": 0.6,
-      "stageLabel": "Proposal Shared",
-      "ownerName": "Julio Lindveld"
-    },
     {
       "id": "379729648851",
       "name": "Friend Finder Networks - New Deal",
@@ -1562,6 +1581,20 @@
       "ownerName": "Julio Lindveld"
     },
     {
+      "id": "379993066694",
+      "name": "Bookmatch",
+      "stage": "3190524125",
+      "pipeline": "2336720120",
+      "amount": 1788,
+      "closeDate": "2026-03-27",
+      "createDate": "2025-11-20",
+      "modifiedDate": "2026-03-27",
+      "ownerId": "687091984",
+      "probability": 1,
+      "stageLabel": "Closed Won",
+      "ownerName": "Julio Lindveld"
+    },
+    {
       "id": "475464711375",
       "name": "Mellow",
       "stage": "qualifiedtobuy",
@@ -1597,7 +1630,7 @@
       "amount": 140000,
       "closeDate": "2026-04-01",
       "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-23",
+      "modifiedDate": "2026-03-27",
       "ownerId": "29853062",
       "probability": 0.3,
       "stageLabel": "Needs assessment ",
@@ -1880,17 +1913,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 2
+      "count": 11
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 4
+      "count": 44
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 1
+      "count": 2
     },
     {
       "key": "salesqualifiedlead",
@@ -1905,7 +1938,7 @@
     {
       "key": "customer",
       "label": "Customer",
-      "count": 2
+      "count": 35
     }
   ],
   "trafficSources": [
@@ -2096,7 +2129,7 @@
     {
       "key": "PAID_SOCIAL",
       "thisWeek": 1,
-      "lastWeek": 6,
+      "lastWeek": 5,
       "contacts": [
         {
           "id": "741349508286",
@@ -2279,8 +2312,8 @@
     }
   ],
   "closedDealStats": {
-    "wonCount": 6,
-    "wonValue": 38341,
+    "wonCount": 7,
+    "wonValue": 40129,
     "lostCount": 4,
     "lostValue": 17940
   },

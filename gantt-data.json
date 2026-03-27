@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-26T16:42:15.371Z",
+  "refreshedAt": "2026-03-27T09:39:54.504Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8378,10 +8378,36 @@
           "targetDate": null,
           "issues": [
             {
+              "id": "3bd45c9c-4e18-4036-925a-2ba375e31a83",
+              "identifier": "IMP-159",
+              "title": "Multiple payment methods",
+              "status": "Backlog",
+              "start": null,
+              "end": null,
+              "assignee": null,
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-159/multiple-payment-methods",
+              "parentId": null
+            },
+            {
+              "id": "143950ed-2c5d-498d-bdfe-dbf4eaafaf9b",
+              "identifier": "IMP-158",
+              "title": "Periodic reminders",
+              "status": "Backlog",
+              "start": null,
+              "end": null,
+              "assignee": null,
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-158/periodic-reminders",
+              "parentId": null
+            },
+            {
               "id": "e9819367-bfc1-4493-9852-caf5c41e444f",
               "identifier": "IMP-154",
               "title": "Multimedia – Prepare mapping environment for testing uploaded dataset",
-              "status": "Todo",
+              "status": "Canceled",
               "start": null,
               "end": null,
               "assignee": null,
@@ -8450,13 +8476,26 @@
           "targetDate": "2026-01-30",
           "issues": [
             {
+              "id": "5bcb7d5d-d4bb-46a6-bfff-258010b3c3f5",
+              "identifier": "SUP-1254",
+              "title": "Different completed suppliers on each page",
+              "status": "Todo",
+              "start": null,
+              "end": "2026-03-27",
+              "assignee": null,
+              "priority": "Urgent",
+              "estimate": 1,
+              "url": "https://linear.app/supplied/issue/SUP-1254/different-completed-suppliers-on-each-page",
+              "parentId": null
+            },
+            {
               "id": "2e220548-f2f7-446d-bfdb-b0ae27f2dccc",
               "identifier": "SUP-1251",
               "title": "UTF-8 BOM Missing from CSV Exports Causes Umlaut Corruption in Excel",
               "status": "In Review",
               "start": "2026-03-26",
               "end": null,
-              "assignee": null,
+              "assignee": "Vladimir Ivanov",
               "priority": "No priority",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/SUP-1251/utf-8-bom-missing-from-csv-exports-causes-umlaut-corruption-in-excel",
@@ -8673,14 +8712,14 @@
             {
               "id": "ed12daaf-33fb-4fb3-9ebb-554a3d959c9f",
               "identifier": "IMP-150",
-              "title": "Chaletplus – Umlaut characters not displaying correctly in Excel export",
-              "status": "Todo",
-              "start": null,
+              "title": "Chaletplus – Umlaut characters not displaying correctly in Microsoft Excel",
+              "status": "In Progress",
+              "start": "2026-03-27",
               "end": "2026-03-27",
               "assignee": "Vladimir Ivanov",
               "priority": "High",
               "estimate": null,
-              "url": "https://linear.app/supplied/issue/IMP-150/chaletplus-umlaut-characters-not-displaying-correctly-in-excel-export",
+              "url": "https://linear.app/supplied/issue/IMP-150/chaletplus-umlaut-characters-not-displaying-correctly-in-microsoft",
               "parentId": null
             },
             {
@@ -13361,7 +13400,7 @@
               "status": "In Progress",
               "start": "2026-02-27",
               "end": null,
-              "assignee": "Johann Rozario",
+              "assignee": "madebyjero@gmail.com",
               "priority": "High",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/SUP-977/re-design-for-linking-data-sources-to-avoid-duplicateincorrectly",

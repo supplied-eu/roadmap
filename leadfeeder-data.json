@@ -1,17 +1,25 @@
 {
-  "refreshedAt": "2026-03-26T16:42:37.885Z",
+  "refreshedAt": "2026-03-27T09:40:09.456Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 66,
-  "lastWeekTotal": 54,
+  "thisWeekTotal": 61,
+  "lastWeekTotal": 52,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 66,
-      "lastWeek": 54,
+      "thisWeek": 61,
+      "lastWeek": 52,
       "companies": [
+        {
+          "name": "Transferz",
+          "website": null,
+          "visits": 2,
+          "lastVisit": "2026-03-27",
+          "leadId": "a809332c-33c4-11eb-871d-5da369c27599_iqJY1yrHd99ZA4hwnBFRG3",
+          "source": "Direct"
+        },
         {
           "name": "Korton",
           "website": null,
@@ -163,14 +171,6 @@
           "lastVisit": "2026-03-23",
           "leadId": "f62015b4-23af-11eb-8126-53cd456b03d3_4yPUV85U5YiztGE22Jm4gQ",
           "source": "Direct"
-        },
-        {
-          "name": "DFF Ventures",
-          "website": null,
-          "visits": 3,
-          "lastVisit": "2026-03-23",
-          "leadId": "12f074ee-1619-11f0-9a25-41fe763d0a57_8KKvyBiSeKRkp23TC37b99",
-          "source": "Direct"
         }
       ]
     }
@@ -185,6 +185,16 @@
       "lastVisit": "2026-03-23",
       "source": "Direct",
       "leadId": "12f074ee-1619-11f0-9a25-41fe763d0a57_8KKvyBiSeKRkp23TC37b99"
+    },
+    {
+      "name": "Transferz",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-01-05",
+      "lastVisit": "2026-03-27",
+      "source": "Direct",
+      "leadId": "a809332c-33c4-11eb-871d-5da369c27599_iqJY1yrHd99ZA4hwnBFRG3"
     },
     {
       "name": "Secret View",
@@ -275,16 +285,6 @@
       "lastVisit": "2026-03-18",
       "source": "Direct",
       "leadId": "wi2rFLLoQFRRV5PnrnvMok_p6q3nDbB2C4m9KjK9gndy"
-    },
-    {
-      "name": "Vetaion",
-      "website": null,
-      "visits": 2,
-      "pageViews": null,
-      "firstVisit": "2026-03-12",
-      "lastVisit": "2026-03-12",
-      "source": "Direct",
-      "leadId": "b2077ed4-c7bb-11f0-830d-4f26e987a320_qQcqMoRWHAUjrwmRQ66J7b"
     },
     {
       "name": "Korton",
@@ -408,7 +408,7 @@
     },
     {
       "date": "2025-12-16",
-      "visits": 2
+      "visits": 1
     },
     {
       "date": "2025-12-18",
@@ -420,7 +420,7 @@
     },
     {
       "date": "2026-01-05",
-      "visits": 1
+      "visits": 2
     },
     {
       "date": "2026-01-23",
@@ -432,7 +432,7 @@
     },
     {
       "date": "2026-02-05",
-      "visits": 2
+      "visits": 1
     },
     {
       "date": "2026-02-11",
@@ -448,11 +448,7 @@
     },
     {
       "date": "2026-02-25",
-      "visits": 2
-    },
-    {
-      "date": "2026-02-26",
-      "visits": 11
+      "visits": 1
     },
     {
       "date": "2026-02-27",
@@ -468,7 +464,7 @@
     },
     {
       "date": "2026-03-02",
-      "visits": 20
+      "visits": 19
     },
     {
       "date": "2026-03-03",
@@ -504,7 +500,7 @@
     },
     {
       "date": "2026-03-12",
-      "visits": 12
+      "visits": 10
     },
     {
       "date": "2026-03-13",
@@ -557,6 +553,10 @@
     {
       "date": "2026-03-26",
       "visits": 8
+    },
+    {
+      "date": "2026-03-27",
+      "visits": 2
     }
   ]
 }
