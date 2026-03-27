@@ -88,6 +88,20 @@ async function fetchEmails(accessToken: string) {
 export async function GET(req: NextRequest) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+  // Debug mode: show what env vars look like (masked)
+  if (req.nextUrl.searchParams.get("debug") === "1") {
+    return NextResponse.json({
+      clientId_length: clientId?.length,
+      clientId_start: clientId?.slice(0, 15),
+      clientId_end: clientId?.slice(-20),
+      clientSecret_length: clientSecret?.length,
+      clientSecret_start: clientSecret?.slice(0, 10),
+      refreshToken_exists: !!process.env.GOOGLE_REFRESH_TOKEN,
+      refreshToken_length: process.env.GOOGLE_REFRESH_TOKEN?.length,
+    });
+  }
+
   if (!clientId || !clientSecret) {
     return NextResponse.json({ error: "Google OAuth not configured" }, { status: 500 });
   }
