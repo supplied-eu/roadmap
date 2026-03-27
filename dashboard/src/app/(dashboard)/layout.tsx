@@ -79,7 +79,7 @@ export default function DashboardLayout({
                 )}
               </>
             )}
-            <Link
+            <a
               href="/auth/logout"
               className="p-2 rounded-md transition-colors"
               style={{
@@ -89,7 +89,7 @@ export default function DashboardLayout({
               title="Logout"
             >
               <LogOut size={18} />
-            </Link>
+            </a>
           </div>
         </div>
 

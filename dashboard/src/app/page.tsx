@@ -42,24 +42,16 @@ export default function HomePage() {
           Operations Dashboard
         </p>
 
-        <Link
+        <a
           href="/auth/login"
           className="inline-block px-6 py-3 rounded-md font-medium transition-colors"
           style={{
             background: 'var(--accent)',
             color: 'white',
           }}
-          onMouseEnter={(e) => {
-            const el = e.target as HTMLElement;
-            el.style.opacity = '0.9';
-          }}
-          onMouseLeave={(e) => {
-            const el = e.target as HTMLElement;
-            el.style.opacity = '1';
-          }}
         >
           Log in
-        </Link>
+        </a>
       </div>
     </div>
   );
