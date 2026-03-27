@@ -1,7 +1,16 @@
 {
-  "refreshedAt": "2026-03-27T09:39:57.675Z",
+  "refreshedAt": "2026-03-27T10:06:39.660Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d2ec12f378a9fe",
+        "subject": "Jack van Asbeck and Johann Rozario",
+        "from": "Johann Rozario <johann@supplied.eu>",
+        "date": "2026-03-27T10:05:04.000Z",
+        "snippet": "Jack van Asbeck and Johann Rozario HI Jack - just checking whether we are still on for this meeting today at 1130cet? i see someone else was invited to the earlier event but declined? FYI Jelena is out",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2ec12f378a9fe",
+        "unread": true
+      },
       {
         "id": "19d261e199e703f4",
         "subject": "Role distribution for Accountmanager",
@@ -100,18 +109,9 @@
         "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
         "unread": true
-      },
-      {
-        "id": "19cc2fcaa76e484f",
-        "subject": "Re: Supplied cashback - cash in Jar balance",
-        "from": "Jelena Hmeltnitski <jelena@supplied.eu>",
-        "date": "2026-03-09T15:06:31.000Z",
-        "snippet": "Hi Willem, I am aware of the interest; as previously mentioned, this was already explained (see the image below). It is common practice during fiscal closing to provide explanations for small, short-",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cc2fcaa76e484f",
-        "unread": true
       }
     ],
-    "unreadCount": 33
+    "unreadCount": 34
   },
   "calendar": {
     "today": [
@@ -429,6 +429,16 @@
       "threadId": "19d261e199e703f4",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d261e199e703f4",
       "id": "email-19d261e199e703f4"
+    },
+    {
+      "action": "followup",
+      "subject": "Jack van Asbeck and Johann Rozario",
+      "reason": "Jack van Asbeck and Johann Rozario HI Jack - just checking whether we are still on for this meeting today at 1130cet? i ",
+      "from": "Johann Rozario <johann@supplied.eu>",
+      "ageDays": 0,
+      "threadId": "19d2ec12f378a9fe",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2ec12f378a9fe",
+      "id": "email-19d2ec12f378a9fe"
     }
   ],
   "drive_priorities": [
