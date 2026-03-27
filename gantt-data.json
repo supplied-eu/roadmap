@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-27T10:06:35.813Z",
+  "refreshedAt": "2026-03-27T10:57:55.914Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8476,6 +8476,19 @@
           "targetDate": "2026-01-30",
           "issues": [
             {
+              "id": "811557e3-68ea-41f5-b2fa-39a9d424e266",
+              "identifier": "SUP-1256",
+              "title": "Corrective invoices have not been included here, see the file attached",
+              "status": "Todo",
+              "start": null,
+              "end": "2026-03-27",
+              "assignee": "andrei@supplied.eu",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-1256/corrective-invoices-have-not-been-included-here-see-the-file-attached",
+              "parentId": null
+            },
+            {
               "id": "5bcb7d5d-d4bb-46a6-bfff-258010b3c3f5",
               "identifier": "SUP-1254",
               "title": "Different completed suppliers on each page",
@@ -8533,7 +8546,7 @@
               "title": "[Booking Experts] small discrepancy in numbers between our calculation and chaletplus data",
               "status": "Blocked",
               "start": "2026-03-25",
-              "end": "2026-03-25",
+              "end": "2026-03-27",
               "assignee": "andrei@supplied.eu",
               "priority": "Medium",
               "estimate": null,
@@ -8650,7 +8663,7 @@
               "title": "[Booking Experts] small discrepancy in numbers between our calculation and chaletplus data",
               "status": "Blocked",
               "start": "2026-03-25",
-              "end": "2026-03-25",
+              "end": "2026-03-27",
               "assignee": "andrei@supplied.eu",
               "priority": "Medium",
               "estimate": null,
@@ -11514,9 +11527,9 @@
               "id": "9a5358dc-d1d9-4006-8dd1-e66494e2a1a6",
               "identifier": "SUP-1005",
               "title": "[Operations Hub] Don't show earnings on the verification view and in the app",
-              "status": "In Test",
+              "status": "Done",
               "start": "2026-03-17",
-              "end": null,
+              "end": "2026-03-27",
               "assignee": "andrei@supplied.eu",
               "priority": "High",
               "estimate": null,
