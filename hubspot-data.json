@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-27T13:07:42.740Z",
+  "refreshedAt": "2026-03-27T14:07:46.836Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1655,6 +1655,20 @@
       "probability": 0.2,
       "stageLabel": "Solution Proposal Sent",
       "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "495708552422",
+      "name": "The Viewer company",
+      "stage": "4874399932",
+      "pipeline": "3557407943",
+      "amount": null,
+      "closeDate": "2026-04-30",
+      "createDate": "2026-03-27",
+      "modifiedDate": "2026-03-27",
+      "ownerId": "687091984",
+      "probability": 0.1,
+      "stageLabel": "Initial Contact",
+      "ownerName": "Julio Lindveld"
     },
     {
       "id": "473243074769",
