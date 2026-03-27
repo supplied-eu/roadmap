@@ -2,9 +2,11 @@
 
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { isAdmin } from '@/lib/auth';
-import { LogOut } from 'lucide-react';
+import { LogOut, RefreshCw } from 'lucide-react';
+import ClaudeChat from '@/components/ClaudeChat';
+import { useState, useEffect, useCallback } from 'react';
 
 const tabs = [
   { name: 'TO DOs', href: '/dashboard', adminOnly: false },
@@ -21,6 +23,27 @@ export default function DashboardLayout({
 }) {
   const { user, isLoading } = useUser();
   const pathname = usePathname();
+  const router = useRouter();
+  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Auto-refresh every 5 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLastRefresh(new Date());
+      router.refresh();
+    }, 300000); // 5 minutes
+    return () => clearInterval(interval);
+  }, [router]);
+
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    setLastRefresh(new Date());
+    router.refresh();
+    // Force child re-fetch by toggling refresh state
+    window.dispatchEvent(new CustomEvent('dashboard-refresh'));
+    setTimeout(() => setRefreshing(false), 1000);
+  }, [router]);
 
   if (isLoading) {
     return (
@@ -31,26 +54,20 @@ export default function DashboardLayout({
   }
 
   const userIsAdmin = isAdmin(user?.email);
-
-  // Filter tabs based on admin status
   const visibleTabs = tabs.filter((tab) => !tab.adminOnly || userIsAdmin);
 
-  // Helper to determine if a tab is active
   const isActive = (href: string) => {
-    if (href === '/dashboard') {
-      return pathname === '/dashboard';
-    }
+    if (href === '/dashboard') return pathname === '/dashboard';
     return pathname.startsWith(href);
   };
+
+  const refreshTime = lastRefresh.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
   return (
     <div style={{ background: 'var(--bg)', color: 'var(--text)' }} className="min-h-screen flex flex-col">
       {/* Header */}
       <header
-        style={{
-          background: 'var(--surface)',
-          borderBottomColor: 'var(--border)',
-        }}
+        style={{ background: 'var(--surface)', borderBottomColor: 'var(--border)' }}
         className="border-b"
       >
         <div className="px-6 py-4 flex items-center justify-between">
@@ -63,29 +80,39 @@ export default function DashboardLayout({
             />
           </div>
 
-          {/* User info & logout */}
+          {/* Refresh + User info */}
           <div className="flex items-center gap-4">
+            {/* Auto-refresh badge */}
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] px-2 py-1 rounded flex items-center gap-1.5"
+                style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}>
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e' }} />
+                {refreshTime}
+              </span>
+              <button
+                onClick={handleRefresh}
+                className="p-1.5 rounded transition-colors"
+                style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
+                title="Refresh data"
+              >
+                <RefreshCw size={12} className={refreshing ? 'animate-spin' : ''} />
+              </button>
+            </div>
+
             {user && (
               <>
                 <div className="text-sm" style={{ color: 'var(--text-muted)' }}>
                   {user.name || user.email}
                 </div>
                 {user.picture && (
-                  <img
-                    src={user.picture}
-                    alt={user.name || 'User'}
-                    className="w-8 h-8 rounded-full"
-                  />
+                  <img src={user.picture} alt={user.name || 'User'} className="w-8 h-8 rounded-full" />
                 )}
               </>
             )}
             <a
               href="/auth/logout"
               className="p-2 rounded-md transition-colors"
-              style={{
-                background: 'var(--surface2)',
-                color: 'var(--text-muted)',
-              }}
+              style={{ background: 'var(--surface2)', color: 'var(--text-muted)' }}
               title="Logout"
             >
               <LogOut size={18} />
@@ -95,9 +122,7 @@ export default function DashboardLayout({
 
         {/* Tab navigation */}
         <nav
-          style={{
-            borderTopColor: 'var(--border)',
-          }}
+          style={{ borderTopColor: 'var(--border)' }}
           className="border-t px-6 flex gap-0"
         >
           {visibleTabs.map((tab) => (
@@ -120,6 +145,9 @@ export default function DashboardLayout({
       <main className="flex-1 overflow-auto">
         {children}
       </main>
+
+      {/* Claude Chat - available on every page */}
+      <ClaudeChat />
     </div>
   );
 }
