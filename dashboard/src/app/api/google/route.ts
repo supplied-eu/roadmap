@@ -11,8 +11,10 @@ async function getAccessToken(refreshToken: string) {
       grant_type: "refresh_token",
     }),
   });
-  if (!res.ok) throw new Error(`Google token refresh failed: ${res.status}`);
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(`Google token refresh failed: ${res.status} — ${JSON.stringify(data)}`);
+  }
   return data.access_token;
 }
 
