@@ -32,7 +32,13 @@ const CLIENT_ID     = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
 
-const OUT_FILE = path.join(__dirname, "../google-data.json");
+// Support per-user mode: node fetch-google.js --user johann
+// Writes google-data-{user}.json instead of google-data.json
+const userArg = process.argv.find(a => a.startsWith("--user="));
+const USER_NAME = userArg ? userArg.split("=")[1].toLowerCase() : null;
+const OUT_FILE = USER_NAME
+  ? path.join(__dirname, `../google-data-${USER_NAME}.json`)
+  : path.join(__dirname, "../google-data.json");
 
 // ── Graceful no-op if credentials not set ────────────────────────────────────
 if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {

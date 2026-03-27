@@ -3653,24 +3653,29 @@ function detectMyName(){
 
 // Load google-data-{name}.json if it exists, otherwise fall back to google-data.json
 async function loadGoogleDataFor(personName){
-  // Try person-specific file first (e.g. google-data-johann.json)
+  // Always try the person-specific file first (e.g. google-data-julio.json)
   if(personName){
     try{
       const r=await fetch(\`./google-data-\${personName.toLowerCase()}.json?t=\${Date.now()}\`);
       if(r.ok){ GOOGLE_DATA=await r.json(); return; }
     }catch(e){}
-    // If loading for a specific non-admin person and their file doesn't exist,
-    // clear Google data so they don't see another user's emails/calendar
-    if(!isAdmin() || (MYDAY_PERSON!=="all" && MYDAY_PERSON!=="me")){
-      GOOGLE_DATA=null;
-      return;
+    // No per-user file found — only fall back to default for admin "all" view
+    if(isAdmin() && MYDAY_PERSON==="all"){
+      try{
+        const r=await fetch('./google-data.json?t='+Date.now());
+        if(r.ok){ GOOGLE_DATA=await r.json(); return; }
+      }catch(e){}
     }
+    // No data for this user — clear so they don't see someone else's
+    GOOGLE_DATA=null;
+    return;
   }
-  // Fallback to default google-data.json only for admin's own view or "all"
+  // No person specified (null) — admin "all" view, load default
   try{
     const r=await fetch('./google-data.json?t='+Date.now());
     if(r.ok){ GOOGLE_DATA=await r.json(); }
-  }catch(e){}
+    else GOOGLE_DATA=null;
+  }catch(e){ GOOGLE_DATA=null; }
 }
 
 // Switch person filter, reload their Google data, and re-render
@@ -4433,7 +4438,15 @@ function renderMyDay(){
 
   if(showPipeline && HS_DATA && HS_DATA.deals && HS_DATA.deals.length){
     const cur=HS_DATA.currency||"\u20AC";
-    const openDeals=HS_DATA.deals.filter(d=>!isDoneStage(d.stageLabel));
+    // Filter deals to current user's view (admin "all" sees everything)
+    const myDeals = (MYDAY_PERSON==="all")
+      ? HS_DATA.deals
+      : HS_DATA.deals.filter(d=>{
+          const ownerFirst=(d.ownerName||"").split(" ")[0].toLowerCase();
+          const viewKey=(viewName||CURRENT_USER||"").toLowerCase();
+          return ownerFirst===viewKey;
+        });
+    const openDeals=myDeals.filter(d=>!isDoneStage(d.stageLabel));
     const totalPipeVal=openDeals.reduce((s,d)=>s+(d.amount||0),0);
 
     // Build ordered stages from pipeline data (same logic as Sales & Ops)
