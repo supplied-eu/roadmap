@@ -1,14 +1,32 @@
 {
-  "refreshedAt": "2026-03-27T14:07:48.212Z",
+  "refreshedAt": "2026-03-27T15:07:39.793Z",
   "gmail": {
     "threads": [
       {
+        "id": "19d2f7ed86944d73",
+        "subject": "eSignature request for \"Multimedia LLC <> Supplied Technologies - 3/27/26, 3:30 PM\"",
+        "from": "\"Ledia Dworkin (via Google Workspace eSignatures)\" <esignature-noreply@google.com>",
+        "date": "2026-03-27T15:04:13.000Z",
+        "snippet": "eSignature completed Ledia Dworkin (ledia@multimediallc.com) has completed the eSignature request on this document Open Google LLC 1600 Amphitheatre Parkway, Mountain View, CA 94043. You received this",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2f7ed86944d73",
+        "unread": true
+      },
+      {
         "id": "19ce2db4070d3a8d",
-        "subject": "Re: Reporting template - Supplied call",
-        "from": "Maurits Hovius <maurits@volve.capital>",
-        "date": "2026-03-27T12:26:31.000Z",
-        "snippet": "Hi Jack, Thanks for this! I would like to add total &quot;contracted MRR / ARR&quot;, whereby contracted includes all clients, also those who have signed but are not yet live. Agree? Maurits On Fri, 27",
+        "subject": "AW: Reporting template - Supplied call",
+        "from": "Michael Buchinger <michael@rethinkventures.com>",
+        "date": "2026-03-27T14:27:15.000Z",
+        "snippet": "Hi all, thanks for the file. Is it possible to also include 1-2 usage related KPIs into the overview? I thought about something like: # of onboardings and especially # of reports submitted. Do you",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce2db4070d3a8d",
+        "unread": true
+      },
+      {
+        "id": "19d2fa1cdfbfe765",
+        "subject": "Re: johann and Kamil Węgliński + Michał Mroczkowski",
+        "from": "\"Kamil Węgliński\" <kamil.weglinski@moc.vc>",
+        "date": "2026-03-27T14:10:21.000Z",
+        "snippet": "Hey Johann, Terribly sorry for any inconvenience caused but something urgent came up on our end just now and we won&#39;t be able to dial in today. Could you please use the link below to reschedule to",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
         "unread": true
       },
       {
@@ -91,27 +109,9 @@
         "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
         "unread": true
-      },
-      {
-        "id": "19cde516ee128e60",
-        "subject": "Your certificate is ready",
-        "from": "notifications@scrut.io",
-        "date": "2026-03-11T19:18:24.000Z",
-        "snippet": "Hi Johann Rozario, Congratulations! You have passed ISMS Quiz training. Your passing certificate is attached below. You received this email because your company is using Scrut Automation to improve and",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cde516ee128e60",
-        "unread": true
-      },
-      {
-        "id": "19cda0433ba07fa8",
-        "subject": "Inside the Diligence Process: What We Actually Look For When Evaluating a Deal",
-        "from": "Matthew Sciarra <msciarra@solensoftwaregroup.com>",
-        "date": "2026-03-10T23:10:32.000Z",
-        "snippet": "Hey Johann, Hope things are going well on your end! I wanted to invite you to a live session we&#39;re hosting with our investment team on March 24th at 1:00 PM EST. We&#39;re discussing what we",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cda0433ba07fa8",
-        "unread": true
       }
     ],
-    "unreadCount": 34
+    "unreadCount": 35
   },
   "calendar": {
     "today": [
@@ -302,20 +302,20 @@
   "drive": {
     "recent": [
       {
-        "id": "1NDetVDR7iKOBxAdQLkJRwvjPbzu8ew2Q",
-        "name": "Multimedia LLC <> Supplied Technologies - 3/27/26, 3:30 PM",
-        "mimeType": "application/pdf",
-        "modifiedTime": "2026-03-27T13:36:34.436Z",
-        "url": "https://drive.google.com/file/d/1NDetVDR7iKOBxAdQLkJRwvjPbzu8ew2Q/view?usp=drivesdk",
-        "lastModifiedBy": "Julio Lindveld"
-      },
-      {
         "id": "1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA",
         "name": "Friday Weekly Reviews",
         "mimeType": "application/vnd.google-apps.presentation",
-        "modifiedTime": "2026-03-27T14:05:14.545Z",
+        "modifiedTime": "2026-03-27T15:04:45.457Z",
         "url": "https://docs.google.com/presentation/d/1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA/edit?usp=drivesdk",
-        "lastModifiedBy": "ANDREI KOVALCHUK"
+        "lastModifiedBy": "Vladimir Ivanov"
+      },
+      {
+        "id": "1NDetVDR7iKOBxAdQLkJRwvjPbzu8ew2Q",
+        "name": "Multimedia LLC <> Supplied Technologies - 3/27/26, 3:30 PM",
+        "mimeType": "application/pdf",
+        "modifiedTime": "2026-03-27T15:04:14.916Z",
+        "url": "https://drive.google.com/file/d/1NDetVDR7iKOBxAdQLkJRwvjPbzu8ew2Q/view?usp=drivesdk",
+        "lastModifiedBy": "Julio Lindveld"
       },
       {
         "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
@@ -402,6 +402,16 @@
   "email_priorities": [
     {
       "action": "alert",
+      "subject": "Re: johann and Kamil Węgliński + Michał Mroczkowski",
+      "reason": "Hey Johann, Terribly sorry for any inconvenience caused but something urgent came up on our end just now and we won&#39;",
+      "from": "\"Kamil Węgliński\" <kamil.weglinski@moc.vc>",
+      "ageDays": 0,
+      "threadId": "19d2fa1cdfbfe765",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
+      "id": "email-19d2fa1cdfbfe765"
+    },
+    {
+      "action": "alert",
       "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
       "reason": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
       "from": "anomalydetection@costalerts.amazonaws.com",
@@ -422,9 +432,19 @@
     },
     {
       "action": "reply",
-      "subject": "Re: Reporting template - Supplied call",
-      "reason": "Hi Jack, Thanks for this! I would like to add total &quot;contracted MRR / ARR&quot;, whereby contracted includes all cl",
-      "from": "Maurits Hovius <maurits@volve.capital>",
+      "subject": "eSignature request for \"Multimedia LLC <> Supplied Technologies - 3/27/26, 3:30 PM\"",
+      "reason": "eSignature completed Ledia Dworkin (ledia@multimediallc.com) has completed the eSignature request on this document Open ",
+      "from": "\"Ledia Dworkin (via Google Workspace eSignatures)\" <esignature-noreply@google.com>",
+      "ageDays": 0,
+      "threadId": "19d2f7ed86944d73",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2f7ed86944d73",
+      "id": "email-19d2f7ed86944d73"
+    },
+    {
+      "action": "reply",
+      "subject": "AW: Reporting template - Supplied call",
+      "reason": "Hi all, thanks for the file. Is it possible to also include 1-2 usage related KPIs into the overview? I thought about so",
+      "from": "Michael Buchinger <michael@rethinkventures.com>",
       "ageDays": 0,
       "threadId": "19ce2db4070d3a8d",
       "url": "https://mail.google.com/mail/u/0/#inbox/19ce2db4070d3a8d",
