@@ -31,42 +31,19 @@ export default function HomePage() {
         style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
       >
         <div className="mb-6 flex justify-center">
-          {/* SVG circles logo */}
-          <svg
-            width="64"
-            height="64"
-            viewBox="0 0 64 64"
-            className="text-indigo-500"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          >
-            <circle cx="32" cy="32" r="28" />
-            <circle cx="32" cy="32" r="18" />
-            <circle cx="32" cy="32" r="8" />
-          </svg>
+          <img
+            src="https://cdn.prod.website-files.com/69066945678413d777151176/698493e5d5a63466f390dfee_NEWSuppliedFullLogoWhite.png"
+            alt="Supplied"
+            className="h-10"
+          />
         </div>
-
-        <h1
-          className="text-3xl font-bold mb-2"
-          style={{ color: 'var(--accent)' }}
-        >
-          Supplied
-        </h1>
 
         <p className="mb-8" style={{ color: 'var(--text-muted)' }}>
           Operations Dashboard
         </p>
 
-        <div className="mb-6 flex justify-center">
-          <Lock
-            size={32}
-            style={{ color: 'var(--accent)' }}
-          />
-        </div>
-
         <Link
-          href="/api/auth/login"
+          href="/auth/login"
           className="inline-block px-6 py-3 rounded-md font-medium transition-colors"
           style={{
             background: 'var(--accent)',

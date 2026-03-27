@@ -1,28 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from "next/server";
+import { Auth0Client } from "@auth0/nextjs-auth0/server";
 
-export async function middleware(req: NextRequest) {
-  const pathname = req.nextUrl.pathname;
+const auth0 = new Auth0Client({
+  domain: process.env.AUTH0_DOMAIN!,
+  clientId: process.env.AUTH0_CLIENT_ID!,
+  clientSecret: process.env.AUTH0_CLIENT_SECRET!,
+  secret: process.env.AUTH0_SECRET!,
+  appBaseUrl: process.env.APP_BASE_URL!,
+});
 
-  // Allow Auth0 routes without any checks
-  if (pathname.startsWith('/api/auth')) {
-    return NextResponse.next();
-  }
-
-  // For protected routes, we check for auth session cookie
-  // Auth0 uses __Secure-ajs-user-session cookie
-  const isProtected = pathname.startsWith('/dashboard') || (pathname.startsWith('/api') && !pathname.startsWith('/api/auth'));
-
-  if (isProtected) {
-    // Check for session cookie
-    const sessionCookie = req.cookies.get('__Secure-ajs-user-session') || req.cookies.get('ajs-user-session');
-    if (!sessionCookie) {
-      return NextResponse.redirect(new URL('/', req.url));
-    }
-  }
-
-  return NextResponse.next();
+export async function middleware(request: NextRequest) {
+  return await auth0.middleware(request);
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/api/:path*'],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
 };

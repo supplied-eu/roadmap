@@ -56,22 +56,11 @@ export default function DashboardLayout({
         <div className="px-6 py-4 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 64 64"
-              className="text-indigo-500"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            >
-              <circle cx="32" cy="32" r="28" />
-              <circle cx="32" cy="32" r="18" />
-              <circle cx="32" cy="32" r="8" />
-            </svg>
-            <span className="text-xl font-bold" style={{ color: 'var(--accent)' }}>
-              Supplied
-            </span>
+            <img
+              src="https://cdn.prod.website-files.com/69066945678413d777151176/698493e5d5a63466f390dfee_NEWSuppliedFullLogoWhite.png"
+              alt="Supplied"
+              className="h-7"
+            />
           </div>
 
           {/* User info & logout */}
@@ -91,7 +80,7 @@ export default function DashboardLayout({
               </>
             )}
             <Link
-              href="/api/auth/logout"
+              href="/auth/logout"
               className="p-2 rounded-md transition-colors"
               style={{
                 background: 'var(--surface2)',
