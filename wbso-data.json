@@ -1,0 +1,524 @@
+{
+  "application": "SO26018405",
+  "company": "Supplied Technologies B.V.",
+  "period": { "start": "2026-01-01", "end": "2026-12-31" },
+  "totalHours": 1710,
+  "blocks": [
+    {
+      "id": 1,
+      "name": "Lightweight Local Model Inference for Column Mapping",
+      "keywords": ["quantized SLM", "column mapping", "GGUF/ONNX", "Lambda inference", "AI mapping", "field mapping AI"],
+      "allocatedHours": 400,
+      "estimatedTotalHours": 385,
+      "issues": [
+        {
+          "id": "SUP-898",
+          "title": "Automatically apply AI mapping suggestions to existing mappings",
+          "status": "Backlog",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-815",
+          "title": "Add AI mapping on Supplier Sync Window",
+          "status": "Done",
+          "estimatedHours": 24,
+          "weeklyHours": {
+            "2026-W04": 6,
+            "2026-W05": 6,
+            "2026-W06": 6,
+            "2026-W07": 6
+          }
+        },
+        {
+          "id": "SUP-936",
+          "title": "Support formulaes for Supplier Mapping",
+          "status": "Done",
+          "estimatedHours": 28,
+          "weeklyHours": {
+            "2026-W08": 7,
+            "2026-W09": 7,
+            "2026-W10": 7,
+            "2026-W11": 7
+          }
+        },
+        {
+          "id": "SUP-1207",
+          "title": "Can't apply AI mapping for property sync",
+          "status": "Todo",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-1135",
+          "title": "When you click Apply Recommendation from the AI - it doesn't apply",
+          "status": "Canceled",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-1203",
+          "title": "Row misalignment in Operations Hub sync when OpenAI returns incorrect",
+          "status": "In Test",
+          "estimatedHours": 16,
+          "weeklyHours": {
+            "2026-W12": 4,
+            "2026-W13": 4,
+            "2026-W14": 4,
+            "2026-W15": 4
+          }
+        },
+        {
+          "id": "SUP-1038",
+          "title": "[Suppliers Sync] address mapping",
+          "status": "Done",
+          "estimatedHours": 32,
+          "weeklyHours": {
+            "2026-W02": 8,
+            "2026-W03": 8,
+            "2026-W04": 8,
+            "2026-W05": 8
+          }
+        },
+        {
+          "id": "SUP-308",
+          "title": "[DataMapping] show mapped fields",
+          "status": "Done",
+          "estimatedHours": 20,
+          "weeklyHours": {
+            "2026-W01": 5,
+            "2026-W02": 5,
+            "2026-W03": 5,
+            "2026-W04": 5
+          }
+        },
+        {
+          "id": "SUP-307",
+          "title": "[DataMapping] Use the silver data collection",
+          "status": "Done",
+          "estimatedHours": 24,
+          "weeklyHours": {
+            "2026-W01": 6,
+            "2026-W02": 6,
+            "2026-W03": 6,
+            "2026-W04": 6
+          }
+        },
+        {
+          "id": "SUP-114",
+          "title": "Map the DAC7 fields to fields from imported data",
+          "status": "Done",
+          "estimatedHours": 28,
+          "weeklyHours": {
+            "2026-W05": 7,
+            "2026-W06": 7,
+            "2026-W07": 7,
+            "2026-W08": 7
+          }
+        },
+        {
+          "id": "SUP-427",
+          "title": "Improve AI Recommendations UX",
+          "status": "Done",
+          "estimatedHours": 24,
+          "weeklyHours": {
+            "2026-W09": 6,
+            "2026-W10": 6,
+            "2026-W11": 6,
+            "2026-W12": 6
+          }
+        },
+        {
+          "id": "SUP-939",
+          "title": "Support Structured Address for Mapping",
+          "status": "Done",
+          "estimatedHours": 32,
+          "weeklyHours": {
+            "2026-W13": 8,
+            "2026-W14": 8,
+            "2026-W15": 8,
+            "2026-W16": 8
+          }
+        },
+        {
+          "id": "SUP-1205",
+          "title": "AI address splitting performance optimization in Operations Hub Sync",
+          "status": "Done",
+          "estimatedHours": 20,
+          "weeklyHours": {
+            "2026-W16": 5,
+            "2026-W17": 5,
+            "2026-W18": 5,
+            "2026-W19": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Generic Multi-Regulation Report Generation Framework",
+      "keywords": ["DAC7", "DAC8", "CARF", "1099-K", "VAT", "CSRD", "report generation", "plugin interface", "multi-regulation"],
+      "allocatedHours": 460,
+      "estimatedTotalHours": 455,
+      "issues": [
+        {
+          "id": "SUP-1013",
+          "title": "Auto-Generation of Multiple DAC7 Reports per Country in Essential reporting",
+          "status": "Backlog",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-1148",
+          "title": "DAC7 Corrections: gaps in report linkage, DocRefId mapping, and OECD compliance",
+          "status": "Todo",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-1147",
+          "title": "DAC7 corrections fail with No existing docRefId found for correction",
+          "status": "In Test",
+          "estimatedHours": 20,
+          "weeklyHours": {
+            "2026-W20": 5,
+            "2026-W21": 5,
+            "2026-W22": 5,
+            "2026-W23": 5
+          }
+        },
+        {
+          "id": "SUP-1104",
+          "title": "Fix DAC7 XML generation for foreign Reporting Platform Operators",
+          "status": "Done",
+          "estimatedHours": 28,
+          "weeklyHours": {
+            "2026-W11": 7,
+            "2026-W12": 7,
+            "2026-W13": 7,
+            "2026-W14": 7
+          }
+        },
+        {
+          "id": "SUP-761",
+          "title": "Generalize Latest Reports table on Dashboard for multiple report types",
+          "status": "Done",
+          "estimatedHours": 32,
+          "weeklyHours": {
+            "2026-W15": 8,
+            "2026-W16": 8,
+            "2026-W17": 8,
+            "2026-W18": 8
+          }
+        },
+        {
+          "id": "SUP-762",
+          "title": "Generalize Reports page and uploads for multiple report types",
+          "status": "Done",
+          "estimatedHours": 36,
+          "weeklyHours": {
+            "2026-W19": 9,
+            "2026-W20": 9,
+            "2026-W21": 9,
+            "2026-W22": 9
+          }
+        },
+        {
+          "id": "SUP-760",
+          "title": "Generalize DAC7 report wizard on the web for multiple report types",
+          "status": "Done",
+          "estimatedHours": 40,
+          "weeklyHours": {
+            "2026-W23": 10,
+            "2026-W24": 10,
+            "2026-W25": 10,
+            "2026-W26": 10
+          }
+        },
+        {
+          "id": "SUP-685",
+          "title": "Specs for 1099k reporting",
+          "status": "Canceled",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-876",
+          "title": "Support for Ireland Submissions",
+          "status": "Backlog",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-433",
+          "title": "Activate DAC7 UK API with HMRC",
+          "status": "Backlog",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-312",
+          "title": "[DAC7] Report Calculations",
+          "status": "Done",
+          "estimatedHours": 40,
+          "weeklyHours": {
+            "2026-W02": 10,
+            "2026-W03": 10,
+            "2026-W04": 10,
+            "2026-W05": 10
+          }
+        },
+        {
+          "id": "SUP-647",
+          "title": "Auto Generate multiple DAC7 reports when several destination countries",
+          "status": "Todo",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-1081",
+          "title": "Validation rules for ImmovableProperty report fields",
+          "status": "Done",
+          "estimatedHours": 24,
+          "weeklyHours": {
+            "2026-W06": 6,
+            "2026-W07": 6,
+            "2026-W08": 6,
+            "2026-W09": 6
+          }
+        },
+        {
+          "id": "SUP-975",
+          "title": "Uploaded a Corrected File for the DAC7 report",
+          "status": "Done",
+          "estimatedHours": 16,
+          "weeklyHours": {
+            "2026-W10": 4,
+            "2026-W11": 4,
+            "2026-W12": 4,
+            "2026-W13": 4
+          }
+        },
+        {
+          "id": "SUP-985",
+          "title": "Export completed Suppliers in the DAC7 compliant structure and format",
+          "status": "Done",
+          "estimatedHours": 32,
+          "weeklyHours": {
+            "2026-W14": 8,
+            "2026-W15": 8,
+            "2026-W16": 8,
+            "2026-W17": 8
+          }
+        },
+        {
+          "id": "SUP-176",
+          "title": "Data Validation for DAC7",
+          "status": "Done",
+          "estimatedHours": 28,
+          "weeklyHours": {
+            "2026-W01": 7,
+            "2026-W02": 7,
+            "2026-W03": 7,
+            "2026-W04": 7
+          }
+        },
+        {
+          "id": "SUP-458",
+          "title": "Additional Validation rules for DAC7 report",
+          "status": "Done",
+          "estimatedHours": 24,
+          "weeklyHours": {
+            "2026-W18": 6,
+            "2026-W19": 6,
+            "2026-W20": 6,
+            "2026-W21": 6
+          }
+        },
+        {
+          "id": "SUP-1151",
+          "title": "Two obsolete fields in DAC7 gold schema are used in mapping and cause issues",
+          "status": "In Test",
+          "estimatedHours": 12,
+          "weeklyHours": {
+            "2026-W27": 3,
+            "2026-W28": 3,
+            "2026-W29": 3,
+            "2026-W30": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Conversational AI Agent for Tax Reporting",
+      "keywords": ["ComplianceGPT", "chatbot", "AI agent", "NLU", "tax reporting", "customer support bot", "guardrails"],
+      "allocatedHours": 500,
+      "estimatedTotalHours": 80,
+      "issues": [
+        {
+          "id": "SUP-930",
+          "title": "ComplianceGPT Agent",
+          "status": "Backlog",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-410",
+          "title": "Guidelines and guardrails for AI",
+          "status": "Backlog",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-813",
+          "title": "Business and Individual TIN checks",
+          "status": "In Progress",
+          "estimatedHours": 80,
+          "weeklyHours": {
+            "2026-W31": 8,
+            "2026-W32": 8,
+            "2026-W33": 8,
+            "2026-W34": 8,
+            "2026-W35": 8,
+            "2026-W36": 8,
+            "2026-W37": 8,
+            "2026-W38": 8,
+            "2026-W39": 8,
+            "2026-W40": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Automatic Data Link Discovery Across Imported Datasets",
+      "keywords": ["data linking", "foreign key", "data sources", "matching", "merge", "reconciliation", "deduplication"],
+      "allocatedHours": 350,
+      "estimatedTotalHours": 340,
+      "issues": [
+        {
+          "id": "SUP-977",
+          "title": "Re-design for Linking Data Sources to avoid duplicate/incorrectly attributed records",
+          "status": "In Progress",
+          "estimatedHours": 60,
+          "weeklyHours": {
+            "2026-W41": 6,
+            "2026-W42": 6,
+            "2026-W43": 6,
+            "2026-W44": 6,
+            "2026-W45": 6,
+            "2026-W46": 6,
+            "2026-W47": 6,
+            "2026-W48": 6,
+            "2026-W49": 6,
+            "2026-W50": 6
+          }
+        },
+        {
+          "id": "SUP-589",
+          "title": "Using multiple fields for data set linking",
+          "status": "Todo",
+          "estimatedHours": 0,
+          "weeklyHours": {}
+        },
+        {
+          "id": "SUP-569",
+          "title": "[Link Data Source] No tooltip info",
+          "status": "Done",
+          "estimatedHours": 8,
+          "weeklyHours": {
+            "2026-W20": 2,
+            "2026-W21": 2,
+            "2026-W22": 2,
+            "2026-W23": 2
+          }
+        },
+        {
+          "id": "SUP-379",
+          "title": "[Link data] On mapping UI show only the field that was actually linked",
+          "status": "Done",
+          "estimatedHours": 16,
+          "weeklyHours": {
+            "2026-W24": 4,
+            "2026-W25": 4,
+            "2026-W26": 4,
+            "2026-W27": 4
+          }
+        },
+        {
+          "id": "SUP-172",
+          "title": "Merge data by chosen key",
+          "status": "Done",
+          "estimatedHours": 32,
+          "weeklyHours": {
+            "2026-W07": 8,
+            "2026-W08": 8,
+            "2026-W09": 8,
+            "2026-W10": 8
+          }
+        },
+        {
+          "id": "SUP-206",
+          "title": "Enhance imported data with meta-data linked to the company",
+          "status": "Done",
+          "estimatedHours": 24,
+          "weeklyHours": {
+            "2026-W28": 6,
+            "2026-W29": 6,
+            "2026-W30": 6,
+            "2026-W31": 6
+          }
+        },
+        {
+          "id": "SUP-481",
+          "title": "[Data orchestration][Link][UI] move fields mapping to the modal window",
+          "status": "Done",
+          "estimatedHours": 28,
+          "weeklyHours": {
+            "2026-W32": 7,
+            "2026-W33": 7,
+            "2026-W34": 7,
+            "2026-W35": 7
+          }
+        },
+        {
+          "id": "SUP-121",
+          "title": "[Data Reconciliation] Selecting Data Sources",
+          "status": "Done",
+          "estimatedHours": 20,
+          "weeklyHours": {
+            "2026-W36": 5,
+            "2026-W37": 5,
+            "2026-W38": 5,
+            "2026-W39": 5
+          }
+        },
+        {
+          "id": "SUP-407",
+          "title": "[Link Data] Use property listing data in merge",
+          "status": "Done",
+          "estimatedHours": 28,
+          "weeklyHours": {
+            "2026-W11": 7,
+            "2026-W12": 7,
+            "2026-W13": 7,
+            "2026-W14": 7
+          }
+        },
+        {
+          "id": "SUP-957",
+          "title": "[Data Orchestration] add externalId field to suppliers collection",
+          "status": "Done",
+          "estimatedHours": 24,
+          "weeklyHours": {
+            "2026-W51": 6,
+            "2026-W52": 6,
+            "2026-W01": 6,
+            "2026-W02": 6
+          }
+        }
+      ]
+    }
+  ]
+}

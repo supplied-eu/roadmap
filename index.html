@@ -895,10 +895,13 @@ body {
 /* ── User Selector Overlay ───────────────────────────────────────────────── */
 .user-select-overlay {
   display:none; position:fixed; inset:0; z-index:9999;
-  background:rgba(0,0,0,.7); backdrop-filter:blur(8px);
+  background:rgba(0,0,0,.85); backdrop-filter:blur(12px);
   align-items:center; justify-content:center;
 }
 .user-select-overlay.open { display:flex; }
+/* Hide all dashboard content until user logs in */
+body.locked .header, body.locked .tab-panel { visibility:hidden; pointer-events:none; filter:blur(8px); }
+body.locked .user-select-overlay.open { visibility:visible; pointer-events:auto; filter:none; }
 .user-select-box {
   background:var(--surface); border:1px solid var(--border); border-radius:12px;
   padding:32px; min-width:320px; max-width:420px; text-align:center;
@@ -928,8 +931,8 @@ body {
 <!-- ══ USER SELECTOR OVERLAY ══════════════════════════════════════════════ -->
 <div class="user-select-overlay" id="user-select-overlay">
   <div class="user-select-box">
-    <div class="user-select-title">👋 Who are you?</div>
-    <div class="user-select-sub">Select your name to personalise your dashboard</div>
+    <div class="user-select-title">🔒 Log in to Dashboard</div>
+    <div class="user-select-sub">Select your name to access your personalised view</div>
     <div class="user-select-grid" id="user-select-grid"></div>
   </div>
 </div>
@@ -961,6 +964,7 @@ body {
     </button>
     <button class="refresh-btn" title="Update GitHub token" onclick="openPatModal()" style="padding:3px 7px;">⚙</button>
     <span class="current-user-ind" id="current-user-indicator" onclick="openUserSelector()" title="Switch user" style="display:none"></span>
+    <button class="refresh-btn" id="logout-btn" onclick="logOut()" title="Log out" style="padding:3px 7px;font-size:9px;display:none;">⏻</button>
     <div class="refresh-badge">
       <span class="dot"></span>
       <span id="refresh-time">LOADING…</span>
@@ -1109,31 +1113,52 @@ function isAdmin(){ return CURRENT_USER && CURRENT_USER.toLowerCase()==="johann"
 function setCurrentUser(name){
   CURRENT_USER = name;
   localStorage.setItem("supplied_current_user", name);
-  applyAccessControl();
+  document.body.classList.remove("locked");
   closeUserSelector();
   // Force My Day to own view for non-admins
   if(!isAdmin()){
     MYDAY_PERSON = name;
     localStorage.setItem("myday_person", name);
   }
-  renderMyDay();
+  applyAccessControl();
+  // Re-run full init now that user is set (loads data scoped to user)
+  init();
 }
 function applyAccessControl(){
-  // KPIs tab visibility
+  const admin=isAdmin();
+  // KPIs tab — admin only
   const kpiBtn=document.getElementById("tab-kpis-btn");
-  if(kpiBtn) kpiBtn.style.display=isAdmin()?"":"none";
-  // Person bar in My Day
+  if(kpiBtn) kpiBtn.style.display=admin?"":"none";
+  // Accounts tab — admin only (contains all customer data)
+  const acctBtn=document.getElementById("tab-accounts-btn");
+  if(acctBtn) acctBtn.style.display=admin?"":"none";
+  // Person bar in My Day — admin only
   const pbar=document.getElementById("myday-person-bar");
-  if(pbar) pbar.style.display=isAdmin()?"":"none";
+  if(pbar) pbar.style.display=admin?"":"none";
   // User indicator in header
   const userInd=document.getElementById("current-user-indicator");
   if(userInd){
     userInd.textContent=CURRENT_USER||"";
     userInd.style.display=CURRENT_USER?"inline-flex":"none";
   }
+  // Logout button
+  const logoutBtn=document.getElementById("logout-btn");
+  if(logoutBtn) logoutBtn.style.display=CURRENT_USER?"":"none";
+  // If non-admin is on a restricted tab, redirect to myday
+  if(!admin && (currentTab==="kpis"||currentTab==="accounts")){
+    switchTab("myday");
+  }
 }
 function openUserSelector(){ const ov=document.getElementById("user-select-overlay"); if(ov) ov.classList.add("open"); }
 function closeUserSelector(){ const ov=document.getElementById("user-select-overlay"); if(ov) ov.classList.remove("open"); }
+function logOut(){
+  CURRENT_USER=null;
+  localStorage.removeItem("supplied_current_user");
+  GOOGLE_DATA=null;
+  document.body.classList.add("locked");
+  buildUserOptions();
+  openUserSelector();
+}
 function buildUserOptions(){
   const grid=document.getElementById("user-select-grid"); if(!grid) return;
   grid.innerHTML="";
@@ -1166,8 +1191,8 @@ function fmtDate(d){ if(!d) return ""; const [y,m,day]=d.split("-"); return `${d
 // ═══════════════════════════════════════════════════════════════════════════
 let currentTab = "myday";
 function switchTab(tab){
-  // Guard: non-admins cannot access KPIs
-  if(tab==="kpis" && !isAdmin()) return;
+  // Guard: non-admins cannot access restricted tabs
+  if((tab==="kpis"||tab==="accounts") && !isAdmin()) return;
   currentTab = tab;
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
   document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
@@ -2717,6 +2742,7 @@ function renderOpsEmpty(){
 // ═══════════════════════════════════════════════════════════════════════════
 let KPI_DATA = null;
 let COST_DATA = null;
+let WBSO_DATA = null;
 
 function renderKPIs(){
   const main=document.getElementById("kpis-main");
@@ -3146,6 +3172,316 @@ function renderKPIs(){
   }
 
   recompute();
+
+  // WBSO Time Tracker (admin only)
+  if(isAdmin()) renderWBSOTracker(main);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// WBSO TIME TRACKER
+// ═══════════════════════════════════════════════════════════════════════════
+function renderWBSOTracker(main){
+  if(!WBSO_DATA||!WBSO_DATA.blocks||!WBSO_DATA.blocks.length) return;
+
+  // Helper: get ISO week number
+  function getISOWeek(date){
+    const d=new Date(date);
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate()+4-(d.getDay()||7));
+    const yearStart=new Date(d.getFullYear(),0,1);
+    const weekNum=Math.ceil((((d-yearStart)/86400000)+1)/7);
+    return weekNum;
+  }
+
+  // Helper: get week range
+  function getWeekRange(year,week){
+    const simple=new Date(year,0,1+((week-1)*7));
+    const dow=simple.getDay();
+    const ISOweekStart=simple;
+    if(dow<=4) ISOweekStart.setDate(simple.getDate()-simple.getDay()+1);
+    else ISOweekStart.setDate(simple.getDate()+8-simple.getDay());
+    const end=new Date(ISOweekStart);
+    end.setDate(ISOweekStart.getDate()+6);
+    return {start:ISOweekStart,end:end};
+  }
+
+  const today=new Date(TODAY_STR);
+  const currentYear=today.getFullYear();
+  const currentWeek=getISOWeek(TODAY_STR);
+
+  // State for week selector
+  let selectedWeek=currentWeek;
+
+  // Container
+  const cont=document.createElement("div");
+  cont.style.cssText="margin-top:24px;border-top:2px solid var(--border);padding-top:20px;";
+
+  // Header section
+  const hdr=document.createElement("div");
+  hdr.style.cssText="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;";
+  const titleDiv=document.createElement("div");
+  titleDiv.innerHTML=`<div style="font-size:16px;font-weight:700;color:var(--text);">🧪 WBSO R&D Time Tracker</div>
+    <div style="font-size:9px;color:var(--text-muted);margin-top:3px;">Application ${WBSO_DATA.application||WBSO_DATA.applicationNumber||"—"} · ${WBSO_DATA.company||""} · ${WBSO_DATA.period?WBSO_DATA.period.start+" → "+WBSO_DATA.period.end:""}</div>`;
+  const exportBtn=document.createElement("button");
+  exportBtn.style.cssText="font-size:9px;padding:4px 10px;background:var(--accent);color:white;border:none;border-radius:4px;cursor:pointer;font-weight:600;";
+  exportBtn.textContent="Export CSV";
+  exportBtn.onclick=()=>{
+    let csv="Week,Block,Issue ID,Issue Title,Hours,Notes\n";
+    const blocks=WBSO_DATA.blocks||[];
+    for(const block of blocks){
+      for(let w=1;w<=52;w++){
+        const key=`supplied_wbso_hours_${w}_${block.id}`;
+        const notesKey=`supplied_wbso_notes_${w}`;
+        const hours=localStorage.getItem(key)||"";
+        const notes=localStorage.getItem(notesKey)||"";
+        const issues=block.issues||[];
+        for(const issue of issues){
+          const lineHours=localStorage.getItem(`supplied_wbso_issue_hours_${w}_${issue.id}`)||"";
+          csv+=`${w},${block.name},${issue.id},${issue.title},${lineHours},${notes}\n`;
+        }
+        if(!issues.length&&hours){
+          csv+=`${w},${block.name},,${hours},${notes}\n`;
+        }
+      }
+    }
+    const blob=new Blob([csv],{type:"text/csv"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="wbso-tracker.csv";
+    a.click();
+  };
+  hdr.appendChild(titleDiv);
+  hdr.appendChild(exportBtn);
+  cont.appendChild(hdr);
+
+  // Summary cards row
+  const cardsRow=document.createElement("div");
+  cardsRow.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;";
+
+  for(const block of WBSO_DATA.blocks){
+    const allocated=block.allocatedHours||0;
+    let logged=0;
+    for(let w=1;w<=52;w++){
+      const key=`supplied_wbso_hours_${w}_${block.id}`;
+      const val=localStorage.getItem(key);
+      if(val) logged+=parseFloat(val)||0;
+    }
+    const pct=allocated>0?Math.round((logged/allocated)*100):0;
+    const isOnTrack=pct>=85;
+    const isBehind=pct>=60&&pct<85;
+    const isOffTrack=pct<60;
+    const color=isOnTrack?"#10b981":isBehind?"#f59e0b":"#ef4444";
+
+    const card=document.createElement("div");
+    card.style.cssText=`padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;border-left:3px solid ${color};`;
+    card.innerHTML=`<div style="font-size:10px;font-weight:600;color:var(--text);">${block.name}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">
+        <div>${logged}h / ${allocated}h</div>
+        <div style="height:4px;background:var(--surface2);border-radius:2px;margin:6px 0;position:relative;">
+          <div style="height:100%;background:${color};border-radius:2px;width:${pct}%;"></div>
+        </div>
+        <div style="color:${color};font-weight:600;">${pct}%</div>
+      </div>`;
+    cardsRow.appendChild(card);
+  }
+  cont.appendChild(cardsRow);
+
+  // Week navigator
+  const navRow=document.createElement("div");
+  navRow.style.cssText="display:flex;align-items:center;gap:8px;margin-bottom:16px;overflow-x:auto;padding:8px 0;";
+
+  const prevBtn=document.createElement("button");
+  prevBtn.textContent="◀";
+  prevBtn.style.cssText="background:var(--surface2);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;flex-shrink:0;font-size:11px;";
+  prevBtn.onclick=()=>{
+    selectedWeek=Math.max(1,selectedWeek-1);
+    updateWeekView();
+  };
+  navRow.appendChild(prevBtn);
+
+  const weekContainer=document.createElement("div");
+  weekContainer.style.cssText="display:flex;gap:4px;flex:1;justify-content:center;";
+
+  function updateWeekView(){
+    weekContainer.innerHTML="";
+    const startWeek=Math.max(1,selectedWeek-4);
+    const endWeek=Math.min(52,selectedWeek+3);
+    for(let w=startWeek;w<=endWeek;w++){
+      const btn=document.createElement("button");
+      const isSelected=w===selectedWeek;
+      const isCurrent=w===currentWeek;
+      btn.textContent=w;
+      btn.style.cssText=`
+        padding:4px 8px;
+        border:1px solid var(--border);
+        border-radius:4px;
+        cursor:pointer;
+        font-size:9px;
+        background:${isSelected?"var(--accent)":"var(--surface2)"};
+        color:${isSelected?"white":"var(--text)"};
+        font-weight:${isCurrent?"700":"500"};
+        flex-shrink:0;
+      `;
+      btn.onclick=()=>{
+        selectedWeek=w;
+        updateWeekView();
+        updateDetailPanel();
+      };
+      weekContainer.appendChild(btn);
+    }
+  }
+
+  navRow.appendChild(weekContainer);
+
+  const nextBtn=document.createElement("button");
+  nextBtn.textContent="▶";
+  nextBtn.style.cssText="background:var(--surface2);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;flex-shrink:0;font-size:11px;";
+  nextBtn.onclick=()=>{
+    selectedWeek=Math.min(52,selectedWeek+1);
+    updateWeekView();
+  };
+  navRow.appendChild(nextBtn);
+
+  cont.appendChild(navRow);
+
+  // Weekly detail panel
+  const detailPanel=document.createElement("div");
+  detailPanel.style.cssText="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:20px;";
+
+  function updateDetailPanel(){
+    detailPanel.innerHTML="";
+    const wr=getWeekRange(currentYear,selectedWeek);
+    const wStart=wr.start.toISOString().split("T")[0];
+    const wEnd=wr.end.toISOString().split("T")[0];
+    const fmtStart=wr.start.toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+    const fmtEnd=wr.end.toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+
+    const weekHdr=document.createElement("div");
+    weekHdr.style.cssText="font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;";
+    weekHdr.textContent=`${currentYear}-W${String(selectedWeek).padStart(2,"0")} (${fmtStart} – ${fmtEnd})`;
+    detailPanel.appendChild(weekHdr);
+
+    let weekTotal=0;
+    const tbl=document.createElement("table");
+    tbl.style.cssText="width:100%;border-collapse:collapse;font-size:9px;";
+
+    for(const block of WBSO_DATA.blocks){
+      const blockRow=document.createElement("tr");
+      blockRow.style.cssText="border-bottom:1px solid var(--border);";
+      const blockCell=document.createElement("td");
+      blockCell.colSpan="4";
+      blockCell.style.cssText="padding:8px 6px;background:var(--surface2);font-weight:700;color:var(--text);";
+
+      const blockHours=parseFloat(localStorage.getItem(`supplied_wbso_hours_${selectedWeek}_${block.id}`))||0;
+      blockCell.textContent=`${block.name} — ${blockHours}h`;
+      blockRow.appendChild(blockCell);
+      tbl.appendChild(blockRow);
+
+      const issues=block.issues||[];
+      for(const issue of issues){
+        const issueRow=document.createElement("tr");
+        issueRow.style.cssText="border-bottom:1px solid rgba(255,255,255,.04);";
+
+        const cbCell=document.createElement("td");
+        cbCell.style.cssText="padding:6px;width:24px;text-align:center;";
+        const cb=document.createElement("input");
+        cb.type="checkbox";
+        cb.style.cssText="cursor:pointer;";
+        cbCell.appendChild(cb);
+        issueRow.appendChild(cbCell);
+
+        const idCell=document.createElement("td");
+        idCell.style.cssText="padding:6px;color:var(--accent);";
+        const issueLink=document.createElement("a");
+        issueLink.href=issue.linearUrl||"#";
+        issueLink.textContent=issue.id;
+        issueLink.style.cssText="text-decoration:none;color:var(--accent);";
+        issueLink.target="_blank";
+        issueLink.rel="noopener";
+        idCell.appendChild(issueLink);
+        issueRow.appendChild(idCell);
+
+        const titleCell=document.createElement("td");
+        titleCell.style.cssText="padding:6px;color:var(--text);flex:1;";
+        titleCell.textContent=issue.title;
+        issueRow.appendChild(titleCell);
+
+        const hoursCell=document.createElement("td");
+        hoursCell.style.cssText="padding:6px;text-align:right;width:50px;";
+        const hoursInput=document.createElement("input");
+        hoursInput.type="number";
+        hoursInput.min="0";
+        hoursInput.step="0.5";
+        hoursInput.style.cssText="width:100%;padding:2px 4px;font-size:9px;border:1px solid var(--border);border-radius:3px;background:var(--surface2);color:var(--text);";
+        const hKey=`supplied_wbso_issue_hours_${selectedWeek}_${issue.id}`;
+        hoursInput.value=localStorage.getItem(hKey)||"";
+        hoursInput.onchange=()=>{
+          const val=parseFloat(hoursInput.value)||0;
+          if(val>0){
+            localStorage.setItem(hKey,String(val));
+          } else {
+            localStorage.removeItem(hKey);
+          }
+          updateDetailPanel();
+        };
+        hoursCell.appendChild(hoursInput);
+        issueRow.appendChild(hoursCell);
+
+        tbl.appendChild(issueRow);
+      }
+    }
+
+    // Total row
+    const totalRow=document.createElement("tr");
+    totalRow.style.cssText="border-top:2px solid var(--border);font-weight:700;color:var(--text);";
+    const totalLabelCell=document.createElement("td");
+    totalLabelCell.colSpan="3";
+    totalLabelCell.style.cssText="padding:8px 6px;text-align:right;";
+    totalLabelCell.textContent="Total:";
+    totalRow.appendChild(totalLabelCell);
+
+    const totalValCell=document.createElement("td");
+    totalValCell.style.cssText="padding:8px 6px;text-align:right;";
+    let totalHours=0;
+    for(const block of WBSO_DATA.blocks){
+      for(const issue of (block.issues||[])){
+        const hKey=`supplied_wbso_issue_hours_${selectedWeek}_${issue.id}`;
+        const val=localStorage.getItem(hKey);
+        if(val) totalHours+=parseFloat(val)||0;
+      }
+    }
+    totalValCell.textContent=`${totalHours}h`;
+    totalRow.appendChild(totalValCell);
+    tbl.appendChild(totalRow);
+
+    detailPanel.appendChild(tbl);
+
+    // Notes textarea
+    const notesLbl=document.createElement("div");
+    notesLbl.style.cssText="font-size:10px;font-weight:600;color:var(--text);margin-top:16px;margin-bottom:6px;";
+    notesLbl.textContent="Weekly Notes:";
+    detailPanel.appendChild(notesLbl);
+
+    const notesTA=document.createElement("textarea");
+    notesTA.style.cssText="width:100%;min-height:80px;padding:6px 8px;font-size:9px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;resize:vertical;";
+    const notesKey=`supplied_wbso_notes_${selectedWeek}`;
+    notesTA.value=localStorage.getItem(notesKey)||"";
+    notesTA.onchange=()=>{
+      if(notesTA.value){
+        localStorage.setItem(notesKey,notesTA.value);
+      } else {
+        localStorage.removeItem(notesKey);
+      }
+    };
+    detailPanel.appendChild(notesTA);
+  }
+
+  updateWeekView();
+  updateDetailPanel();
+
+  cont.appendChild(detailPanel);
+  main.appendChild(cont);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3301,12 +3637,20 @@ function detectMyName(){
 
 // Load google-data-{name}.json if it exists, otherwise fall back to google-data.json
 async function loadGoogleDataFor(personName){
+  // Try person-specific file first (e.g. google-data-johann.json)
   if(personName){
     try{
       const r=await fetch(`./google-data-${personName.toLowerCase()}.json?t=${Date.now()}`);
       if(r.ok){ GOOGLE_DATA=await r.json(); return; }
     }catch(e){}
+    // If loading for a specific non-admin person and their file doesn't exist,
+    // clear Google data so they don't see another user's emails/calendar
+    if(!isAdmin() || (MYDAY_PERSON!=="all" && MYDAY_PERSON!=="me")){
+      GOOGLE_DATA=null;
+      return;
+    }
   }
+  // Fallback to default google-data.json only for admin's own view or "all"
   try{
     const r=await fetch('./google-data.json?t='+Date.now());
     if(r.ok){ GOOGLE_DATA=await r.json(); }
@@ -4158,14 +4502,29 @@ function renderMyDay(){
 
   // ── Calendar sidebar ──────────────────────────────────────────────────────
   if(showCal){
+    // Re-classify events based on actual current date (data may be stale)
+    const allCalEvents = [
+      ...((GOOGLE_DATA&&GOOGLE_DATA.calendar&&GOOGLE_DATA.calendar.today)||[]),
+      ...((GOOGLE_DATA&&GOOGLE_DATA.calendar&&GOOGLE_DATA.calendar.upcoming)||[])
+    ];
+    const evDate = ev => {
+      const s = ev.start||ev.date||"";
+      return s.includes("T") ? s.split("T")[0] : s.slice(0,10);
+    };
+    const todayEvents = allCalEvents.filter(ev=>evDate(ev)===TODAY_STR);
+    const upcomingEvents = allCalEvents.filter(ev=>evDate(ev)>TODAY_STR);
+    // Sort by start time
+    todayEvents.sort((a,b)=>(a.start||"").localeCompare(b.start||""));
+    upcomingEvents.sort((a,b)=>(a.start||"").localeCompare(b.start||""));
+
     const calHdr = document.createElement("div");
     calHdr.className = "myday-sidebar-hdr";
     calHdr.style.marginTop = showPipeline?"12px":"0";
     calHdr.textContent = "📅 TODAY'S SCHEDULE";
     sidebar.appendChild(calHdr);
 
-    if(GOOGLE_DATA && GOOGLE_DATA.calendar && GOOGLE_DATA.calendar.today && GOOGLE_DATA.calendar.today.length){
-      for(const ev of GOOGLE_DATA.calendar.today){
+    if(todayEvents.length){
+      for(const ev of todayEvents){
         const er = document.createElement("div");
         er.className = "myday-deal-row";
         if(er.style) er.style.cursor="default";
@@ -4183,26 +4542,28 @@ function renderMyDay(){
       }
     } else {
       const noCal = document.createElement("div");
-      noCal.className = "myday-coming-card";
-      noCal.innerHTML = `<span class="myday-coming-icon">📅</span><div class="myday-coming-text"><div class="myday-coming-title">GOOGLE CALENDAR</div><div class="myday-coming-desc">Connect Google account &amp; run workflow to populate</div></div>`;
+      noCal.style.cssText="font-size:10px;color:var(--text-dim);padding:8px 12px;";
+      noCal.textContent="No events scheduled for today. Run Refresh to update calendar.";
       sidebar.appendChild(noCal);
     }
 
     // ── Upcoming events ─────────────────────────────────────────────────────
-    if(GOOGLE_DATA && GOOGLE_DATA.calendar && GOOGLE_DATA.calendar.upcoming && GOOGLE_DATA.calendar.upcoming.length){
+    if(upcomingEvents.length){
       const upHdr = document.createElement("div");
       upHdr.className = "myday-sidebar-hdr";
       upHdr.style.marginTop = "12px";
       upHdr.textContent = "📆 COMING UP";
       sidebar.appendChild(upHdr);
-      for(const ev of GOOGLE_DATA.calendar.upcoming.slice(0,5)){
+      for(const ev of upcomingEvents.slice(0,8)){
         const er = document.createElement("div");
         er.className = "myday-deal-row";
         const d = ev.date ? new Date(ev.date) : (ev.start ? new Date(ev.start) : null);
         const dateStr = d ? d.toLocaleDateString("en-GB",{weekday:"short",day:"2-digit",month:"short"}) : "";
-        const st = ev.start||"";
+        const st = ev.start ? new Date(ev.start).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}) : "";
+        const ppl = ev.numAttendees>1 ? `${ev.numAttendees} people` : "";
         er.innerHTML = `
           <span class="myday-deal-name">${ev.title||"(untitled)"}</span>
+          ${ppl?'<span class="myday-deal-date">'+ppl+'</span>':""}
           <span class="myday-deal-date">${dateStr}${st?" · "+st:""}</span>
         `;
         sidebar.appendChild(er);
@@ -4495,7 +4856,27 @@ function renderClaudeBrief(container,personName,tabKey){
 async function init(){
   const btn=document.getElementById("refresh-btn");
   if(btn) btn.classList.add("loading");
+
+  // ── LOGIN GATE: force user to identify before seeing anything ──────────
+  if(!CURRENT_USER){
+    document.body.classList.add("locked");
+    // Pre-load just enough data to build the user selector
+    try{
+      const gr=await fetch('./gantt-data.json?t='+Date.now());
+      if(gr.ok) GANTT_DATA=await gr.json();
+    }catch(e){}
+    try{
+      const hr=await fetch('./hubspot-data.json?t='+Date.now());
+      if(hr.ok) HS_DATA=await hr.json();
+    }catch(e){}
+    buildUserOptions();
+    openUserSelector();
+    if(btn) btn.classList.remove("loading");
+    return; // ← stop here, don't render any dashboard content
+  }
+
   // Apply access control on load
+  document.body.classList.remove("locked");
   applyAccessControl();
   renderGantt();
   try {
@@ -4549,6 +4930,12 @@ async function init(){
     if(cr.ok){ COST_DATA=await cr.json(); }
   } catch(e){ /* Cost data not available */ }
 
+  // Load WBSO time tracker data (optional)
+  try {
+    const wr=await fetch('./wbso-data.json?t='+Date.now());
+    if(wr.ok){ WBSO_DATA=await wr.json(); }
+  } catch(e){ /* WBSO data not available */ }
+
   // Load meeting summaries data (optional)
   try {
     const mr=await fetch('./meeting-summaries.json?t='+Date.now());
@@ -4566,9 +4953,8 @@ async function init(){
     : MYDAY_PERSON;
   await loadGoogleDataFor(myPersonKey);
 
-  // Build user options now that data is loaded, show selector if no user set
+  // Build user options now that data is loaded
   buildUserOptions();
-  if(!CURRENT_USER) openUserSelector();
   applyAccessControl();
 
   // Mark init complete so Claude brief can auto-fire with full data
@@ -4674,6 +5060,41 @@ async function doRefresh(){
   init();
 }
 init();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AUTO-REFRESH: silently trigger GitHub Actions workflow every hour
+// ═══════════════════════════════════════════════════════════════════════════
+let AUTO_REFRESH_INTERVAL = null;
+const AUTO_REFRESH_MS = 60 * 60 * 1000; // 1 hour
+
+async function autoRefresh(){
+  const token=getStoredPat();
+  if(!token||!CURRENT_USER) return; // skip if no PAT or not logged in
+  console.log("[auto-refresh] triggering at", new Date().toLocaleTimeString());
+  const el=document.getElementById("refresh-time");
+  try{
+    const triggered=await triggerWorkflow(token);
+    if(!triggered){ console.warn("[auto-refresh] trigger failed"); return; }
+    if(el) el.textContent="AUTO-REFRESHING…";
+    const done=await pollWorkflowDone(token);
+    // Silently reload data without disrupting the UI
+    GANTT_DATA=null; HS_DATA=null; GOOGLE_DATA=null;
+    KPI_DATA=null; COST_DATA=null; WBSO_DATA=null; MTG_DATA=null;
+    await init();
+    console.log("[auto-refresh] complete at", new Date().toLocaleTimeString());
+  }catch(e){
+    console.warn("[auto-refresh] error:",e);
+    if(el) el.textContent="UPDATED "+new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+  }
+}
+
+function startAutoRefresh(){
+  if(AUTO_REFRESH_INTERVAL) clearInterval(AUTO_REFRESH_INTERVAL);
+  AUTO_REFRESH_INTERVAL=setInterval(autoRefresh, AUTO_REFRESH_MS);
+  console.log("[auto-refresh] scheduled every", AUTO_REFRESH_MS/60000, "min");
+}
+// Start auto-refresh once page loads (only runs if PAT is stored)
+startAutoRefresh();
 </script>
 </body>
 </html>
