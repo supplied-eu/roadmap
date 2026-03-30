@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T10:14:41.694Z",
+  "refreshedAt": "2026-03-30T10:24:42.063Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8431,7 +8431,7 @@
               "id": "f5217ef1-46cf-4d83-bbf6-018b4fb1eafe",
               "identifier": "SUP-1233",
               "title": "Evaluate flow chart for Dutch CleanTech",
-              "status": "In Progress",
+              "status": "Done",
               "start": "2026-03-25",
               "end": "2026-03-27",
               "assignee": "Vladimir Ivanov",

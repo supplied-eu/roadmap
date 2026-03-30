@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T10:14:43.664Z",
+  "refreshedAt": "2026-03-30T10:24:44.606Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1058,17 +1058,6 @@
       "ownerName": "Bas Bogerd"
     },
     {
-      "id": "478724698335",
-      "subject": "Reach out to Secret View",
-      "status": "NOT_STARTED",
-      "type": "TODO",
-      "priority": "NONE",
-      "dueDate": "2026-03-19",
-      "ownerId": "29853062",
-      "body": null,
-      "ownerName": "Bas Bogerd"
-    },
-    {
       "id": "478730325185",
       "subject": "Reach out to DHL Parcel NL",
       "status": "NOT_STARTED",
@@ -1969,7 +1958,7 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 434
+      "count": 436
     },
     {
       "key": "customer",
@@ -1980,9 +1969,23 @@
   "trafficSources": [
     {
       "key": "OFFLINE",
-      "thisWeek": 8,
+      "thisWeek": 10,
       "lastWeek": 2,
       "contacts": [
+        {
+          "id": "745933516992",
+          "name": "Diederik Kruiniger",
+          "email": "diederik@secretview.io",
+          "stage": "opportunity",
+          "createdAt": "2026-03-30"
+        },
+        {
+          "id": "745931355330",
+          "name": "Sam Wolters",
+          "email": "sam@secretview.io",
+          "stage": "opportunity",
+          "createdAt": "2026-03-30"
+        },
         {
           "id": "745794941156",
           "name": "Hans Saenz",
@@ -2143,20 +2146,6 @@
           "email": "wietze@bookingexperts.com",
           "stage": "opportunity",
           "createdAt": "2026-02-18"
-        },
-        {
-          "id": "702693528770",
-          "name": "Marion Dufour",
-          "email": "marion_dufour@loewe.com",
-          "stage": "opportunity",
-          "createdAt": "2026-02-18"
-        },
-        {
-          "id": "702748097734",
-          "name": "c_hm8bs2gs5nt9h0j5qq1fke24mo@group.calendar.google.com",
-          "email": "c_hm8bs2gs5nt9h0j5qq1fke24mo@group.calendar.google.com",
-          "stage": "opportunity",
-          "createdAt": "2026-02-17"
         }
       ],
       "label": "Offline",
