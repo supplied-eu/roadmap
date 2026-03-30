@@ -88,7 +88,7 @@ export default function SalesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPipeline, setSelectedPipeline] = useState<string | null>(null);
-  const [ownerFilter, setOwnerFilter] = useState<string>('all');
+  const [ownerFilter, setOwnerFilter] = useState<string>('__johann__');
   const [alertFilter, setAlertFilter] = useState<string | null>(null);
   const [leadfeeder, setLeadfeeder] = useState<LeadfeederData | null>(null);
   const [expandedSource, setExpandedSource] = useState<string | null>(null);
@@ -105,6 +105,9 @@ export default function SalesPage() {
         setTasks(hsData.tasks || []);
         setOwners(hsData.owners || []);
         setPipelines(hsData.pipelines || []);
+        // Default to Johann's filter
+        const johann = (hsData.owners || []).find((o: Owner) => o.name.startsWith('Johann'));
+        if (johann) setOwnerFilter(johann.id);
         const pipelineCounts: Record<string, number> = {};
         for (const d of hsData.deals || []) pipelineCounts[d.pipeline] = (pipelineCounts[d.pipeline] || 0) + 1;
         const top = Object.entries(pipelineCounts).sort((a, b) => b[1] - a[1])[0];
@@ -265,21 +268,12 @@ export default function SalesPage() {
         <div className="flex-1 overflow-auto" style={{ borderRight: '1px solid var(--border)' }}>
           {/* Owner filter strip */}
           <div className="flex items-center gap-1.5 px-5 py-2 overflow-x-auto" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
-            <button
-              onClick={() => setOwnerFilter('all')}
-              className="text-[10px] px-2.5 py-1 rounded shrink-0 font-medium transition-colors"
-              style={{
-                background: ownerFilter === 'all' ? 'var(--accent)' : 'var(--bg)',
-                color: ownerFilter === 'all' ? '#fff' : 'var(--text-muted)',
-                border: '1px solid var(--border)',
-              }}
-            >
-              All
-            </button>
-            {owners.map(o => (
+            {owners
+              .filter(o => ['Johann', 'Bas', 'Vladimir', 'Julio', 'Stephan'].some(name => o.name.startsWith(name)))
+              .map(o => (
               <button
                 key={o.id}
-                onClick={() => setOwnerFilter(ownerFilter === o.id ? 'all' : o.id)}
+                onClick={() => setOwnerFilter(ownerFilter === o.id ? o.id : o.id)}
                 className="text-[10px] px-2.5 py-1 rounded shrink-0 font-medium transition-colors"
                 style={{
                   background: ownerFilter === o.id ? 'var(--accent)' : 'var(--bg)',
@@ -287,7 +281,7 @@ export default function SalesPage() {
                   border: '1px solid var(--border)',
                 }}
               >
-                {o.name.split(' ')[0]}
+                {o.name === 'Johann Rozario' ? 'Me' : o.name.split(' ')[0]}
               </button>
             ))}
           </div>
