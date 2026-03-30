@@ -127,7 +127,7 @@ export default function DashboardPage() {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [expandedMeeting, setExpandedMeeting] = useState<string | null>(null);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
-  const [personFilter, setPersonFilter] = useState<string>('all');
+  const [personFilter, setPersonFilter] = useState<string>('Johann');
 
   const addToast = useCallback((message: string, undoAction?: () => void) => {
     const id = Date.now().toString();
@@ -351,13 +351,8 @@ export default function DashboardPage() {
               SHOWING FOR
             </span>
             <div className="flex flex-wrap gap-1">
-              <button onClick={() => setPersonFilter('all')}
-                className="text-[10px] px-2 py-0.5 rounded font-medium transition-colors"
-                style={{ background: personFilter === 'all' ? 'var(--accent)' : 'var(--bg)', color: personFilter === 'all' ? '#fff' : 'var(--text-muted)' }}>
-                All
-              </button>
               {uniqueAssignees.slice(0, 6).map(name => (
-                <button key={name} onClick={() => setPersonFilter(personFilter === name ? 'all' : name)}
+                <button key={name} onClick={() => setPersonFilter(personFilter === name ? name : name)}
                   className="text-[10px] px-2 py-0.5 rounded font-medium transition-colors"
                   style={{ background: personFilter === name ? 'var(--accent)' : 'var(--bg)', color: personFilter === name ? '#fff' : 'var(--text-muted)' }}>
                   {name.split(' ')[0]}
