@@ -292,12 +292,26 @@ export default function AccountsPage() {
                     )}
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
-                    {company.domain && <span className="text-[10px] truncate" style={{ color: 'var(--text-muted)' }}>{company.domain}</span>}
+                    {company.domain && (
+                      <a href={`https://${company.domain}`} target="_blank" rel="noopener"
+                        className="text-[10px] truncate hover:underline"
+                        style={{ color: 'var(--accent)' }}
+                        onClick={e => e.stopPropagation()}>
+                        {company.domain}
+                      </a>
+                    )}
                     {company.ownerName && (
                       <span className="text-[10px] flex items-center gap-0.5" style={{ color: 'var(--text-muted)' }}>
                         <User size={9} /> {company.ownerName.split(' ')[0]}
                       </span>
                     )}
+                    <a href={`https://app.hubspot.com/contacts/27215736/company/${company.id}`}
+                      target="_blank" rel="noopener"
+                      className="text-[10px] hover:underline flex items-center gap-0.5 ml-auto"
+                      style={{ color: 'var(--text-muted)' }}
+                      onClick={e => e.stopPropagation()}>
+                      <ExternalLink size={9} /> HubSpot
+                    </a>
                   </div>
                 </div>
                 {isExpanded ? <ChevronUp size={14} style={{ color: 'var(--text-muted)' }} /> : <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} />}

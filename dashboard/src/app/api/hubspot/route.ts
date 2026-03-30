@@ -2,13 +2,30 @@ import { NextResponse } from "next/server";
 
 const HS_API = "https://api.hubapi.com";
 
+async function fetchAllTasks(apiKey: string) {
+  const all: any[] = [];
+  let after: string | null = null;
+  const headers = { Authorization: `Bearer ${apiKey}` };
+
+  for (let page = 0; page < 5; page++) {
+    const url = `${HS_API}/crm/v3/objects/tasks?limit=100&properties=hs_task_subject,hs_task_status,hs_task_priority,hs_timestamp,hubspot_owner_id,hs_task_type,hs_task_body${after ? `&after=${after}` : ""}`;
+    const res = await fetch(url, { headers }).catch(() => null);
+    if (!res || !res.ok) break;
+    const data = await res.json();
+    all.push(...(data.results || []));
+    after = data.paging?.next?.after || null;
+    if (!after) break;
+  }
+  return all;
+}
+
 export async function GET() {
   const apiKey = process.env.HUBSPOT_API_KEY;
   if (!apiKey) return NextResponse.json({ error: "HUBSPOT_API_KEY not set" }, { status: 500 });
 
   try {
-    // Fetch deals, owners, pipeline stages, and tasks in parallel
-    const [dealsRes, ownersRes, pipelinesRes, tasksRes] = await Promise.all([
+    // Fetch deals, owners, pipeline stages in parallel + paginated tasks
+    const [dealsRes, ownersRes, pipelinesRes, taskResults] = await Promise.all([
       fetch(`${HS_API}/crm/v3/objects/deals?limit=100&properties=dealname,dealstage,amount,closedate,hubspot_owner_id,pipeline`, {
         headers: { Authorization: `Bearer ${apiKey}` },
       }),
@@ -18,9 +35,7 @@ export async function GET() {
       fetch(`${HS_API}/crm/v3/pipelines/deals`, {
         headers: { Authorization: `Bearer ${apiKey}` },
       }),
-      fetch(`${HS_API}/crm/v3/objects/tasks?limit=100&properties=hs_task_subject,hs_task_status,hs_task_priority,hs_timestamp,hubspot_owner_id,hs_task_type,hs_task_body,associations`, {
-        headers: { Authorization: `Bearer ${apiKey}` },
-      }).catch(() => null),
+      fetchAllTasks(apiKey),
     ]);
 
     if (!dealsRes.ok) {
@@ -70,9 +85,8 @@ export async function GET() {
       };
     });
 
-    // Parse tasks
-    const tasksData = tasksRes && tasksRes.ok ? await tasksRes.json() : { results: [] };
-    const tasks = (tasksData.results || []).map((t: any) => ({
+    // Parse paginated tasks
+    const tasks = taskResults.map((t: any) => ({
       id: t.id,
       subject: t.properties?.hs_task_subject || "Untitled task",
       status: t.properties?.hs_task_status || "NOT_STARTED",

@@ -221,14 +221,30 @@ export default function SalesPage() {
           </button>
         )}
         {closingThisWeek.length > 0 && (
-          <span className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1" style={{ color: '#8b5cf6' }}>
+          <button
+            onClick={() => setAlertFilter(alertFilter === 'closing' ? null : 'closing')}
+            className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded transition-colors"
+            style={{
+              background: alertFilter === 'closing' ? '#8b5cf622' : 'transparent',
+              color: '#8b5cf6',
+              border: alertFilter === 'closing' ? '1px solid #8b5cf644' : '1px solid transparent',
+            }}
+          >
             <DollarSign size={12} /> {closingThisWeek.length} DEALS CLOSING THIS WEEK
-          </span>
+          </button>
         )}
         {leadfeeder && (
-          <span className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1" style={{ color: '#10b981' }}>
+          <button
+            onClick={() => setAlertFilter(alertFilter === 'visitors' ? null : 'visitors')}
+            className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded transition-colors"
+            style={{
+              background: alertFilter === 'visitors' ? '#10b98122' : 'transparent',
+              color: '#10b981',
+              border: alertFilter === 'visitors' ? '1px solid #10b98144' : '1px solid transparent',
+            }}
+          >
             <Globe size={12} /> {leadfeeder.thisWeekTotal} WEBSITE VISITORS THIS WEEK
-          </span>
+          </button>
         )}
         {alertFilter && (
           <button onClick={() => setAlertFilter(null)} className="flex items-center gap-1 text-[10px] ml-auto"
@@ -276,20 +292,75 @@ export default function SalesPage() {
             ))}
           </div>
 
+          {/* Deals closing this week (shown when filter active) */}
+          {alertFilter === 'closing' && (
+            <>
+              <div className="px-5 py-1.5 sticky top-0 z-10" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+                <span className="text-[8px] font-bold uppercase tracking-[1.5px]" style={{ color: '#8b5cf6' }}>
+                  DEALS CLOSING THIS WEEK ({closingThisWeek.length})
+                </span>
+              </div>
+              {closingThisWeek.map(deal => (
+                <a key={deal.id} href={`https://app.hubspot.com/contacts/27215736/record/0-3/${deal.id}`}
+                  target="_blank" rel="noopener"
+                  className="flex items-center gap-2.5 px-5 py-2.5 transition-colors hover:opacity-90"
+                  style={{ borderBottom: '1px solid var(--border)' }}>
+                  <DollarSign size={12} style={{ color: '#8b5cf6' }} />
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs block truncate" style={{ color: 'var(--text)' }}>{deal.name}</span>
+                    {deal.ownerName && <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>{deal.ownerName}</span>}
+                  </div>
+                  <span className="text-xs font-medium shrink-0" style={{ color: '#22c55e' }}>{formatCurrency(deal.amount)}</span>
+                  <span className="text-[10px] shrink-0" style={{ color: 'var(--text-muted)' }}>{formatDate(deal.closeDate)}</span>
+                  <ExternalLink size={10} style={{ color: 'var(--text-muted)' }} />
+                </a>
+              ))}
+            </>
+          )}
+
+          {/* Website visitors (shown when filter active) */}
+          {alertFilter === 'visitors' && leadfeeder && (
+            <>
+              <div className="px-5 py-1.5 sticky top-0 z-10" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+                <span className="text-[8px] font-bold uppercase tracking-[1.5px]" style={{ color: '#10b981' }}>
+                  TOP WEBSITE VISITORS THIS WEEK ({leadfeeder.topCompanies?.length || 0})
+                </span>
+              </div>
+              {(leadfeeder.topCompanies || []).map((co, idx) => (
+                <div key={idx} className="flex items-center gap-2.5 px-5 py-2.5 transition-colors"
+                  style={{ borderBottom: '1px solid var(--border)' }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                  <Globe size={12} style={{ color: '#10b981' }} />
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs block truncate" style={{ color: 'var(--text)' }}>{co.name}</span>
+                    <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>{co.source}</span>
+                  </div>
+                  <span className="text-[10px] font-medium shrink-0" style={{ color: '#10b981' }}>{co.visits} visits</span>
+                  <span className="text-[10px] shrink-0" style={{ color: 'var(--text-muted)' }}>{formatDate(co.lastVisit)}</span>
+                </div>
+              ))}
+            </>
+          )}
+
           {/* Task sections */}
-          {visibleTasks.overdue.length > 0 && (
-            <TaskSection label="OVERDUE" count={visibleTasks.overdue.length} color="#f59e0b" tasks={visibleTasks.overdue} owners={owners} />
-          )}
-          {visibleTasks.today.length > 0 && (
-            <TaskSection label="TODAY" count={visibleTasks.today.length} color="var(--accent)" tasks={visibleTasks.today} owners={owners} />
-          )}
-          {visibleTasks.upcoming.length > 0 && (
-            <TaskSection label="COMING UP" count={visibleTasks.upcoming.length} color="var(--text-muted)" tasks={visibleTasks.upcoming} owners={owners} />
-          )}
-          {activeTasks.length === 0 && (
-            <div className="flex items-center justify-center py-12">
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No tasks found.</p>
-            </div>
+          {alertFilter !== 'closing' && alertFilter !== 'visitors' && (
+            <>
+              {visibleTasks.overdue.length > 0 && (
+                <TaskSection label="OVERDUE" count={visibleTasks.overdue.length} color="#f59e0b" tasks={visibleTasks.overdue} owners={owners} />
+              )}
+              {visibleTasks.today.length > 0 && (
+                <TaskSection label="TODAY" count={visibleTasks.today.length} color="var(--accent)" tasks={visibleTasks.today} owners={owners} />
+              )}
+              {visibleTasks.upcoming.length > 0 && (
+                <TaskSection label="COMING UP" count={visibleTasks.upcoming.length} color="var(--text-muted)" tasks={visibleTasks.upcoming} owners={owners} />
+              )}
+              {activeTasks.length === 0 && (
+                <div className="flex items-center justify-center py-12">
+                  <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No tasks found.</p>
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -547,16 +618,18 @@ function TaskSection({ label, count, color, tasks, owners }: {
         </span>
       </div>
       {tasks.map(task => (
-        <div key={task.id}
-          className="flex items-center gap-2.5 px-5 py-2.5 transition-colors"
-          style={{ borderBottom: '1px solid var(--border)' }}
+        <a key={task.id}
+          href={`https://app.hubspot.com/contacts/27215736/record/0-27/${task.id}`}
+          target="_blank" rel="noopener"
+          className="flex items-center gap-2.5 px-5 py-2.5 transition-colors group"
+          style={{ borderBottom: '1px solid var(--border)', textDecoration: 'none' }}
           onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface)')}
           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
         >
           <span style={{ color: label === 'OVERDUE' ? '#f59e0b' : 'var(--text-muted)' }}>
             {taskIcon(task.type)}
           </span>
-          <span className="text-xs flex-1 truncate" style={{ color: 'var(--text)' }}>{task.subject}</span>
+          <span className="text-xs flex-1 truncate group-hover:underline" style={{ color: 'var(--text)' }}>{task.subject}</span>
           {task.dueDate && (
             <span className="text-[10px] shrink-0" style={{
               color: isOverdue(task.dueDate) ? '#f59e0b' : isDueToday(task.dueDate) ? 'var(--accent)' : 'var(--text-muted)',
@@ -569,7 +642,8 @@ function TaskSection({ label, count, color, tasks, owners }: {
               {task.ownerName.split(' ')[0]}
             </span>
           )}
-        </div>
+          <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 shrink-0" style={{ color: 'var(--text-muted)' }} />
+        </a>
       ))}
     </>
   );
