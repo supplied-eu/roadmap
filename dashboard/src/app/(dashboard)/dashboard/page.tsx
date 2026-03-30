@@ -2,8 +2,8 @@
 
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { isAdmin } from '@/lib/auth';
-import { Calendar, Mail, CheckSquare, Clock, ExternalLink, Circle, Plus, X, AlarmClock, CheckCircle, Undo2, FileText, ChevronDown, ChevronUp, GripVertical } from 'lucide-react';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { Calendar, Mail, CheckSquare, Clock, ExternalLink, Circle, X, AlarmClock, CheckCircle, Undo2, FileText, ChevronDown, ChevronUp, GripVertical, Phone, DollarSign } from 'lucide-react';
+import { useEffect, useState, useCallback } from 'react';
 
 // ── Types ──────────────────────────────────────────────────────
 type Issue = {
@@ -25,6 +25,22 @@ type Meeting = {
   summary: string;
   suggestedTasks: { task: string; priority: string; category: string }[];
 };
+type HsDeal = {
+  id: string; name: string; stage: string; stageLabel: string;
+  amount: number | null; closeDate: string | null; ownerName: string | null;
+};
+type HsTask = {
+  id: string; subject: string; status: string; priority: string;
+  dueDate: string | null; ownerName: string | null; type: string;
+};
+
+// Combined stream item
+type StreamItem = {
+  id: string; title: string; source: 'linear' | 'hubspot' | 'gcal' | 'gmail';
+  dueDate: string | null; status: string; url: string | null;
+  priority: number; meta?: string; assignee?: string;
+};
+
 type Toast = { id: string; message: string; undoAction?: () => void };
 
 // ── Helpers ────────────────────────────────────────────────────
@@ -32,43 +48,39 @@ function formatTime(iso: string) {
   if (!iso || !iso.includes('T')) return 'All day';
   return new Date(iso).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
-
 function parseFrom(from: string) {
   const match = from.match(/^"?(.+?)"?\s*<.+>/);
   return match ? match[1] : from.split('@')[0];
 }
-
-function timeAgo(dateStr: string) {
-  const d = new Date(dateStr);
-  const diff = Date.now() - d.getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function isOverdue(d: string | null) { return !!d && d.split('T')[0] < todayStr(); }
+function isDueToday(d: string | null) { return !!d && d.split('T')[0] === todayStr(); }
+function isDueThisWeek(d: string | null) {
+  if (!d) return false;
+  const dt = new Date(d);
+  const now = new Date();
+  const weekEnd = new Date(now); weekEnd.setDate(weekEnd.getDate() + 7);
+  return dt > now && dt <= weekEnd && !isDueToday(d);
+}
+function formatDate(d: string | null) {
+  if (!d) return '';
+  return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+function formatCurrency(n: number | null) {
+  if (!n) return '—';
+  return new Intl.NumberFormat('en-EU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
 }
 
-const priorityColors: Record<number, string> = {
-  1: '#f87171', 2: '#fb923c', 3: '#facc15', 4: '#94a3b8',
+const SOURCE_COLORS: Record<string, string> = {
+  linear: '#6366f1', hubspot: '#f97316', gcal: '#3b82f6', gmail: '#ef4444',
+};
+const SOURCE_LABELS: Record<string, string> = {
+  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Gmail',
 };
 
 const priCatColors: Record<string, string> = {
   high: '#f97316', medium: '#facc15', low: '#94a3b8', urgent: '#ef4444',
 };
-
-// ── Card wrapper ───────────────────────────────────────────────
-function Card({ title, icon: Icon, children, action }: { title: string; icon: any; children: React.ReactNode; action?: React.ReactNode }) {
-  return (
-    <div className="rounded-lg p-5" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-      <div className="flex items-center gap-2 mb-4">
-        <Icon size={16} style={{ color: 'var(--accent)' }} />
-        <h3 className="text-sm font-semibold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>{title}</h3>
-        {action && <div className="ml-auto">{action}</div>}
-      </div>
-      {children}
-    </div>
-  );
-}
 
 // ── Toast notification ─────────────────────────────────────────
 function ToastBar({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: string) => void }) {
@@ -103,47 +115,38 @@ export default function DashboardPage() {
   const [calendar, setCalendar] = useState<CalEvent[]>([]);
   const [emails, setEmails] = useState<Email[]>([]);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
-  const [loading, setLoading] = useState({ tasks: true, calendar: true, emails: true, meetings: true });
+  const [hsTasks, setHsTasks] = useState<HsTask[]>([]);
+  const [hsDeals, setHsDeals] = useState<HsDeal[]>([]);
+  const [loading, setLoading] = useState({ tasks: true, calendar: true, hubspot: true, meetings: true });
 
   // Task management state
   const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(new Set());
   const [snoozedTasks, setSnoozedTasks] = useState<Set<string>>(new Set());
   const [doneTasks, setDoneTasks] = useState<Set<string>>(new Set());
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const [showNewTask, setShowNewTask] = useState(false);
-  const [newTaskTitle, setNewTaskTitle] = useState('');
   const [expandedMeeting, setExpandedMeeting] = useState<string | null>(null);
-
-  // Drag reorder state for tasks
-  const [taskOrder, setTaskOrder] = useState<string[] | null>(null);
-  const [dragIdx, setDragIdx] = useState<number | null>(null);
-  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const [personFilter, setPersonFilter] = useState<string>('all');
 
   const addToast = useCallback((message: string, undoAction?: () => void) => {
     const id = Date.now().toString();
     setToasts(prev => [...prev, { id, message, undoAction }]);
     setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 5000);
   }, []);
+  const dismissToast = useCallback((id: string) => setToasts(prev => prev.filter(t => t.id !== id)), []);
 
-  const dismissToast = useCallback((id: string) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
-  }, []);
-
-  // Task actions
   const markDone = useCallback((taskId: string, taskTitle: string) => {
     setDoneTasks(prev => new Set(prev).add(taskId));
     addToast(`"${taskTitle}" marked done`, () => {
       setDoneTasks(prev => { const next = new Set(prev); next.delete(taskId); return next; });
     });
   }, [addToast]);
-
-  const snoozeTask = useCallback((taskId: string, taskTitle: string, duration: string) => {
+  const snoozeTask = useCallback((taskId: string, taskTitle: string) => {
     setSnoozedTasks(prev => new Set(prev).add(taskId));
-    addToast(`"${taskTitle}" snoozed until ${duration}`, () => {
+    addToast(`"${taskTitle}" snoozed until tomorrow`, () => {
       setSnoozedTasks(prev => { const next = new Set(prev); next.delete(taskId); return next; });
     });
   }, [addToast]);
-
   const dismissTask = useCallback((taskId: string, taskTitle: string) => {
     setHiddenTasks(prev => new Set(prev).add(taskId));
     addToast(`"${taskTitle}" dismissed`, () => {
@@ -165,9 +168,18 @@ export default function DashboardPage() {
       .then(data => {
         setCalendar((data.calendar || []).filter((e: CalEvent) => e.isToday));
         setEmails(data.emails || []);
-        setLoading(l => ({ ...l, calendar: false, emails: false }));
+        setLoading(l => ({ ...l, calendar: false }));
       })
-      .catch(() => setLoading(l => ({ ...l, calendar: false, emails: false })));
+      .catch(() => setLoading(l => ({ ...l, calendar: false })));
+
+    fetch('/api/hubspot')
+      .then(r => r.json())
+      .then(data => {
+        setHsTasks((data.tasks || []).filter((t: HsTask) => t.status !== 'COMPLETED'));
+        setHsDeals(data.deals || []);
+        setLoading(l => ({ ...l, hubspot: false }));
+      })
+      .catch(() => setLoading(l => ({ ...l, hubspot: false })));
 
     fetch('/api/meetings')
       .then(r => r.json())
@@ -175,299 +187,374 @@ export default function DashboardPage() {
       .catch(() => setLoading(l => ({ ...l, meetings: false })));
   }, [user]);
 
-  // Visible tasks (filtered + ordered)
-  const visibleTasks = tasks.filter(t => !hiddenTasks.has(t.id) && !snoozedTasks.has(t.id) && !doneTasks.has(t.id));
-  const orderedTasks = taskOrder
-    ? taskOrder.filter(id => visibleTasks.some(t => t.id === id)).map(id => visibleTasks.find(t => t.id === id)!).concat(visibleTasks.filter(t => !taskOrder.includes(t.id)))
-    : visibleTasks;
+  // Build combined stream
+  const streamItems: StreamItem[] = [];
 
-  const handleTaskDragStart = (idx: number) => setDragIdx(idx);
-  const handleTaskDrop = (dropIdx: number) => {
-    if (dragIdx === null || dragIdx === dropIdx) { setDragIdx(null); setDragOverIdx(null); return; }
-    const ids = orderedTasks.map(t => t.id);
-    const [moved] = ids.splice(dragIdx, 1);
-    ids.splice(dropIdx, 0, moved);
-    setTaskOrder(ids);
-    setDragIdx(null);
-    setDragOverIdx(null);
-  };
+  // Linear tasks
+  for (const t of tasks) {
+    if (hiddenTasks.has(t.id) || snoozedTasks.has(t.id) || doneTasks.has(t.id)) continue;
+    streamItems.push({
+      id: `lin_${t.id}`, title: t.title, source: 'linear',
+      dueDate: null, status: t.status, url: t.url,
+      priority: t.priority, meta: t.identifier, assignee: t.assignee,
+    });
+  }
 
+  // HubSpot tasks
+  for (const t of hsTasks) {
+    if (hiddenTasks.has(t.id) || snoozedTasks.has(t.id) || doneTasks.has(t.id)) continue;
+    streamItems.push({
+      id: `hs_${t.id}`, title: t.subject, source: 'hubspot',
+      dueDate: t.dueDate, status: t.status, url: null,
+      priority: t.priority === 'HIGH' ? 2 : t.priority === 'MEDIUM' ? 3 : 4,
+      meta: t.type, assignee: t.ownerName || undefined,
+    });
+  }
+
+  // Person filter (admin only)
+  const uniqueAssignees = [...new Set(streamItems.map(i => i.assignee).filter(Boolean))] as string[];
+  const filteredStream = personFilter === 'all' ? streamItems
+    : streamItems.filter(i => i.assignee?.toLowerCase().includes(personFilter.toLowerCase()));
+
+  // Group by urgency
+  const overdue = filteredStream.filter(i => isOverdue(i.dueDate));
+  const dueToday = filteredStream.filter(i => isDueToday(i.dueDate));
+  const thisWeek = filteredStream.filter(i => isDueThisWeek(i.dueDate));
+  const later = filteredStream.filter(i => !isOverdue(i.dueDate) && !isDueToday(i.dueDate) && !isDueThisWeek(i.dueDate));
+
+  // Sort each group by priority
+  const sortByPri = (a: StreamItem, b: StreamItem) => a.priority - b.priority;
+  overdue.sort(sortByPri);
+  dueToday.sort(sortByPri);
+  thisWeek.sort(sortByPri);
+  later.sort(sortByPri);
+
+  // Deals closing this week for sidebar
+  const now = new Date();
+  const weekEnd = new Date(now); weekEnd.setDate(weekEnd.getDate() + 7);
+  const dealsClosingSoon = hsDeals.filter(d => {
+    if (!d.closeDate) return false;
+    const cd = new Date(d.closeDate);
+    return cd >= now && cd <= weekEnd && d.stageLabel && !d.stageLabel.toLowerCase().includes('closed');
+  });
+
+  const isLoadingAll = loading.tasks && loading.calendar && loading.hubspot;
   const todayEvents = calendar;
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      {/* Greeting */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>
-          Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {firstName}
-        </h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-          {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-        </p>
-      </div>
-
-      {/* Main grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Left column */}
-        <div className="lg:col-span-2 flex flex-col gap-5">
-          {/* Tasks */}
-          <Card title="My Tasks" icon={CheckSquare} action={
-            <button onClick={() => setShowNewTask(!showNewTask)}
-              className="flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors"
-              style={{ background: 'var(--bg)', color: 'var(--accent)', border: '1px solid var(--border)' }}>
-              <Plus size={12} /> Add Task
-            </button>
-          }>
-            {/* New task input */}
-            {showNewTask && (
-              <div className="flex items-center gap-2 mb-3 p-2 rounded-md" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
-                <input
-                  type="text"
-                  value={newTaskTitle}
-                  onChange={e => setNewTaskTitle(e.target.value)}
-                  placeholder="Task title — creates in Linear"
-                  className="flex-1 text-sm bg-transparent outline-none"
-                  style={{ color: 'var(--text)' }}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter' && newTaskTitle.trim()) {
-                      addToast(`Task "${newTaskTitle}" will be created in Linear`);
-                      setNewTaskTitle('');
-                      setShowNewTask(false);
-                    }
-                  }}
-                />
-                <button onClick={() => { setShowNewTask(false); setNewTaskTitle(''); }}
-                  style={{ color: 'var(--text-muted)' }}><X size={14} /></button>
-              </div>
-            )}
-
-            {loading.tasks ? (
-              <div className="space-y-2">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="rounded-md p-3 animate-pulse" style={{ background: 'var(--bg)', height: '48px' }} />
-                ))}
-              </div>
-            ) : orderedTasks.length === 0 ? (
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No tasks assigned to you right now.</p>
-            ) : (
-              <div className="space-y-1">
-                {orderedTasks.slice(0, 15).map((task, idx) => (
-                  <div
-                    key={task.id}
-                    draggable
-                    onDragStart={() => handleTaskDragStart(idx)}
-                    onDragOver={e => { e.preventDefault(); setDragOverIdx(idx); }}
-                    onDragLeave={() => setDragOverIdx(null)}
-                    onDrop={() => handleTaskDrop(idx)}
-                    className="flex items-center gap-2 rounded-md px-2 py-1.5 group transition-colors"
-                    style={{
-                      borderTop: dragOverIdx === idx ? '2px solid var(--accent)' : '2px solid transparent',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                  >
-                    {/* Drag handle */}
-                    <GripVertical size={12} className="shrink-0 opacity-0 group-hover:opacity-40 cursor-grab" style={{ color: 'var(--text-muted)' }} />
-
-                    {/* Done button */}
-                    <button onClick={() => markDone(task.id, task.title)}
-                      className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                      title="Mark done">
-                      <CheckCircle size={14} style={{ color: '#22c55e' }} />
-                    </button>
-
-                    {/* Task link */}
-                    <a href={task.url} target="_blank" rel="noopener"
-                      className="flex items-center gap-2 flex-1 min-w-0"
-                      style={{ color: 'var(--text)' }}
-                      onClick={e => e.stopPropagation()}>
-                      <Circle size={10} fill={task.statusColor || '#666'} stroke={task.statusColor || '#666'} className="shrink-0" />
-                      <span className="text-xs font-mono shrink-0" style={{ color: 'var(--text-muted)', minWidth: '64px' }}>
-                        {task.identifier}
-                      </span>
-                      <span className="text-sm flex-1 truncate">{task.title}</span>
-                    </a>
-
-                    {task.priority <= 2 && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0"
-                        style={{ background: priorityColors[task.priority] + '22', color: priorityColors[task.priority] }}>
-                        {task.priority === 1 ? 'Urgent' : 'High'}
-                      </span>
-                    )}
-                    <span className="text-[10px] shrink-0" style={{ color: 'var(--text-muted)' }}>{task.status}</span>
-
-                    {/* Snooze / Dismiss buttons */}
-                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                      <button onClick={() => snoozeTask(task.id, task.title, 'tomorrow')} title="Snooze to tomorrow">
-                        <AlarmClock size={12} style={{ color: 'var(--text-muted)' }} />
-                      </button>
-                      <button onClick={() => dismissTask(task.id, task.title)} title="Dismiss">
-                        <X size={12} style={{ color: 'var(--text-muted)' }} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                {orderedTasks.length > 15 && (
-                  <p className="text-xs pt-2 pl-3" style={{ color: 'var(--text-muted)' }}>
-                    + {orderedTasks.length - 15} more tasks
-                  </p>
-                )}
-              </div>
-            )}
-          </Card>
-
-          {/* Meeting Summaries */}
-          <Card title="Meeting Summaries" icon={FileText}>
-            {loading.meetings ? (
-              <div className="space-y-2">
-                {[1, 2].map(i => (
-                  <div key={i} className="rounded-md p-3 animate-pulse" style={{ background: 'var(--bg)', height: '48px' }} />
-                ))}
-              </div>
-            ) : meetings.length === 0 ? (
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No recent meeting summaries.</p>
-            ) : (
-              <div className="space-y-2">
-                {meetings.slice(0, 6).map(mtg => {
-                  const isExpanded = expandedMeeting === mtg.id;
-                  return (
-                    <div key={mtg.id} className="rounded-md overflow-hidden" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
-                      <button
-                        onClick={() => setExpandedMeeting(isExpanded ? null : mtg.id)}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors hover:opacity-80"
-                      >
-                        {isExpanded ? <ChevronUp size={12} style={{ color: 'var(--text-muted)' }} /> : <ChevronDown size={12} style={{ color: 'var(--text-muted)' }} />}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium truncate" style={{ color: 'var(--text)' }}>{mtg.title}</span>
-                            <span className="text-[10px] shrink-0" style={{ color: 'var(--text-muted)' }}>{mtg.date}</span>
-                          </div>
-                          {!isExpanded && (
-                            <p className="text-xs truncate mt-0.5" style={{ color: 'var(--text-muted)' }}>{mtg.summary}</p>
-                          )}
-                        </div>
-                        {mtg.suggestedTasks.length > 0 && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0"
-                            style={{ background: 'var(--accent)', color: '#fff' }}>
-                            {mtg.suggestedTasks.length} tasks
-                          </span>
-                        )}
-                      </button>
-                      {isExpanded && (
-                        <div className="px-3 pb-3 border-t" style={{ borderColor: 'var(--border)' }}>
-                          <p className="text-sm mt-2 mb-3" style={{ color: 'var(--text-muted)' }}>{mtg.summary}</p>
-                          {mtg.suggestedTasks.length > 0 && (
-                            <div className="space-y-1.5">
-                              <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--text-dim, var(--text-muted))' }}>Suggested Tasks</span>
-                              {mtg.suggestedTasks.map((st, i) => (
-                                <div key={i} className="flex items-center gap-2 text-xs rounded px-2 py-1.5"
-                                  style={{ background: 'var(--surface)' }}>
-                                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: priCatColors[st.priority] || '#94a3b8' }} />
-                                  <span className="flex-1" style={{ color: 'var(--text)' }}>{st.task}</span>
-                                  <span className="text-[9px] px-1 py-0.5 rounded" style={{ background: priCatColors[st.priority] + '22', color: priCatColors[st.priority] || '#94a3b8' }}>
-                                    {st.priority}
-                                  </span>
-                                  <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>{st.category}</span>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </Card>
-
-          {/* Recent Emails */}
-          <Card title="Recent Emails" icon={Mail}>
-            {loading.emails ? (
-              <div className="space-y-2">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="rounded-md p-3 animate-pulse" style={{ background: 'var(--bg)', height: '48px' }} />
-                ))}
-              </div>
-            ) : emails.length === 0 ? (
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No recent emails.</p>
-            ) : (
-              <div className="space-y-1">
-                {emails.map(email => (
-                  <div key={email.id} className="rounded-md px-3 py-2"
-                    style={{ background: email.unread ? 'var(--bg)' : 'transparent' }}>
-                    <div className="flex items-center gap-2">
-                      {email.unread && <Circle size={6} fill="var(--accent)" stroke="var(--accent)" />}
-                      <span className="text-sm font-medium flex-1 truncate" style={{ color: 'var(--text)' }}>
-                        {parseFrom(email.from)}
-                      </span>
-                      <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{timeAgo(email.date)}</span>
-                    </div>
-                    <p className="text-sm truncate mt-0.5" style={{ color: 'var(--text-muted)' }}>{email.subject}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </Card>
+    <div className="flex h-full overflow-hidden">
+      {/* Left: Task stream */}
+      <div className="flex-1 overflow-auto" style={{ flex: '3' }}>
+        {/* Greeting */}
+        <div className="px-6 pt-5 pb-3">
+          <h1 className="text-xl font-bold" style={{ color: 'var(--text)' }}>
+            Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {firstName}
+          </h1>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+            {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+          </p>
         </div>
 
-        {/* Right column - sidebar */}
-        <div className="flex flex-col gap-5">
-          {/* Today's Schedule */}
-          <Card title="Today's Schedule" icon={Calendar}>
-            {loading.calendar ? (
-              <div className="space-y-2">
-                {[1, 2].map(i => (
-                  <div key={i} className="rounded-md p-3 animate-pulse" style={{ background: 'var(--bg)', height: '56px' }} />
-                ))}
-              </div>
-            ) : todayEvents.length === 0 ? (
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No events today.</p>
-            ) : (
-              <div className="space-y-2">
-                {todayEvents.map(ev => (
-                  <div key={ev.id} className="rounded-md p-3"
-                    style={{ background: 'var(--bg)', borderLeft: '3px solid var(--accent)' }}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>{ev.title}</span>
-                      {ev.meetLink && (
-                        <a href={ev.meetLink} target="_blank" rel="noopener" title="Join meeting">
-                          <ExternalLink size={12} style={{ color: 'var(--accent)' }} />
-                        </a>
-                      )}
-                    </div>
-                    <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
-                      {formatTime(ev.start)} – {formatTime(ev.end)}
-                    </div>
-                  </div>
-                ))}
+        {isLoadingAll ? (
+          <div className="px-6 space-y-2">
+            {[1, 2, 3, 4, 5].map(i => (
+              <div key={i} className="rounded-md animate-pulse" style={{ background: 'var(--surface)', height: '44px' }} />
+            ))}
+          </div>
+        ) : (
+          <>
+            {overdue.length > 0 && (
+              <StreamSection label="OVERDUE" count={overdue.length} color="#ef4444"
+                items={overdue} expandedItem={expandedItem} setExpandedItem={setExpandedItem}
+                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask} />
+            )}
+            {dueToday.length > 0 && (
+              <StreamSection label="DUE TODAY" count={dueToday.length} color="var(--accent)"
+                items={dueToday} expandedItem={expandedItem} setExpandedItem={setExpandedItem}
+                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask} />
+            )}
+            {thisWeek.length > 0 && (
+              <StreamSection label="THIS WEEK" count={thisWeek.length} color="#f59e0b"
+                items={thisWeek} expandedItem={expandedItem} setExpandedItem={setExpandedItem}
+                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask} />
+            )}
+            {later.length > 0 && (
+              <StreamSection label="LATER" count={later.length} color="var(--text-muted)"
+                items={later} expandedItem={expandedItem} setExpandedItem={setExpandedItem}
+                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask} />
+            )}
+            {filteredStream.length === 0 && (
+              <div className="px-6 py-8 text-center">
+                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>All clear — no tasks right now.</p>
               </div>
             )}
-          </Card>
 
-          {/* WBSO Time Tracker (admin only) */}
-          {admin && (
-            <Card title="WBSO Time Tracker" icon={Clock}>
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-                Weekly R&D hour tracking for WBSO compliance.
-              </p>
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                {['Block 1', 'Block 2', 'Block 3', 'Block 4'].map(block => (
-                  <div key={block} className="rounded-md p-3 text-center"
-                    style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
-                    <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{block}</div>
-                    <div className="text-lg font-bold mt-1" style={{ color: 'var(--accent)' }}>—</div>
-                    <div className="text-xs" style={{ color: 'var(--text-muted)' }}>hours</div>
-                  </div>
-                ))}
+            {/* Meeting Summaries */}
+            {meetings.length > 0 && (
+              <div className="px-6 py-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <FileText size={14} style={{ color: 'var(--accent)' }} />
+                  <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Meeting Summaries</h3>
+                </div>
+                <div className="space-y-1.5">
+                  {meetings.slice(0, 4).map(mtg => {
+                    const isExpanded = expandedMeeting === mtg.id;
+                    return (
+                      <div key={mtg.id} className="rounded-md overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                        <button onClick={() => setExpandedMeeting(isExpanded ? null : mtg.id)}
+                          className="w-full flex items-center gap-3 px-3 py-2 text-left hover:opacity-80">
+                          {isExpanded ? <ChevronUp size={11} style={{ color: 'var(--text-muted)' }} /> : <ChevronDown size={11} style={{ color: 'var(--text-muted)' }} />}
+                          <span className="text-xs font-medium truncate flex-1" style={{ color: 'var(--text)' }}>{mtg.title}</span>
+                          <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{mtg.date}</span>
+                          {mtg.suggestedTasks.length > 0 && (
+                            <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0" style={{ background: 'var(--accent)', color: '#fff' }}>
+                              {mtg.suggestedTasks.length} tasks
+                            </span>
+                          )}
+                        </button>
+                        {isExpanded && (
+                          <div className="px-3 pb-2.5 border-t" style={{ borderColor: 'var(--border)' }}>
+                            <p className="text-xs mt-2 mb-2" style={{ color: 'var(--text-muted)' }}>{mtg.summary}</p>
+                            {mtg.suggestedTasks.length > 0 && (
+                              <div className="space-y-1">
+                                <span className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Suggested Tasks</span>
+                                {mtg.suggestedTasks.map((st, i) => (
+                                  <div key={i} className="flex items-center gap-2 text-xs rounded px-2 py-1" style={{ background: 'var(--bg)' }}>
+                                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: priCatColors[st.priority] || '#94a3b8' }} />
+                                    <span className="flex-1" style={{ color: 'var(--text)' }}>{st.task}</span>
+                                    <span className="text-[9px] px-1 py-0.5 rounded" style={{ background: (priCatColors[st.priority] || '#94a3b8') + '22', color: priCatColors[st.priority] || '#94a3b8' }}>
+                                      {st.priority}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </Card>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Right: Sidebar */}
+      <div className="overflow-auto shrink-0" style={{ width: '320px', borderLeft: '1px solid var(--border)', background: 'var(--surface)' }}>
+        {/* Person filter (admin only) */}
+        {admin && uniqueAssignees.length > 0 && (
+          <div className="px-4 py-2.5" style={{ borderBottom: '1px solid var(--border)' }}>
+            <span className="text-[8px] font-bold uppercase tracking-[1.5px] block mb-1.5" style={{ color: 'var(--text-muted)' }}>
+              SHOWING FOR
+            </span>
+            <div className="flex flex-wrap gap-1">
+              <button onClick={() => setPersonFilter('all')}
+                className="text-[10px] px-2 py-0.5 rounded font-medium transition-colors"
+                style={{ background: personFilter === 'all' ? 'var(--accent)' : 'var(--bg)', color: personFilter === 'all' ? '#fff' : 'var(--text-muted)' }}>
+                All
+              </button>
+              {uniqueAssignees.slice(0, 6).map(name => (
+                <button key={name} onClick={() => setPersonFilter(personFilter === name ? 'all' : name)}
+                  className="text-[10px] px-2 py-0.5 rounded font-medium transition-colors"
+                  style={{ background: personFilter === name ? 'var(--accent)' : 'var(--bg)', color: personFilter === name ? '#fff' : 'var(--text-muted)' }}>
+                  {name.split(' ')[0]}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Deals closing soon */}
+        <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
+          <span className="text-[8px] font-bold uppercase tracking-[1.5px] block mb-2" style={{ color: 'var(--text-muted)' }}>
+            DEALS CLOSING THIS WEEK
+          </span>
+          {dealsClosingSoon.length === 0 ? (
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>No deals closing this week.</p>
+          ) : (
+            <div className="space-y-2">
+              {dealsClosingSoon.map(d => (
+                <div key={d.id} className="rounded-md p-2.5" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium truncate" style={{ color: 'var(--text)' }}>{d.name}</span>
+                  </div>
+                  <div className="flex items-center justify-between mt-1">
+                    <span className="text-sm font-bold" style={{ color: '#22c55e' }}>{formatCurrency(d.amount)}</span>
+                    <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{formatDate(d.closeDate)}</span>
+                  </div>
+                  {d.ownerName && <span className="text-[9px] block mt-0.5" style={{ color: 'var(--text-muted)' }}>{d.ownerName}</span>}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Today's Schedule */}
+        <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
+          <span className="text-[8px] font-bold uppercase tracking-[1.5px] block mb-2" style={{ color: 'var(--text-muted)' }}>
+            TODAY&apos;S SCHEDULE
+          </span>
+          {loading.calendar ? (
+            <div className="space-y-2">
+              {[1, 2].map(i => <div key={i} className="rounded-md animate-pulse" style={{ background: 'var(--bg)', height: '48px' }} />)}
+            </div>
+          ) : todayEvents.length === 0 ? (
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>No events today.</p>
+          ) : (
+            <div className="space-y-1.5">
+              {todayEvents.map(ev => (
+                <div key={ev.id} className="rounded-md p-2.5" style={{ background: 'var(--bg)', borderLeft: '3px solid var(--accent)' }}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium truncate" style={{ color: 'var(--text)' }}>{ev.title}</span>
+                    {ev.meetLink && (
+                      <a href={ev.meetLink} target="_blank" rel="noopener" title="Join">
+                        <ExternalLink size={10} style={{ color: 'var(--accent)' }} />
+                      </a>
+                    )}
+                  </div>
+                  <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{formatTime(ev.start)} – {formatTime(ev.end)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Recent Emails */}
+        <div className="px-4 py-3">
+          <span className="text-[8px] font-bold uppercase tracking-[1.5px] block mb-2" style={{ color: 'var(--text-muted)' }}>
+            RECENT EMAILS
+          </span>
+          {emails.length === 0 ? (
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>No recent emails.</p>
+          ) : (
+            <div className="space-y-1">
+              {emails.slice(0, 8).map(email => (
+                <div key={email.id} className="rounded-md px-2.5 py-1.5"
+                  style={{ background: email.unread ? 'var(--bg)' : 'transparent' }}>
+                  <div className="flex items-center gap-1.5">
+                    {email.unread && <Circle size={5} fill="var(--accent)" stroke="var(--accent)" />}
+                    <span className="text-[11px] font-medium flex-1 truncate" style={{ color: 'var(--text)' }}>{parseFrom(email.from)}</span>
+                  </div>
+                  <p className="text-[10px] truncate" style={{ color: 'var(--text-muted)' }}>{email.subject}</p>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>
 
-      {/* Toast notifications */}
       <ToastBar toasts={toasts} onDismiss={dismissToast} />
     </div>
+  );
+}
+
+// ── Stream section ─────────────────────────────────────────────
+function StreamSection({ label, count, color, items, expandedItem, setExpandedItem, onDone, onSnooze, onDismiss }: {
+  label: string; count: number; color: string; items: StreamItem[];
+  expandedItem: string | null; setExpandedItem: (id: string | null) => void;
+  onDone: (id: string, title: string) => void;
+  onSnooze: (id: string, title: string) => void;
+  onDismiss: (id: string, title: string) => void;
+}) {
+  return (
+    <>
+      <div className="px-6 py-1.5 sticky top-0 z-10" style={{ background: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
+        <span className="text-[8px] font-bold uppercase tracking-[1.5px]" style={{ color }}>{label} ({count})</span>
+      </div>
+      {items.map(item => {
+        const rawId = item.id.replace(/^(lin_|hs_)/, '');
+        const isExpanded = expandedItem === item.id;
+        return (
+          <div key={item.id} className="group">
+            <div
+              className="flex items-center gap-2 px-6 py-2 transition-colors cursor-pointer"
+              style={{ borderBottom: '1px solid var(--border)' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              onClick={() => setExpandedItem(isExpanded ? null : item.id)}
+            >
+              {/* Source badge */}
+              <span className="text-[8px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0"
+                style={{ background: SOURCE_COLORS[item.source] + '22', color: SOURCE_COLORS[item.source] }}>
+                {SOURCE_LABELS[item.source]}
+              </span>
+
+              {/* Title */}
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener"
+                  className="text-xs flex-1 truncate hover:underline"
+                  style={{ color: 'var(--text)' }}
+                  onClick={e => e.stopPropagation()}>
+                  {item.title}
+                </a>
+              ) : (
+                <span className="text-xs flex-1 truncate" style={{ color: 'var(--text)' }}>{item.title}</span>
+              )}
+
+              {/* Priority */}
+              {item.priority <= 2 && (
+                <span className="text-[9px] px-1 py-0.5 rounded shrink-0 font-bold"
+                  style={{ background: (item.priority === 1 ? '#ef4444' : '#f97316') + '22', color: item.priority === 1 ? '#ef4444' : '#f97316' }}>
+                  {item.priority === 1 ? 'URGENT' : 'HIGH'}
+                </span>
+              )}
+
+              {/* Due date */}
+              {item.dueDate && (
+                <span className="text-[10px] shrink-0" style={{
+                  color: isOverdue(item.dueDate) ? '#ef4444' : isDueToday(item.dueDate) ? 'var(--accent)' : '#f59e0b',
+                }}>
+                  {formatDate(item.dueDate)}
+                </span>
+              )}
+
+              {/* Assignee */}
+              {item.assignee && (
+                <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0" style={{ background: 'var(--bg)', color: 'var(--text-muted)' }}>
+                  {item.assignee.split(' ')[0]}
+                </span>
+              )}
+
+              {/* Status */}
+              <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{item.status}</span>
+
+              {/* Actions */}
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                <button onClick={e => { e.stopPropagation(); onDone(rawId, item.title); }} title="Done">
+                  <CheckCircle size={12} style={{ color: '#22c55e' }} />
+                </button>
+                <button onClick={e => { e.stopPropagation(); onSnooze(rawId, item.title); }} title="Snooze">
+                  <AlarmClock size={12} style={{ color: 'var(--text-muted)' }} />
+                </button>
+                <button onClick={e => { e.stopPropagation(); onDismiss(rawId, item.title); }} title="Dismiss">
+                  <X size={12} style={{ color: 'var(--text-muted)' }} />
+                </button>
+              </div>
+            </div>
+
+            {/* Expansion panel */}
+            {isExpanded && (
+              <div className="px-10 py-2 text-xs" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+                <div className="flex items-center gap-4">
+                  {item.meta && <span style={{ color: 'var(--text-muted)' }}>{item.meta}</span>}
+                  {item.dueDate && <span style={{ color: isOverdue(item.dueDate) ? '#ef4444' : 'var(--text-muted)' }}>
+                    {isOverdue(item.dueDate) ? `Overdue — due ${formatDate(item.dueDate)}` : `Due ${formatDate(item.dueDate)}`}
+                  </span>}
+                  {item.assignee && <span style={{ color: 'var(--text-muted)' }}>Assigned to {item.assignee}</span>}
+                  {item.url && (
+                    <a href={item.url} target="_blank" rel="noopener"
+                      className="flex items-center gap-1 hover:underline" style={{ color: 'var(--accent)' }}>
+                      Open in {SOURCE_LABELS[item.source]} <ExternalLink size={10} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </>
   );
 }
