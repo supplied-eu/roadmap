@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
-import { ChevronRight, AlertTriangle, AlertCircle, Zap, ArrowUp, ExternalLink, GripVertical } from 'lucide-react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { ChevronRight, ChevronDown, AlertTriangle, AlertCircle, Zap, ArrowUp, ExternalLink, GripVertical, User } from 'lucide-react';
 
 // ── Types ──────────────────────────────────────────────────────
 type Issue = {
@@ -39,6 +39,18 @@ const PRIO_LABELS: Record<number, { label: string; color: string }> = {
 };
 
 function sc(status: string) { return STATUS_COLORS[status] || '#94a3b8'; }
+
+const STATUS_ORDER: Record<string, number> = {
+  'In Progress': 0, 'Started': 0, 'In Review': 1, 'In Test': 2,
+  'Todo': 3, 'Planned': 4, 'Backlog': 5,
+  'Blocked': -1,
+  'Done': 10, 'Completed': 10, 'Cancelled': 11, 'Canceled': 11,
+};
+function statusSort(a: string, b: string) {
+  return (STATUS_ORDER[a] ?? 6) - (STATUS_ORDER[b] ?? 6);
+}
+
+const CUSTOMER_INI_NAME = 'Customer and Partner Go Live';
 
 // ── Zoom ranges ────────────────────────────────────────────────
 function getZoomRange(zoom: Zoom) {
@@ -543,12 +555,39 @@ export default function RoadmapPage() {
     );
   }
 
+  // Split: "Customer and Partner Go Live" → Gantt, everything else → Product panel
+  const customerIni = data.initiatives.find(i => i.name === CUSTOMER_INI_NAME);
+  const productInis = data.initiatives.filter(i => i.name !== CUSTOMER_INI_NAME && !DONE_STATES.has(i.status));
+
+  // Sort product initiatives by urgency (count of high/urgent issues)
+  const sortedProductInis = [...productInis].sort((a, b) => {
+    const urgency = (ini: Initiative) => {
+      let score = 0;
+      for (const p of ini.projects) {
+        for (const iss of p.issues) {
+          if (DONE_STATES.has(iss.status)) continue;
+          if (iss.priority === 1) score += 10;
+          else if (iss.priority === 2) score += 5;
+          else if (iss.status === 'In Progress' || iss.status === 'Started') score += 3;
+        }
+      }
+      return score;
+    };
+    return urgency(b) - urgency(a);
+  });
+
+  // Gantt-only data: just the customer initiative
+  const ganttData: RoadmapData = {
+    initiatives: customerIni ? [customerIni] : [],
+    orphanProjects: data.orphanProjects,
+  };
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Header bar */}
       <div className="flex items-center justify-between px-4 py-2 shrink-0" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
         <div>
-          <h1 className="text-lg font-bold" style={{ color: 'var(--text)' }}>Customer & Product Roadmap</h1>
+          <h1 className="text-lg font-bold" style={{ color: 'var(--text)' }}>Roadmap</h1>
         </div>
         <div className="flex items-center gap-1">
           {(['week', 'month', 'quarter'] as Zoom[]).map(z => (
@@ -568,118 +607,215 @@ export default function RoadmapPage() {
         </div>
       </div>
 
-      {/* Alert bar */}
-      <AlertBar data={data} />
-
-      {/* Timeline header (ticks) */}
-      <div className="flex shrink-0" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
-        <div style={{ width: '380px', minWidth: '380px' }} className="px-3 py-1">
-          <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: 'var(--text-muted)' }}>Item</span>
-        </div>
-        <div className="flex-1 relative" style={{ height: '28px', borderLeft: '1px solid var(--border)' }}>
-          {ticks.map((t, i) => (
-            <div
-              key={i}
-              className="absolute top-0 bottom-0"
-              style={{ left: `${t.pct}%`, borderLeft: `1px solid ${t.major ? 'var(--border2, var(--border))' : 'var(--border)'}` }}
-            >
-              <span
-                className="absolute top-1 text-[9px] whitespace-nowrap pl-1"
-                style={{ color: t.major ? 'var(--text-muted)' : 'var(--text-dim, var(--text-muted))', fontWeight: t.major ? 600 : 400 }}
-              >
-                {t.label}
-              </span>
-            </div>
-          ))}
-          {/* Today marker */}
-          <div className="absolute top-0 bottom-0 w-px" style={{ left: `${todayPct}%`, background: '#ef4444', zIndex: 5 }}>
-            <span className="absolute -top-0 text-[8px] px-1 rounded" style={{ background: '#ef4444', color: '#fff', transform: 'translateX(-50%)' }}>
-              today
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Gantt body */}
       <div className="flex-1 overflow-auto">
-        {/* Initiatives */}
-        {data.initiatives.map(ini => {
-          const rows = renderInitiative(ini);
-          if (!rows) return null;
-          return <div key={ini.id}>{rows}</div>;
-        })}
-
-        {/* Orphan projects */}
-        {data.orphanProjects.length > 0 && (
+        {/* ═══ GANTT: Customer & Partner Go Live ═══ */}
+        {customerIni && (
           <>
-            <SectionHeader title="Other Projects" subtitle="projects not in any initiative" />
-            {data.orphanProjects.filter(p => !DONE_STATES.has(p.status)).map(proj => {
-              const projKey = `oproj_${proj.id}`;
-              const projExp = expanded[projKey] !== undefined ? expanded[projKey] : false;
-              const activeIssues = proj.issues.filter(i => isActive(i.status));
-              const topIssues = activeIssues.filter(i => !i.parentId);
-              const projOd = isOverdue(proj.targetDate, proj.status);
+            <AlertBar data={ganttData} />
 
-              return (
-                <div key={proj.id}>
-                  <GanttRow
-                    indent={0}
-                    label={proj.name}
-                    status={proj.status}
-                    color={projOd ? '#ef4444' : (proj.statusColor || sc(proj.status))}
-                    start={proj.startDate || today}
-                    end={proj.targetDate}
-                    url={proj.url}
-                    hasChildren={topIssues.length > 0}
-                    isExpanded={projExp}
-                    isIni={true}
-                    onClick={() => toggleExpand(projKey)}
-                    assignee={null}
-                    priority={0}
-                    overdue={projOd}
-                    rangeStart={range.start}
-                    rangeEnd={range.end}
-                    todayPct={todayPct}
-                  />
-                  {projExp && topIssues.sort((a, b) => a.priority - b.priority).map(iss => {
-                    const issOd = isOverdue(iss.end, iss.status);
-                    return (
-                      <GanttRow
-                        key={iss.id}
-                        indent={1}
-                        label={`${iss.identifier} ${iss.title}`}
-                        status={iss.status}
-                        color={iss.statusColor || sc(iss.status)}
-                        start={iss.start || iss.end || proj.startDate}
-                        end={iss.end || proj.targetDate}
-                        url={iss.url}
-                        hasChildren={false}
-                        isExpanded={false}
-                        isIni={false}
-                        assignee={iss.assignee}
-                        priority={iss.priority}
-                        overdue={issOd}
-                        rangeStart={range.start}
-                        rangeEnd={range.end}
-                        todayPct={todayPct}
-                      />
-                    );
-                  })}
+            {/* Timeline header */}
+            <div className="flex shrink-0" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+              <div style={{ width: '380px', minWidth: '380px' }} className="px-3 py-1">
+                <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: 'var(--text-muted)' }}>Customer Go-Live</span>
+              </div>
+              <div className="flex-1 relative" style={{ height: '28px', borderLeft: '1px solid var(--border)' }}>
+                {ticks.map((t, i) => (
+                  <div key={i} className="absolute top-0 bottom-0" style={{ left: `${t.pct}%`, borderLeft: `1px solid ${t.major ? 'var(--border2, var(--border))' : 'var(--border)'}` }}>
+                    <span className="absolute top-1 text-[9px] whitespace-nowrap pl-1" style={{ color: t.major ? 'var(--text-muted)' : 'var(--text-dim, var(--text-muted))', fontWeight: t.major ? 600 : 400 }}>
+                      {t.label}
+                    </span>
+                  </div>
+                ))}
+                <div className="absolute top-0 bottom-0 w-px" style={{ left: `${todayPct}%`, background: '#ef4444', zIndex: 5 }}>
+                  <span className="absolute -top-0 text-[8px] px-1 rounded" style={{ background: '#ef4444', color: '#fff', transform: 'translateX(-50%)' }}>today</span>
                 </div>
-              );
-            })}
+              </div>
+            </div>
+
+            {/* Gantt rows — customer initiative only */}
+            <div>
+              {renderInitiative(customerIni)}
+            </div>
+
+            {/* Orphan projects */}
+            {data.orphanProjects.length > 0 && (
+              <>
+                <SectionHeader title="Other Projects" subtitle="not in any initiative" />
+                {data.orphanProjects.filter(p => !DONE_STATES.has(p.status)).map(proj => {
+                  const projKey = `oproj_${proj.id}`;
+                  const projExp = expanded[projKey] !== undefined ? expanded[projKey] : false;
+                  const activeIssues = proj.issues.filter(i => isActive(i.status));
+                  const topIssues = activeIssues.filter(i => !i.parentId);
+                  const projOd = isOverdue(proj.targetDate, proj.status);
+                  return (
+                    <div key={proj.id}>
+                      <GanttRow indent={0} label={proj.name} status={proj.status}
+                        color={projOd ? '#ef4444' : (proj.statusColor || sc(proj.status))}
+                        start={proj.startDate || today} end={proj.targetDate} url={proj.url}
+                        hasChildren={topIssues.length > 0} isExpanded={projExp} isIni={true}
+                        onClick={() => toggleExpand(projKey)} assignee={null} priority={0} overdue={projOd}
+                        rangeStart={range.start} rangeEnd={range.end} todayPct={todayPct} />
+                      {projExp && topIssues.sort((a, b) => a.priority - b.priority).map(iss => {
+                        const issOd = isOverdue(iss.end, iss.status);
+                        return (
+                          <GanttRow key={iss.id} indent={1} label={`${iss.identifier} ${iss.title}`}
+                            status={iss.status} color={iss.statusColor || sc(iss.status)}
+                            start={iss.start || iss.end || proj.startDate} end={iss.end || proj.targetDate}
+                            url={iss.url} hasChildren={false} isExpanded={false} isIni={false}
+                            assignee={iss.assignee} priority={iss.priority} overdue={issOd}
+                            rangeStart={range.start} rangeEnd={range.end} todayPct={todayPct} />
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </>
+            )}
+
+            {/* Legend */}
+            <div className="flex items-center gap-4 px-4 py-3" style={{ borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
+              {Object.entries(STATUS_COLORS).filter(([k]) => !['Cancelled', 'Canceled', 'Completed', 'Done', 'Duplicate'].includes(k)).map(([status, color]) => (
+                <div key={status} className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full" style={{ background: color }} />
+                  <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{status}</span>
+                </div>
+              ))}
+            </div>
           </>
         )}
 
-        {/* Legend */}
-        <div className="flex items-center gap-4 px-4 py-3" style={{ borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
-          {Object.entries(STATUS_COLORS).filter(([k]) => !['Cancelled', 'Canceled', 'Completed', 'Done', 'Duplicate'].includes(k)).map(([status, color]) => (
-            <div key={status} className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full" style={{ background: color }} />
-              <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{status}</span>
+        {/* ═══ PRODUCT INITIATIVES PANEL ═══ */}
+        {sortedProductInis.length > 0 && (
+          <div style={{ borderTop: '2px solid var(--border)' }}>
+            <div className="px-5 py-3" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+              <h2 className="text-sm font-bold uppercase tracking-wide" style={{ color: 'var(--text)' }}>Product Initiatives</h2>
+              <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>Sorted by urgency — click to expand projects & issues</p>
             </div>
-          ))}
-        </div>
+
+            <div className="divide-y" style={{ borderColor: 'var(--border)' }}>
+              {sortedProductInis.map(ini => {
+                const iniKey = `pini_${ini.id}`;
+                const iniExp = expanded[iniKey] !== undefined ? expanded[iniKey] : false;
+                const activeProjects = ini.projects.filter(p => !DONE_STATES.has(p.status));
+                const totalActive = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => !DONE_STATES.has(i.status)).length, 0);
+                const urgentCount = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => !DONE_STATES.has(i.status) && i.priority <= 2).length, 0);
+                const inProgressCount = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => i.status === 'In Progress' || i.status === 'Started').length, 0);
+
+                return (
+                  <div key={ini.id} style={{ borderColor: 'var(--border)' }}>
+                    {/* Initiative header */}
+                    <div
+                      className="flex items-center gap-3 px-5 py-3 cursor-pointer transition-colors hover:brightness-110"
+                      style={{ background: iniExp ? 'var(--surface)' : 'var(--bg)' }}
+                      onClick={() => toggleExpand(iniKey)}
+                    >
+                      {iniExp ? <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} /> : <ChevronRight size={14} style={{ color: 'var(--text-muted)' }} />}
+                      <div className="w-3 h-3 rounded-full shrink-0" style={{ background: ini.statusColor || '#6366f1' }} />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{ini.name}</span>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {urgentCount > 0 && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded font-bold" style={{ background: '#ef444422', color: '#ef4444' }}>
+                            {urgentCount} urgent/high
+                          </span>
+                        )}
+                        {inProgressCount > 0 && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded font-medium" style={{ background: '#f59e0b22', color: '#f59e0b' }}>
+                            {inProgressCount} in progress
+                          </span>
+                        )}
+                        <span className="text-[10px] px-1.5 py-0.5 rounded" style={{ background: 'var(--surface)', color: 'var(--text-muted)' }}>
+                          {activeProjects.length} projects · {totalActive} issues
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Expanded: projects + issues */}
+                    {iniExp && (
+                      <div className="pb-2" style={{ background: 'var(--bg)' }}>
+                        {activeProjects.map(proj => {
+                          const projKey = `ppj_${proj.id}`;
+                          const projExp = expanded[projKey] !== undefined ? expanded[projKey] : false;
+                          const activeIssues = proj.issues.filter(i => !DONE_STATES.has(i.status));
+                          // Sort: In Progress/Started first, then by priority, then by status
+                          const sortedIssues = [...activeIssues].sort((a, b) => {
+                            const aInProg = (a.status === 'In Progress' || a.status === 'Started') ? 0 : 1;
+                            const bInProg = (b.status === 'In Progress' || b.status === 'Started') ? 0 : 1;
+                            if (aInProg !== bInProg) return aInProg - bInProg;
+                            if (a.priority !== b.priority) return a.priority - b.priority;
+                            return statusSort(a.status, b.status);
+                          });
+
+                          return (
+                            <div key={proj.id} className="mx-4 mt-2 rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
+                              {/* Project header */}
+                              <div
+                                className="flex items-center gap-2 px-4 py-2.5 cursor-pointer"
+                                style={{ background: 'var(--surface)' }}
+                                onClick={() => toggleExpand(projKey)}
+                              >
+                                {projExp ? <ChevronDown size={12} style={{ color: 'var(--text-muted)' }} /> : <ChevronRight size={12} style={{ color: 'var(--text-muted)' }} />}
+                                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: proj.statusColor || sc(proj.status) }} />
+                                <a href={proj.url} target="_blank" rel="noopener" className="text-xs font-medium hover:underline flex-1 truncate"
+                                  style={{ color: 'var(--text)' }} onClick={e => e.stopPropagation()}>
+                                  {proj.name}
+                                </a>
+                                <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0" style={{ background: sc(proj.status) + '22', color: sc(proj.status) }}>
+                                  {proj.status}
+                                </span>
+                                <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{activeIssues.length} issues</span>
+                              </div>
+
+                              {/* Issues list */}
+                              {projExp && sortedIssues.length > 0 && (
+                                <div className="divide-y" style={{ borderColor: 'var(--border)' }}>
+                                  {sortedIssues.map(iss => {
+                                    const prioMeta = PRIO_LABELS[iss.priority];
+                                    const issOd = iss.end && iss.end < today && !DONE_STATES.has(iss.status);
+                                    return (
+                                      <div key={iss.id} className="flex items-center gap-2 px-4 py-2" style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}>
+                                        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: iss.statusColor || sc(iss.status) }} />
+                                        <a href={iss.url} target="_blank" rel="noopener"
+                                          className="text-xs hover:underline flex-1 min-w-0 truncate"
+                                          style={{ color: 'var(--text)' }}>
+                                          <span style={{ color: 'var(--text-muted)' }}>{iss.identifier}</span> {iss.title}
+                                        </a>
+                                        {prioMeta && (
+                                          <span className="text-[9px] px-1 py-0.5 rounded font-bold shrink-0"
+                                            style={{ background: prioMeta.color + '22', color: prioMeta.color }}>
+                                            {prioMeta.label}
+                                          </span>
+                                        )}
+                                        {issOd && (
+                                          <span className="text-[9px] px-1 py-0.5 rounded font-bold shrink-0"
+                                            style={{ background: '#ef444422', color: '#ef4444' }}>OVERDUE</span>
+                                        )}
+                                        <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0"
+                                          style={{ background: sc(iss.status) + '22', color: sc(iss.status) }}>
+                                          {iss.status}
+                                        </span>
+                                        {iss.assignee && (
+                                          <span className="text-[10px] shrink-0 flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
+                                            <User size={10} /> {iss.assignee.split(' ')[0]}
+                                          </span>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
