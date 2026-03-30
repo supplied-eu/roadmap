@@ -249,7 +249,9 @@ function SectionHeader({ title, subtitle }: { title: string; subtitle?: string }
 }
 
 // ── Alert bar ──────────────────────────────────────────────────
-function AlertBar({ data }: { data: RoadmapData }) {
+type GanttFilter = 'urgent' | 'high' | 'overdue' | null;
+
+function AlertBar({ data, filter, setFilter }: { data: RoadmapData; filter: GanttFilter; setFilter: (f: GanttFilter) => void }) {
   let urgent = 0, high = 0, overdue = 0, total = 0;
   const today = fmt(new Date());
   for (const ini of data.initiatives) {
@@ -267,23 +269,112 @@ function AlertBar({ data }: { data: RoadmapData }) {
   }
 
   return (
-    <div className="flex items-center gap-4 px-4 py-2" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+    <div className="flex items-center gap-3 px-4 py-2" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
       {urgent > 0 && (
-        <span className="flex items-center gap-1 text-xs font-medium" style={{ color: '#ef4444' }}>
-          <Zap size={12} /> {urgent} urgent
-        </span>
+        <button onClick={() => setFilter(filter === 'urgent' ? null : 'urgent')}
+          className="flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded transition-colors"
+          style={{ color: '#ef4444', background: filter === 'urgent' ? '#ef444422' : 'transparent', border: filter === 'urgent' ? '1px solid #ef444444' : '1px solid transparent' }}>
+          <Zap size={12} /> {urgent} URGENT
+        </button>
       )}
       {high > 0 && (
-        <span className="flex items-center gap-1 text-xs font-medium" style={{ color: '#f97316' }}>
-          <ArrowUp size={12} /> {high} high
-        </span>
+        <button onClick={() => setFilter(filter === 'high' ? null : 'high')}
+          className="flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded transition-colors"
+          style={{ color: '#f97316', background: filter === 'high' ? '#f9731622' : 'transparent', border: filter === 'high' ? '1px solid #f9731644' : '1px solid transparent' }}>
+          <ArrowUp size={12} /> {high} HIGH
+        </button>
       )}
       {overdue > 0 && (
-        <span className="flex items-center gap-1 text-xs font-medium" style={{ color: '#ef4444' }}>
-          <AlertTriangle size={12} /> {overdue} overdue
-        </span>
+        <button onClick={() => setFilter(filter === 'overdue' ? null : 'overdue')}
+          className="flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded transition-colors"
+          style={{ color: '#f59e0b', background: filter === 'overdue' ? '#f59e0b22' : 'transparent', border: filter === 'overdue' ? '1px solid #f59e0b44' : '1px solid transparent' }}>
+          <AlertTriangle size={12} /> {overdue} OVERDUE
+        </button>
       )}
-      <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{total} active issues</span>
+      {filter && (
+        <button onClick={() => setFilter(null)} className="text-[10px] ml-1" style={{ color: 'var(--text-muted)' }}>
+          CLEAR FILTER
+        </button>
+      )}
+      <span className="text-xs ml-auto" style={{ color: 'var(--text-muted)' }}>{total} active issues</span>
+    </div>
+  );
+}
+
+// ── Insights Panel ────────────────────────────────────────────
+function InsightsPanel({ data }: { data: RoadmapData }) {
+  const today = fmt(new Date());
+  const blocked: { title: string; url: string; project: string }[] = [];
+  const inReview: { title: string; url: string; project: string }[] = [];
+  const noDates: { title: string; url: string; project: string }[] = [];
+  const highBacklog: { title: string; url: string; project: string }[] = [];
+
+  for (const ini of data.initiatives) {
+    if (DONE_STATES.has(ini.status)) continue;
+    for (const proj of ini.projects) {
+      if (DONE_STATES.has(proj.status)) continue;
+      for (const iss of proj.issues) {
+        if (DONE_STATES.has(iss.status)) continue;
+        const item = { title: `${iss.identifier} ${iss.title}`, url: iss.url, project: proj.name };
+        if (iss.status === 'Blocked') blocked.push(item);
+        else if (iss.status === 'In Review' || iss.status === 'In Test') inReview.push(item);
+        else if (!iss.start && !iss.end && iss.status === 'In Progress') noDates.push(item);
+        else if (iss.priority <= 2 && (iss.status === 'Backlog' || iss.status === 'Todo')) highBacklog.push(item);
+      }
+    }
+  }
+
+  const hasInsights = blocked.length + inReview.length + noDates.length + highBacklog.length > 0;
+  if (!hasInsights) return null;
+
+  return (
+    <div className="overflow-auto shrink-0 p-3" style={{ width: '280px', borderLeft: '1px solid var(--border)', background: 'var(--surface)' }}>
+      <span className="text-[10px] font-bold uppercase tracking-widest block mb-3" style={{ color: 'var(--text-muted)' }}>
+        INSIGHTS
+      </span>
+
+      {blocked.length > 0 && (
+        <InsightSection icon="🔴" color="#ef4444" title="BLOCKED" hint="Unblock this to keep momentum"
+          items={blocked} />
+      )}
+      {inReview.length > 0 && (
+        <InsightSection icon="👁" color="#fb923c" title="NEEDS REVIEW" hint="Quick comment keeps things moving"
+          items={inReview} />
+      )}
+      {noDates.length > 0 && (
+        <InsightSection icon="📅" color="#f59e0b" title="IN PROGRESS, NO DATES" hint="Add start/end dates"
+          items={noDates} />
+      )}
+      {highBacklog.length > 0 && (
+        <InsightSection icon="⚡" color="#8b5cf6" title="HIGH PRI BACKLOG" hint="Consider pulling into sprint"
+          items={highBacklog} />
+      )}
+    </div>
+  );
+}
+
+function InsightSection({ icon, color, title, hint, items }: {
+  icon: string; color: string; title: string; hint: string;
+  items: { title: string; url: string; project: string }[];
+}) {
+  const SHOW = 3;
+  return (
+    <div className="mb-4">
+      <div className="flex items-center gap-1.5 mb-1">
+        <span className="text-xs">{icon}</span>
+        <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color }}>{title} ({items.length})</span>
+      </div>
+      <p className="text-[9px] mb-1.5" style={{ color: 'var(--text-muted)' }}>{hint}</p>
+      {items.slice(0, SHOW).map((item, i) => (
+        <a key={i} href={item.url} target="_blank" rel="noopener"
+          className="block text-[10px] py-1 truncate hover:underline" style={{ color: 'var(--text)' }}>
+          {item.title}
+          <span className="text-[8px] block" style={{ color: 'var(--text-muted)' }}>{item.project}</span>
+        </a>
+      ))}
+      {items.length > SHOW && (
+        <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>+{items.length - SHOW} more</span>
+      )}
     </div>
   );
 }
@@ -296,8 +387,23 @@ export default function RoadmapPage() {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [projectOrder, setProjectOrder] = useState<Record<string, string[]>>({});
   const [error, setError] = useState<string | null>(null);
+  const [ganttFilter, setGanttFilter] = useState<GanttFilter>(null);
   const [dragState, setDragState] = useState<{ iniId: string; srcIdx: number } | null>(null);
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
+  const [prodOrder, setProdOrder] = useState<string[]>([]);
+  const [prodPriorities, setProdPriorities] = useState<Record<string, string>>({});
+  const [prodDragIdx, setProdDragIdx] = useState<number | null>(null);
+  const [prodDragOverIdx, setProdDragOverIdx] = useState<number | null>(null);
+
+  // Load product initiative order + priorities from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('supplied_prod_ini_order');
+      if (saved) setProdOrder(JSON.parse(saved));
+      const savedPri = localStorage.getItem('supplied_prod_ini_priorities');
+      if (savedPri) setProdPriorities(JSON.parse(savedPri));
+    } catch {}
+  }, []);
 
   useEffect(() => {
     fetch('/api/linear/roadmap')
@@ -328,6 +434,15 @@ export default function RoadmapPage() {
 
   const isOverdue = (end: string | null, status: string) => !!end && end < today && !DONE_STATES.has(status);
   const isActive = (status: string) => !DONE_STATES.has(status);
+
+  // Gantt filter: check if issue matches the current filter
+  const passesFilter = (iss: Issue) => {
+    if (!ganttFilter) return true;
+    if (ganttFilter === 'urgent') return iss.priority === 1;
+    if (ganttFilter === 'high') return iss.priority === 2;
+    if (ganttFilter === 'overdue') return isOverdue(iss.end, iss.status);
+    return true;
+  };
 
   // Drag-and-drop helpers for project reordering
   const getOrderedProjects = useCallback((iniId: string, projects: Project[]) => {
@@ -404,7 +519,7 @@ export default function RoadmapPage() {
         const proj = activeProjects[projIdx];
         const projKey = `proj_${proj.id}`;
         const projExp = expanded[projKey] !== undefined ? expanded[projKey] : false;
-        const activeIssues = proj.issues.filter(i => isActive(i.status));
+        const activeIssues = proj.issues.filter(i => isActive(i.status) && passesFilter(i));
         const topIssues = activeIssues.filter(i => !i.parentId);
         const childMap = new Map<string, Issue[]>();
         for (const i of activeIssues) {
@@ -607,11 +722,12 @@ export default function RoadmapPage() {
         </div>
       </div>
 
+      <div className="flex-1 flex overflow-hidden">
       <div className="flex-1 overflow-auto">
         {/* ═══ GANTT: Customer & Partner Go Live ═══ */}
         {customerIni && (
           <>
-            <AlertBar data={ganttData} />
+            <AlertBar data={data} filter={ganttFilter} setFilter={setGanttFilter} />
 
             {/* Timeline header */}
             <div className="flex shrink-0" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
@@ -684,122 +800,198 @@ export default function RoadmapPage() {
           </>
         )}
 
-        {/* ═══ PRODUCT INITIATIVES PANEL ═══ */}
-        {sortedProductInis.length > 0 && (
-          <div style={{ borderTop: '2px solid var(--border)' }}>
-            <div className="px-5 py-3" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
-              <h2 className="text-sm font-bold uppercase tracking-wide" style={{ color: 'var(--text)' }}>Product Initiatives</h2>
-              <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>Sorted by urgency — click to expand projects & issues</p>
-            </div>
+        {/* ═══ PRODUCT INITIATIVES — List Panel ═══ */}
+        {(() => {
+          // Order product initiatives by saved order, then fallback to urgency sort
+          const orderedProductInis = (() => {
+            if (prodOrder.length === 0) return sortedProductInis;
+            const byId = new Map(sortedProductInis.map(i => [i.id, i]));
+            const ordered = prodOrder.filter(id => byId.has(id)).map(id => byId.get(id)!);
+            const seen = new Set(prodOrder);
+            for (const i of sortedProductInis) if (!seen.has(i.id)) ordered.push(i);
+            return ordered;
+          })();
 
-            <div className="divide-y" style={{ borderColor: 'var(--border)' }}>
-              {sortedProductInis.map(ini => {
+          const handleProdDrop = (dropIdx: number) => {
+            if (prodDragIdx === null || prodDragIdx === dropIdx) {
+              setProdDragIdx(null);
+              setProdDragOverIdx(null);
+              return;
+            }
+            const newOrder = orderedProductInis.map(i => i.id);
+            const [moved] = newOrder.splice(prodDragIdx, 1);
+            newOrder.splice(dropIdx, 0, moved);
+            setProdOrder(newOrder);
+            localStorage.setItem('supplied_prod_ini_order', JSON.stringify(newOrder));
+            setProdDragIdx(null);
+            setProdDragOverIdx(null);
+          };
+
+          const PRIORITY_OPTIONS = ['P1', 'P2', 'P3', 'P4', 'None'];
+          const PRIO_COLORS: Record<string, string> = { P1: '#ef4444', P2: '#f97316', P3: '#f59e0b', P4: '#22c55e', None: '#94a3b8' };
+          const setPriority = (iniId: string, pri: string) => {
+            setProdPriorities(prev => {
+              const next = { ...prev, [iniId]: pri };
+              localStorage.setItem('supplied_prod_ini_priorities', JSON.stringify(next));
+              return next;
+            });
+          };
+
+          if (orderedProductInis.length === 0) return null;
+
+          return (
+            <div style={{ borderTop: '3px solid var(--border)' }}>
+              <div className="flex items-center justify-between px-4 py-2" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+                <div>
+                  <h2 className="text-sm font-bold" style={{ color: 'var(--text)' }}>Product Initiatives</h2>
+                  <p className="text-[9px]" style={{ color: 'var(--text-muted)' }}>Drag to reorder · Assign priority · Click to expand</p>
+                </div>
+                <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{orderedProductInis.length} initiatives</span>
+              </div>
+
+              {orderedProductInis.map((ini, iniIdx) => {
+                if (DONE_STATES.has(ini.status)) return null;
                 const iniKey = `pini_${ini.id}`;
                 const iniExp = expanded[iniKey] !== undefined ? expanded[iniKey] : false;
                 const activeProjects = ini.projects.filter(p => !DONE_STATES.has(p.status));
-                const totalActive = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => !DONE_STATES.has(i.status)).length, 0);
+                if (activeProjects.length === 0) return null;
+
+                const totalIssues = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => !DONE_STATES.has(i.status)).length, 0);
+                const doneIssues = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => DONE_STATES.has(i.status)).length, 0);
+                const allIssues = totalIssues + doneIssues;
+                const pct = allIssues > 0 ? Math.round((doneIssues / allIssues) * 100) : 0;
                 const urgentCount = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => !DONE_STATES.has(i.status) && i.priority <= 2).length, 0);
                 const inProgressCount = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => i.status === 'In Progress' || i.status === 'Started').length, 0);
+                const pri = prodPriorities[ini.id] || 'None';
+                const isDragOver = prodDragOverIdx === iniIdx;
 
                 return (
-                  <div key={ini.id} style={{ borderColor: 'var(--border)' }}>
-                    {/* Initiative header */}
+                  <div
+                    key={ini.id}
+                    draggable
+                    onDragStart={() => setProdDragIdx(iniIdx)}
+                    onDragOver={e => { e.preventDefault(); setProdDragOverIdx(iniIdx); }}
+                    onDragLeave={() => setProdDragOverIdx(null)}
+                    onDrop={() => handleProdDrop(iniIdx)}
+                    style={{
+                      borderBottom: '1px solid var(--border)',
+                      borderTop: isDragOver ? '2px solid var(--accent)' : 'none',
+                    }}
+                  >
+                    {/* Initiative header row */}
                     <div
-                      className="flex items-center gap-3 px-5 py-3 cursor-pointer transition-colors hover:brightness-110"
-                      style={{ background: iniExp ? 'var(--surface)' : 'var(--bg)' }}
+                      className="flex items-center gap-2 px-3 py-2.5 cursor-pointer hover:opacity-90 transition-colors"
+                      style={{ background: iniExp ? 'var(--bg)' : 'transparent' }}
                       onClick={() => toggleExpand(iniKey)}
                     >
-                      {iniExp ? <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} /> : <ChevronRight size={14} style={{ color: 'var(--text-muted)' }} />}
-                      <div className="w-3 h-3 rounded-full shrink-0" style={{ background: ini.statusColor || '#6366f1' }} />
+                      <GripVertical size={14} className="shrink-0 cursor-grab opacity-30 hover:opacity-80" style={{ color: 'var(--text-muted)' }} />
+
+                      {/* Priority badge */}
+                      <select
+                        value={pri}
+                        onClick={e => e.stopPropagation()}
+                        onChange={e => { e.stopPropagation(); setPriority(ini.id, e.target.value); }}
+                        className="text-[9px] font-bold rounded px-1.5 py-0.5 border-0 outline-none cursor-pointer shrink-0"
+                        style={{ background: PRIO_COLORS[pri] + '22', color: PRIO_COLORS[pri], appearance: 'auto' as any }}
+                      >
+                        {PRIORITY_OPTIONS.map(p => <option key={p} value={p}>{p}</option>)}
+                      </select>
+
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ background: ini.statusColor || sc(ini.status) }} />
+
                       <div className="flex-1 min-w-0">
-                        <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{ini.name}</span>
+                        <span className="text-xs font-semibold block truncate" style={{ color: 'var(--text)' }}>{ini.name}</span>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <div className="h-1 rounded-full flex-1 max-w-[120px]" style={{ background: 'var(--border)' }}>
+                            <div className="h-1 rounded-full" style={{ width: `${pct}%`, background: '#22c55e' }} />
+                          </div>
+                          <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>{pct}%</span>
+                          {urgentCount > 0 && (
+                            <span className="text-[9px] px-1 rounded" style={{ background: '#ef444422', color: '#ef4444' }}>
+                              {urgentCount} urgent
+                            </span>
+                          )}
+                          {inProgressCount > 0 && (
+                            <span className="text-[9px] px-1 rounded" style={{ background: '#f59e0b22', color: '#f59e0b' }}>
+                              {inProgressCount} active
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        {urgentCount > 0 && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded font-bold" style={{ background: '#ef444422', color: '#ef4444' }}>
-                            {urgentCount} urgent/high
-                          </span>
-                        )}
-                        {inProgressCount > 0 && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded font-medium" style={{ background: '#f59e0b22', color: '#f59e0b' }}>
-                            {inProgressCount} in progress
-                          </span>
-                        )}
-                        <span className="text-[10px] px-1.5 py-0.5 rounded" style={{ background: 'var(--surface)', color: 'var(--text-muted)' }}>
-                          {activeProjects.length} projects · {totalActive} issues
-                        </span>
-                      </div>
+
+                      <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0" style={{ background: sc(ini.status) + '22', color: sc(ini.status) }}>
+                        {ini.status}
+                      </span>
+                      <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>
+                        {activeProjects.length} proj · {totalIssues} issues
+                      </span>
+
+                      {iniExp ? <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} /> : <ChevronRight size={14} style={{ color: 'var(--text-muted)' }} />}
                     </div>
 
-                    {/* Expanded: projects + issues */}
+                    {/* Expanded: projects → issues */}
                     {iniExp && (
                       <div className="pb-2" style={{ background: 'var(--bg)' }}>
                         {activeProjects.map(proj => {
                           const projKey = `ppj_${proj.id}`;
-                          const projExp = expanded[projKey] !== undefined ? expanded[projKey] : false;
-                          const activeIssues = proj.issues.filter(i => !DONE_STATES.has(i.status));
-                          // Sort: In Progress/Started first, then by priority, then by status
-                          const sortedIssues = [...activeIssues].sort((a, b) => {
-                            const aInProg = (a.status === 'In Progress' || a.status === 'Started') ? 0 : 1;
-                            const bInProg = (b.status === 'In Progress' || b.status === 'Started') ? 0 : 1;
-                            if (aInProg !== bInProg) return aInProg - bInProg;
-                            if (a.priority !== b.priority) return a.priority - b.priority;
-                            return statusSort(a.status, b.status);
-                          });
+                          const projExp = expanded[projKey] !== undefined ? expanded[projKey] : true;
+                          const projIssues = proj.issues.filter(i => !DONE_STATES.has(i.status));
+                          const projDone = proj.issues.filter(i => DONE_STATES.has(i.status)).length;
+                          const projPct = proj.issues.length > 0 ? Math.round((projDone / proj.issues.length) * 100) : 0;
+                          const projOd = isOverdue(proj.targetDate, proj.status);
 
                           return (
-                            <div key={proj.id} className="mx-4 mt-2 rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
-                              {/* Project header */}
+                            <div key={proj.id} className="ml-6 mr-3 mt-1">
                               <div
-                                className="flex items-center gap-2 px-4 py-2.5 cursor-pointer"
-                                style={{ background: 'var(--surface)' }}
+                                className="flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer hover:opacity-80"
+                                style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
                                 onClick={() => toggleExpand(projKey)}
                               >
                                 {projExp ? <ChevronDown size={12} style={{ color: 'var(--text-muted)' }} /> : <ChevronRight size={12} style={{ color: 'var(--text-muted)' }} />}
-                                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: proj.statusColor || sc(proj.status) }} />
-                                <a href={proj.url} target="_blank" rel="noopener" className="text-xs font-medium hover:underline flex-1 truncate"
-                                  style={{ color: 'var(--text)' }} onClick={e => e.stopPropagation()}>
-                                  {proj.name}
-                                </a>
-                                <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0" style={{ background: sc(proj.status) + '22', color: sc(proj.status) }}>
+                                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: projOd ? '#ef4444' : (proj.statusColor || sc(proj.status)) }} />
+                                {proj.url ? (
+                                  <a href={proj.url} target="_blank" rel="noopener" className="text-[11px] font-medium truncate hover:underline flex-1"
+                                    style={{ color: 'var(--text)' }} onClick={e => e.stopPropagation()}>
+                                    {proj.name}
+                                  </a>
+                                ) : (
+                                  <span className="text-[11px] font-medium truncate flex-1" style={{ color: 'var(--text)' }}>{proj.name}</span>
+                                )}
+                                <div className="h-1 w-16 rounded-full shrink-0" style={{ background: 'var(--border)' }}>
+                                  <div className="h-1 rounded-full" style={{ width: `${projPct}%`, background: '#22c55e' }} />
+                                </div>
+                                <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{projPct}%</span>
+                                {projOd && <span className="text-[8px] px-1 rounded font-bold" style={{ background: '#ef444422', color: '#ef4444' }}>LATE</span>}
+                                <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0" style={{ background: sc(proj.status) + '22', color: sc(proj.status) }}>
                                   {proj.status}
                                 </span>
-                                <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{activeIssues.length} issues</span>
                               </div>
 
-                              {/* Issues list */}
-                              {projExp && sortedIssues.length > 0 && (
-                                <div className="divide-y" style={{ borderColor: 'var(--border)' }}>
-                                  {sortedIssues.map(iss => {
-                                    const prioMeta = PRIO_LABELS[iss.priority];
-                                    const issOd = iss.end && iss.end < today && !DONE_STATES.has(iss.status);
+                              {projExp && projIssues.length > 0 && (
+                                <div className="ml-4 mt-1 space-y-0.5">
+                                  {projIssues.sort((a, b) => a.priority - b.priority).map(iss => {
+                                    const issOd = isOverdue(iss.end, iss.status);
+                                    const issPrio = PRIO_LABELS[iss.priority];
                                     return (
-                                      <div key={iss.id} className="flex items-center gap-2 px-4 py-2" style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}>
+                                      <div key={iss.id} className="flex items-center gap-1.5 px-2 py-1 rounded hover:opacity-80"
+                                        style={{ background: 'transparent' }}>
                                         <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: iss.statusColor || sc(iss.status) }} />
-                                        <a href={iss.url} target="_blank" rel="noopener"
-                                          className="text-xs hover:underline flex-1 min-w-0 truncate"
-                                          style={{ color: 'var(--text)' }}>
-                                          <span style={{ color: 'var(--text-muted)' }}>{iss.identifier}</span> {iss.title}
-                                        </a>
-                                        {prioMeta && (
-                                          <span className="text-[9px] px-1 py-0.5 rounded font-bold shrink-0"
-                                            style={{ background: prioMeta.color + '22', color: prioMeta.color }}>
-                                            {prioMeta.label}
-                                          </span>
+                                        <span className="text-[9px] font-mono shrink-0" style={{ color: 'var(--text-muted)' }}>{iss.identifier}</span>
+                                        {iss.url ? (
+                                          <a href={iss.url} target="_blank" rel="noopener" className="text-[10px] truncate hover:underline flex-1"
+                                            style={{ color: 'var(--text)' }}>{iss.title}</a>
+                                        ) : (
+                                          <span className="text-[10px] truncate flex-1" style={{ color: 'var(--text)' }}>{iss.title}</span>
                                         )}
-                                        {issOd && (
-                                          <span className="text-[9px] px-1 py-0.5 rounded font-bold shrink-0"
-                                            style={{ background: '#ef444422', color: '#ef4444' }}>OVERDUE</span>
+                                        {issPrio && (
+                                          <span className="text-[8px] px-1 rounded font-bold shrink-0"
+                                            style={{ background: issPrio.color + '22', color: issPrio.color }}>{issPrio.label}</span>
                                         )}
-                                        <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0"
-                                          style={{ background: sc(iss.status) + '22', color: sc(iss.status) }}>
+                                        {issOd && <span className="text-[8px] px-1 rounded font-bold shrink-0" style={{ background: '#ef444422', color: '#ef4444' }}>OVERDUE</span>}
+                                        <span className="text-[9px] px-1 py-0.5 rounded shrink-0" style={{ background: sc(iss.status) + '22', color: sc(iss.status) }}>
                                           {iss.status}
                                         </span>
-                                        {iss.assignee && (
-                                          <span className="text-[10px] shrink-0 flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
-                                            <User size={10} /> {iss.assignee.split(' ')[0]}
-                                          </span>
-                                        )}
+                                        {iss.assignee && <span className="text-[9px] shrink-0" style={{ color: 'var(--text-dim, var(--text-muted))' }}>{iss.assignee.split(' ')[0]}</span>}
                                       </div>
                                     );
                                   })}
@@ -814,8 +1006,12 @@ export default function RoadmapPage() {
                 );
               })}
             </div>
-          </div>
-        )}
+          );
+        })()}
+      </div>
+
+      {/* Insights Panel */}
+      <InsightsPanel data={data} />
       </div>
     </div>
   );

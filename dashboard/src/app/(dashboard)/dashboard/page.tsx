@@ -4,6 +4,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { isAdmin } from '@/lib/auth';
 import { Calendar, Mail, CheckSquare, Clock, ExternalLink, Circle, X, AlarmClock, CheckCircle, Undo2, FileText, ChevronDown, ChevronUp, GripVertical, Phone, DollarSign } from 'lucide-react';
 import { useEffect, useState, useCallback } from 'react';
+import WbsoTracker from '@/components/WbsoTracker';
 
 // ── Types ──────────────────────────────────────────────────────
 type Issue = {
@@ -443,6 +444,13 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
+
+        {/* WBSO Time Tracker (admin only) */}
+        {admin && (
+          <div className="px-4 py-3" style={{ borderTop: '1px solid var(--border)' }}>
+            <WbsoTracker />
+          </div>
+        )}
       </div>
 
       <ToastBar toasts={toasts} onDismiss={dismissToast} />
