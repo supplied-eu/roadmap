@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T09:52:28.680Z",
+  "refreshedAt": "2026-03-30T10:14:43.664Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1949,17 +1949,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 2
+      "count": 11
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 4
+      "count": 44
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 1
+      "count": 2
     },
     {
       "key": "salesqualifiedlead",
@@ -1969,20 +1969,34 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 91
+      "count": 434
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 2
+      "count": 35
     }
   ],
   "trafficSources": [
     {
       "key": "OFFLINE",
-      "thisWeek": 6,
+      "thisWeek": 8,
       "lastWeek": 2,
       "contacts": [
+        {
+          "id": "745794941156",
+          "name": "Hans Saenz",
+          "email": "hans.saenz@transferz.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-30"
+        },
+        {
+          "id": "745932085484",
+          "name": "Job Sinke",
+          "email": "job.sinke@transferz.com",
+          "stage": "opportunity",
+          "createdAt": "2026-03-30"
+        },
         {
           "id": "744798988528",
           "name": "info@twelveoakstuition.co.uk",
@@ -2143,20 +2157,6 @@
           "email": "c_hm8bs2gs5nt9h0j5qq1fke24mo@group.calendar.google.com",
           "stage": "opportunity",
           "createdAt": "2026-02-17"
-        },
-        {
-          "id": "702782633154",
-          "name": "Vym Devabhai",
-          "email": "vym.devabhai@avalara.com",
-          "stage": "opportunity",
-          "createdAt": "2026-02-17"
-        },
-        {
-          "id": "698766028007",
-          "name": "Robin Tjassens",
-          "email": "robin.tjassens@oostnl.nl",
-          "stage": "subscriber",
-          "createdAt": "2026-02-16"
         }
       ],
       "label": "Offline",

@@ -1,17 +1,33 @@
 {
-  "refreshedAt": "2026-03-30T09:52:41.785Z",
+  "refreshedAt": "2026-03-30T10:14:54.980Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 64,
+  "thisWeekTotal": 65,
   "lastWeekTotal": 52,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 64,
+      "thisWeek": 65,
       "lastWeek": 52,
       "companies": [
+        {
+          "name": "Finvestor",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-30",
+          "leadId": "8c17378e-0171-11eb-8845-31dbac779755_x3beu4D9ZSkuuCrQKyk8P5",
+          "source": "Direct"
+        },
+        {
+          "name": "Korton",
+          "website": null,
+          "visits": 2,
+          "lastVisit": "2026-03-30",
+          "leadId": "mZX77vRHZG5BnyLaSGB3mv_hz99jVi2ncNCdS874LtG8S",
+          "source": "Direct"
+        },
         {
           "name": "CBN Labsuppliers",
           "website": null,
@@ -74,14 +90,6 @@
           "visits": 3,
           "lastVisit": "2026-03-27",
           "leadId": "a809332c-33c4-11eb-871d-5da369c27599_iqJY1yrHd99ZA4hwnBFRG3",
-          "source": "Direct"
-        },
-        {
-          "name": "Korton",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-26",
-          "leadId": "mZX77vRHZG5BnyLaSGB3mv_hz99jVi2ncNCdS874LtG8S",
           "source": "Direct"
         },
         {
@@ -163,14 +171,6 @@
           "lastVisit": "2026-03-25",
           "leadId": "975af9dc-4510-11ef-8cf0-7f42ee5170a4_qQcqMoRWHAUjrwmRQ66J7b",
           "source": "Direct"
-        },
-        {
-          "name": "Ascential – Part of the Informa Group",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-24",
-          "leadId": "d892fa2a-c74d-11ea-a3b4-2120eba07ee1_p6q3nDbB2C4m9KjK9gndy",
-          "source": "Direct"
         }
       ]
     }
@@ -185,6 +185,16 @@
       "lastVisit": "2026-03-27",
       "source": "Direct",
       "leadId": "a809332c-33c4-11eb-871d-5da369c27599_iqJY1yrHd99ZA4hwnBFRG3"
+    },
+    {
+      "name": "Korton",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-26",
+      "lastVisit": "2026-03-30",
+      "source": "Direct",
+      "leadId": "mZX77vRHZG5BnyLaSGB3mv_hz99jVi2ncNCdS874LtG8S"
     },
     {
       "name": "DriiveMe",
@@ -277,6 +287,16 @@
       "leadId": "wi2rFLLoQFRRV5PnrnvMok_p6q3nDbB2C4m9KjK9gndy"
     },
     {
+      "name": "Finvestor",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2025-12-03",
+      "lastVisit": "2026-03-30",
+      "source": "Direct",
+      "leadId": "8c17378e-0171-11eb-8845-31dbac779755_x3beu4D9ZSkuuCrQKyk8P5"
+    },
+    {
       "name": "CBN Labsuppliers",
       "website": null,
       "visits": 1,
@@ -337,16 +357,6 @@
       "leadId": "091f68f6-2cf9-11ec-a258-75930e3fefe9_xnbS56EZEhLj6BfKrgAz68"
     },
     {
-      "name": "Korton",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-26",
-      "lastVisit": "2026-03-26",
-      "source": "Direct",
-      "leadId": "mZX77vRHZG5BnyLaSGB3mv_hz99jVi2ncNCdS874LtG8S"
-    },
-    {
       "name": "Deskbird",
       "website": null,
       "visits": 1,
@@ -365,16 +375,6 @@
       "lastVisit": "2026-03-26",
       "source": "Direct",
       "leadId": "af13913e-9865-11f0-94c1-69d3873432cc_9308f978-6038-11e9-9853-5d54ebab3e0b"
-    },
-    {
-      "name": "Multi Montage",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-26",
-      "lastVisit": "2026-03-26",
-      "source": "Direct",
-      "leadId": "c9922fba-dac0-11e5-89fb-1344a208b079_dfcd82aa-0d0e-11ea-9cc7-21ec7100bda8"
     }
   ],
   "dailyVisits": [
@@ -396,6 +396,10 @@
     },
     {
       "date": "2025-12-02",
+      "visits": 1
+    },
+    {
+      "date": "2025-12-03",
       "visits": 1
     },
     {
@@ -532,7 +536,7 @@
     },
     {
       "date": "2026-03-26",
-      "visits": 8
+      "visits": 7
     },
     {
       "date": "2026-03-27",
@@ -544,7 +548,7 @@
     },
     {
       "date": "2026-03-30",
-      "visits": 4
+      "visits": 6
     }
   ]
 }
