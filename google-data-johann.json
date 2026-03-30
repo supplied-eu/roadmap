@@ -1,7 +1,16 @@
 {
-  "refreshedAt": "2026-03-30T12:32:52.459Z",
+  "refreshedAt": "2026-03-30T12:37:02.952Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d3ebe950066eb5",
+        "subject": "andrei@supplied.eu changed status to Done for [SUP-1226] [Booking Experts] ...",
+        "from": "Linear <notifications@linear.app>",
+        "date": "2026-03-30T12:36:09.000Z",
+        "snippet": "You have 1 unread notification on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emails: https://linear.app/unsubscribe?token=",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3ebe950066eb5",
+        "unread": true
+      },
       {
         "id": "19d3d5689be95360",
         "subject": "3 unread notifications on Supplied",
@@ -100,18 +109,9 @@
         "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
         "unread": true
-      },
-      {
-        "id": "19ce0214716b0ff0",
-        "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-11]",
-        "from": "anomalydetection@costalerts.amazonaws.com",
-        "date": "2026-03-12T03:39:58.000Z",
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
-        "unread": true
       }
     ],
-    "unreadCount": 36
+    "unreadCount": 37
   },
   "calendar": {
     "today": [
@@ -411,14 +411,14 @@
       "id": "email-19cf4de5565b3976"
     },
     {
-      "action": "alert",
-      "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-11]",
-      "reason": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
-      "from": "anomalydetection@costalerts.amazonaws.com",
-      "ageDays": 18,
-      "threadId": "19ce0214716b0ff0",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
-      "id": "email-19ce0214716b0ff0"
+      "action": "reply",
+      "subject": "andrei@supplied.eu changed status to Done for [SUP-1226] [Booking Experts] ...",
+      "reason": "You have 1 unread notification on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emai",
+      "from": "Linear <notifications@linear.app>",
+      "ageDays": 0,
+      "threadId": "19d3ebe950066eb5",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3ebe950066eb5",
+      "id": "email-19d3ebe950066eb5"
     },
     {
       "action": "reply",
