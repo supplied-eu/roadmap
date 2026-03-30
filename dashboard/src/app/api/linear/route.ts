@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       : `filter: { state: { type: { nin: ["completed", "canceled"] } } }`;
 
     const { data } = await linearQuery(apiKey, `{
-      issues(${assigneeFilter}, first: 30, orderBy: updatedAt) {
+      issues(${assigneeFilter}, first: 100, orderBy: updatedAt) {
         nodes {
           id
           identifier

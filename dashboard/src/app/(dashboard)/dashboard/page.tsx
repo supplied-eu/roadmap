@@ -159,7 +159,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`/api/linear?email=${encodeURIComponent(user.email)}`)
+    fetch('/api/linear')
       .then(r => r.json())
       .then(data => { setTasks(data.issues || []); setLoading(l => ({ ...l, tasks: false })); })
       .catch(() => setLoading(l => ({ ...l, tasks: false })));
