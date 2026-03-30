@@ -24,50 +24,54 @@ export async function GET() {
   if (!apiKey) return NextResponse.json({ error: "LINEAR_API_KEY not set" }, { status: 500 });
 
   try {
-    // Fetch initiatives and projects separately, then join in code
-    // This avoids nested connection issues in Linear's GraphQL schema
+    // Step 1: Fetch initiatives + projects (lightweight, no issues)
     const [iniResult, projResult] = await Promise.all([
       linearQuery(apiKey, `{
-        initiatives(first: 50) {
-          nodes {
-            id
-            name
-            color
-            status
-            targetDate
-          }
+        initiatives(first: 30) {
+          nodes { id name color status targetDate }
         }
       }`),
       linearQuery(apiKey, `{
-        projects(first: 50, orderBy: updatedAt) {
+        projects(first: 30, orderBy: updatedAt) {
           nodes {
-            id
-            name
-            color
-            url
-            startDate
-            targetDate
+            id name color url startDate targetDate
             status { id name }
             initiatives { nodes { id } }
-            issues(first: 100, orderBy: updatedAt) {
-              nodes {
-                id
-                identifier
-                title
-                priority
-                state { name type color }
-                assignee { name }
-                dueDate
-                startedAt
-                url
-                parent { id }
-                labels { nodes { name color } }
-              }
-            }
           }
         }
       }`),
     ]);
+
+    const projects = projResult.data?.projects?.nodes || [];
+
+    // Step 2: Fetch issues for each project in batches to stay under complexity limits
+    // Build a single query that fetches issues by project using aliases
+    const BATCH_SIZE = 5;
+    const allProjectIssues = new Map<string, any[]>();
+
+    for (let i = 0; i < projects.length; i += BATCH_SIZE) {
+      const batch = projects.slice(i, i + BATCH_SIZE);
+      const fragments = batch.map((p: any, idx: number) => `
+        p${idx}: project(id: "${p.id}") {
+          issues(first: 50, orderBy: updatedAt) {
+            nodes {
+              id identifier title priority
+              state { name type color }
+              assignee { name }
+              dueDate startedAt url
+              parent { id }
+            }
+          }
+        }
+      `).join("\n");
+
+      const issueResult = await linearQuery(apiKey, `{ ${fragments} }`);
+
+      batch.forEach((p: any, idx: number) => {
+        const issues = issueResult.data?.[`p${idx}`]?.issues?.nodes || [];
+        allProjectIssues.set(p.id, issues);
+      });
+    }
 
     const formatIssue = (i: any) => ({
       id: i.id,
@@ -82,7 +86,7 @@ export async function GET() {
       end: i.dueDate || null,
       url: i.url,
       parentId: i.parent?.id || null,
-      labels: (i.labels?.nodes || []).map((l: any) => ({ name: l.name, color: l.color })),
+      labels: [],
     });
 
     const formatProject = (p: any) => ({
@@ -93,7 +97,7 @@ export async function GET() {
       startDate: p.startDate || null,
       targetDate: p.targetDate || null,
       url: p.url,
-      issues: (p.issues?.nodes || []).map(formatIssue),
+      issues: (allProjectIssues.get(p.id) || []).map(formatIssue),
     });
 
     // Build initiative lookup
@@ -109,10 +113,10 @@ export async function GET() {
     }
 
     // Group projects by initiative
-    const initiativeMap = new Map<string, { id: string; name: string; color: string; status: string; statusColor: string; targetDate: string | null; description: string; projects: any[] }>();
+    const initiativeMap = new Map<string, any>();
     const orphanProjects: any[] = [];
 
-    for (const p of (projResult.data?.projects?.nodes || [])) {
+    for (const p of projects) {
       const iniIds = (p.initiatives?.nodes || []).map((i: any) => i.id);
       const formatted = formatProject(p);
 
