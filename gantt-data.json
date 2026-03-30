@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T13:52:34.047Z",
+  "refreshedAt": "2026-03-30T14:31:37.397Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8602,9 +8602,9 @@
               "title": "Multiple payment methods",
               "status": "Todo",
               "start": null,
-              "end": null,
+              "end": "2026-03-30",
               "assignee": "Vladimir Ivanov",
-              "priority": "No priority",
+              "priority": "High",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/IMP-159/multiple-payment-methods",
               "parentId": null
@@ -8765,7 +8765,7 @@
               "title": "[Booking Experts] small discrepancy in numbers between our calculation and chaletplus data",
               "status": "Blocked",
               "start": "2026-03-25",
-              "end": "2026-03-27",
+              "end": "2026-03-30",
               "assignee": "andrei@supplied.eu",
               "priority": "Medium",
               "estimate": null,
@@ -8869,7 +8869,7 @@
               "title": "[Booking Experts] small discrepancy in numbers between our calculation and chaletplus data",
               "status": "Blocked",
               "start": "2026-03-25",
-              "end": "2026-03-27",
+              "end": "2026-03-30",
               "assignee": "andrei@supplied.eu",
               "priority": "Medium",
               "estimate": null,
