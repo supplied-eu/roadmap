@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-27T15:07:38.131Z",
+  "refreshedAt": "2026-03-30T08:52:38.518Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8603,19 +8603,6 @@
               "priority": "Medium",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/SUP-1236/booking-experts-adapt-settlements-to-the-case-when-booking-includes",
-              "parentId": null
-            },
-            {
-              "id": "6aeb2a0e-d991-4b00-a84c-7c0180af6842",
-              "identifier": "SUP-1227",
-              "title": "[Booking Experts] ChaletPlus data integration",
-              "status": "Todo",
-              "start": null,
-              "end": "2026-03-27",
-              "assignee": "andrei@supplied.eu",
-              "priority": "Medium",
-              "estimate": null,
-              "url": "https://linear.app/supplied/issue/SUP-1227/booking-experts-chaletplus-data-integration",
               "parentId": null
             },
             {

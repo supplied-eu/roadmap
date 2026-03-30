@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-27T15:07:38.865Z",
+  "refreshedAt": "2026-03-30T08:52:41.065Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1465,12 +1465,56 @@
       "ownerName": "Bas Bogerd"
     },
     {
+      "id": "481411757249",
+      "subject": "Reach out to DriiveMe",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-30",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "481476429020",
+      "subject": "Reach out to Lsm Global",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-30",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
       "id": "479956280508",
       "subject": "Follow-Up Koos",
       "status": "NOT_STARTED",
       "type": "TODO",
       "priority": "NONE",
       "dueDate": "2026-03-30",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "481522905290",
+      "subject": "Reach out to THE OPC GROUP",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-31",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
+      "id": "481522956527",
+      "subject": "Reach out to Glasvezel Assendorp",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-03-31",
       "ownerId": "29853062",
       "body": null,
       "ownerName": "Bas Bogerd"
@@ -1594,7 +1638,7 @@
       "amount": 1788,
       "closeDate": "2026-03-31",
       "createDate": "2026-03-06",
-      "modifiedDate": "2026-03-25",
+      "modifiedDate": "2026-03-29",
       "ownerId": "29853062",
       "probability": 0.8,
       "stageLabel": "Contract Sent",
@@ -1608,7 +1652,7 @@
       "amount": 140000,
       "closeDate": "2026-04-01",
       "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-27",
+      "modifiedDate": "2026-03-28",
       "ownerId": "29853062",
       "probability": 0.3,
       "stageLabel": "Needs assessment ",
@@ -1664,7 +1708,7 @@
       "amount": null,
       "closeDate": "2026-04-30",
       "createDate": "2026-03-27",
-      "modifiedDate": "2026-03-27",
+      "modifiedDate": "2026-03-29",
       "ownerId": "687091984",
       "probability": 0.1,
       "stageLabel": "Initial Contact",
@@ -1678,7 +1722,7 @@
       "amount": 750000,
       "closeDate": "2026-05-01",
       "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-25",
+      "modifiedDate": "2026-03-28",
       "ownerId": "29853062",
       "probability": 0.3,
       "stageLabel": "Needs assessment ",
@@ -1706,7 +1750,7 @@
       "amount": 100000,
       "closeDate": "2026-06-01",
       "createDate": "2026-03-24",
-      "modifiedDate": "2026-03-25",
+      "modifiedDate": "2026-03-30",
       "ownerId": "901168591",
       "probability": 0.2,
       "stageLabel": "Discovery call scheduled",
@@ -1720,7 +1764,7 @@
       "amount": 165000,
       "closeDate": "2026-06-01",
       "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-23",
+      "modifiedDate": "2026-03-30",
       "ownerId": "29853062",
       "probability": 0.1,
       "stageLabel": "Initial Contact",
@@ -1748,7 +1792,7 @@
       "amount": 135000,
       "closeDate": "2026-08-01",
       "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-20",
+      "modifiedDate": "2026-03-28",
       "ownerId": "901168591",
       "probability": 0.5,
       "stageLabel": "Solution Scoping",
@@ -1905,17 +1949,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 2
+      "count": 11
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 4
+      "count": 44
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 1
+      "count": 2
     },
     {
       "key": "salesqualifiedlead",
@@ -1925,12 +1969,12 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 91
+      "count": 432
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 2
+      "count": 35
     }
   ],
   "trafficSources": [
@@ -2120,7 +2164,7 @@
     },
     {
       "key": "PAID_SOCIAL",
-      "thisWeek": 1,
+      "thisWeek": 0,
       "lastWeek": 5,
       "contacts": [
         {

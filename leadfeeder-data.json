@@ -1,17 +1,57 @@
 {
-  "refreshedAt": "2026-03-27T15:07:49.914Z",
+  "refreshedAt": "2026-03-30T08:52:58.682Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 63,
+  "thisWeekTotal": 64,
   "lastWeekTotal": 52,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 63,
+      "thisWeek": 64,
       "lastWeek": 52,
       "companies": [
+        {
+          "name": "CBN Labsuppliers",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-30",
+          "leadId": "4c66aa78-32c5-11ea-b3b2-4b28092264c0_tfiiFkGNsNYyuggpsjjnTa",
+          "source": "Direct"
+        },
+        {
+          "name": "PSG",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-30",
+          "leadId": "30f60fd8-3681-11ec-b631-59ff957f2944_p6q3nDbB2C4m9KjK9gndy",
+          "source": "Direct"
+        },
+        {
+          "name": "TurboJot",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-28",
+          "leadId": "eb2235a4-85a0-11f0-8af5-39c38ebfe1cc_d2kDTteAAECxmMZTFM7nJs",
+          "source": "Direct"
+        },
+        {
+          "name": "Glasvezel Assendorp",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-28",
+          "leadId": "4c3dd7f8-06ef-11ea-8623-6b90992e6c14_94spWxmC95GeJeDugsjjXN",
+          "source": "Direct"
+        },
+        {
+          "name": "THE OPC GROUP",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-28",
+          "leadId": "49e5c766-2e3c-11eb-8fd5-3dea75c8c9de_aNnouZfGnDJgUBCweh2nRc",
+          "source": "Direct"
+        },
         {
           "name": "Lsm Global",
           "website": null,
@@ -131,46 +171,6 @@
           "lastVisit": "2026-03-24",
           "leadId": "d892fa2a-c74d-11ea-a3b4-2120eba07ee1_p6q3nDbB2C4m9KjK9gndy",
           "source": "Direct"
-        },
-        {
-          "name": "Theviewercompany.Com",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-24",
-          "leadId": "c6145ac2-277a-11f1-9035-09290061dfb8_h4YTgDV9d8UP9ZyUWXVMrB",
-          "source": "Direct"
-        },
-        {
-          "name": "BDN Expertise",
-          "website": null,
-          "visits": 2,
-          "lastVisit": "2026-03-24",
-          "leadId": "22df2196-569d-11e7-97bb-29d23f522575_iqJY1yrHd99ZA4hwnBFRG3",
-          "source": "Direct"
-        },
-        {
-          "name": "Booking Experts B.V.",
-          "website": null,
-          "visits": 2,
-          "lastVisit": "2026-03-24",
-          "leadId": "fc32e90e-e7cc-4da3-a126-b84e5a4e1133_4tx8yhdLA5JdnpuzsQnvdW",
-          "source": "Direct"
-        },
-        {
-          "name": "Watch Forward",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-24",
-          "leadId": "e9cb94dc-b77a-11f0-abbe-075eba2db062_h4YTgDV9d8UP9ZyUWXVMrB",
-          "source": "Direct"
-        },
-        {
-          "name": "GB Manchester: Technology Integration and Custom Solutions",
-          "website": null,
-          "visits": 2,
-          "lastVisit": "2026-03-24",
-          "leadId": "fcade7fb-14a0-4c82-8f22-a1928129a017_q7mSTX7jNGyEFSCzxotW6h",
-          "source": "Direct"
         }
       ]
     }
@@ -185,16 +185,6 @@
       "lastVisit": "2026-03-27",
       "source": "Direct",
       "leadId": "a809332c-33c4-11eb-871d-5da369c27599_iqJY1yrHd99ZA4hwnBFRG3"
-    },
-    {
-      "name": "DFF Ventures",
-      "website": null,
-      "visits": 3,
-      "pageViews": null,
-      "firstVisit": "2026-03-10",
-      "lastVisit": "2026-03-23",
-      "source": "Direct",
-      "leadId": "12f074ee-1619-11f0-9a25-41fe763d0a57_8KKvyBiSeKRkp23TC37b99"
     },
     {
       "name": "DriiveMe",
@@ -227,16 +217,6 @@
       "leadId": "22df2196-569d-11e7-97bb-29d23f522575_iqJY1yrHd99ZA4hwnBFRG3"
     },
     {
-      "name": "Booking Experts B.V.",
-      "website": null,
-      "visits": 2,
-      "pageViews": null,
-      "firstVisit": "2026-02-24",
-      "lastVisit": "2026-03-24",
-      "source": "Direct",
-      "leadId": "fc32e90e-e7cc-4da3-a126-b84e5a4e1133_4tx8yhdLA5JdnpuzsQnvdW"
-    },
-    {
       "name": "GB Manchester: Technology Integration and Custom Solutions",
       "website": null,
       "visits": 2,
@@ -245,6 +225,16 @@
       "lastVisit": "2026-03-24",
       "source": "Direct",
       "leadId": "fcade7fb-14a0-4c82-8f22-a1928129a017_q7mSTX7jNGyEFSCzxotW6h"
+    },
+    {
+      "name": "DFF Ventures",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-10",
+      "lastVisit": "2026-03-23",
+      "source": "Direct",
+      "leadId": "12f074ee-1619-11f0-9a25-41fe763d0a57_8KKvyBiSeKRkp23TC37b99"
     },
     {
       "name": "Qonto",
@@ -267,16 +257,6 @@
       "leadId": "d3826542-8bd4-11eb-b243-0b588a09aad2_a982db1e-1b6e-11ea-937c-67d17a051f8b"
     },
     {
-      "name": "Fortino Capital",
-      "website": null,
-      "visits": 2,
-      "pageViews": null,
-      "firstVisit": "2026-03-13",
-      "lastVisit": "2026-03-19",
-      "source": "Direct",
-      "leadId": "7b8e635c-c5bb-11ea-bbc8-31eab70eca51_i8eEcSjPn2mRmqrmQZWgAE"
-    },
-    {
       "name": "Brenger",
       "website": null,
       "visits": 2,
@@ -295,6 +275,56 @@
       "lastVisit": "2026-03-18",
       "source": "Direct",
       "leadId": "wi2rFLLoQFRRV5PnrnvMok_p6q3nDbB2C4m9KjK9gndy"
+    },
+    {
+      "name": "CBN Labsuppliers",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-30",
+      "lastVisit": "2026-03-30",
+      "source": "Direct",
+      "leadId": "4c66aa78-32c5-11ea-b3b2-4b28092264c0_tfiiFkGNsNYyuggpsjjnTa"
+    },
+    {
+      "name": "PSG",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2025-11-10",
+      "lastVisit": "2026-03-30",
+      "source": "Direct",
+      "leadId": "30f60fd8-3681-11ec-b631-59ff957f2944_p6q3nDbB2C4m9KjK9gndy"
+    },
+    {
+      "name": "TurboJot",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-28",
+      "lastVisit": "2026-03-28",
+      "source": "Direct",
+      "leadId": "eb2235a4-85a0-11f0-8af5-39c38ebfe1cc_d2kDTteAAECxmMZTFM7nJs"
+    },
+    {
+      "name": "Glasvezel Assendorp",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-28",
+      "lastVisit": "2026-03-28",
+      "source": "Direct",
+      "leadId": "4c3dd7f8-06ef-11ea-8623-6b90992e6c14_94spWxmC95GeJeDugsjjXN"
+    },
+    {
+      "name": "THE OPC GROUP",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-28",
+      "lastVisit": "2026-03-28",
+      "source": "Direct",
+      "leadId": "49e5c766-2e3c-11eb-8fd5-3dea75c8c9de_aNnouZfGnDJgUBCweh2nRc"
     },
     {
       "name": "Lsm Global",
@@ -345,42 +375,12 @@
       "lastVisit": "2026-03-26",
       "source": "Direct",
       "leadId": "c9922fba-dac0-11e5-89fb-1344a208b079_dfcd82aa-0d0e-11ea-9cc7-21ec7100bda8"
-    },
-    {
-      "name": "Oracle",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2025-11-19",
-      "lastVisit": "2026-03-25",
-      "source": "Direct",
-      "leadId": "2WiB3Cmox4RFPHn7Ty27Uu_p6q3nDbB2C4m9KjK9gndy"
-    },
-    {
-      "name": "Hoban Ltd",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-25",
-      "lastVisit": "2026-03-25",
-      "source": "Direct",
-      "leadId": "6a721d4a-d258-11ee-8279-41350748fd32_aespgMLc9QmrU9xjc68jjT"
-    },
-    {
-      "name": "Ilustre Colegio de la Abogacía de Madrid",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-25",
-      "lastVisit": "2026-03-25",
-      "source": "Direct",
-      "leadId": "4a4e1658-b1fb-11ea-9cfe-716b5c9ff816_oqkPx98MiGpqZDjrUotcmR"
     }
   ],
   "dailyVisits": [
     {
       "date": "2025-11-10",
-      "visits": 1
+      "visits": 2
     },
     {
       "date": "2025-11-18",
@@ -391,16 +391,12 @@
       "visits": 1
     },
     {
-      "date": "2025-11-20",
-      "visits": 1
-    },
-    {
       "date": "2025-11-24",
       "visits": 1
     },
     {
       "date": "2025-12-02",
-      "visits": 2
+      "visits": 1
     },
     {
       "date": "2025-12-05",
@@ -427,10 +423,6 @@
       "visits": 1
     },
     {
-      "date": "2026-02-01",
-      "visits": 1
-    },
-    {
       "date": "2026-02-05",
       "visits": 1
     },
@@ -444,27 +436,15 @@
     },
     {
       "date": "2026-02-24",
-      "visits": 1
+      "visits": 2
     },
     {
       "date": "2026-02-25",
       "visits": 1
     },
     {
-      "date": "2026-02-27",
-      "visits": 3
-    },
-    {
-      "date": "2026-02-28",
-      "visits": 1
-    },
-    {
-      "date": "2026-03-01",
-      "visits": 2
-    },
-    {
       "date": "2026-03-02",
-      "visits": 19
+      "visits": 18
     },
     {
       "date": "2026-03-03",
@@ -488,7 +468,7 @@
     },
     {
       "date": "2026-03-09",
-      "visits": 12
+      "visits": 11
     },
     {
       "date": "2026-03-10",
@@ -544,7 +524,7 @@
     },
     {
       "date": "2026-03-24",
-      "visits": 12
+      "visits": 13
     },
     {
       "date": "2026-03-25",
@@ -557,6 +537,14 @@
     {
       "date": "2026-03-27",
       "visits": 6
+    },
+    {
+      "date": "2026-03-28",
+      "visits": 6
+    },
+    {
+      "date": "2026-03-30",
+      "visits": 4
     }
   ]
 }

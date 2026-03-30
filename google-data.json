@@ -1,31 +1,85 @@
 {
-  "refreshedAt": "2026-03-27T15:07:39.793Z",
+  "refreshedAt": "2026-03-30T08:52:41.918Z",
   "gmail": {
     "threads": [
       {
-        "id": "19d2f7ed86944d73",
-        "subject": "eSignature request for \"Multimedia LLC <> Supplied Technologies - 3/27/26, 3:30 PM\"",
-        "from": "\"Ledia Dworkin (via Google Workspace eSignatures)\" <esignature-noreply@google.com>",
-        "date": "2026-03-27T15:04:13.000Z",
-        "snippet": "eSignature completed Ledia Dworkin (ledia@multimediallc.com) has completed the eSignature request on this document Open Google LLC 1600 Amphitheatre Parkway, Mountain View, CA 94043. You received this",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d2f7ed86944d73",
+        "id": "19d3dee47fa57506",
+        "subject": "Join us live: what it actually takes to build a real learning system",
+        "from": "Mixpanel EMEA <eventsemea@mixpanel.com>",
+        "date": "2026-03-30T08:48:36.000Z",
+        "snippet": "Mixpanel Events Hi Vladimir, Most teams are running experiments. Far fewer have made experimentation a genuine part of how they ship. That gap is where product decisions get slower, debates go in",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3dee47fa57506",
         "unread": true
       },
       {
-        "id": "19ce2db4070d3a8d",
-        "subject": "AW: Reporting template - Supplied call",
-        "from": "Michael Buchinger <michael@rethinkventures.com>",
-        "date": "2026-03-27T14:27:15.000Z",
-        "snippet": "Hi all, thanks for the file. Is it possible to also include 1-2 usage related KPIs into the overview? I thought about something like: # of onboardings and especially # of reports submitted. Do you",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce2db4070d3a8d",
+        "id": "19d3debdce58d1f0",
+        "subject": "Notes - Commerce<>Product Weekly",
+        "from": "\"Supplied Support (Google Docs)\" <comments-noreply@docs.google.com>",
+        "date": "2026-03-30T08:46:00.000Z",
+        "snippet": "New activity in the following document Notes - Commerce&lt;&gt;Product Weekly 2 suggestions Supplied Support • 10:35 AM, Mar 30 (CEST) New Add paragraph ReplyOpen Supplied Support • 10:35 AM, Mar 30 (",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3debdce58d1f0",
+        "unread": true
+      },
+      {
+        "id": "19d3db16da65a196",
+        "subject": "Re: activate coffee card for Bas",
+        "from": "Zwolle Tradecentre <Zwolle.Tradecentre@regus.com>",
+        "date": "2026-03-30T08:35:31.000Z",
+        "snippet": "Good morning Johann, That is certainly possible. However, I would like to emphasize once again that when I activate a coffee pass with Bas, “Unlimited Coffee &amp; Tea” will be charged twice per month",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3db16da65a196",
+        "unread": true
+      },
+      {
+        "id": "19d3de1642f4bdc1",
+        "subject": "Customer Success Standup",
+        "from": "Optiverse <mail@optiverse.ai>",
+        "date": "2026-03-30T08:34:34.000Z",
+        "snippet": "Meeting Summary General Summary The team discussed prioritizing large enterprise opportunities like Dutch Cleantech versus smaller clients, aligning the product roadmap with whichever major customer",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3de1642f4bdc1",
+        "unread": true
+      },
+      {
+        "id": "19d3ddfd2b931e5f",
+        "subject": "Canceled: 30 Minute Meeting with Teddy Ludmer on 30 March 2026",
+        "from": "Calendly <notifications@calendly.com>",
+        "date": "2026-03-30T08:32:51.000Z",
+        "snippet": "Hi Johann Rozario, The event below has been canceled. Invitee: Teddy Ludmer Invitee Email: teddy.ludmer@tipalti.com Event Date/Time: 11:30 - Monday, 30 March 2026 (Central European Time) Cancellation",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3ddfd2b931e5f",
+        "unread": true
+      },
+      {
+        "id": "19d3d5689be95360",
+        "subject": "3 unread notifications on Supplied",
+        "from": "Linear <notifications@linear.app>",
+        "date": "2026-03-30T06:02:54.000Z",
+        "snippet": "You have 3 unread notifications on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emails: https://linear.app/unsubscribe?token=",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3d5689be95360",
+        "unread": true
+      },
+      {
+        "id": "19d3d546d1631a46",
+        "subject": "Daily digest BlueJay Ventures B.V.",
+        "from": "Moneybird <notifications@moneybird.com>",
+        "date": "2026-03-30T06:00:36.000Z",
+        "snippet": "Daily digest BlueJay Ventures BV Dear Johann Rozario, You will receive an update on the activities in your Moneybird administration. These are the events and open tasks of Monday 30 March. Events",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3d546d1631a46",
+        "unread": true
+      },
+      {
+        "id": "19d3d546a4b65c8b",
+        "subject": "Daily digest Supplied Technologies B.V.",
+        "from": "Moneybird <notifications@moneybird.com>",
+        "date": "2026-03-30T06:00:35.000Z",
+        "snippet": "Daily digest Supplied Technologies BV Dear Johann Rozario, You will receive an update on the activities in your Moneybird administration. These are the events and open tasks of Monday 30 March. To-",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3d546a4b65c8b",
         "unread": true
       },
       {
         "id": "19d2fa1cdfbfe765",
-        "subject": "Re: johann and Kamil Węgliński + Michał Mroczkowski",
+        "subject": "johann and Kamil Węgliński + Michał Mroczkowski",
         "from": "\"Kamil Węgliński\" <kamil.weglinski@moc.vc>",
-        "date": "2026-03-27T14:10:21.000Z",
-        "snippet": "Hey Johann, Terribly sorry for any inconvenience caused but something urgent came up on our end just now and we won&#39;t be able to dial in today. Could you please use the link below to reschedule to",
+        "date": "2026-03-27T15:23:54.000Z",
+        "snippet": "Event Name: intro call w/Michal&amp;Kamil Location: This is a Zoom web conference. You can join this meeting from your computer, tablet, or smartphone. https://us02web.zoom.us/j/83881814947 One tap",
         "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
         "unread": true
       },
@@ -55,148 +109,12 @@
         "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
         "unread": true
-      },
-      {
-        "id": "19ce82e9d0fab621",
-        "subject": "Reminder : Help Us Improve: Rate Your Experience",
-        "from": "Akancha  Srivastava <akancha@scrut.io>",
-        "date": "2026-03-13T17:11:33.000Z",
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
-        "unread": true
-      },
-      {
-        "id": "19ce7f12f8358ef7",
-        "subject": "Exit on your terms - strategic buy and hold buyers",
-        "from": "dmitry.mykhailenko@auditfirm.uk",
-        "date": "2026-03-13T16:04:27.000Z",
-        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
-        "unread": true
-      },
-      {
-        "id": "19ce6606ba2e3745",
-        "subject": "Customer prioritisation standup",
-        "from": "Optiverse <mail@optiverse.ai>",
-        "date": "2026-03-13T08:46:43.000Z",
-        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
-        "unread": true
-      },
-      {
-        "id": "19ce30963c459b27",
-        "subject": "Reminder : Help Us Improve: Rate Your Experience",
-        "from": "Akancha  Srivastava <akancha@scrut.io>",
-        "date": "2026-03-12T17:12:47.000Z",
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
-        "unread": true
-      },
-      {
-        "id": "19ce0214716b0ff0",
-        "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-11]",
-        "from": "anomalydetection@costalerts.amazonaws.com",
-        "date": "2026-03-12T03:39:58.000Z",
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
-        "unread": true
-      },
-      {
-        "id": "19cded4a75632083",
-        "subject": "New Event: Casey Coppock - 16:30 Thu, 19 Mar 2026 - 30 Minute Meeting",
-        "from": "Calendly <notifications@calendly.com>",
-        "date": "2026-03-11T21:36:43.000Z",
-        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Casey Coppock Invitee Email: ccoppock@k1.com Event Date/Time: 16:30 - Thursday, 19 March 2026 (Central European",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cded4a75632083",
-        "unread": true
       }
     ],
-    "unreadCount": 35
+    "unreadCount": 41
   },
   "calendar": {
     "today": [
-      {
-        "id": "sr3rmb5d1sjmo2cqavdf2krjr4",
-        "title": "Erki Uustalu and Johann Rozario",
-        "start": "2026-03-27T09:00:00+01:00",
-        "end": "2026-03-27T09:30:00+01:00",
-        "location": "Google Meet (instructions in description), EE - HQ Põhjala-2-2.1 Focus Room (1)",
-        "numAttendees": 3,
-        "url": "https://www.google.com/calendar/event?eid=c3Izcm1iNWQxc2ptbzJjcWF2ZGYya3JqcjQgam9oYW5uQHN1cHBsaWVkLmV1",
-        "allDay": false
-      },
-      {
-        "id": "ojfj0gumbojfaendkq93eb2g81_20260327T090000Z",
-        "title": "Customer prioritisation standup",
-        "start": "2026-03-27T09:30:00+01:00",
-        "end": "2026-03-27T10:00:00+01:00",
-        "location": null,
-        "numAttendees": 3,
-        "url": "https://www.google.com/calendar/event?eid=b2pmajBndW1ib2pmYWVuZGtxOTNlYjJnODFfMjAyNjAzMjdUMDkwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
-        "allDay": false
-      },
-      {
-        "id": "4inlilapllqa0621u88rmed8s4_20260327T090000Z",
-        "title": "Customer Success Standup",
-        "start": "2026-03-27T10:00:00+01:00",
-        "end": "2026-03-27T11:00:00+01:00",
-        "location": null,
-        "numAttendees": 4,
-        "url": "https://www.google.com/calendar/event?eid=NGlubGlsYXBsbHFhMDYyMXU4OHJtZWQ4czRfMjAyNjAzMjdUMDkwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
-        "allDay": false
-      },
-      {
-        "id": "ada7kbh3fhnoh1mg4nkpudc2q0",
-        "title": "Anneq Zwolsman and Johann Rozario",
-        "start": "2026-03-27T11:00:00+01:00",
-        "end": "2026-03-27T11:30:00+01:00",
-        "location": "Google Meet (instructions in description)",
-        "numAttendees": 2,
-        "url": "https://www.google.com/calendar/event?eid=YWRhN2tiaDNmaG5vaDFtZzRua3B1ZGMycTAgam9oYW5uQHN1cHBsaWVkLmV1",
-        "allDay": false
-      },
-      {
-        "id": "gvr2k7e8hc2bembkbap6lib3dg",
-        "title": "Jack van Asbeck and Johann Rozario",
-        "start": "2026-03-27T11:30:00+01:00",
-        "end": "2026-03-27T12:00:00+01:00",
-        "location": "Google Meet (instructions in description)",
-        "numAttendees": 2,
-        "url": "https://www.google.com/calendar/event?eid=Z3ZyMms3ZThoYzJiZW1ia2JhcDZsaWIzZGcgam9oYW5uQHN1cHBsaWVkLmV1",
-        "allDay": false
-      },
-      {
-        "id": "_60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g6so34g9g6h336ga3890k8gpg64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g8p2k2dpg60rjec26612k2d9k8os34e9l70qj6c9n8kpk6h236ss0",
-        "title": "GASTREOAI Team Meeting",
-        "start": "2026-03-27T12:00:00+01:00",
-        "end": "2026-03-27T13:00:00+01:00",
-        "location": "Microsoft Teams Meeting",
-        "numAttendees": 14,
-        "url": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc2c28zNGc5ZzZoMzM2Z2EzODkwazhncGc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnOHAyazJkcGc2MHJqZWMyNjYxMmsyZDlrOG9zMzRlOWw3MHFqNmM5bjhrcGs2aDIzNnNzMCBqb2hhbm5Ac3VwcGxpZWQuZXU",
-        "allDay": false
-      },
-      {
-        "id": "f0m0ha5csouibr0lnfdqqe5jgm_20260327T110000Z",
-        "title": "Standup",
-        "start": "2026-03-27T12:00:00+01:00",
-        "end": "2026-03-27T12:30:00+01:00",
-        "location": null,
-        "numAttendees": 7,
-        "url": "https://www.google.com/calendar/event?eid=ZjBtMGhhNWNzb3VpYnIwbG5mZHFxZTVqZ21fMjAyNjAzMjdUMTEwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
-        "allDay": false
-      },
-      {
-        "id": "7b6futqm7isqqrh4rvlvlbsbiu_20260327T140000Z",
-        "title": "Friday Review",
-        "start": "2026-03-27T15:00:00+01:00",
-        "end": "2026-03-27T16:00:00+01:00",
-        "location": null,
-        "numAttendees": 8,
-        "url": "https://www.google.com/calendar/event?eid=N2I2ZnV0cW03aXNxcXJoNHJ2bHZsYnNiaXVfMjAyNjAzMjdUMTQwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
-        "allDay": false
-      }
-    ],
-    "upcoming": [
       {
         "id": "6gbmj2cg67n2k9apt325g9qt1f_20260330T053000Z",
         "title": "Busy",
@@ -218,6 +136,26 @@
         "allDay": false
       },
       {
+        "id": "6qp5ki5srhb4jbqshtle82ee6q",
+        "title": "DutchClean tech/Other scoping",
+        "start": "2026-03-30T10:30:00+02:00",
+        "end": "2026-03-30T11:15:00+02:00",
+        "location": null,
+        "numAttendees": 4,
+        "url": "https://www.google.com/calendar/event?eid=NnFwNWtpNXNyaGI0amJxc2h0bGU4MmVlNnEgam9oYW5uQHN1cHBsaWVkLmV1",
+        "allDay": false
+      },
+      {
+        "id": "7kcj6lo43c790dke5pr7rrd4am",
+        "title": "Prep for Tipatli",
+        "start": "2026-03-30T11:00:00+02:00",
+        "end": "2026-03-30T11:30:00+02:00",
+        "location": null,
+        "numAttendees": 0,
+        "url": "https://www.google.com/calendar/event?eid=N2tjajZsbzQzYzc5MGRrZTVwcjdycmQ0YW0gam9oYW5uQHN1cHBsaWVkLmV1",
+        "allDay": false
+      },
+      {
         "id": "ojfj0gumbojfaendkq93eb2g81_20260330T090000Z",
         "title": "Customer prioritisation standup",
         "start": "2026-03-30T11:00:00+02:00",
@@ -229,7 +167,7 @@
       },
       {
         "id": "fab0542q5gljbijlosm33e2pnc",
-        "title": "Teddy Ludmer and Johann Rozario",
+        "title": "Canceled: Teddy Ludmer and Johann Rozario",
         "start": "2026-03-30T11:30:00+02:00",
         "end": "2026-03-30T12:00:00+02:00",
         "location": "Google Meet (instructions in description)",
@@ -256,7 +194,9 @@
         "numAttendees": 2,
         "url": "https://www.google.com/calendar/event?eid=MGZwbWNkdDFnYnFkdGRkcjMzcDNuNXA0Z3Mgam9oYW5uQHN1cHBsaWVkLmV1",
         "allDay": false
-      },
+      }
+    ],
+    "upcoming": [
       {
         "id": "167kuuch1v277h207qb4juupj0_20260331T053000Z",
         "title": "(no title)",
@@ -288,13 +228,73 @@
         "allDay": false
       },
       {
-        "id": "_60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g6kojah1l6ks34e9l6gp48gpg64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g8l13eghh70p3cgi2692kah1k710j6h2571138c1o6oqk6da28crg",
-        "title": "johann and Kamil Węgliński + Michał Mroczkowski",
-        "start": "2026-03-31T13:00:00+02:00",
-        "end": "2026-03-31T13:40:00+02:00",
-        "location": "https://us02web.zoom.us/j/82244031249",
+        "id": "1q0akkm59kn9al0satar9mpclh_20260331T120000Z",
+        "title": "Commerce<>Product Weekly",
+        "start": "2026-03-31T14:00:00+02:00",
+        "end": "2026-03-31T15:00:00+02:00",
+        "location": null,
+        "numAttendees": 4,
+        "url": "https://www.google.com/calendar/event?eid=MXEwYWtrbTU5a245YWwwc2F0YXI5bXBjbGhfMjAyNjAzMzFUMTIwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "allDay": false
+      },
+      {
+        "id": "7tpp705msl82dubdj3g9ei0agl_20260331T120000Z",
+        "title": "Bas / Julio - CS Standup",
+        "start": "2026-03-31T14:00:00+02:00",
+        "end": "2026-03-31T14:45:00+02:00",
+        "location": null,
         "numAttendees": 3,
-        "url": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc2a29qYWgxbDZrczM0ZTlsNmdwNDhncGc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnOGwxM2VnaGg3MHAzY2dpMjY5MmthaDFrNzEwajZoMjU3MTEzOGMxbzZvcWs2ZGEyOGNyZyBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "url": "https://www.google.com/calendar/event?eid=N3RwcDcwNW1zbDgyZHViZGozZzllaTBhZ2xfMjAyNjAzMzFUMTIwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "allDay": false
+      },
+      {
+        "id": "4inlilapllqa0621u88rmed8s4_20260401T080000Z",
+        "title": "Customer Success Standup",
+        "start": "2026-04-01T10:00:00+02:00",
+        "end": "2026-04-01T11:00:00+02:00",
+        "location": null,
+        "numAttendees": 4,
+        "url": "https://www.google.com/calendar/event?eid=NGlubGlsYXBsbHFhMDYyMXU4OHJtZWQ4czRfMjAyNjA0MDFUMDgwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "allDay": false
+      },
+      {
+        "id": "ojfj0gumbojfaendkq93eb2g81_20260401T090000Z",
+        "title": "Customer prioritisation standup",
+        "start": "2026-04-01T11:00:00+02:00",
+        "end": "2026-04-01T11:30:00+02:00",
+        "location": null,
+        "numAttendees": 3,
+        "url": "https://www.google.com/calendar/event?eid=b2pmajBndW1ib2pmYWVuZGtxOTNlYjJnODFfMjAyNjA0MDFUMDkwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "allDay": false
+      },
+      {
+        "id": "f0m0ha5csouibr0lnfdqqe5jgm_20260401T100000Z",
+        "title": "Standup",
+        "start": "2026-04-01T12:00:00+02:00",
+        "end": "2026-04-01T12:30:00+02:00",
+        "location": null,
+        "numAttendees": 7,
+        "url": "https://www.google.com/calendar/event?eid=ZjBtMGhhNWNzb3VpYnIwbG5mZHFxZTVqZ21fMjAyNjA0MDFUMTAwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "allDay": false
+      },
+      {
+        "id": "_68skae216oqkcba57533gb9k88qj8b9o6csjeb9m70o3gd9h8opk2c2470",
+        "title": "Build Claude Skills",
+        "start": "2026-04-01T14:00:00+02:00",
+        "end": "2026-04-01T15:00:00+02:00",
+        "location": null,
+        "numAttendees": 0,
+        "url": "https://www.google.com/calendar/event?eid=XzY4c2thZTIxNm9xa2NiYTU3NTMzZ2I5azg4cWo4YjlvNmNzamViOW03MG8zZ2Q5aDhvcGsyYzI0NzAgam9oYW5uQHN1cHBsaWVkLmV1",
+        "allDay": false
+      },
+      {
+        "id": "2iec2q0rc55oudavcfkpk19s03_20260402T053000Z",
+        "title": "Busy",
+        "start": "2026-04-02T07:30:00+02:00",
+        "end": "2026-04-02T09:00:00+02:00",
+        "location": null,
+        "numAttendees": 0,
+        "url": "https://www.google.com/calendar/event?eid=MmllYzJxMHJjNTVvdWRhdmNma3BrMTlzMDNfMjAyNjA0MDJUMDUzMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
         "allDay": false
       }
     ]
@@ -302,10 +302,50 @@
   "drive": {
     "recent": [
       {
+        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
+        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-30T08:16:15.087Z",
+        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
+        "name": "Notes - Commerce<>Product Weekly",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-30T08:50:08.490Z",
+        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
+        "lastModifiedBy": "Supplied Support"
+      },
+      {
+        "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
+        "name": " Customer success standup notes",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-30T08:25:49.855Z",
+        "url": "https://docs.google.com/document/d/17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY/edit?usp=drivesdk",
+        "lastModifiedBy": "Julio Lindveld"
+      },
+      {
+        "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
+        "name": "Supplied_Technologies_Budget_2026",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-03-13T10:10:52.499Z",
+        "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
+        "lastModifiedBy": "Jelena Hmeltnitski"
+      },
+      {
+        "id": "1fTSt39BTdeQ2KXXGK7rbW5sngn8YfiuLO-ZuBSivCXg",
+        "name": "WBSO - Application SO26018405 Supplied Technologies B.V.",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-02-25T13:23:19.927Z",
+        "url": "https://docs.google.com/spreadsheets/d/1fTSt39BTdeQ2KXXGK7rbW5sngn8YfiuLO-ZuBSivCXg/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA",
         "name": "Friday Weekly Reviews",
         "mimeType": "application/vnd.google-apps.presentation",
-        "modifiedTime": "2026-03-27T15:04:45.457Z",
+        "modifiedTime": "2026-03-27T15:10:07.747Z",
         "url": "https://docs.google.com/presentation/d/1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA/edit?usp=drivesdk",
         "lastModifiedBy": "Vladimir Ivanov"
       },
@@ -318,22 +358,6 @@
         "lastModifiedBy": "Julio Lindveld"
       },
       {
-        "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
-        "name": "Supplied_Technologies_Budget_2026",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-13T10:10:52.499Z",
-        "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
-        "lastModifiedBy": "Jelena Hmeltnitski"
-      },
-      {
-        "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
-        "name": " Customer success standup notes",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-27T09:25:11.923Z",
-        "url": "https://docs.google.com/document/d/17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY/edit?usp=drivesdk",
-        "lastModifiedBy": "Julio Lindveld"
-      },
-      {
         "id": "1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY",
         "name": "Supplied Video - Batch 2",
         "mimeType": "application/vnd.google-apps.document",
@@ -342,28 +366,12 @@
         "lastModifiedBy": "Nitya Shukla Paharia"
       },
       {
-        "id": "1fTSt39BTdeQ2KXXGK7rbW5sngn8YfiuLO-ZuBSivCXg",
-        "name": "WBSO - Application SO26018405 Supplied Technologies B.V.",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-02-25T13:23:19.927Z",
-        "url": "https://docs.google.com/spreadsheets/d/1fTSt39BTdeQ2KXXGK7rbW5sngn8YfiuLO-ZuBSivCXg/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
         "id": "11DRNb87TkLDRdVZoSLY8H3PixYYHlzXlsmolG4RClgM",
         "name": "WBSO Answers",
         "mimeType": "application/vnd.google-apps.document",
         "modifiedTime": "2026-02-24T09:46:38.891Z",
         "url": "https://docs.google.com/document/d/11DRNb87TkLDRdVZoSLY8H3PixYYHlzXlsmolG4RClgM/edit?usp=drivesdk",
         "lastModifiedBy": "Vladimir Ivanov"
-      },
-      {
-        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
-        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-26T12:40:34.316Z",
-        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
       },
       {
         "id": "17RY29LiHvkh5xf8sj6DgRxxYWf_VrVGyxGXNzhiktqc",
@@ -388,77 +396,119 @@
         "modifiedTime": "2024-01-31T10:17:07.000Z",
         "url": "https://drive.google.com/file/d/1nJgpsQ2iQyzdiSd-GpdRuMi4sO3-v8Ci/view?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
-        "name": "Notes - Commerce<>Product Weekly",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-24T15:22:15.455Z",
-        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
       }
     ]
   },
   "email_priorities": [
     {
       "action": "alert",
-      "subject": "Re: johann and Kamil Węgliński + Michał Mroczkowski",
-      "reason": "Hey Johann, Terribly sorry for any inconvenience caused but something urgent came up on our end just now and we won&#39;",
-      "from": "\"Kamil Węgliński\" <kamil.weglinski@moc.vc>",
-      "ageDays": 0,
-      "threadId": "19d2fa1cdfbfe765",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
-      "id": "email-19d2fa1cdfbfe765"
-    },
-    {
-      "action": "alert",
       "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
       "reason": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
       "from": "anomalydetection@costalerts.amazonaws.com",
-      "ageDays": 11,
+      "ageDays": 14,
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
     },
     {
-      "action": "alert",
-      "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-11]",
-      "reason": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
-      "from": "anomalydetection@costalerts.amazonaws.com",
-      "ageDays": 15,
-      "threadId": "19ce0214716b0ff0",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
-      "id": "email-19ce0214716b0ff0"
+      "action": "reply",
+      "subject": "Join us live: what it actually takes to build a real learning system",
+      "reason": "Mixpanel Events Hi Vladimir, Most teams are running experiments. Far fewer have made experimentation a genuine part of h",
+      "from": "Mixpanel EMEA <eventsemea@mixpanel.com>",
+      "ageDays": 0,
+      "threadId": "19d3dee47fa57506",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3dee47fa57506",
+      "id": "email-19d3dee47fa57506"
     },
     {
       "action": "reply",
-      "subject": "eSignature request for \"Multimedia LLC <> Supplied Technologies - 3/27/26, 3:30 PM\"",
-      "reason": "eSignature completed Ledia Dworkin (ledia@multimediallc.com) has completed the eSignature request on this document Open ",
-      "from": "\"Ledia Dworkin (via Google Workspace eSignatures)\" <esignature-noreply@google.com>",
+      "subject": "Notes - Commerce<>Product Weekly",
+      "reason": "New activity in the following document Notes - Commerce&lt;&gt;Product Weekly 2 suggestions Supplied Support • 10:35 AM,",
+      "from": "\"Supplied Support (Google Docs)\" <comments-noreply@docs.google.com>",
       "ageDays": 0,
-      "threadId": "19d2f7ed86944d73",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d2f7ed86944d73",
-      "id": "email-19d2f7ed86944d73"
+      "threadId": "19d3debdce58d1f0",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3debdce58d1f0",
+      "id": "email-19d3debdce58d1f0"
     },
     {
       "action": "reply",
-      "subject": "AW: Reporting template - Supplied call",
-      "reason": "Hi all, thanks for the file. Is it possible to also include 1-2 usage related KPIs into the overview? I thought about so",
-      "from": "Michael Buchinger <michael@rethinkventures.com>",
+      "subject": "Re: activate coffee card for Bas",
+      "reason": "Good morning Johann, That is certainly possible. However, I would like to emphasize once again that when I activate a co",
+      "from": "Zwolle Tradecentre <Zwolle.Tradecentre@regus.com>",
       "ageDays": 0,
-      "threadId": "19ce2db4070d3a8d",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19ce2db4070d3a8d",
-      "id": "email-19ce2db4070d3a8d"
+      "threadId": "19d3db16da65a196",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3db16da65a196",
+      "id": "email-19d3db16da65a196"
+    },
+    {
+      "action": "reply",
+      "subject": "Customer Success Standup",
+      "reason": "Meeting Summary General Summary The team discussed prioritizing large enterprise opportunities like Dutch Cleantech vers",
+      "from": "Optiverse <mail@optiverse.ai>",
+      "ageDays": 0,
+      "threadId": "19d3de1642f4bdc1",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3de1642f4bdc1",
+      "id": "email-19d3de1642f4bdc1"
+    },
+    {
+      "action": "reply",
+      "subject": "3 unread notifications on Supplied",
+      "reason": "You have 3 unread notifications on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these ema",
+      "from": "Linear <notifications@linear.app>",
+      "ageDays": 0,
+      "threadId": "19d3d5689be95360",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3d5689be95360",
+      "id": "email-19d3d5689be95360"
+    },
+    {
+      "action": "reply",
+      "subject": "Daily digest BlueJay Ventures B.V.",
+      "reason": "Daily digest BlueJay Ventures BV Dear Johann Rozario, You will receive an update on the activities in your Moneybird adm",
+      "from": "Moneybird <notifications@moneybird.com>",
+      "ageDays": 0,
+      "threadId": "19d3d546d1631a46",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3d546d1631a46",
+      "id": "email-19d3d546d1631a46"
+    },
+    {
+      "action": "reply",
+      "subject": "Daily digest Supplied Technologies B.V.",
+      "reason": "Daily digest Supplied Technologies BV Dear Johann Rozario, You will receive an update on the activities in your Moneybir",
+      "from": "Moneybird <notifications@moneybird.com>",
+      "ageDays": 0,
+      "threadId": "19d3d546a4b65c8b",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3d546a4b65c8b",
+      "id": "email-19d3d546a4b65c8b"
+    },
+    {
+      "action": "reply",
+      "subject": "johann and Kamil Węgliński + Michał Mroczkowski",
+      "reason": "Event Name: intro call w/Michal&amp;Kamil Location: This is a Zoom web conference. You can join this meeting from your c",
+      "from": "\"Kamil Węgliński\" <kamil.weglinski@moc.vc>",
+      "ageDays": 2,
+      "threadId": "19d2fa1cdfbfe765",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
+      "id": "email-19d2fa1cdfbfe765"
     },
     {
       "action": "reply",
       "subject": "Role distribution for Accountmanager",
       "reason": "Hi Johann, Attached what I made so far. First part focusses on the role. (second part was the development plan for Julio",
       "from": "Bas Bogerd <bas@supplied.eu>",
-      "ageDays": 1,
+      "ageDays": 4,
       "threadId": "19d261e199e703f4",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d261e199e703f4",
       "id": "email-19d261e199e703f4"
+    },
+    {
+      "action": "followup",
+      "subject": "Canceled: 30 Minute Meeting with Teddy Ludmer on 30 March 2026",
+      "reason": "Hi Johann Rozario, The event below has been canceled. Invitee: Teddy Ludmer Invitee Email: teddy.ludmer@tipalti.com Even",
+      "from": "Calendly <notifications@calendly.com>",
+      "ageDays": 0,
+      "threadId": "19d3ddfd2b931e5f",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3ddfd2b931e5f",
+      "id": "email-19d3ddfd2b931e5f"
     }
   ],
   "drive_priorities": [
