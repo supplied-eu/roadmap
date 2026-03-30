@@ -33,12 +33,17 @@ export async function GET() {
       ownerMap[o.id] = `${o.firstName || ""} ${o.lastName || ""}`.trim();
     }
 
-    // Build stage label map from all pipelines
+    // Build stage label map + pipeline structure from all pipelines
     const stageMap: Record<string, string> = {};
+    const pipelines: { id: string; label: string; stages: { id: string; label: string; displayOrder: number }[] }[] = [];
     if (pipelinesRes.ok) {
       const pipelinesData = await pipelinesRes.json();
       for (const pipeline of pipelinesData.results || []) {
-        for (const stage of pipeline.stages || []) {
+        const stages = (pipeline.stages || [])
+          .map((s: any) => ({ id: s.id, label: s.label, displayOrder: s.displayOrder ?? 0 }))
+          .sort((a: any, b: any) => a.displayOrder - b.displayOrder);
+        pipelines.push({ id: pipeline.id, label: pipeline.label, stages });
+        for (const stage of stages) {
           stageMap[stage.id] = stage.label;
         }
       }
@@ -58,7 +63,7 @@ export async function GET() {
       };
     });
 
-    return NextResponse.json({ deals, stageMap }, {
+    return NextResponse.json({ deals, stageMap, pipelines }, {
       headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=600" },
     });
   } catch (err: any) {
