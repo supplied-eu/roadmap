@@ -127,7 +127,8 @@ export default function DashboardPage() {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [expandedMeeting, setExpandedMeeting] = useState<string | null>(null);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
-  const [personFilter, setPersonFilter] = useState<string>('Johann');
+  const [personFilter, setPersonFilter] = useState<string>('');
+  const [personFilterInitialized, setPersonFilterInitialized] = useState(false);
 
   const addToast = useCallback((message: string, undoAction?: () => void) => {
     const id = Date.now().toString();
@@ -212,9 +213,19 @@ export default function DashboardPage() {
     });
   }
 
-  // Person filter (admin only)
+  // Person filter
   const uniqueAssignees = [...new Set(streamItems.map(i => i.assignee).filter(Boolean))] as string[];
-  const filteredStream = personFilter === 'all' ? streamItems
+
+  // Default to logged-in user's name on first load
+  if (!personFilterInitialized && uniqueAssignees.length > 0 && firstName !== 'there') {
+    const match = uniqueAssignees.find(a => a.toLowerCase().startsWith(firstName.toLowerCase()));
+    if (match) {
+      setPersonFilter(match);
+      setPersonFilterInitialized(true);
+    }
+  }
+
+  const filteredStream = !personFilter ? streamItems
     : streamItems.filter(i => i.assignee?.toLowerCase().includes(personFilter.toLowerCase()));
 
   // Group by urgency
@@ -344,18 +355,18 @@ export default function DashboardPage() {
 
       {/* Right: Sidebar */}
       <div className="overflow-auto shrink-0" style={{ width: '320px', borderLeft: '1px solid var(--border)', background: 'var(--surface)' }}>
-        {/* Person filter (admin only) */}
-        {admin && uniqueAssignees.length > 0 && (
+        {/* Person filter */}
+        {uniqueAssignees.length > 0 && (
           <div className="px-4 py-2.5" style={{ borderBottom: '1px solid var(--border)' }}>
             <span className="text-[8px] font-bold uppercase tracking-[1.5px] block mb-1.5" style={{ color: 'var(--text-muted)' }}>
               SHOWING FOR
             </span>
             <div className="flex flex-wrap gap-1">
               {uniqueAssignees.slice(0, 6).map(name => (
-                <button key={name} onClick={() => setPersonFilter(personFilter === name ? name : name)}
+                <button key={name} onClick={() => setPersonFilter(name)}
                   className="text-[10px] px-2 py-0.5 rounded font-medium transition-colors"
                   style={{ background: personFilter === name ? 'var(--accent)' : 'var(--bg)', color: personFilter === name ? '#fff' : 'var(--text-muted)' }}>
-                  {name.split(' ')[0]}
+                  {name.toLowerCase().startsWith(firstName.toLowerCase()) ? 'Me' : name.split(' ')[0]}
                 </button>
               ))}
             </div>

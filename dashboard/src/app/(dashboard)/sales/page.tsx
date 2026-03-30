@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { TrendingUp, DollarSign, Clock, CheckCircle, AlertCircle, AlertTriangle, ExternalLink, User, Calendar, CheckSquare, Phone, Mail, X, Globe, ArrowUpRight, ArrowDownRight, Eye } from 'lucide-react';
 
 type Deal = {
@@ -81,6 +82,8 @@ const SOURCE_COLORS: Record<string, string> = {
 };
 
 export default function SalesPage() {
+  const { user } = useUser();
+  const loggedInFirstName = user?.name?.split(' ')[0] || '';
   const [deals, setDeals] = useState<Deal[]>([]);
   const [tasks, setTasks] = useState<HsTask[]>([]);
   const [owners, setOwners] = useState<Owner[]>([]);
@@ -105,9 +108,11 @@ export default function SalesPage() {
         setTasks(hsData.tasks || []);
         setOwners(hsData.owners || []);
         setPipelines(hsData.pipelines || []);
-        // Default to Johann's filter
-        const johann = (hsData.owners || []).find((o: Owner) => o.name.startsWith('Johann'));
-        if (johann) setOwnerFilter(johann.id);
+        // Default to logged-in user's filter
+        const me = (hsData.owners || []).find((o: Owner) =>
+          loggedInFirstName && o.name.toLowerCase().startsWith(loggedInFirstName.toLowerCase())
+        );
+        if (me) setOwnerFilter(me.id);
         const pipelineCounts: Record<string, number> = {};
         for (const d of hsData.deals || []) pipelineCounts[d.pipeline] = (pipelineCounts[d.pipeline] || 0) + 1;
         const top = Object.entries(pipelineCounts).sort((a, b) => b[1] - a[1])[0];
@@ -281,7 +286,7 @@ export default function SalesPage() {
                   border: '1px solid var(--border)',
                 }}
               >
-                {o.name === 'Johann Rozario' ? 'Me' : o.name.split(' ')[0]}
+                {loggedInFirstName && o.name.toLowerCase().startsWith(loggedInFirstName.toLowerCase()) ? 'Me' : o.name.split(' ')[0]}
               </button>
             ))}
           </div>

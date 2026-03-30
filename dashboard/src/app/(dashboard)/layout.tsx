@@ -12,7 +12,7 @@ const tabs = [
   { name: 'TO DOs', href: '/dashboard', adminOnly: false },
   { name: 'ROADMAP', href: '/roadmap', adminOnly: false },
   { name: 'SALES', href: '/sales', adminOnly: false },
-  { name: 'ACCOUNTS', href: '/accounts', adminOnly: true },
+  { name: 'ACCOUNTS', href: '/accounts', adminOnly: false },
   { name: 'KPIs', href: '/kpis', adminOnly: true },
 ];
 
