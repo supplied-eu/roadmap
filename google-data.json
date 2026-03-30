@@ -1,14 +1,14 @@
 {
-  "refreshedAt": "2026-03-30T12:37:02.952Z",
+  "refreshedAt": "2026-03-30T12:52:28.308Z",
   "gmail": {
     "threads": [
       {
-        "id": "19d3ebe950066eb5",
-        "subject": "andrei@supplied.eu changed status to Done for [SUP-1226] [Booking Experts] ...",
-        "from": "Linear <notifications@linear.app>",
-        "date": "2026-03-30T12:36:09.000Z",
-        "snippet": "You have 1 unread notification on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emails: https://linear.app/unsubscribe?token=",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d3ebe950066eb5",
+        "id": "19d3ecb546021277",
+        "subject": "Customer prioritisation standup",
+        "from": "Optiverse <mail@optiverse.ai>",
+        "date": "2026-03-30T12:50:05.000Z",
+        "snippet": "Meeting Summary General Summary The standup focused on scoping a new feature for handling multiple payment methods in reports, clarifying how to create and route tickets between implementation and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3ecb546021277",
         "unread": true
       },
       {
@@ -310,6 +310,22 @@
         "lastModifiedBy": "Nitya Shukla Paharia"
       },
       {
+        "id": "10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I",
+        "name": "Supplied_MOFU1_STB",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-20T11:48:02.951Z",
+        "url": "https://docs.google.com/document/d/10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY",
+        "name": "Supplied Video - Batch 2",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-30T12:39:08.400Z",
+        "url": "https://docs.google.com/document/d/1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "1kyPdlGKTcFHbCJZlGEVQObQf4JX8CPyz",
         "name": "Style 2 (New)",
         "mimeType": "application/vnd.google-apps.folder",
@@ -374,27 +390,11 @@
         "lastModifiedBy": "Julio Lindveld"
       },
       {
-        "id": "1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY",
-        "name": "Supplied Video - Batch 2",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-24T11:45:55.929Z",
-        "url": "https://docs.google.com/document/d/1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY/edit?usp=drivesdk",
-        "lastModifiedBy": "Nitya Shukla Paharia"
-      },
-      {
         "id": "11DRNb87TkLDRdVZoSLY8H3PixYYHlzXlsmolG4RClgM",
         "name": "WBSO Answers",
         "mimeType": "application/vnd.google-apps.document",
         "modifiedTime": "2026-02-24T09:46:38.891Z",
         "url": "https://docs.google.com/document/d/11DRNb87TkLDRdVZoSLY8H3PixYYHlzXlsmolG4RClgM/edit?usp=drivesdk",
-        "lastModifiedBy": "Vladimir Ivanov"
-      },
-      {
-        "id": "17RY29LiHvkh5xf8sj6DgRxxYWf_VrVGyxGXNzhiktqc",
-        "name": "Guesty Requirements Scoping",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-26T11:51:52.977Z",
-        "url": "https://docs.google.com/document/d/17RY29LiHvkh5xf8sj6DgRxxYWf_VrVGyxGXNzhiktqc/edit?usp=drivesdk",
         "lastModifiedBy": "Vladimir Ivanov"
       }
     ]
@@ -412,13 +412,13 @@
     },
     {
       "action": "reply",
-      "subject": "andrei@supplied.eu changed status to Done for [SUP-1226] [Booking Experts] ...",
-      "reason": "You have 1 unread notification on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emai",
-      "from": "Linear <notifications@linear.app>",
+      "subject": "Customer prioritisation standup",
+      "reason": "Meeting Summary General Summary The standup focused on scoping a new feature for handling multiple payment methods in re",
+      "from": "Optiverse <mail@optiverse.ai>",
       "ageDays": 0,
-      "threadId": "19d3ebe950066eb5",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d3ebe950066eb5",
-      "id": "email-19d3ebe950066eb5"
+      "threadId": "19d3ecb546021277",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3ecb546021277",
+      "id": "email-19d3ecb546021277"
     },
     {
       "action": "reply",

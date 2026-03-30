@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T12:37:02.028Z",
+  "refreshedAt": "2026-03-30T12:52:27.590Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1924,17 +1924,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 11
+      "count": 2
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 44
+      "count": 4
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 2
+      "count": 1
     },
     {
       "key": "salesqualifiedlead",
@@ -1944,12 +1944,12 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 434
+      "count": 91
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 34
+      "count": 2
     }
   ],
   "trafficSources": [
