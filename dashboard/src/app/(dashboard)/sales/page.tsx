@@ -269,7 +269,7 @@ export default function SalesPage() {
           {/* Owner filter strip */}
           <div className="flex items-center gap-1.5 px-5 py-2 overflow-x-auto" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
             {owners
-              .filter(o => ['Johann', 'Bas', 'Vladimir', 'Julio', 'Stephan'].some(name => o.name.startsWith(name)))
+              .filter(o => tasks.some(t => t.ownerId === o.id && t.status !== 'COMPLETED'))
               .map(o => (
               <button
                 key={o.id}
