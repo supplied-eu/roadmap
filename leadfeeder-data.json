@@ -1,17 +1,25 @@
 {
-  "refreshedAt": "2026-03-30T10:52:52.758Z",
+  "refreshedAt": "2026-03-30T11:52:49.718Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 65,
+  "thisWeekTotal": 66,
   "lastWeekTotal": 52,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 65,
+      "thisWeek": 66,
       "lastWeek": 52,
       "companies": [
+        {
+          "name": "Acuity Knowledge Partners (Uk)",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-30",
+          "leadId": "0a32d810-e5cd-11e9-aa2b-1b3bde4e44fb_kXbgtoQM8EQFMBhQb7ZAuS",
+          "source": "Direct"
+        },
         {
           "name": "Finvestor",
           "website": null,
@@ -163,14 +171,6 @@
           "lastVisit": "2026-03-25",
           "leadId": "33bbb118-2892-11ea-98db-07b20c5eaec6_6knD4mE7nnte1rWKPhh6Je",
           "source": "Direct"
-        },
-        {
-          "name": "Ipspace   Servicehost",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-25",
-          "leadId": "975af9dc-4510-11ef-8cf0-7f42ee5170a4_qQcqMoRWHAUjrwmRQ66J7b",
-          "source": "Direct"
         }
       ]
     }
@@ -287,6 +287,16 @@
       "leadId": "wi2rFLLoQFRRV5PnrnvMok_p6q3nDbB2C4m9KjK9gndy"
     },
     {
+      "name": "Acuity Knowledge Partners (Uk)",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-30",
+      "lastVisit": "2026-03-30",
+      "source": "Direct",
+      "leadId": "0a32d810-e5cd-11e9-aa2b-1b3bde4e44fb_kXbgtoQM8EQFMBhQb7ZAuS"
+    },
+    {
       "name": "Finvestor",
       "website": null,
       "visits": 1,
@@ -365,16 +375,6 @@
       "lastVisit": "2026-03-26",
       "source": "Direct",
       "leadId": "68d88a3e-da78-11ec-909f-65355e8fbb21_c592830c-e6fa-11e9-9b3f-2fe890320230"
-    },
-    {
-      "name": "Zedrox",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-26",
-      "lastVisit": "2026-03-26",
-      "source": "Direct",
-      "leadId": "af13913e-9865-11f0-94c1-69d3873432cc_9308f978-6038-11e9-9853-5d54ebab3e0b"
     }
   ],
   "dailyVisits": [
@@ -548,7 +548,7 @@
     },
     {
       "date": "2026-03-30",
-      "visits": 6
+      "visits": 8
     }
   ]
 }

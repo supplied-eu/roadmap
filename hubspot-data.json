@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T10:52:38.006Z",
+  "refreshedAt": "2026-03-30T11:52:34.734Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1690,20 +1690,6 @@
       "ownerName": "Bas Bogerd"
     },
     {
-      "id": "495708552422",
-      "name": "The Viewer company",
-      "stage": "4874399932",
-      "pipeline": "3557407943",
-      "amount": null,
-      "closeDate": "2026-04-30",
-      "createDate": "2026-03-27",
-      "modifiedDate": "2026-03-29",
-      "ownerId": "687091984",
-      "probability": 0.1,
-      "stageLabel": "Initial Contact",
-      "ownerName": "Julio Lindveld"
-    },
-    {
       "id": "473243074769",
       "name": "Guesty (3Year Contract)",
       "stage": "4874399934",
@@ -1958,12 +1944,12 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 436
+      "count": 434
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 35
+      "count": 34
     }
   ],
   "trafficSources": [

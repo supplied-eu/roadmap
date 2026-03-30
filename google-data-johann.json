@@ -1,34 +1,7 @@
 {
-  "refreshedAt": "2026-03-30T10:52:38.733Z",
+  "refreshedAt": "2026-03-30T11:52:35.770Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d05ab9bab1a6da",
-        "subject": "RE: Johann, Mo sent you a direct message",
-        "from": "Mo Ahmed <m.ahmed@contactlylabs.co>",
-        "date": "2026-03-30T10:28:36.000Z",
-        "snippet": "Hey Johann - before I started this company, I spent time working directly with engineering teams at Spotify, Meta, Robinhood, Epic Games, and Uber. My time there provided clear insight into what",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d05ab9bab1a6da",
-        "unread": true
-      },
-      {
-        "id": "19b6aa08efdc34cd",
-        "subject": "Supplied Monthly Shareholder Updates - 2025 Update",
-        "from": "\"Johann Rozario (Google Docs)\" <comments-noreply@docs.google.com>",
-        "date": "2026-03-30T10:21:46.000Z",
-        "snippet": "New activity in the following document Supplied Monthly Shareholder Updates - 2025 Update For you Comments Contracted ARR: €163.2k Contracted MRR: €13.6k (+50% MoM) Cash: €1.06M Avg. Net Burn: ~€75k /",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19b6aa08efdc34cd",
-        "unread": true
-      },
-      {
-        "id": "19d3e3e20278b362",
-        "subject": "Invitation: Introduction Transferz & Supplied @ Tue Mar 31, 2026 11am - 12pm (CEST) (Johann Rozario)",
-        "from": "Bas Bogerd <bas@supplied.eu>",
-        "date": "2026-03-30T10:15:51.000Z",
-        "snippet": "Introduction Transferz &amp; Supplied Join with Google Meet – You have been invited by Bas Bogerd to attend an event named Introduction Transferz &amp; Supplied on Tuesday Mar 31, 2026 ⋅ 11am – 12pm (",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d3e3e20278b362",
-        "unread": true
-      },
       {
         "id": "19d3d5689be95360",
         "subject": "3 unread notifications on Supplied",
@@ -109,9 +82,36 @@
         "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
         "unread": true
+      },
+      {
+        "id": "19ce6606ba2e3745",
+        "subject": "Customer prioritisation standup",
+        "from": "Optiverse <mail@optiverse.ai>",
+        "date": "2026-03-13T08:46:43.000Z",
+        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "unread": true
+      },
+      {
+        "id": "19ce30963c459b27",
+        "subject": "Reminder : Help Us Improve: Rate Your Experience",
+        "from": "Akancha  Srivastava <akancha@scrut.io>",
+        "date": "2026-03-12T17:12:47.000Z",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
+        "unread": true
+      },
+      {
+        "id": "19ce0214716b0ff0",
+        "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-11]",
+        "from": "anomalydetection@costalerts.amazonaws.com",
+        "date": "2026-03-12T03:39:58.000Z",
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
+        "unread": true
       }
     ],
-    "unreadCount": 39
+    "unreadCount": 36
   },
   "calendar": {
     "today": [
@@ -302,19 +302,19 @@
   "drive": {
     "recent": [
       {
+        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
+        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-30T11:40:08.437Z",
+        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA",
         "name": "Friday Weekly Reviews",
         "mimeType": "application/vnd.google-apps.presentation",
         "modifiedTime": "2026-03-30T10:13:15.030Z",
         "url": "https://docs.google.com/presentation/d/1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
-        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-30T10:11:01.079Z",
-        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
       },
       {
@@ -411,34 +411,14 @@
       "id": "email-19cf4de5565b3976"
     },
     {
-      "action": "reply",
-      "subject": "RE: Johann, Mo sent you a direct message",
-      "reason": "Hey Johann - before I started this company, I spent time working directly with engineering teams at Spotify, Meta, Robin",
-      "from": "Mo Ahmed <m.ahmed@contactlylabs.co>",
-      "ageDays": 0,
-      "threadId": "19d05ab9bab1a6da",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d05ab9bab1a6da",
-      "id": "email-19d05ab9bab1a6da"
-    },
-    {
-      "action": "reply",
-      "subject": "Supplied Monthly Shareholder Updates - 2025 Update",
-      "reason": "New activity in the following document Supplied Monthly Shareholder Updates - 2025 Update For you Comments Contracted AR",
-      "from": "\"Johann Rozario (Google Docs)\" <comments-noreply@docs.google.com>",
-      "ageDays": 0,
-      "threadId": "19b6aa08efdc34cd",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19b6aa08efdc34cd",
-      "id": "email-19b6aa08efdc34cd"
-    },
-    {
-      "action": "reply",
-      "subject": "Invitation: Introduction Transferz & Supplied @ Tue Mar 31, 2026 11am - 12pm (CEST) (Johann Rozario)",
-      "reason": "Introduction Transferz &amp; Supplied Join with Google Meet – You have been invited by Bas Bogerd to attend an event nam",
-      "from": "Bas Bogerd <bas@supplied.eu>",
-      "ageDays": 0,
-      "threadId": "19d3e3e20278b362",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d3e3e20278b362",
-      "id": "email-19d3e3e20278b362"
+      "action": "alert",
+      "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-11]",
+      "reason": "AWS Cost Management: Anomaly Detection 2026-03-11 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
+      "from": "anomalydetection@costalerts.amazonaws.com",
+      "ageDays": 18,
+      "threadId": "19ce0214716b0ff0",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19ce0214716b0ff0",
+      "id": "email-19ce0214716b0ff0"
     },
     {
       "action": "reply",

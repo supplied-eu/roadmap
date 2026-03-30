@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T10:52:34.808Z",
+  "refreshedAt": "2026-03-30T11:52:32.321Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -365,6 +365,19 @@
           "startDate": null,
           "targetDate": null,
           "issues": [
+            {
+              "id": "a24e9980-59a8-44f0-ba1a-587ce7030b63",
+              "identifier": "SUP-1274",
+              "title": "UUID v4 -> v7 change",
+              "status": "Backlog",
+              "start": null,
+              "end": null,
+              "assignee": null,
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-1274/uuid-v4-v7-change",
+              "parentId": null
+            },
             {
               "id": "e8c6c663-ec89-489e-987b-d5140179bb29",
               "identifier": "SUP-1186",
