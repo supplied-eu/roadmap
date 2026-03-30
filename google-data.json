@@ -1,7 +1,16 @@
 {
-  "refreshedAt": "2026-03-30T10:24:45.330Z",
+  "refreshedAt": "2026-03-30T10:52:38.733Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d05ab9bab1a6da",
+        "subject": "RE: Johann, Mo sent you a direct message",
+        "from": "Mo Ahmed <m.ahmed@contactlylabs.co>",
+        "date": "2026-03-30T10:28:36.000Z",
+        "snippet": "Hey Johann - before I started this company, I spent time working directly with engineering teams at Spotify, Meta, Robinhood, Epic Games, and Uber. My time there provided clear insight into what",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d05ab9bab1a6da",
+        "unread": true
+      },
       {
         "id": "19b6aa08efdc34cd",
         "subject": "Supplied Monthly Shareholder Updates - 2025 Update",
@@ -100,18 +109,9 @@
         "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
         "unread": true
-      },
-      {
-        "id": "19ce6606ba2e3745",
-        "subject": "Customer prioritisation standup",
-        "from": "Optiverse <mail@optiverse.ai>",
-        "date": "2026-03-13T08:46:43.000Z",
-        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
-        "unread": true
       }
     ],
-    "unreadCount": 38
+    "unreadCount": 39
   },
   "calendar": {
     "today": [
@@ -409,6 +409,16 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
+    },
+    {
+      "action": "reply",
+      "subject": "RE: Johann, Mo sent you a direct message",
+      "reason": "Hey Johann - before I started this company, I spent time working directly with engineering teams at Spotify, Meta, Robin",
+      "from": "Mo Ahmed <m.ahmed@contactlylabs.co>",
+      "ageDays": 0,
+      "threadId": "19d05ab9bab1a6da",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d05ab9bab1a6da",
+      "id": "email-19d05ab9bab1a6da"
     },
     {
       "action": "reply",
