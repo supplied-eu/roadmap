@@ -1,57 +1,49 @@
 import { NextResponse } from "next/server";
 
 const HS_API = "https://api.hubapi.com";
+const PROPS = "name,domain,industry,lifecyclestage,hs_lead_status,annualrevenue,numberofemployees,notes_last_updated,hs_lastmodifieddate,hubspot_owner_id,hs_num_open_deals";
+
+async function fetchAllCompanies(apiKey: string) {
+  const all: any[] = [];
+  let after: string | null = null;
+  const headers = { Authorization: `Bearer ${apiKey}` };
+
+  // Paginate through all companies (100 per page)
+  for (let page = 0; page < 10; page++) {
+    const url = `${HS_API}/crm/v3/objects/companies?limit=100&properties=${PROPS}${after ? `&after=${after}` : ""}`;
+    const res = await fetch(url, { headers });
+    if (!res.ok) {
+      const errBody = await res.text().catch(() => "");
+      throw new Error(`HubSpot companies error: ${res.status} — ${errBody}`);
+    }
+    const data = await res.json();
+    all.push(...(data.results || []));
+    after = data.paging?.next?.after || null;
+    if (!after) break;
+  }
+  return all;
+}
 
 export async function GET() {
   const apiKey = process.env.HUBSPOT_API_KEY;
   if (!apiKey) return NextResponse.json({ error: "HUBSPOT_API_KEY not set" }, { status: 500 });
 
-  const headers = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
+  const headers: Record<string, string> = { Authorization: `Bearer ${apiKey}` };
 
   try {
-    // Use search API to find companies with lifecyclestage = "customer"
-    const searchBody = {
-      filterGroups: [
-        {
-          filters: [
-            { propertyName: "lifecyclestage", operator: "EQ", value: "customer" },
-          ],
-        },
-      ],
-      properties: [
-        "name", "domain", "industry", "lifecyclestage", "hs_lead_status",
-        "annualrevenue", "numberofemployees", "notes_last_updated",
-        "hs_lastmodifieddate", "hubspot_owner_id", "hs_num_open_deals",
-        "recent_deal_amount",
-      ],
-      limit: 100,
-      sorts: [{ propertyName: "hs_lastmodifieddate", direction: "DESCENDING" }],
-    };
+    // Fetch all companies (paginated) and owners in parallel
+    const [allCompanies, ownersRes, dealsRes] = await Promise.all([
+      fetchAllCompanies(apiKey),
+      fetch(`${HS_API}/crm/v3/owners?limit=100`, { headers }),
+      fetch(`${HS_API}/crm/v3/objects/deals?limit=100&properties=dealname,dealstage,amount,closedate,hubspot_owner_id,pipeline&associations=companies`, { headers }),
+    ]);
 
-    const compRes = await fetch(`${HS_API}/crm/v3/objects/companies/search`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(searchBody),
-    });
-
-    if (!compRes.ok) {
-      const errBody = await compRes.text().catch(() => "");
-      throw new Error(`HubSpot companies search error: ${compRes.status} — ${errBody}`);
-    }
-    const compData = await compRes.json();
-
-    // Fetch owners for name resolution
-    const ownersRes = await fetch(`${HS_API}/crm/v3/owners?limit=100`, { headers });
     const ownersData = ownersRes.ok ? await ownersRes.json() : { results: [] };
     const ownerMap = new Map<string, string>();
     for (const o of ownersData.results || []) {
       ownerMap.set(o.id, `${o.firstName || ""} ${o.lastName || ""}`.trim() || o.email);
     }
 
-    // Fetch all open deals
-    const dealsRes = await fetch(`${HS_API}/crm/v3/objects/deals?limit=100&properties=dealname,dealstage,amount,closedate,hubspot_owner_id,pipeline&associations=companies`, {
-      headers,
-    });
     const dealsData = dealsRes.ok ? await dealsRes.json() : { results: [] };
 
     // Build company → deals map via associations
@@ -72,7 +64,13 @@ export async function GET() {
       }
     }
 
-    const companies = (compData.results || []).map((c: any) => {
+    // Filter for customers only
+    const customerCompanies = allCompanies.filter((c: any) => {
+      const lifecycle = (c.properties?.lifecyclestage || "").toLowerCase();
+      return lifecycle === "customer";
+    });
+
+    const companies = customerCompanies.map((c: any) => {
       const ownerId = c.properties?.hubspot_owner_id;
       return {
         id: c.id,
@@ -91,7 +89,6 @@ export async function GET() {
       };
     });
 
-    // Also return owners list for assignee dropdowns
     const owners = (ownersData.results || []).map((o: any) => ({
       id: o.id,
       name: `${o.firstName || ""} ${o.lastName || ""}`.trim() || o.email,

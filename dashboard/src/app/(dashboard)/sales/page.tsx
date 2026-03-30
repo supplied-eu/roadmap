@@ -21,11 +21,15 @@ type TrafficSource = {
   thisWeek: number; lastWeek: number;
   companies: { name: string; website: string | null; visits: number; lastVisit: string; leadId: string; source: string }[];
 };
+type LifecycleStage = { key: string; label: string; count: number };
+type HsTrafficSource = { key: string; label: string; icon: string; thisWeek: number; lastWeek: number };
 type LeadfeederData = {
   available: boolean; thisWeekTotal: number; lastWeekTotal: number;
   trafficSources: TrafficSource[];
   topCompanies: { name: string; visits: number; pageViews: number; firstVisit: string; lastVisit: string; source: string; leadId: string }[];
   dailyVisits: { date: string; visits: number }[];
+  contactLifecycle: LifecycleStage[];
+  hsTrafficSources: HsTrafficSource[];
 };
 
 const STAGE_COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#14b8a6', '#818cf8', '#f472b6'];
@@ -370,26 +374,90 @@ export default function SalesPage() {
           </div>
         </div>
 
-        {/* Right: Leadfeeder / Website Visitors */}
+        {/* Right: Traffic & Leads */}
         <div className="overflow-auto flex flex-col" style={{ width: '320px', minWidth: '320px' }}>
           <div className="flex items-center gap-2 px-4 py-2.5 shrink-0" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
             <Globe size={14} style={{ color: '#10b981' }} />
             <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
-              WEBSITE VISITORS
+              TRAFFIC & LEADS
             </span>
           </div>
 
           {!leadfeeder ? (
             <div className="flex items-center justify-center py-12 px-4">
               <p className="text-xs text-center" style={{ color: 'var(--text-muted)' }}>
-                Leadfeeder data not available.<br />Run the refresh workflow to fetch visitor data.
+                Traffic data not available.<br />Run the refresh workflow to fetch data.
               </p>
             </div>
           ) : (
-            <>
+            <div className="flex-1 overflow-auto">
+              {/* Leads Funnel (from HubSpot contact lifecycle) */}
+              {leadfeeder.contactLifecycle && leadfeeder.contactLifecycle.length > 0 && (
+                <>
+                  <div className="px-4 py-2" style={{ borderBottom: '1px solid var(--border)' }}>
+                    <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>LEADS PIPELINE</span>
+                  </div>
+                  <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
+                    {(() => {
+                      const stages = leadfeeder.contactLifecycle;
+                      const maxCount = Math.max(...stages.map(s => s.count), 1);
+                      const funnelColors = ['#6366f1', '#8b5cf6', '#a78bfa', '#f59e0b', '#f97316', '#22c55e'];
+                      return stages.map((stage, idx) => (
+                        <div key={stage.key} className="flex items-center gap-2 mb-1.5">
+                          <span className="text-[10px] w-20 text-right shrink-0" style={{ color: 'var(--text-muted)' }}>{stage.label}</span>
+                          <div className="flex-1 h-5 rounded-sm overflow-hidden" style={{ background: 'var(--bg)' }}>
+                            <div className="h-5 rounded-sm flex items-center px-1.5 transition-all" style={{
+                              width: `${Math.max((stage.count / maxCount) * 100, stage.count > 0 ? 8 : 0)}%`,
+                              background: funnelColors[idx % funnelColors.length],
+                            }}>
+                              {stage.count > 0 && (
+                                <span className="text-[9px] font-bold text-white">{stage.count}</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                </>
+              )}
+
+              {/* HubSpot Traffic Sources (contact acquisition) */}
+              {leadfeeder.hsTrafficSources && leadfeeder.hsTrafficSources.length > 0 && (
+                <>
+                  <div className="px-4 py-2" style={{ borderBottom: '1px solid var(--border)' }}>
+                    <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>CONTACT SOURCES</span>
+                  </div>
+                  <div className="px-4 py-2" style={{ borderBottom: '1px solid var(--border)' }}>
+                    {leadfeeder.hsTrafficSources
+                      .filter(s => s.thisWeek > 0 || s.lastWeek > 0)
+                      .map(source => {
+                        const srcColor = SOURCE_COLORS[source.key] || '#94a3b8';
+                        return (
+                          <div key={source.key} className="flex items-center gap-2 py-1.5">
+                            <span className="text-sm">{source.icon || '📊'}</span>
+                            <span className="text-[11px] flex-1" style={{ color: 'var(--text)' }}>{source.label}</span>
+                            <span className="text-[10px] font-bold" style={{ color: srcColor }}>{source.thisWeek}</span>
+                            <span className="text-[8px]" style={{
+                              color: source.thisWeek >= source.lastWeek ? '#22c55e' : '#ef4444',
+                            }}>
+                              {source.thisWeek >= source.lastWeek ? '+' : ''}{source.thisWeek - source.lastWeek}
+                            </span>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </>
+              )}
+
+              {/* Website Visitors (from Leadfeeder) */}
+              <div className="px-4 py-2" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+                <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>WEBSITE VISITORS</span>
+              </div>
+
               {/* Visitor summary */}
               <div className="grid grid-cols-2 gap-2 px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-                <div className="rounded-md p-2.5" style={{ background: 'var(--bg)' }}>
+                <div className="rounded-md p-2" style={{ background: 'var(--bg)' }}>
                   <div className="text-[9px] uppercase tracking-wider font-medium" style={{ color: 'var(--text-muted)' }}>This Week</div>
                   <div className="text-base font-bold" style={{ color: '#10b981' }}>{leadfeeder.thisWeekTotal}</div>
                   <div className="flex items-center gap-1 mt-0.5">
@@ -398,108 +466,69 @@ export default function SalesPage() {
                       : <ArrowDownRight size={10} style={{ color: '#ef4444' }} />
                     }
                     <span className="text-[9px]" style={{ color: leadfeeder.thisWeekTotal >= leadfeeder.lastWeekTotal ? '#22c55e' : '#ef4444' }}>
-                      {leadfeeder.lastWeekTotal > 0 ? Math.round(((leadfeeder.thisWeekTotal - leadfeeder.lastWeekTotal) / leadfeeder.lastWeekTotal) * 100) : 0}% vs last
+                      {leadfeeder.lastWeekTotal > 0 ? Math.round(((leadfeeder.thisWeekTotal - leadfeeder.lastWeekTotal) / leadfeeder.lastWeekTotal) * 100) : 0}%
                     </span>
                   </div>
                 </div>
-                <div className="rounded-md p-2.5" style={{ background: 'var(--bg)' }}>
+                <div className="rounded-md p-2" style={{ background: 'var(--bg)' }}>
                   <div className="text-[9px] uppercase tracking-wider font-medium" style={{ color: 'var(--text-muted)' }}>Last Week</div>
                   <div className="text-base font-bold" style={{ color: 'var(--text)' }}>{leadfeeder.lastWeekTotal}</div>
                   <div className="text-[9px] mt-0.5" style={{ color: 'var(--text-muted)' }}>companies</div>
                 </div>
               </div>
 
-              {/* Traffic sources */}
-              <div className="px-4 py-2" style={{ borderBottom: '1px solid var(--border)' }}>
-                <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>TRAFFIC SOURCES</span>
-              </div>
-              <div className="flex-1 overflow-auto">
-                {leadfeeder.trafficSources
-                  .filter(s => s.thisWeek > 0 || s.lastWeek > 0)
-                  .sort((a, b) => b.thisWeek - a.thisWeek)
-                  .map(source => {
-                    const isExp = expandedSource === source.key;
-                    const srcColor = SOURCE_COLORS[source.key] || '#94a3b8';
-                    return (
-                      <div key={source.key} style={{ borderBottom: '1px solid var(--border)' }}>
-                        <button
-                          onClick={() => setExpandedSource(isExp ? null : source.key)}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-left hover:opacity-90 transition-colors"
-                        >
+              {/* Traffic source breakdown */}
+              {leadfeeder.trafficSources.filter(s => s.thisWeek > 0 || s.lastWeek > 0).length > 0 && (
+                <div className="px-4 py-2" style={{ borderBottom: '1px solid var(--border)' }}>
+                  {leadfeeder.trafficSources
+                    .filter(s => s.thisWeek > 0 || s.lastWeek > 0)
+                    .sort((a, b) => b.thisWeek - a.thisWeek)
+                    .map(source => {
+                      const srcColor = SOURCE_COLORS[source.key] || '#94a3b8';
+                      return (
+                        <button key={source.key}
+                          onClick={() => setExpandedSource(expandedSource === source.key ? null : source.key)}
+                          className="w-full flex items-center gap-2 py-1.5 text-left hover:opacity-90">
                           <span className="text-sm">{source.icon}</span>
-                          <div className="flex-1 min-w-0">
-                            <span className="text-[11px] font-medium block" style={{ color: 'var(--text)' }}>{source.label}</span>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <div className="h-1 rounded-full flex-1 max-w-[80px]" style={{ background: 'var(--border)' }}>
-                                <div className="h-1 rounded-full" style={{
-                                  width: `${leadfeeder.thisWeekTotal > 0 ? Math.min((source.thisWeek / leadfeeder.thisWeekTotal) * 100, 100) : 0}%`,
-                                  background: srcColor,
-                                }} />
-                              </div>
-                              <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
-                                {source.thisWeek} visits
-                              </span>
-                            </div>
+                          <span className="text-[11px] flex-1" style={{ color: 'var(--text)' }}>{source.label}</span>
+                          <div className="h-1 w-12 rounded-full" style={{ background: 'var(--border)' }}>
+                            <div className="h-1 rounded-full" style={{
+                              width: `${leadfeeder.thisWeekTotal > 0 ? Math.min((source.thisWeek / leadfeeder.thisWeekTotal) * 100, 100) : 0}%`,
+                              background: srcColor,
+                            }} />
                           </div>
-                          <div className="text-right shrink-0">
-                            <span className="text-xs font-bold block" style={{ color: srcColor }}>{source.thisWeek}</span>
-                            <span className="text-[8px]" style={{
-                              color: source.thisWeek >= source.lastWeek ? '#22c55e' : '#ef4444',
-                            }}>
-                              {source.thisWeek >= source.lastWeek ? '+' : ''}{source.thisWeek - source.lastWeek}
-                            </span>
-                          </div>
+                          <span className="text-[10px] font-bold" style={{ color: srcColor }}>{source.thisWeek}</span>
                         </button>
+                      );
+                    })}
+                </div>
+              )}
 
-                        {/* Expanded: show visiting companies */}
-                        {isExp && source.companies.length > 0 && (
-                          <div className="px-4 pb-2 ml-6">
-                            {source.companies.slice(0, 10).map((co, idx) => (
-                              <div key={idx} className="flex items-center gap-2 py-1 text-[10px]"
-                                style={{ borderTop: idx > 0 ? '1px solid var(--border)' : 'none' }}>
-                                <Eye size={9} style={{ color: 'var(--text-muted)' }} />
-                                <span className="flex-1 truncate" style={{ color: 'var(--text)' }}>{co.name}</span>
-                                <span className="shrink-0" style={{ color: 'var(--text-muted)' }}>{co.visits}x</span>
-                                <span className="shrink-0" style={{ color: 'var(--text-muted)' }}>{formatDate(co.lastVisit)}</span>
-                              </div>
-                            ))}
-                            {source.companies.length > 10 && (
-                              <span className="text-[9px] block mt-1" style={{ color: 'var(--text-muted)' }}>
-                                +{source.companies.length - 10} more
-                              </span>
-                            )}
-                          </div>
-                        )}
+              {/* Top visiting companies */}
+              {leadfeeder.topCompanies && leadfeeder.topCompanies.length > 0 && (
+                <>
+                  <div className="px-4 py-2" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+                    <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>TOP VISITING COMPANIES</span>
+                  </div>
+                  {leadfeeder.topCompanies.slice(0, 10).map((co, idx) => (
+                    <div key={idx} className="flex items-center gap-2 px-4 py-2 transition-colors"
+                      style={{ borderBottom: '1px solid var(--border)' }}
+                      onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface)')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                      <span className="text-[9px] font-bold w-4 text-center" style={{ color: 'var(--text-muted)' }}>{idx + 1}</span>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] font-medium block truncate" style={{ color: 'var(--text)' }}>{co.name}</span>
+                        <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>{co.source}</span>
                       </div>
-                    );
-                  })}
-
-                {/* Top visiting companies section */}
-                {leadfeeder.topCompanies && leadfeeder.topCompanies.length > 0 && (
-                  <>
-                    <div className="px-4 py-2" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
-                      <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>TOP VISITING COMPANIES</span>
+                      <div className="text-right shrink-0">
+                        <span className="text-[10px] font-bold" style={{ color: '#10b981' }}>{co.visits} visits</span>
+                        <span className="text-[9px] block" style={{ color: 'var(--text-muted)' }}>{formatDate(co.lastVisit)}</span>
+                      </div>
                     </div>
-                    {leadfeeder.topCompanies.slice(0, 8).map((co, idx) => (
-                      <div key={idx} className="flex items-center gap-2 px-4 py-2 transition-colors"
-                        style={{ borderBottom: '1px solid var(--border)' }}
-                        onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface)')}
-                        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                        <span className="text-[9px] font-bold w-4 text-center" style={{ color: 'var(--text-muted)' }}>{idx + 1}</span>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-[11px] font-medium block truncate" style={{ color: 'var(--text)' }}>{co.name}</span>
-                          <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>{co.source}</span>
-                        </div>
-                        <div className="text-right shrink-0">
-                          <span className="text-[10px] font-bold" style={{ color: '#10b981' }}>{co.visits} visits</span>
-                          <span className="text-[9px] block" style={{ color: 'var(--text-muted)' }}>{formatDate(co.lastVisit)}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </>
-                )}
-              </div>
-            </>
+                  ))}
+                </>
+              )}
+            </div>
           )}
         </div>
       </div>
