@@ -58,7 +58,7 @@ export async function GET() {
                 state { name type color }
                 assignee { name }
                 dueDate
-                startDate
+                startedAt
                 url
                 parent { id }
                 labels { nodes { name color } }
@@ -78,7 +78,7 @@ export async function GET() {
       statusType: i.state?.type || "",
       statusColor: i.state?.color || "#94a3b8",
       assignee: i.assignee?.name || null,
-      start: i.startDate || null,
+      start: i.startedAt || null,
       end: i.dueDate || null,
       url: i.url,
       parentId: i.parent?.id || null,
