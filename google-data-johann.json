@@ -1,7 +1,34 @@
 {
-  "refreshedAt": "2026-03-30T12:52:28.308Z",
+  "refreshedAt": "2026-03-30T13:31:42.834Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d3ee0ea1d68a7d",
+        "subject": "MOFU1_Visual SB_V2 Intro.pdf",
+        "from": "\"Nitya Shukla Paharia (Google Docs)\" <comments-noreply@docs.google.com>",
+        "date": "2026-03-30T13:13:38.000Z",
+        "snippet": "New activity in the following document MOFU1_Visual SB_V2 Intro.pdf 2 comments Johann Rozario maybe move this after the first frame showing that new regulations are adding even more complexity and",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3ee0ea1d68a7d",
+        "unread": true
+      },
+      {
+        "id": "19d3ed25fe524922",
+        "subject": "Update on future events (Anthropic, Decagon, Cradle, and more)",
+        "from": "Whale <-whale@calendar.luma-mail.com>",
+        "date": "2026-03-30T12:57:46.000Z",
+        "snippet": "Hi all, Sharing a quick update in here on our last event and future ones! Last month we hosted Job… Whale Update on future events (Anthropic, Decagon, Cradle, and more) Hi all, Sharing a quick update",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3ed25fe524922",
+        "unread": true
+      },
+      {
+        "id": "19d3ed2530c52d37",
+        "subject": "Most platforms think DAC8 is a 2027 problem. It isn't.",
+        "from": "Supplied Signals <support@supplied.eu>",
+        "date": "2026-03-30T12:57:44.000Z",
+        "snippet": "Hey, Julio stay ahead with all the new Supplied features and global compliance news. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d3ed2530c52d37",
+        "unread": true
+      },
       {
         "id": "19d3ecb546021277",
         "subject": "Customer prioritisation standup",
@@ -82,36 +109,9 @@
         "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
         "unread": true
-      },
-      {
-        "id": "19ce7f12f8358ef7",
-        "subject": "Exit on your terms - strategic buy and hold buyers",
-        "from": "dmitry.mykhailenko@auditfirm.uk",
-        "date": "2026-03-13T16:04:27.000Z",
-        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
-        "unread": true
-      },
-      {
-        "id": "19ce6606ba2e3745",
-        "subject": "Customer prioritisation standup",
-        "from": "Optiverse <mail@optiverse.ai>",
-        "date": "2026-03-13T08:46:43.000Z",
-        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
-        "unread": true
-      },
-      {
-        "id": "19ce30963c459b27",
-        "subject": "Reminder : Help Us Improve: Rate Your Experience",
-        "from": "Akancha  Srivastava <akancha@scrut.io>",
-        "date": "2026-03-12T17:12:47.000Z",
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
-        "unread": true
       }
     ],
-    "unreadCount": 37
+    "unreadCount": 41
   },
   "calendar": {
     "today": [
@@ -409,6 +409,36 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
+    },
+    {
+      "action": "reply",
+      "subject": "MOFU1_Visual SB_V2 Intro.pdf",
+      "reason": "New activity in the following document MOFU1_Visual SB_V2 Intro.pdf 2 comments Johann Rozario maybe move this after the ",
+      "from": "\"Nitya Shukla Paharia (Google Docs)\" <comments-noreply@docs.google.com>",
+      "ageDays": 0,
+      "threadId": "19d3ee0ea1d68a7d",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3ee0ea1d68a7d",
+      "id": "email-19d3ee0ea1d68a7d"
+    },
+    {
+      "action": "reply",
+      "subject": "Update on future events (Anthropic, Decagon, Cradle, and more)",
+      "reason": "Hi all, Sharing a quick update in here on our last event and future ones! Last month we hosted Job… Whale Update on futu",
+      "from": "Whale <-whale@calendar.luma-mail.com>",
+      "ageDays": 0,
+      "threadId": "19d3ed25fe524922",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3ed25fe524922",
+      "id": "email-19d3ed25fe524922"
+    },
+    {
+      "action": "reply",
+      "subject": "Most platforms think DAC8 is a 2027 problem. It isn't.",
+      "reason": "Hey, Julio stay ahead with all the new Supplied features and global compliance news. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
+      "from": "Supplied Signals <support@supplied.eu>",
+      "ageDays": 0,
+      "threadId": "19d3ed2530c52d37",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d3ed2530c52d37",
+      "id": "email-19d3ed2530c52d37"
     },
     {
       "action": "reply",
