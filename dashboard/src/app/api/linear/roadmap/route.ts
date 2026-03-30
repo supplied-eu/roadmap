@@ -9,7 +9,11 @@ async function linearQuery(apiKey: string, query: string) {
     body: JSON.stringify({ query }),
   });
   if (!res.ok) throw new Error(`Linear API error: ${res.status}`);
-  return res.json();
+  const json = await res.json();
+  if (json.errors) {
+    throw new Error(`Linear GraphQL error: ${JSON.stringify(json.errors)}`);
+  }
+  return json;
 }
 
 export async function GET() {
@@ -17,46 +21,36 @@ export async function GET() {
   if (!apiKey) return NextResponse.json({ error: "LINEAR_API_KEY not set" }, { status: 500 });
 
   try {
-    // Fetch initiatives with projects and issues
-    const { data: iniData } = await linearQuery(apiKey, `{
-      initiatives(first: 50) {
-        nodes {
-          id name description status { name type color }
-          targetDate
-          projects(first: 50) {
-            nodes {
-              id name status { name type color }
-              targetDate startDate url
-              issues(first: 100, orderBy: updatedAt) {
-                nodes {
-                  id identifier title priority
-                  state { name type color }
-                  assignee { name }
-                  dueDate startDate
-                  url
-                  parent { id }
-                  labels { nodes { name color } }
-                }
-              }
-            }
-          }
-        }
-      }
-    }`);
-
-    // Also fetch projects not under any initiative
+    // Step 1: Fetch all projects with their issues (this is the most reliable approach)
     const { data: projData } = await linearQuery(apiKey, `{
       projects(first: 50, orderBy: updatedAt) {
         nodes {
-          id name status { name type color }
-          targetDate startDate url
-          initiatives(first: 1) { nodes { id } }
+          id
+          name
+          state
+          color
+          targetDate
+          startDate
+          url
+          initiatives {
+            nodes {
+              id
+              name
+              color
+              status
+              targetDate
+            }
+          }
           issues(first: 100, orderBy: updatedAt) {
             nodes {
-              id identifier title priority
+              id
+              identifier
+              title
+              priority
               state { name type color }
               assignee { name }
-              dueDate startDate
+              dueDate
+              startDate
               url
               parent { id }
               labels { nodes { name color } }
@@ -71,48 +65,81 @@ export async function GET() {
       identifier: i.identifier,
       title: i.title,
       priority: i.priority,
-      status: i.state?.name,
-      statusType: i.state?.type,
-      statusColor: i.state?.color,
+      status: i.state?.name || "Unknown",
+      statusType: i.state?.type || "",
+      statusColor: i.state?.color || "#94a3b8",
       assignee: i.assignee?.name || null,
       start: i.startDate || null,
       end: i.dueDate || null,
       url: i.url,
       parentId: i.parent?.id || null,
-      labels: i.labels?.nodes?.map((l: any) => ({ name: l.name, color: l.color })) || [],
+      labels: (i.labels?.nodes || []).map((l: any) => ({ name: l.name, color: l.color })),
     });
 
     const formatProject = (p: any) => ({
       id: p.id,
       name: p.name,
-      status: p.status?.name,
-      statusColor: p.status?.color,
+      status: p.state || "planned",
+      statusColor: p.color || "#94a3b8",
       startDate: p.startDate || null,
       targetDate: p.targetDate || null,
       url: p.url,
       issues: (p.issues?.nodes || []).map(formatIssue),
     });
 
-    const initiatives = (iniData?.initiatives?.nodes || []).map((ini: any) => ({
-      id: ini.id,
-      name: ini.name,
-      description: ini.description,
-      status: ini.status?.name,
-      statusColor: ini.status?.color,
-      targetDate: ini.targetDate || null,
-      projects: (ini.projects?.nodes || []).map(formatProject),
+    // Group projects by initiative
+    const initiativeMap = new Map<string, { id: string; name: string; color: string; status: string; targetDate: string | null; projects: any[] }>();
+    const orphanProjects: any[] = [];
+
+    for (const p of (projData?.projects?.nodes || [])) {
+      const inis = p.initiatives?.nodes || [];
+      const formatted = formatProject(p);
+
+      if (inis.length > 0) {
+        for (const ini of inis) {
+          if (!initiativeMap.has(ini.id)) {
+            initiativeMap.set(ini.id, {
+              id: ini.id,
+              name: ini.name,
+              color: ini.color || "#6366f1",
+              status: ini.status || "Active",
+              targetDate: ini.targetDate || null,
+              projects: [],
+            });
+          }
+          initiativeMap.get(ini.id)!.projects.push(formatted);
+        }
+      } else {
+        orphanProjects.push(formatted);
+      }
+    }
+
+    // Map project status to display-friendly status
+    const statusMap: Record<string, string> = {
+      planned: "Planned",
+      started: "In Progress",
+      paused: "Paused",
+      completed: "Completed",
+      canceled: "Cancelled",
+      backlog: "Backlog",
+    };
+
+    const initiatives = [...initiativeMap.values()].map(ini => ({
+      ...ini,
+      statusColor: ini.color,
+      description: "",
+      projects: ini.projects.map(p => ({
+        ...p,
+        status: statusMap[p.status] || p.status,
+      })),
     }));
 
-    // Find orphan projects (not in any initiative)
-    const iniProjectIds = new Set<string>();
-    for (const ini of initiatives) {
-      for (const p of ini.projects) iniProjectIds.add(p.id);
-    }
-    const orphanProjects = (projData?.projects?.nodes || [])
-      .filter((p: any) => !p.initiatives?.nodes?.length && !iniProjectIds.has(p.id))
-      .map(formatProject);
+    const formattedOrphans = orphanProjects.map(p => ({
+      ...p,
+      status: statusMap[p.status] || p.status,
+    }));
 
-    return NextResponse.json({ initiatives, orphanProjects }, {
+    return NextResponse.json({ initiatives, orphanProjects: formattedOrphans }, {
       headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=600" },
     });
   } catch (err: any) {
