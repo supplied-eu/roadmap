@@ -1,31 +1,26 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { TrendingUp, DollarSign, Clock, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
+import { TrendingUp, DollarSign, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 
 type Deal = {
   id: string;
   name: string;
   stage: string;
+  stageLabel: string;
   amount: number | null;
   closeDate: string | null;
   ownerName: string | null;
   pipeline: string;
 };
 
-// Map HubSpot stage IDs to human-readable names + order
-const STAGE_MAP: Record<string, { label: string; order: number; color: string }> = {
-  appointmentscheduled: { label: 'Appointment Scheduled', order: 1, color: '#60a5fa' },
-  qualifiedtobuy: { label: 'Qualified to Buy', order: 2, color: '#818cf8' },
-  presentationscheduled: { label: 'Presentation Scheduled', order: 3, color: '#a78bfa' },
-  decisionmakerboughtin: { label: 'Decision Maker Bought In', order: 4, color: '#c084fc' },
-  contractsent: { label: 'Contract Sent', order: 5, color: '#f59e0b' },
-  closedwon: { label: 'Closed Won', order: 6, color: '#22c55e' },
-  closedlost: { label: 'Closed Lost', order: 7, color: '#ef4444' },
-};
+// Colors for pipeline stages (cycled through)
+const STAGE_COLORS = ['#60a5fa', '#818cf8', '#a78bfa', '#c084fc', '#f59e0b', '#fb923c', '#f472b6'];
+const CLOSED_COLORS: Record<string, string> = { closedwon: '#22c55e', closedlost: '#ef4444' };
 
-function getStageMeta(stage: string) {
-  return STAGE_MAP[stage] || { label: stage, order: 99, color: '#94a3b8' };
+function getStageColor(stage: string, index: number) {
+  if (CLOSED_COLORS[stage]) return CLOSED_COLORS[stage];
+  return STAGE_COLORS[index % STAGE_COLORS.length];
 }
 
 function formatCurrency(amount: number | null) {
@@ -70,16 +65,14 @@ export default function SalesPage() {
     ? Math.round((wonDeals.length / (wonDeals.length + lostDeals.length)) * 100)
     : 0;
 
-  // Group deals by stage for pipeline view
-  const stageGroups = new Map<string, Deal[]>();
+  // Group deals by stageLabel for pipeline view
+  const stageGroups = new Map<string, { label: string; deals: Deal[] }>();
   for (const deal of openDeals) {
     const key = deal.stage;
-    if (!stageGroups.has(key)) stageGroups.set(key, []);
-    stageGroups.get(key)!.push(deal);
+    if (!stageGroups.has(key)) stageGroups.set(key, { label: deal.stageLabel || deal.stage, deals: [] });
+    stageGroups.get(key)!.deals.push(deal);
   }
-  const sortedStages = [...stageGroups.entries()].sort(
-    (a, b) => getStageMeta(a[0]).order - getStageMeta(b[0]).order
-  );
+  const sortedStages = [...stageGroups.entries()];
 
   if (loading) {
     return (
@@ -173,16 +166,16 @@ export default function SalesPage() {
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No open deals in the pipeline.</p>
         ) : (
           <div className="space-y-4">
-            {sortedStages.map(([stageId, stageDeals]) => {
-              const meta = getStageMeta(stageId);
+            {sortedStages.map(([stageId, { label, deals: stageDeals }], idx) => {
+              const color = getStageColor(stageId, idx);
               const stageTotal = stageDeals.reduce((sum, d) => sum + (d.amount || 0), 0);
               return (
                 <div key={stageId}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full" style={{ background: meta.color }} />
-                      <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>{meta.label}</span>
-                      <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: meta.color + '22', color: meta.color }}>
+                      <div className="w-2.5 h-2.5 rounded-full" style={{ background: color }} />
+                      <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>{label}</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: color + '22', color }}>
                         {stageDeals.length}
                       </span>
                     </div>

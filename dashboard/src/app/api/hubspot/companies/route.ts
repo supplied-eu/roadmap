@@ -7,11 +7,14 @@ export async function GET() {
   if (!apiKey) return NextResponse.json({ error: "HUBSPOT_API_KEY not set" }, { status: 500 });
 
   try {
-    // Fetch companies
-    const compRes = await fetch(`${HS_API}/crm/v3/objects/companies?limit=100&properties=name,domain,industry,lifecyclestage,hs_lead_status,annualrevenue,numberofemployees,notes_last_updated,hs_last_sales_activity_date`, {
+    // Fetch companies — only request standard properties to avoid 500 on missing custom props
+    const compRes = await fetch(`${HS_API}/crm/v3/objects/companies?limit=100&properties=name,domain,industry,lifecyclestage,hs_lead_status,annualrevenue,numberofemployees,notes_last_updated,hs_lastmodifieddate`, {
       headers: { Authorization: `Bearer ${apiKey}` },
     });
-    if (!compRes.ok) throw new Error(`HubSpot companies error: ${compRes.status}`);
+    if (!compRes.ok) {
+      const errBody = await compRes.text().catch(() => "");
+      throw new Error(`HubSpot companies error: ${compRes.status} — ${errBody}`);
+    }
     const compData = await compRes.json();
 
     // Fetch deals to associate with companies
@@ -29,7 +32,7 @@ export async function GET() {
       leadStatus: c.properties?.hs_lead_status || null,
       revenue: c.properties?.annualrevenue ? Number(c.properties.annualrevenue) : null,
       employees: c.properties?.numberofemployees ? Number(c.properties.numberofemployees) : null,
-      lastActivity: c.properties?.hs_last_sales_activity_date || c.properties?.notes_last_updated || null,
+      lastActivity: c.properties?.notes_last_updated || c.properties?.hs_lastmodifieddate || null,
     }));
 
     const deals = (dealsData.results || []).map((d: any) => ({

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
-import { ChevronRight, AlertTriangle, Zap, ArrowUp, ExternalLink, GripVertical } from 'lucide-react';
+import { ChevronRight, AlertTriangle, AlertCircle, Zap, ArrowUp, ExternalLink, GripVertical } from 'lucide-react';
 
 // ── Types ──────────────────────────────────────────────────────
 type Issue = {
@@ -283,14 +283,25 @@ export default function RoadmapPage() {
   const [zoom, setZoom] = useState<Zoom>('month');
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [projectOrder, setProjectOrder] = useState<Record<string, string[]>>({});
+  const [error, setError] = useState<string | null>(null);
   const [dragState, setDragState] = useState<{ iniId: string; srcIdx: number } | null>(null);
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
   useEffect(() => {
     fetch('/api/linear/roadmap')
       .then(r => r.json())
-      .then(d => { setData(d); setLoading(false); })
-      .catch(() => setLoading(false));
+      .then(d => {
+        if (d.error) {
+          setError(d.error);
+        } else {
+          setData(d);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message || 'Failed to load roadmap');
+        setLoading(false);
+      });
   }, []);
 
   const toggleExpand = useCallback((key: string) => {
@@ -504,6 +515,20 @@ export default function RoadmapPage() {
           {[1, 2, 3, 4, 5].map(i => (
             <div key={i} className="rounded h-8 animate-pulse" style={{ background: 'var(--surface)' }} />
           ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-full">
+        <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text)' }}>Roadmap</h1>
+        <div className="rounded-lg p-6 mt-4" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+          <div className="flex items-center gap-3">
+            <AlertCircle size={20} style={{ color: '#ef4444' }} />
+            <p style={{ color: 'var(--text-muted)' }}>Failed to load roadmap data: {error}</p>
+          </div>
         </div>
       </div>
     );
