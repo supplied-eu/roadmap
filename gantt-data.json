@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T08:52:38.518Z",
+  "refreshedAt": "2026-03-30T09:52:27.961Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -473,7 +473,7 @@
               "id": "24e565e5-4849-4d5a-a60e-d57b895ed777",
               "identifier": "SUP-1176",
               "title": "Backfill phase",
-              "status": "In Test",
+              "status": "In Review",
               "start": "2026-03-25",
               "end": null,
               "assignee": null,
@@ -8504,14 +8504,14 @@
             {
               "id": "2e220548-f2f7-446d-bfdb-b0ae27f2dccc",
               "identifier": "SUP-1251",
-              "title": "UTF-8 BOM Missing from CSV Exports Causes Umlaut Corruption in Excel",
+              "title": "Special characters (umlauts) not displaying correctly in Supplied interface and Excel exports",
               "status": "In Test",
               "start": "2026-03-26",
               "end": null,
               "assignee": "Vladimir Ivanov",
               "priority": "No priority",
               "estimate": null,
-              "url": "https://linear.app/supplied/issue/SUP-1251/utf-8-bom-missing-from-csv-exports-causes-umlaut-corruption-in-excel",
+              "url": "https://linear.app/supplied/issue/SUP-1251/special-characters-umlauts-not-displaying-correctly-in-supplied",
               "parentId": null
             },
             {
