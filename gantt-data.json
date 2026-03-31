@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-31T13:56:41.163Z",
+  "refreshedAt": "2026-03-31T14:56:42.128Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8958,7 +8958,7 @@
               "id": "ed12daaf-33fb-4fb3-9ebb-554a3d959c9f",
               "identifier": "IMP-150",
               "title": "Chaletplus – Umlaut characters not displaying correctly in Microsoft Excel",
-              "status": "In Progress",
+              "status": "Done",
               "start": "2026-03-27",
               "end": "2026-03-27",
               "assignee": "Vladimir Ivanov",
@@ -9584,6 +9584,19 @@
           "startDate": null,
           "targetDate": "2026-02-28",
           "issues": [
+            {
+              "id": "2525d2bd-3d60-496f-bde8-961530f495de",
+              "identifier": "IMP-163",
+              "title": "Subscription is not available",
+              "status": "Todo",
+              "start": null,
+              "end": "2026-04-01",
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-163/subscription-is-not-available",
+              "parentId": null
+            },
             {
               "id": "6089a4b0-4188-4f5e-a864-eab646c81b2c",
               "identifier": "IMP-60",

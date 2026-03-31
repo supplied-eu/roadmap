@@ -1,7 +1,34 @@
 {
-  "refreshedAt": "2026-03-31T13:56:52.945Z",
+  "refreshedAt": "2026-03-31T14:56:43.685Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d1ff208bc98baf",
+        "subject": "Re: Johann - idea",
+        "from": "James Russo <james@workaiplan.com>",
+        "date": "2026-03-31T14:48:04.000Z",
+        "snippet": "Good morning Johann, Last touch. If we could help Supplied go from asking AI questions to having it execute plans that reduce manual overhead 20%, open to a brief demo? James On Fri, March 27, 2026 12:",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d1ff208bc98baf",
+        "unread": true
+      },
+      {
+        "id": "19d44589c4fac0e5",
+        "subject": "Supplied_SALES_Re... - Their account is still active, as the...",
+        "from": "\"Julio Lindveld (Google Sheets)\" <comments-noreply@docs.google.com>",
+        "date": "2026-03-31T14:42:30.000Z",
+        "snippet": "Julio Lindveld (julio@supplied.eu) mentioned you in a comment in the following document Supplied_SALES_Revenue_Costs_Master_File 1 comment INACTIVE Julio Lindveld • 4:37 PM, Mar 31 (CEST) New Their",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d44589c4fac0e5",
+        "unread": true
+      },
+      {
+        "id": "19d4458762faf4c3",
+        "subject": "Full Stack Engine... - @vladimir@supplied.eu do you mean thi...",
+        "from": "\"Vladimir Ivanov (Google Docs)\" <comments-noreply@docs.google.com>",
+        "date": "2026-03-31T14:42:20.000Z",
+        "snippet": "Vladimir Ivanov replied to a comment in the following document Full Stack Engineer Job Description 1 comment Full Johann Rozario • 4:18 PM, Mar 31 (CEST) @vladimir@supplied.eu do you mean this one for",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d4458762faf4c3",
+        "unread": true
+      },
       {
         "id": "19d4322f5d61d729",
         "subject": "Supplied_SALES_Re... - @julio@supplied.eu can you please rev...",
@@ -82,36 +109,9 @@
         "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
         "unread": true
-      },
-      {
-        "id": "19ce7f12f8358ef7",
-        "subject": "Exit on your terms - strategic buy and hold buyers",
-        "from": "dmitry.mykhailenko@auditfirm.uk",
-        "date": "2026-03-13T16:04:27.000Z",
-        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
-        "unread": true
-      },
-      {
-        "id": "19ce6606ba2e3745",
-        "subject": "Customer prioritisation standup",
-        "from": "Optiverse <mail@optiverse.ai>",
-        "date": "2026-03-13T08:46:43.000Z",
-        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
-        "unread": true
-      },
-      {
-        "id": "19ce30963c459b27",
-        "subject": "Reminder : Help Us Improve: Rate Your Experience",
-        "from": "Akancha  Srivastava <akancha@scrut.io>",
-        "date": "2026-03-12T17:12:47.000Z",
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
-        "unread": true
       }
     ],
-    "unreadCount": 37
+    "unreadCount": 40
   },
   "calendar": {
     "today": [
@@ -218,6 +218,16 @@
         "allDay": false
       },
       {
+        "id": "2dli0s6cc4m53fbnnobju2kbi5",
+        "title": "Post Linked IN Roles",
+        "start": "2026-04-01T12:30:00+02:00",
+        "end": "2026-04-01T13:30:00+02:00",
+        "location": null,
+        "numAttendees": 0,
+        "url": "https://www.google.com/calendar/event?eid=MmRsaTBzNmNjNG01M2Zibm5vYmp1MmtiaTUgam9oYW5uQHN1cHBsaWVkLmV1",
+        "allDay": false
+      },
+      {
         "id": "_68skae216oqkcba57533gb9k88qj8b9o6csjeb9m70o3gd9h8opk2c2470",
         "title": "Build Claude Skills",
         "start": "2026-04-01T14:00:00+02:00",
@@ -276,21 +286,43 @@
         "numAttendees": 7,
         "url": "https://www.google.com/calendar/event?eid=ZjBtMGhhNWNzb3VpYnIwbG5mZHFxZTVqZ21fMjAyNjA0MDJUMTAwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
         "allDay": false
-      },
-      {
-        "id": "tg59iq5e8jf316j7v5dp63c1m2_20260402T120000Z",
-        "title": "Bas / Julio - CS Standup",
-        "start": "2026-04-02T14:00:00+02:00",
-        "end": "2026-04-02T14:45:00+02:00",
-        "location": null,
-        "numAttendees": 3,
-        "url": "https://www.google.com/calendar/event?eid=dGc1OWlxNWU4amYzMTZqN3Y1ZHA2M2MxbTJfMjAyNjA0MDJUMTIwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
-        "allDay": false
       }
     ]
   },
   "drive": {
     "recent": [
+      {
+        "id": "1R4oUGLpYNjZOsMFhdBfvGMVKOZthJ1b71UUmjf_X45M",
+        "name": "Data Engineer - Job Description",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-31T14:35:03.038Z",
+        "url": "https://docs.google.com/document/d/1R4oUGLpYNjZOsMFhdBfvGMVKOZthJ1b71UUmjf_X45M/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "103HDkCof_P4EKcEj3ENNFWfRBzl1BsBZ292iZNezGzk",
+        "name": "Full Stack Engineer Job Description",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-31T14:32:20.030Z",
+        "url": "https://docs.google.com/document/d/103HDkCof_P4EKcEj3ENNFWfRBzl1BsBZ292iZNezGzk/edit?usp=drivesdk",
+        "lastModifiedBy": "Vladimir Ivanov"
+      },
+      {
+        "id": "1nJgpsQ2iQyzdiSd-GpdRuMi4sO3-v8Ci",
+        "name": "MAN_DPINL_Specification data file_V2.3_20231204.pdf",
+        "mimeType": "application/pdf",
+        "modifiedTime": "2024-01-31T10:17:07.000Z",
+        "url": "https://drive.google.com/file/d/1nJgpsQ2iQyzdiSd-GpdRuMi4sO3-v8Ci/view?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1vVjfd0fn5XBeOuyN6c_1JTZBJKrrkEg6ku1jIqmiYmo",
+        "name": "Reporting Template - Supplied",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-02-11T11:50:07.093Z",
+        "url": "https://docs.google.com/spreadsheets/d/1vVjfd0fn5XBeOuyN6c_1JTZBJKrrkEg6ku1jIqmiYmo/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
       {
         "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
         "name": "Notes - Commerce<>Product Weekly",
@@ -311,7 +343,7 @@
         "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
         "name": "Supplied_SALES_Revenue_Costs_Master_File",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-31T13:41:00.096Z",
+        "modifiedTime": "2026-03-31T14:36:04.788Z",
         "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
         "lastModifiedBy": "Julio Lindveld"
       },
@@ -354,38 +386,6 @@
         "modifiedTime": "2026-03-30T11:27:10.996Z",
         "url": "https://drive.google.com/drive/folders/1kyPdlGKTcFHbCJZlGEVQObQf4JX8CPyz",
         "lastModifiedBy": "Nitya Shukla Paharia"
-      },
-      {
-        "id": "1JxryUjNGaUme3EWtDf8EgtdirBXt8tkR",
-        "name": "260313 - Reporting template Supplied v_2.xlsx",
-        "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "modifiedTime": "2026-03-15T16:39:38.000Z",
-        "url": "https://docs.google.com/spreadsheets/d/1JxryUjNGaUme3EWtDf8EgtdirBXt8tkR/edit?usp=drivesdk&ouid=102001541152652764667&rtpof=true&sd=true",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1aS8LmcLLdMRXXxWRTu9Oca_Am5dFM-IZ",
-        "name": "Role Description & Development Plan.docx",
-        "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "modifiedTime": "2026-03-30T13:59:52.063Z",
-        "url": "https://docs.google.com/document/d/1aS8LmcLLdMRXXxWRTu9Oca_Am5dFM-IZ/edit?usp=drivesdk&ouid=102001541152652764667&rtpof=true&sd=true",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1mhoG4Xi4icMrZtumgmHnFJbAdW8hwKSBW_fVE2TKxc8",
-        "name": "Greta Tarailyte and Johann Rozario - 2026/03/30 14:58 CEST - Notes by Gemini",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-30T13:33:07.674Z",
-        "url": "https://docs.google.com/document/d/1mhoG4Xi4icMrZtumgmHnFJbAdW8hwKSBW_fVE2TKxc8/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I",
-        "name": "Supplied_MOFU1_STB",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-20T11:48:02.951Z",
-        "url": "https://docs.google.com/document/d/10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
       }
     ]
   },
@@ -399,6 +399,36 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
+    },
+    {
+      "action": "reply",
+      "subject": "Re: Johann - idea",
+      "reason": "Good morning Johann, Last touch. If we could help Supplied go from asking AI questions to having it execute plans that r",
+      "from": "James Russo <james@workaiplan.com>",
+      "ageDays": 0,
+      "threadId": "19d1ff208bc98baf",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d1ff208bc98baf",
+      "id": "email-19d1ff208bc98baf"
+    },
+    {
+      "action": "reply",
+      "subject": "Supplied_SALES_Re... - Their account is still active, as the...",
+      "reason": "Julio Lindveld (julio@supplied.eu) mentioned you in a comment in the following document Supplied_SALES_Revenue_Costs_Mas",
+      "from": "\"Julio Lindveld (Google Sheets)\" <comments-noreply@docs.google.com>",
+      "ageDays": 0,
+      "threadId": "19d44589c4fac0e5",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d44589c4fac0e5",
+      "id": "email-19d44589c4fac0e5"
+    },
+    {
+      "action": "reply",
+      "subject": "Full Stack Engine... - @vladimir@supplied.eu do you mean thi...",
+      "reason": "Vladimir Ivanov replied to a comment in the following document Full Stack Engineer Job Description 1 comment Full Johann",
+      "from": "\"Vladimir Ivanov (Google Docs)\" <comments-noreply@docs.google.com>",
+      "ageDays": 0,
+      "threadId": "19d4458762faf4c3",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d4458762faf4c3",
+      "id": "email-19d4458762faf4c3"
     },
     {
       "action": "reply",
