@@ -1,25 +1,7 @@
 {
-  "refreshedAt": "2026-03-31T12:56:43.011Z",
+  "refreshedAt": "2026-03-31T13:56:52.945Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d43f4b691ed36a",
-        "subject": "Accepted: Maurits Hovius and Johann Rozario @ Fri Apr 3, 2026 1:30pm - 2pm (CEST) (johann@supplied.eu)",
-        "from": "Maurits Hovius <maurits@volve.capital>",
-        "date": "2026-03-31T12:53:23.000Z",
-        "snippet": "Maurits Hovius and Johann Rozario Maurits Hovius has accepted this invitation. Join with Google Meet Meeting link meet.google.com/hsd-fqfz-bmy Join by phone (NL) +31 20 257 5540 PIN: 614751503 More",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d43f4b691ed36a",
-        "unread": true
-      },
-      {
-        "id": "19d43f3f7a94da43",
-        "subject": "New Event: Maurits Hovius - 13:30 Fri, 3 Apr 2026 - 30 Minute Meeting",
-        "from": "Calendly <notifications@calendly.com>",
-        "date": "2026-03-31T12:52:33.000Z",
-        "snippet": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Maurits Hovius Invitee Email: maurits@volve.capital Event Date/Time: 13:30 - Friday, 3 April 2026 (Central",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d43f3f7a94da43",
-        "unread": true
-      },
       {
         "id": "19d4322f5d61d729",
         "subject": "Supplied_SALES_Re... - @julio@supplied.eu can you please rev...",
@@ -36,15 +18,6 @@
         "date": "2026-03-31T07:58:15.000Z",
         "snippet": "New activity in the following document Supplied Monthly Shareholder Updates - 2025 Update For you Comments Major Development Contract: Scoping Underway One of our largest pipeline accounts is in",
         "url": "https://mail.google.com/mail/u/0/#inbox/19b6aa08efdc34cd",
-        "unread": true
-      },
-      {
-        "id": "19d3ddfd2b931e5f",
-        "subject": "Canceled: 30 Minute Meeting with Teddy Ludmer on 30 March 2026",
-        "from": "Calendly <notifications@calendly.com>",
-        "date": "2026-03-30T08:32:51.000Z",
-        "snippet": "Hi Johann Rozario, The event below has been canceled. Invitee: Teddy Ludmer Invitee Email: teddy.ludmer@tipalti.com Event Date/Time: 11:30 - Monday, 30 March 2026 (Central European Time) Cancellation",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d3ddfd2b931e5f",
         "unread": true
       },
       {
@@ -109,9 +82,36 @@
         "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
         "unread": true
+      },
+      {
+        "id": "19ce7f12f8358ef7",
+        "subject": "Exit on your terms - strategic buy and hold buyers",
+        "from": "dmitry.mykhailenko@auditfirm.uk",
+        "date": "2026-03-13T16:04:27.000Z",
+        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
+        "unread": true
+      },
+      {
+        "id": "19ce6606ba2e3745",
+        "subject": "Customer prioritisation standup",
+        "from": "Optiverse <mail@optiverse.ai>",
+        "date": "2026-03-13T08:46:43.000Z",
+        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "unread": true
+      },
+      {
+        "id": "19ce30963c459b27",
+        "subject": "Reminder : Help Us Improve: Rate Your Experience",
+        "from": "Akancha  Srivastava <akancha@scrut.io>",
+        "date": "2026-03-12T17:12:47.000Z",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
+        "unread": true
       }
     ],
-    "unreadCount": 40
+    "unreadCount": 37
   },
   "calendar": {
     "today": [
@@ -295,17 +295,25 @@
         "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
         "name": "Notes - Commerce<>Product Weekly",
         "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-31T12:46:15.752Z",
+        "modifiedTime": "2026-03-31T13:33:14.599Z",
         "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "10-bZuSfRSKVfiH7CWxXJUMtigkSuH70jztCaGNoioPM",
+        "name": "Notes - Commerce<>Product Weekly - Bar chart 1",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-03-31T13:10:05.350Z",
+        "url": "https://docs.google.com/spreadsheets/d/10-bZuSfRSKVfiH7CWxXJUMtigkSuH70jztCaGNoioPM/edit?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
       },
       {
         "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
         "name": "Supplied_SALES_Revenue_Costs_Master_File",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-31T11:58:05.446Z",
+        "modifiedTime": "2026-03-31T13:41:00.096Z",
         "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
+        "lastModifiedBy": "Julio Lindveld"
       },
       {
         "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
@@ -378,14 +386,6 @@
         "modifiedTime": "2026-03-20T11:48:02.951Z",
         "url": "https://docs.google.com/document/d/10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I/edit?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA",
-        "name": "Friday Weekly Reviews",
-        "mimeType": "application/vnd.google-apps.presentation",
-        "modifiedTime": "2026-03-30T10:13:15.030Z",
-        "url": "https://docs.google.com/presentation/d/1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
       }
     ]
   },
@@ -399,26 +399,6 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
-    },
-    {
-      "action": "reply",
-      "subject": "Accepted: Maurits Hovius and Johann Rozario @ Fri Apr 3, 2026 1:30pm - 2pm (CEST) (johann@supplied.eu)",
-      "reason": "Maurits Hovius and Johann Rozario Maurits Hovius has accepted this invitation. Join with Google Meet Meeting link meet.g",
-      "from": "Maurits Hovius <maurits@volve.capital>",
-      "ageDays": 0,
-      "threadId": "19d43f4b691ed36a",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d43f4b691ed36a",
-      "id": "email-19d43f4b691ed36a"
-    },
-    {
-      "action": "reply",
-      "subject": "New Event: Maurits Hovius - 13:30 Fri, 3 Apr 2026 - 30 Minute Meeting",
-      "reason": "Hi Johann Rozario, A new event has been scheduled. Event Type: 30 Minute Meeting Invitee: Maurits Hovius Invitee Email: ",
-      "from": "Calendly <notifications@calendly.com>",
-      "ageDays": 0,
-      "threadId": "19d43f3f7a94da43",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d43f3f7a94da43",
-      "id": "email-19d43f3f7a94da43"
     },
     {
       "action": "reply",
@@ -479,16 +459,6 @@
       "threadId": "19d2fa1cdfbfe765",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
       "id": "email-19d2fa1cdfbfe765"
-    },
-    {
-      "action": "followup",
-      "subject": "Canceled: 30 Minute Meeting with Teddy Ludmer on 30 March 2026",
-      "reason": "Hi Johann Rozario, The event below has been canceled. Invitee: Teddy Ludmer Invitee Email: teddy.ludmer@tipalti.com Even",
-      "from": "Calendly <notifications@calendly.com>",
-      "ageDays": 1,
-      "threadId": "19d3ddfd2b931e5f",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d3ddfd2b931e5f",
-      "id": "email-19d3ddfd2b931e5f"
     }
   ],
   "drive_priorities": [

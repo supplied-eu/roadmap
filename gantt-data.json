@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-31T12:56:40.268Z",
+  "refreshedAt": "2026-03-31T13:56:41.163Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -3010,7 +3010,7 @@
               "start": null,
               "end": "2026-03-05",
               "assignee": "Ivan Tiniakov",
-              "priority": "Urgent",
+              "priority": "High",
               "estimate": 2,
               "url": "https://linear.app/supplied/issue/SUP-1168/refactor-the-api-for-fetching-and-modifying-supplier-properties",
               "parentId": null
@@ -3179,7 +3179,7 @@
               "start": null,
               "end": "2026-03-05",
               "assignee": "Ivan Tiniakov",
-              "priority": "Urgent",
+              "priority": "High",
               "estimate": 2,
               "url": "https://linear.app/supplied/issue/SUP-1168/refactor-the-api-for-fetching-and-modifying-supplier-properties",
               "parentId": "a407705b-5910-4281-81a5-8f16ffdbede9"
@@ -4181,7 +4181,7 @@
               "status": "Todo",
               "start": null,
               "end": "2026-03-20",
-              "assignee": "Ivan Tiniakov",
+              "assignee": null,
               "priority": "Urgent",
               "estimate": 1,
               "url": "https://linear.app/supplied/issue/SUP-769/update-services-to-mention-1099-k-and-drr-reporting",
@@ -4854,11 +4854,11 @@
               "id": "2222e042-2253-45ee-832c-2f834aae235e",
               "identifier": "SUP-499",
               "title": "SERVICES TO ENABLE BASED ON SERVICES in PRICING",
-              "status": "Todo",
-              "start": null,
+              "status": "In Test",
+              "start": "2026-03-31",
               "end": null,
               "assignee": "Vladislav Suvorov",
-              "priority": "Urgent",
+              "priority": "High",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/SUP-499/services-to-enable-based-on-services-in-pricing",
               "parentId": null
@@ -9099,7 +9099,7 @@
               "id": "f45a281f-9dc2-4251-a027-4642d951a082",
               "identifier": "IMP-162",
               "title": "Export the final reports for Villasud",
-              "status": "In Review",
+              "status": "Done",
               "start": "2026-03-31",
               "end": "2026-03-31",
               "assignee": "andrei@supplied.eu",
@@ -10901,7 +10901,7 @@
               "start": null,
               "end": "2026-03-11",
               "assignee": "Vladimir Ivanov",
-              "priority": "Urgent",
+              "priority": "High",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/SUP-1155/add-app-to-stripe-marketplace",
               "parentId": null
@@ -11412,7 +11412,7 @@
               "start": null,
               "end": "2026-11-17",
               "assignee": null,
-              "priority": "Low",
+              "priority": "Medium",
               "estimate": 2,
               "url": "https://linear.app/supplied/issue/SUP-1163/put-the-language-field-back-into-dac7-generation-in-the-report-builder",
               "parentId": null
@@ -11634,7 +11634,7 @@
               "end": "2026-06-22",
               "assignee": "nadezhda@supplied.eu",
               "priority": "High",
-              "estimate": null,
+              "estimate": 1,
               "url": "https://linear.app/supplied/issue/SUP-1058/supplier-app-make-bankname-and-accountholdername-dac7-fields-optional",
               "parentId": null
             },
@@ -11763,7 +11763,7 @@
               "start": null,
               "end": "2026-07-01",
               "assignee": null,
-              "priority": "Urgent",
+              "priority": "High",
               "estimate": 1,
               "url": "https://linear.app/supplied/issue/SUP-1010/special-rule-for-receivingcountry-element-in-dac7-xml-for-germany",
               "parentId": null
@@ -13785,8 +13785,8 @@
               "id": "9abc0517-6d56-4124-bcf0-b4eb92bd5525",
               "identifier": "SUP-824",
               "title": "[Global Reporting] No earnings connection for verification",
-              "status": "Todo",
-              "start": null,
+              "status": "Done",
+              "start": "2026-03-31",
               "end": "2026-04-15",
               "assignee": null,
               "priority": "Urgent",
