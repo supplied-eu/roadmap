@@ -2,7 +2,7 @@
 
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { isAdmin } from '@/lib/auth';
-import { Calendar, Mail, CheckSquare, Clock, ExternalLink, Circle, X, AlarmClock, CheckCircle, Undo2, FileText, ChevronDown, ChevronUp, GripVertical, Phone, DollarSign, Plus, Trash2, Bell, Edit3 } from 'lucide-react';
+import { Calendar, Mail, CheckSquare, Clock, ExternalLink, Circle, X, AlarmClock, CheckCircle, Undo2, FileText, ChevronDown, ChevronUp, GripVertical, Phone, DollarSign, Plus, Trash2, Bell, Edit3, AlertTriangle, ArrowRight, MessageSquare, FolderOpen, Hash } from 'lucide-react';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import WbsoTracker from '@/components/WbsoTracker';
 
@@ -53,6 +53,15 @@ type PersonalTask = {
 
 type Toast = { id: string; message: string; undoAction?: () => void };
 
+// Dismissed meeting tasks (persisted)
+function loadDismissedMeetingTasks(): string[] {
+  if (typeof window === 'undefined') return [];
+  try { return JSON.parse(localStorage.getItem('dismissed_meeting_tasks') || '[]'); } catch { return []; }
+}
+function saveDismissedMeetingTasks(tasks: string[]) {
+  localStorage.setItem('dismissed_meeting_tasks', JSON.stringify(tasks));
+}
+
 // ── Helpers ────────────────────────────────────────────────────
 function formatTime(iso: string) {
   if (!iso || !iso.includes('T')) return 'All day';
@@ -81,20 +90,16 @@ function formatCurrency(n: number | null) {
   return new Intl.NumberFormat('en-EU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
 }
 
-// Clean up email-like assignee names → proper first names
 function cleanAssignee(name: string | undefined | null): string | undefined {
   if (!name) return undefined;
   if (name.includes('@')) {
-    // Extract name from email: "nadezhda@supplied.eu" → "Nadezhda"
     const local = name.split('@')[0];
-    // Handle dots/underscores: "johann.rozario" → "Johann"
     const first = local.split(/[._-]/)[0];
     return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
   }
   return name;
 }
 
-// Get display name for filter (full cleaned name)
 function cleanAssigneeFull(name: string): string {
   if (name.includes('@')) {
     const local = name.split('@')[0];
@@ -108,7 +113,7 @@ const SOURCE_COLORS: Record<string, string> = {
   linear: '#6366f1', hubspot: '#f97316', gcal: '#3b82f6', gmail: '#ef4444', personal: '#22c55e',
 };
 const SOURCE_LABELS: Record<string, string> = {
-  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Gmail', personal: 'My Task',
+  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Email', personal: 'My Task',
 };
 
 const priCatColors: Record<string, string> = {
@@ -120,9 +125,7 @@ const PRIORITY_MAP: Record<string, number> = { high: 2, medium: 3, low: 4 };
 // ── LocalStorage helpers ──────────────────────────────────────
 function loadPersonalTasks(): PersonalTask[] {
   if (typeof window === 'undefined') return [];
-  try {
-    return JSON.parse(localStorage.getItem('dashboard_personal_tasks') || '[]');
-  } catch { return []; }
+  try { return JSON.parse(localStorage.getItem('dashboard_personal_tasks') || '[]'); } catch { return []; }
 }
 function savePersonalTasks(tasks: PersonalTask[]) {
   localStorage.setItem('dashboard_personal_tasks', JSON.stringify(tasks));
@@ -157,7 +160,6 @@ function AddTaskInput({ onAdd }: { onAdd: (title: string, dueDate: string | null
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium');
   const [showOptions, setShowOptions] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = () => {
     if (!title.trim()) return;
@@ -173,9 +175,7 @@ function AddTaskInput({ onAdd }: { onAdd: (title: string, dueDate: string | null
       <div className="flex items-center gap-2 px-3 py-2">
         <Plus size={14} style={{ color: 'var(--accent)' }} />
         <input
-          ref={inputRef}
-          type="text"
-          value={title}
+          type="text" value={title}
           onChange={e => setTitle(e.target.value)}
           onFocus={() => setShowOptions(true)}
           onKeyDown={e => { if (e.key === 'Enter') handleSubmit(); }}
@@ -185,9 +185,7 @@ function AddTaskInput({ onAdd }: { onAdd: (title: string, dueDate: string | null
         />
         {title && (
           <button onClick={handleSubmit} className="text-[10px] px-2 py-0.5 rounded font-medium"
-            style={{ background: 'var(--accent)', color: '#fff' }}>
-            Add
-          </button>
+            style={{ background: 'var(--accent)', color: '#fff' }}>Add</button>
         )}
       </div>
       {showOptions && title && (
@@ -195,8 +193,7 @@ function AddTaskInput({ onAdd }: { onAdd: (title: string, dueDate: string | null
           <div className="flex items-center gap-1">
             <Calendar size={10} style={{ color: 'var(--text-muted)' }} />
             <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)}
-              className="text-[10px] bg-transparent border-none outline-none"
-              style={{ color: 'var(--text-muted)' }} />
+              className="text-[10px] bg-transparent border-none outline-none" style={{ color: 'var(--text-muted)' }} />
           </div>
           <div className="flex items-center gap-1">
             {(['high', 'medium', 'low'] as const).map(p => (
@@ -206,9 +203,7 @@ function AddTaskInput({ onAdd }: { onAdd: (title: string, dueDate: string | null
                   background: priority === p ? (priCatColors[p] || '#94a3b8') + '33' : 'transparent',
                   color: priority === p ? priCatColors[p] : 'var(--text-muted)',
                   border: priority === p ? `1px solid ${priCatColors[p]}44` : '1px solid transparent',
-                }}>
-                {p}
-              </button>
+                }}>{p}</button>
             ))}
           </div>
         </div>
@@ -231,6 +226,7 @@ export default function DashboardPage() {
   const [hsDeals, setHsDeals] = useState<HsDeal[]>([]);
   const [loading, setLoading] = useState({ tasks: true, calendar: true, hubspot: true, meetings: true });
   const [personalTasks, setPersonalTasks] = useState<PersonalTask[]>(loadPersonalTasks);
+  const [dismissedMeetingTasks, setDismissedMeetingTasks] = useState<string[]>(loadDismissedMeetingTasks);
 
   // Task management state
   const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(new Set());
@@ -244,8 +240,9 @@ export default function DashboardPage() {
   const [editingTask, setEditingTask] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
 
-  // Save personal tasks on change
+  // Save personal tasks & dismissed meeting tasks on change
   useEffect(() => { savePersonalTasks(personalTasks); }, [personalTasks]);
+  useEffect(() => { saveDismissedMeetingTasks(dismissedMeetingTasks); }, [dismissedMeetingTasks]);
 
   const addToast = useCallback((message: string, undoAction?: () => void) => {
     const id = Date.now().toString();
@@ -255,7 +252,6 @@ export default function DashboardPage() {
   const dismissToast = useCallback((id: string) => setToasts(prev => prev.filter(t => t.id !== id)), []);
 
   const markDone = useCallback((taskId: string, taskTitle: string) => {
-    // Check if it's a personal task
     if (taskId.startsWith('pt_')) {
       const ptId = taskId.replace('pt_', '');
       setPersonalTasks(prev => prev.map(t => t.id === ptId ? { ...t, done: true } : t));
@@ -293,7 +289,6 @@ export default function DashboardPage() {
     });
   }, [addToast, personalTasks]);
 
-  // Add personal task
   const addPersonalTask = useCallback((title: string, dueDate: string | null, priority: 'high' | 'medium' | 'low', sourceLabel?: string, sourceUrl?: string) => {
     const newTask: PersonalTask = {
       id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
@@ -304,15 +299,18 @@ export default function DashboardPage() {
     addToast(`Task added: "${title}"`);
   }, [addToast]);
 
-  // Update personal task due date
   const updatePersonalTaskDate = useCallback((taskId: string, date: string) => {
     setPersonalTasks(prev => prev.map(t => t.id === taskId ? { ...t, dueDate: date || null } : t));
   }, []);
 
-  // Update personal task reminder
   const setTaskReminder = useCallback((taskId: string, reminder: string | null) => {
     setPersonalTasks(prev => prev.map(t => t.id === taskId ? { ...t, reminder } : t));
     if (reminder) addToast(`Reminder set for ${formatDate(reminder)}`);
+  }, [addToast]);
+
+  const dismissMeetingTask = useCallback((key: string) => {
+    setDismissedMeetingTasks(prev => [...prev, key]);
+    addToast('Task marked as done');
   }, [addToast]);
 
   useEffect(() => {
@@ -383,8 +381,11 @@ export default function DashboardPage() {
     });
   }
 
-  // Person filter — build from cleaned names
-  const assigneeMap = new Map<string, string>(); // cleaned first name → first seen full cleaned name
+  // Email action items — surface unread emails as potential tasks
+  const actionEmails = emails.filter(e => e.unread).slice(0, 5);
+
+  // Person filter
+  const assigneeMap = new Map<string, string>();
   for (const item of streamItems) {
     if (!item.assignee) continue;
     const first = item.assignee.split(' ')[0];
@@ -404,13 +405,15 @@ export default function DashboardPage() {
   const filteredStream = !personFilter ? streamItems
     : streamItems.filter(i => i.assignee?.toLowerCase().includes(personFilter.toLowerCase()));
 
+  // Priority summary — top urgent/high items
+  const priorityItems = filteredStream.filter(i => i.priority <= 2 || isOverdue(i.dueDate));
+
   // Group by urgency
   const overdue = filteredStream.filter(i => isOverdue(i.dueDate));
   const dueToday = filteredStream.filter(i => isDueToday(i.dueDate));
   const thisWeek = filteredStream.filter(i => isDueThisWeek(i.dueDate));
   const later = filteredStream.filter(i => !isOverdue(i.dueDate) && !isDueToday(i.dueDate) && !isDueThisWeek(i.dueDate));
 
-  // Sort each group by priority
   const sortByPri = (a: StreamItem, b: StreamItem) => a.priority - b.priority;
   overdue.sort(sortByPri);
   dueToday.sort(sortByPri);
@@ -428,16 +431,25 @@ export default function DashboardPage() {
 
   const isLoadingAll = loading.tasks && loading.calendar && loading.hubspot;
   const todayEvents = calendar;
-
-  // Count completed personal tasks
   const completedPersonalCount = personalTasks.filter(t => t.done).length;
+
+  // Collect all meeting suggested tasks that aren't done
+  const allMeetingTasks: { task: string; priority: string; meetingTitle: string; meetingDate: string; key: string }[] = [];
+  for (const mtg of meetings) {
+    for (const st of mtg.suggestedTasks) {
+      const key = `${mtg.id}_${st.task}`;
+      if (!dismissedMeetingTasks.includes(key)) {
+        allMeetingTasks.push({ task: st.task, priority: st.priority, meetingTitle: mtg.title, meetingDate: mtg.date, key });
+      }
+    }
+  }
 
   return (
     <div className="flex h-full overflow-hidden">
       {/* Left: Task stream */}
       <div className="flex-1 overflow-auto" style={{ flex: '3' }}>
         {/* Greeting */}
-        <div className="px-6 pt-5 pb-3">
+        <div className="px-6 pt-5 pb-2">
           <h1 className="text-xl font-bold" style={{ color: 'var(--text)' }}>
             Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {firstName}
           </h1>
@@ -446,14 +458,71 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Personal Task List — Add & Manage */}
-        <div className="px-6 pb-3">
-          <AddTaskInput onAdd={(title, dueDate, priority) => addPersonalTask(title, dueDate, priority)} />
+        {/* Priority Summary Strip */}
+        {!isLoadingAll && priorityItems.length > 0 && (
+          <div className="px-6 pb-2">
+            <div className="rounded-lg p-3" style={{ background: '#ef444411', border: '1px solid #ef444433' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle size={12} style={{ color: '#ef4444' }} />
+                <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: '#ef4444' }}>
+                  Priority Focus — {priorityItems.length} items need attention
+                </span>
+              </div>
+              <div className="space-y-1">
+                {priorityItems.slice(0, 5).map(item => {
+                  const isDone = doneTasks.has(item.id.replace(/^(lin_|hs_|pt_)/, ''));
+                  return (
+                    <div key={item.id} className="flex items-center gap-2 group">
+                      <button
+                        onClick={() => markDone(item.id.replace(/^(lin_|hs_|pt_)/, ''), item.title)}
+                        className="shrink-0" title="Mark done">
+                        {isDone
+                          ? <CheckCircle size={13} style={{ color: '#22c55e' }} />
+                          : <Circle size={13} style={{ color: 'var(--text-muted)' }} />
+                        }
+                      </button>
+                      <span className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0"
+                        style={{ background: SOURCE_COLORS[item.source] + '22', color: SOURCE_COLORS[item.source] }}>
+                        {SOURCE_LABELS[item.source]}
+                      </span>
+                      {item.url ? (
+                        <a href={item.url} target="_blank" rel="noopener"
+                          className="text-[11px] flex-1 truncate hover:underline"
+                          style={{ color: 'var(--text)' }}>{item.title}</a>
+                      ) : (
+                        <span className="text-[11px] flex-1 truncate" style={{ color: 'var(--text)' }}>{item.title}</span>
+                      )}
+                      {isOverdue(item.dueDate) && (
+                        <span className="text-[9px] px-1 py-0.5 rounded font-bold shrink-0"
+                          style={{ background: '#ef444422', color: '#ef4444' }}>OVERDUE</span>
+                      )}
+                      {item.priority <= 2 && !isOverdue(item.dueDate) && (
+                        <span className="text-[9px] px-1 py-0.5 rounded font-bold shrink-0"
+                          style={{ background: '#f9731622', color: '#f97316' }}>
+                          {item.priority === 1 ? 'URGENT' : 'HIGH'}
+                        </span>
+                      )}
+                      {item.dueDate && (
+                        <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{formatDate(item.dueDate)}</span>
+                      )}
+                    </div>
+                  );
+                })}
+                {priorityItems.length > 5 && (
+                  <span className="text-[9px] block mt-1" style={{ color: 'var(--text-muted)' }}>
+                    + {priorityItems.length - 5} more priority items below
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
-          {/* Show completed personal tasks toggle */}
+        {/* Add Task Input */}
+        <div className="px-6 pb-2">
+          <AddTaskInput onAdd={(title, dueDate, priority) => addPersonalTask(title, dueDate, priority)} />
           {completedPersonalCount > 0 && (
-            <button
-              onClick={() => setPersonalTasks(prev => prev.filter(t => !t.done))}
+            <button onClick={() => setPersonalTasks(prev => prev.filter(t => !t.done))}
               className="text-[9px] mt-1.5 px-2 py-0.5 rounded"
               style={{ color: 'var(--text-muted)', background: 'var(--surface)', border: '1px solid var(--border)' }}>
               Clear {completedPersonalCount} completed
@@ -511,16 +580,67 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* Meeting Summaries */}
+            {/* Action Items from Emails */}
+            {actionEmails.length > 0 && (
+              <div className="px-6 py-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <Mail size={14} style={{ color: '#ef4444' }} />
+                  <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+                    Emails Requiring Action
+                  </h3>
+                </div>
+                <div className="space-y-1">
+                  {actionEmails.map(email => {
+                    const alreadyTask = personalTasks.some(pt => pt.title.includes(email.subject));
+                    return (
+                      <div key={email.id} className="flex items-center gap-2 rounded px-3 py-1.5 group"
+                        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                        <Circle size={5} fill="#ef4444" stroke="#ef4444" className="shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <span className="text-[11px] font-medium block truncate" style={{ color: 'var(--text)' }}>
+                            {email.subject}
+                          </span>
+                          <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
+                            from {parseFrom(email.from)}
+                          </span>
+                        </div>
+                        {alreadyTask ? (
+                          <CheckCircle size={12} style={{ color: '#22c55e' }} />
+                        ) : (
+                          <button
+                            onClick={() => addPersonalTask(
+                              `Reply: ${email.subject}`, null, 'medium',
+                              'Email', `https://mail.google.com/mail/u/0/#inbox/${email.id}`
+                            )}
+                            className="text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                            style={{ background: 'var(--accent)', color: '#fff' }}
+                            title="Add as task">
+                            <Plus size={10} />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Meeting Summaries with crossable tasks */}
             {meetings.length > 0 && (
               <div className="px-6 py-3">
                 <div className="flex items-center gap-2 mb-2">
                   <FileText size={14} style={{ color: 'var(--accent)' }} />
                   <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Meeting Summaries</h3>
+                  {allMeetingTasks.length > 0 && (
+                    <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: 'var(--accent)', color: '#fff' }}>
+                      {allMeetingTasks.length} open
+                    </span>
+                  )}
                 </div>
                 <div className="space-y-1.5">
-                  {meetings.slice(0, 4).map(mtg => {
+                  {meetings.slice(0, 6).map(mtg => {
                     const isExpanded = expandedMeeting === mtg.id;
+                    const activeTasks = mtg.suggestedTasks.filter(st => !dismissedMeetingTasks.includes(`${mtg.id}_${st.task}`));
                     return (
                       <div key={mtg.id} className="rounded-md overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
                         <button onClick={() => setExpandedMeeting(isExpanded ? null : mtg.id)}
@@ -528,9 +648,14 @@ export default function DashboardPage() {
                           {isExpanded ? <ChevronUp size={11} style={{ color: 'var(--text-muted)' }} /> : <ChevronDown size={11} style={{ color: 'var(--text-muted)' }} />}
                           <span className="text-xs font-medium truncate flex-1" style={{ color: 'var(--text)' }}>{mtg.title}</span>
                           <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{mtg.date}</span>
-                          {mtg.suggestedTasks.length > 0 && (
+                          {activeTasks.length > 0 && (
                             <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0" style={{ background: 'var(--accent)', color: '#fff' }}>
-                              {mtg.suggestedTasks.length} tasks
+                              {activeTasks.length} tasks
+                            </span>
+                          )}
+                          {activeTasks.length === 0 && mtg.suggestedTasks.length > 0 && (
+                            <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0" style={{ background: '#22c55e22', color: '#22c55e' }}>
+                              all done
                             </span>
                           )}
                         </button>
@@ -541,30 +666,42 @@ export default function DashboardPage() {
                               <div className="space-y-1">
                                 <span className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Suggested Tasks</span>
                                 {mtg.suggestedTasks.map((st, i) => {
+                                  const taskKey = `${mtg.id}_${st.task}`;
+                                  const isDismissed = dismissedMeetingTasks.includes(taskKey);
                                   const alreadyAdded = personalTasks.some(pt => pt.title === st.task && pt.sourceLabel === mtg.title);
                                   return (
-                                    <div key={i} className="flex items-center gap-2 text-xs rounded px-2 py-1" style={{ background: 'var(--bg)' }}>
-                                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: priCatColors[st.priority] || '#94a3b8' }} />
-                                      <span className="flex-1" style={{ color: 'var(--text)' }}>{st.task}</span>
+                                    <div key={i} className="flex items-center gap-2 text-xs rounded px-2 py-1 group"
+                                      style={{ background: 'var(--bg)', opacity: isDismissed ? 0.4 : 1 }}>
+                                      {/* Cross off button */}
+                                      <button onClick={() => isDismissed ? null : dismissMeetingTask(taskKey)}
+                                        className="shrink-0" title={isDismissed ? 'Done' : 'Mark done'}>
+                                        {isDismissed
+                                          ? <CheckCircle size={12} style={{ color: '#22c55e' }} />
+                                          : <Circle size={12} style={{ color: 'var(--text-muted)' }} />
+                                        }
+                                      </button>
+                                      <span className="flex-1" style={{
+                                        color: 'var(--text)',
+                                        textDecoration: isDismissed ? 'line-through' : 'none',
+                                      }}>{st.task}</span>
                                       <span className="text-[9px] px-1 py-0.5 rounded" style={{ background: (priCatColors[st.priority] || '#94a3b8') + '22', color: priCatColors[st.priority] || '#94a3b8' }}>
                                         {st.priority}
                                       </span>
-                                      {alreadyAdded ? (
-                                        <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ color: '#22c55e' }}>
-                                          <CheckCircle size={10} />
-                                        </span>
-                                      ) : (
+                                      {!isDismissed && !alreadyAdded && (
                                         <button
                                           onClick={() => addPersonalTask(
                                             st.task, null,
                                             (st.priority === 'urgent' ? 'high' : st.priority as 'high' | 'medium' | 'low') || 'medium',
                                             mtg.title
                                           )}
-                                          className="text-[9px] px-1.5 py-0.5 rounded hover:opacity-80 transition-opacity"
+                                          className="text-[9px] px-1.5 py-0.5 rounded hover:opacity-80 transition-opacity opacity-0 group-hover:opacity-100 shrink-0"
                                           style={{ background: 'var(--accent)', color: '#fff' }}
                                           title="Add to my tasks">
                                           <Plus size={10} />
                                         </button>
+                                      )}
+                                      {alreadyAdded && !isDismissed && (
+                                        <span className="shrink-0" style={{ color: '#22c55e' }}><CheckCircle size={10} /></span>
                                       )}
                                     </div>
                                   );
@@ -579,6 +716,36 @@ export default function DashboardPage() {
                 </div>
               </div>
             )}
+
+            {/* Recommended Actions — integration placeholders */}
+            <div className="px-6 py-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Hash size={14} style={{ color: '#5865F2' }} />
+                <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+                  Other Notifications
+                </h3>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="rounded-lg p-3 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                  <MessageSquare size={16} className="mx-auto mb-1" style={{ color: '#34A853' }} />
+                  <span className="text-[10px] block font-medium" style={{ color: 'var(--text)' }}>Google Chat</span>
+                  <span className="text-[8px] block" style={{ color: 'var(--text-muted)' }}>Tags & mentions</span>
+                  <span className="text-[8px] px-2 py-0.5 rounded inline-block mt-1" style={{ background: '#34A85322', color: '#34A853' }}>Coming soon</span>
+                </div>
+                <div className="rounded-lg p-3 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                  <FolderOpen size={16} className="mx-auto mb-1" style={{ color: '#4285F4' }} />
+                  <span className="text-[10px] block font-medium" style={{ color: 'var(--text)' }}>Google Drive</span>
+                  <span className="text-[8px] block" style={{ color: 'var(--text-muted)' }}>Comments & tasks</span>
+                  <span className="text-[8px] px-2 py-0.5 rounded inline-block mt-1" style={{ background: '#4285F422', color: '#4285F4' }}>Coming soon</span>
+                </div>
+                <div className="rounded-lg p-3 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                  <Hash size={16} className="mx-auto mb-1" style={{ color: '#5865F2' }} />
+                  <span className="text-[10px] block font-medium" style={{ color: 'var(--text)' }}>Discord</span>
+                  <span className="text-[8px] block" style={{ color: 'var(--text-muted)' }}>Mentions & DMs</span>
+                  <span className="text-[8px] px-2 py-0.5 rounded inline-block mt-1" style={{ background: '#5865F222', color: '#5865F2' }}>Coming soon</span>
+                </div>
+              </div>
+            </div>
           </>
         )}
       </div>
@@ -684,7 +851,6 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* WBSO Time Tracker (admin only) */}
         {admin && (
           <div className="px-4 py-3" style={{ borderTop: '1px solid var(--border)' }}>
             <WbsoTracker />
@@ -734,13 +900,11 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               onClick={() => setExpandedItem(isExpanded ? null : item.id)}
             >
-              {/* Done checkbox for personal tasks */}
-              {isPersonal && (
-                <button onClick={e => { e.stopPropagation(); onDone(item.id, item.title); }}
-                  className="shrink-0" title="Complete">
-                  <Circle size={14} style={{ color: 'var(--text-muted)' }} />
-                </button>
-              )}
+              {/* Checkbox for ALL tasks */}
+              <button onClick={e => { e.stopPropagation(); onDone(isPersonal ? item.id : rawId, item.title); }}
+                className="shrink-0" title="Mark done">
+                <Circle size={14} style={{ color: 'var(--text-muted)' }} />
+              </button>
 
               {/* Source badge */}
               <span className="text-[8px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0"
@@ -750,9 +914,7 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
 
               {/* Title */}
               {isEditing ? (
-                <input
-                  autoFocus
-                  value={editTitle}
+                <input autoFocus value={editTitle}
                   onChange={e => setEditTitle(e.target.value)}
                   onKeyDown={e => {
                     if (e.key === 'Enter') { onEditSave(rawId, editTitle); setEditingTask(null); }
@@ -811,22 +973,17 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
                 <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{item.status}</span>
               )}
 
-              {/* Actions */}
+              {/* Actions on hover */}
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                 {isPersonal && (
                   <button onClick={e => { e.stopPropagation(); setEditTitle(item.title); setEditingTask(rawId); }} title="Edit">
                     <Edit3 size={12} style={{ color: 'var(--accent)' }} />
                   </button>
                 )}
-                {!isPersonal && (
-                  <button onClick={e => { e.stopPropagation(); onDone(item.id.replace(/^(lin_|hs_)/, ''), item.title); }} title="Done">
-                    <CheckCircle size={12} style={{ color: '#22c55e' }} />
-                  </button>
-                )}
-                <button onClick={e => { e.stopPropagation(); onSnooze(item.id.replace(/^(lin_|hs_|pt_)/, ''), item.title); }} title="Snooze">
+                <button onClick={e => { e.stopPropagation(); onSnooze(rawId, item.title); }} title="Snooze">
                   <AlarmClock size={12} style={{ color: 'var(--text-muted)' }} />
                 </button>
-                <button onClick={e => { e.stopPropagation(); onDismiss(item.id, item.title); }} title={isPersonal ? 'Delete' : 'Dismiss'}>
+                <button onClick={e => { e.stopPropagation(); onDismiss(isPersonal ? item.id : rawId, item.title); }} title={isPersonal ? 'Delete' : 'Dismiss'}>
                   {isPersonal ? <Trash2 size={12} style={{ color: '#ef4444' }} /> : <X size={12} style={{ color: 'var(--text-muted)' }} />}
                 </button>
               </div>
@@ -847,8 +1004,6 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
                       Open in {SOURCE_LABELS[item.source]} <ExternalLink size={10} />
                     </a>
                   )}
-
-                  {/* Personal task: inline date & reminder controls */}
                   {isPersonal && pt && (
                     <>
                       <div className="flex items-center gap-1.5">
