@@ -1,7 +1,16 @@
 {
-  "refreshedAt": "2026-03-31T08:35:14.601Z",
+  "refreshedAt": "2026-03-31T08:56:36.654Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d431587fd9c252",
+        "subject": "Invitation: Discord discussion - creditation @ Tue Mar 31, 2026 12:30pm - 1pm (CEST) (Johann Rozario)",
+        "from": "Julio Lindveld <julio@supplied.eu>",
+        "date": "2026-03-31T08:49:37.000Z",
+        "snippet": "Discord discussion - creditation Join with Google Meet – You have been invited by Julio Lindveld to attend an event named Discord discussion - creditation on Tuesday Mar 31, 2026 ⋅ 12:30pm – 1pm (",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d431587fd9c252",
+        "unread": true
+      },
       {
         "id": "19d42f4c687d6f38",
         "subject": "MOFU1_Visual SB_V... - maybe move this after the first frame...",
@@ -100,18 +109,9 @@
         "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
         "unread": true
-      },
-      {
-        "id": "19ce6606ba2e3745",
-        "subject": "Customer prioritisation standup",
-        "from": "Optiverse <mail@optiverse.ai>",
-        "date": "2026-03-13T08:46:43.000Z",
-        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
-        "unread": true
       }
     ],
-    "unreadCount": 38
+    "unreadCount": 39
   },
   "calendar": {
     "today": [
@@ -156,10 +156,20 @@
         "allDay": false
       },
       {
+        "id": "36fjlktmni0jq6cae01m0ldnr1",
+        "title": "Discord discussion - creditation",
+        "start": "2026-03-31T12:30:00+02:00",
+        "end": "2026-03-31T13:00:00+02:00",
+        "location": null,
+        "numAttendees": 4,
+        "url": "https://www.google.com/calendar/event?eid=MzZmamxrdG1uaTBqcTZjYWUwMW0wbGRucjEgam9oYW5uQHN1cHBsaWVkLmV1",
+        "allDay": false
+      },
+      {
         "id": "1q0akkm59kn9al0satar9mpclh_20260331T120000Z",
         "title": "Commerce<>Product Weekly",
-        "start": "2026-03-31T14:00:00+02:00",
-        "end": "2026-03-31T15:00:00+02:00",
+        "start": "2026-03-31T14:30:00+02:00",
+        "end": "2026-03-31T15:30:00+02:00",
         "location": null,
         "numAttendees": 4,
         "url": "https://www.google.com/calendar/event?eid=MXEwYWtrbTU5a245YWwwc2F0YXI5bXBjbGhfMjAyNjAzMzFUMTIwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
@@ -282,12 +292,20 @@
   "drive": {
     "recent": [
       {
+        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
+        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-31T08:54:57.296Z",
+        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
         "name": "Supplied_SALES_Revenue_Costs_Master_File",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-31T08:33:21.569Z",
+        "modifiedTime": "2026-03-31T08:54:15.115Z",
         "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
+        "lastModifiedBy": "Julio Lindveld"
       },
       {
         "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
@@ -304,14 +322,6 @@
         "modifiedTime": "2026-03-15T16:39:38.000Z",
         "url": "https://docs.google.com/spreadsheets/d/1JxryUjNGaUme3EWtDf8EgtdirBXt8tkR/edit?usp=drivesdk&ouid=102001541152652764667&rtpof=true&sd=true",
         "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
-        "name": "Supplied Monthly Shareholder Updates - 2025 Update",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-31T07:53:14.146Z",
-        "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
-        "lastModifiedBy": "Bas Bogerd"
       },
       {
         "id": "1aS8LmcLLdMRXXxWRTu9Oca_Am5dFM-IZ",
@@ -389,6 +399,16 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
+    },
+    {
+      "action": "reply",
+      "subject": "Invitation: Discord discussion - creditation @ Tue Mar 31, 2026 12:30pm - 1pm (CEST) (Johann Rozario)",
+      "reason": "Discord discussion - creditation Join with Google Meet – You have been invited by Julio Lindveld to attend an event name",
+      "from": "Julio Lindveld <julio@supplied.eu>",
+      "ageDays": 0,
+      "threadId": "19d431587fd9c252",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d431587fd9c252",
+      "id": "email-19d431587fd9c252"
     },
     {
       "action": "reply",
