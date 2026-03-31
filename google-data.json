@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-31T09:56:52.256Z",
+  "refreshedAt": "2026-03-31T10:35:16.798Z",
   "gmail": {
     "threads": [
       {
@@ -18,15 +18,6 @@
         "date": "2026-03-31T09:20:54.000Z",
         "snippet": "Commerce&lt;&gt;Product Weekly Bas Bogerd has accepted this invitation. Join with Google Meet Meeting link meet.google.com/fhe-mhir-tgy Join by phone (NL) +31 20 257 5066 PIN: 536386506 More phone",
         "url": "https://mail.google.com/mail/u/0/#inbox/19d43322bbf52eec",
-        "unread": true
-      },
-      {
-        "id": "19d3db16da65a196",
-        "subject": "Re: activate coffee card for Bas",
-        "from": "Zwolle Tradecentre <Zwolle.Tradecentre@regus.com>",
-        "date": "2026-03-31T09:06:36.000Z",
-        "snippet": "Good morning Johann, The system is finally working again! I have looked into it and I see that a coffee pass has been recorded once. I will now add the second pass for Bas, which will be effective",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d3db16da65a196",
         "unread": true
       },
       {
@@ -109,9 +100,18 @@
         "snippet": "Regus Uw Regus ervaring Re: Uw ervaring bij ZWOLLE, Trade Centre Om onze service voortdurend te kunnen verbeteren zijn wij zeer geinteresseeerd naar uw ervaring op uw locatie. Het invullen van de",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cfc73957f9533b",
         "unread": true
+      },
+      {
+        "id": "19cf4de5565b3976",
+        "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
+        "from": "anomalydetection@costalerts.amazonaws.com",
+        "date": "2026-03-16T04:18:54.000Z",
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "unread": true
       }
     ],
-    "unreadCount": 42
+    "unreadCount": 41
   },
   "calendar": {
     "today": [
@@ -292,6 +292,14 @@
   "drive": {
     "recent": [
       {
+        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
+        "name": "Notes - Commerce<>Product Weekly",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-30T09:26:59.654Z",
+        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
+        "lastModifiedBy": "Supplied Support"
+      },
+      {
         "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
         "name": "Supplied_SALES_Revenue_Costs_Master_File",
         "mimeType": "application/vnd.google-apps.spreadsheet",
@@ -378,18 +386,20 @@
         "modifiedTime": "2026-03-30T10:13:15.030Z",
         "url": "https://docs.google.com/presentation/d/1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA/edit?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
-        "name": " Customer success standup notes",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-30T09:12:18.658Z",
-        "url": "https://docs.google.com/document/d/17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY/edit?usp=drivesdk",
-        "lastModifiedBy": "Julio Lindveld"
       }
     ]
   },
   "email_priorities": [
+    {
+      "action": "alert",
+      "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
+      "reason": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
+      "from": "anomalydetection@costalerts.amazonaws.com",
+      "ageDays": 15,
+      "threadId": "19cf4de5565b3976",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+      "id": "email-19cf4de5565b3976"
+    },
     {
       "action": "reply",
       "subject": "Introduction Transferz & Supplied",
@@ -409,16 +419,6 @@
       "threadId": "19d43322bbf52eec",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d43322bbf52eec",
       "id": "email-19d43322bbf52eec"
-    },
-    {
-      "action": "reply",
-      "subject": "Re: activate coffee card for Bas",
-      "reason": "Good morning Johann, The system is finally working again! I have looked into it and I see that a coffee pass has been re",
-      "from": "Zwolle Tradecentre <Zwolle.Tradecentre@regus.com>",
-      "ageDays": 0,
-      "threadId": "19d3db16da65a196",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d3db16da65a196",
-      "id": "email-19d3db16da65a196"
     },
     {
       "action": "reply",
