@@ -1,7 +1,16 @@
 {
-  "refreshedAt": "2026-03-31T09:35:18.572Z",
+  "refreshedAt": "2026-03-31T09:56:52.256Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d4348b28ea2d4c",
+        "subject": "Introduction Transferz & Supplied",
+        "from": "Optiverse <mail@optiverse.ai>",
+        "date": "2026-03-31T09:45:30.000Z",
+        "snippet": "Meeting Summary General Summary The meeting was an introduction between Transferz and Supplied to explore a potential partnership around supplier compliance, document verification, and onboarding at",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d4348b28ea2d4c",
+        "unread": true
+      },
       {
         "id": "19d43322bbf52eec",
         "subject": "Accepted: Commerce<>Product Weekly @ Tue Mar 31, 2026 2:30pm - 3:30pm (CEST) (Johann Rozario)",
@@ -27,15 +36,6 @@
         "date": "2026-03-31T09:04:17.000Z",
         "snippet": "Julio Lindveld replied to a comment in the following document Supplied_SALES_Revenue_Costs_Master_File 1 comment 12-31-25 Johann Rozario • 10:33 AM, Mar 31 (CEST) @julio@supplied.eu can you please",
         "url": "https://mail.google.com/mail/u/0/#inbox/19d4322f5d61d729",
-        "unread": true
-      },
-      {
-        "id": "19d431587fd9c252",
-        "subject": "Invitation: Discord discussion - creditation @ Tue Mar 31, 2026 12:30pm - 1pm (CEST) (Johann Rozario)",
-        "from": "Julio Lindveld <julio@supplied.eu>",
-        "date": "2026-03-31T08:49:37.000Z",
-        "snippet": "Discord discussion - creditation Join with Google Meet – You have been invited by Julio Lindveld to attend an event named Discord discussion - creditation on Tuesday Mar 31, 2026 ⋅ 12:30pm – 1pm (",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d431587fd9c252",
         "unread": true
       },
       {
@@ -392,6 +392,16 @@
   "email_priorities": [
     {
       "action": "reply",
+      "subject": "Introduction Transferz & Supplied",
+      "reason": "Meeting Summary General Summary The meeting was an introduction between Transferz and Supplied to explore a potential pa",
+      "from": "Optiverse <mail@optiverse.ai>",
+      "ageDays": 0,
+      "threadId": "19d4348b28ea2d4c",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d4348b28ea2d4c",
+      "id": "email-19d4348b28ea2d4c"
+    },
+    {
+      "action": "reply",
       "subject": "Accepted: Commerce<>Product Weekly @ Tue Mar 31, 2026 2:30pm - 3:30pm (CEST) (Johann Rozario)",
       "reason": "Commerce&lt;&gt;Product Weekly Bas Bogerd has accepted this invitation. Join with Google Meet Meeting link meet.google.c",
       "from": "Bas Bogerd <bas@supplied.eu>",
@@ -419,16 +429,6 @@
       "threadId": "19d4322f5d61d729",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d4322f5d61d729",
       "id": "email-19d4322f5d61d729"
-    },
-    {
-      "action": "reply",
-      "subject": "Invitation: Discord discussion - creditation @ Tue Mar 31, 2026 12:30pm - 1pm (CEST) (Johann Rozario)",
-      "reason": "Discord discussion - creditation Join with Google Meet – You have been invited by Julio Lindveld to attend an event name",
-      "from": "Julio Lindveld <julio@supplied.eu>",
-      "ageDays": 0,
-      "threadId": "19d431587fd9c252",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d431587fd9c252",
-      "id": "email-19d431587fd9c252"
     },
     {
       "action": "reply",
