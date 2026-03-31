@@ -1,7 +1,34 @@
 {
-  "refreshedAt": "2026-03-31T14:56:43.685Z",
+  "refreshedAt": "2026-03-31T15:56:48.074Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d4498bb0d68fa4",
+        "subject": "nieuwe medewerkers",
+        "from": "Clara van Panhuys <clara.vanpanhuys@workwisland.com>",
+        "date": "2026-03-31T15:52:31.000Z",
+        "snippet": "Hallo Johann, Leuk om contact op te nemen met de CEO &amp; Co-Founder van Supplied, ik kan me voorstellen dat het druk is bij jullie, want ik zag op LinkedIn dat je team de afgelopen maanden flink is",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d4498bb0d68fa4",
+        "unread": true
+      },
+      {
+        "id": "19d44715010e391d",
+        "subject": "Be recognised as a leader in the payments industry at PAY360 Awards",
+        "from": "Emma Banymandhub <emma@thepaymentsassociation.org>",
+        "date": "2026-03-31T15:09:30.000Z",
+        "snippet": "Hi Johann, Just wished to quickly check that you saw our email last week (see below). With the busyness of PAY360 last week and the Easter holidays fast approaching, we are extending the entry deadline",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d44715010e391d",
+        "unread": true
+      },
+      {
+        "id": "19d44706be7ff475",
+        "subject": "4 unread notifications on Supplied",
+        "from": "Linear <notifications@linear.app>",
+        "date": "2026-03-31T15:08:30.000Z",
+        "snippet": "You have 4 unread notifications on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these emails: https://linear.app/unsubscribe?token=",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d44706be7ff475",
+        "unread": true
+      },
       {
         "id": "19d1ff208bc98baf",
         "subject": "Re: Johann - idea",
@@ -82,36 +109,9 @@
         "snippet": "Event Name: intro call w/Michal&amp;Kamil Location: This is a Zoom web conference. You can join this meeting from your computer, tablet, or smartphone. https://us02web.zoom.us/j/83881814947 One tap",
         "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
         "unread": true
-      },
-      {
-        "id": "19cfc73957f9533b",
-        "subject": "Herinnering voor feedback over je ervaring",
-        "from": "Regus Customer Service <donotreply@regus.com>",
-        "date": "2026-03-17T15:39:18.000Z",
-        "snippet": "Regus Uw Regus ervaring Re: Uw ervaring bij ZWOLLE, Trade Centre Om onze service voortdurend te kunnen verbeteren zijn wij zeer geinteresseeerd naar uw ervaring op uw locatie. Het invullen van de",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cfc73957f9533b",
-        "unread": true
-      },
-      {
-        "id": "19cf4de5565b3976",
-        "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
-        "from": "anomalydetection@costalerts.amazonaws.com",
-        "date": "2026-03-16T04:18:54.000Z",
-        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
-        "unread": true
-      },
-      {
-        "id": "19ce82e9d0fab621",
-        "subject": "Reminder : Help Us Improve: Rate Your Experience",
-        "from": "Akancha  Srivastava <akancha@scrut.io>",
-        "date": "2026-03-13T17:11:33.000Z",
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
-        "unread": true
       }
     ],
-    "unreadCount": 40
+    "unreadCount": 43
   },
   "calendar": {
     "today": [
@@ -391,14 +391,34 @@
   },
   "email_priorities": [
     {
-      "action": "alert",
-      "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
-      "reason": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
-      "from": "anomalydetection@costalerts.amazonaws.com",
-      "ageDays": 15,
-      "threadId": "19cf4de5565b3976",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
-      "id": "email-19cf4de5565b3976"
+      "action": "reply",
+      "subject": "nieuwe medewerkers",
+      "reason": "Hallo Johann, Leuk om contact op te nemen met de CEO &amp; Co-Founder van Supplied, ik kan me voorstellen dat het druk i",
+      "from": "Clara van Panhuys <clara.vanpanhuys@workwisland.com>",
+      "ageDays": 0,
+      "threadId": "19d4498bb0d68fa4",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d4498bb0d68fa4",
+      "id": "email-19d4498bb0d68fa4"
+    },
+    {
+      "action": "reply",
+      "subject": "Be recognised as a leader in the payments industry at PAY360 Awards",
+      "reason": "Hi Johann, Just wished to quickly check that you saw our email last week (see below). With the busyness of PAY360 last w",
+      "from": "Emma Banymandhub <emma@thepaymentsassociation.org>",
+      "ageDays": 0,
+      "threadId": "19d44715010e391d",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d44715010e391d",
+      "id": "email-19d44715010e391d"
+    },
+    {
+      "action": "reply",
+      "subject": "4 unread notifications on Supplied",
+      "reason": "You have 4 unread notifications on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these ema",
+      "from": "Linear <notifications@linear.app>",
+      "ageDays": 0,
+      "threadId": "19d44706be7ff475",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d44706be7ff475",
+      "id": "email-19d44706be7ff475"
     },
     {
       "action": "reply",
@@ -485,7 +505,7 @@
       "subject": "johann and Kamil Węgliński + Michał Mroczkowski",
       "reason": "Event Name: intro call w/Michal&amp;Kamil Location: This is a Zoom web conference. You can join this meeting from your c",
       "from": "\"Kamil Węgliński\" <kamil.weglinski@moc.vc>",
-      "ageDays": 3,
+      "ageDays": 4,
       "threadId": "19d2fa1cdfbfe765",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
       "id": "email-19d2fa1cdfbfe765"
