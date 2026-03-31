@@ -37,7 +37,7 @@ type HsTask = {
 
 // Combined stream item
 type StreamItem = {
-  id: string; title: string; source: 'linear' | 'hubspot' | 'gcal' | 'gmail' | 'personal';
+  id: string; title: string; source: 'linear' | 'hubspot' | 'gcal' | 'gmail' | 'personal' | 'drive' | 'chat';
   dueDate: string | null; status: string; url: string | null;
   priority: number; meta?: string; assignee?: string;
 };
@@ -135,10 +135,10 @@ function cleanAssigneeFull(name: string): string {
 }
 
 const SOURCE_COLORS: Record<string, string> = {
-  linear: '#6366f1', hubspot: '#f97316', gcal: '#3b82f6', gmail: '#ef4444', personal: '#22c55e',
+  linear: '#6366f1', hubspot: '#f97316', gcal: '#3b82f6', gmail: '#ef4444', personal: '#22c55e', drive: '#4285F4', chat: '#34A853',
 };
 const SOURCE_LABELS: Record<string, string> = {
-  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Email', personal: 'My Task',
+  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Email', personal: 'My Task', drive: 'Drive', chat: 'Chat',
 };
 
 const priCatColors: Record<string, string> = {
@@ -413,6 +413,33 @@ export default function DashboardPage() {
     });
   }
 
+  // Google Drive comments → stream items
+  if (notifications?.drive?.items) {
+    for (const d of notifications.drive.items) {
+      if (d.type !== 'comment') continue;
+      if (hiddenTasks.has(d.id) || doneTasks.has(d.id)) continue;
+      streamItems.push({
+        id: `drv_${d.id}`, title: `${d.author}: "${d.title}"`,
+        source: 'drive',
+        dueDate: null, status: d.docName, url: d.url,
+        priority: 3, meta: d.docName, assignee: firstName,
+      });
+    }
+  }
+
+  // Google Chat messages → stream items
+  if (notifications?.chat?.items) {
+    for (const c of notifications.chat.items) {
+      if (hiddenTasks.has(c.id) || doneTasks.has(c.id)) continue;
+      streamItems.push({
+        id: `cht_${c.id}`, title: c.title,
+        source: 'chat',
+        dueDate: null, status: c.spaceName, url: c.spaceUrl,
+        priority: 3, meta: c.spaceName, assignee: firstName,
+      });
+    }
+  }
+
   // Email action items — surface unread emails as potential tasks
   const actionEmails = emails.filter(e => e.unread).slice(0, 5);
 
@@ -437,8 +464,11 @@ export default function DashboardPage() {
   const filteredStream = !personFilter ? streamItems
     : streamItems.filter(i => i.assignee?.toLowerCase().includes(personFilter.toLowerCase()));
 
-  // Priority summary — top urgent/high items
-  const priorityItems = filteredStream.filter(i => i.priority <= 2 || isOverdue(i.dueDate));
+  // Priority summary — personal tasks + urgent/high + overdue + Drive/Chat items
+  const priorityItems = filteredStream.filter(i =>
+    i.source === 'personal' || i.source === 'drive' || i.source === 'chat' ||
+    i.priority <= 2 || isOverdue(i.dueDate)
+  );
 
   // Group by urgency
   const overdue = filteredStream.filter(i => isOverdue(i.dueDate));
@@ -493,25 +523,24 @@ export default function DashboardPage() {
         {/* Priority Summary Strip */}
         {!isLoadingAll && priorityItems.length > 0 && (
           <div className="px-6 pb-2">
-            <div className="rounded-lg p-3" style={{ background: '#ef444411', border: '1px solid #ef444433' }}>
+            <div className="rounded-lg p-3" style={{ background: 'var(--surface)', border: '1px solid var(--accent)' + '44' }}>
               <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle size={12} style={{ color: '#ef4444' }} />
-                <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: '#ef4444' }}>
-                  Priority Focus — {priorityItems.length} items need attention
+                <AlertTriangle size={12} style={{ color: 'var(--accent)' }} />
+                <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'var(--accent)' }}>
+                  Priority Focus — {priorityItems.length} items
                 </span>
               </div>
               <div className="space-y-1">
-                {priorityItems.slice(0, 5).map(item => {
-                  const isDone = doneTasks.has(item.id.replace(/^(lin_|hs_|pt_)/, ''));
+                {priorityItems.slice(0, 8).map(item => {
+                  const rawId = item.id.replace(/^(lin_|hs_|pt_|drv_|cht_)/, '');
+                  const isPersonal = item.source === 'personal';
+                  const isDriveChat = item.source === 'drive' || item.source === 'chat';
                   return (
                     <div key={item.id} className="flex items-center gap-2 group">
                       <button
-                        onClick={() => markDone(item.id.replace(/^(lin_|hs_|pt_)/, ''), item.title)}
+                        onClick={() => markDone(isPersonal ? item.id : rawId, item.title)}
                         className="shrink-0" title="Mark done">
-                        {isDone
-                          ? <CheckCircle size={13} style={{ color: '#22c55e' }} />
-                          : <Circle size={13} style={{ color: 'var(--text-muted)' }} />
-                        }
+                        <Circle size={13} style={{ color: 'var(--text-muted)' }} />
                       </button>
                       <span className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0"
                         style={{ background: SOURCE_COLORS[item.source] + '22', color: SOURCE_COLORS[item.source] }}>
@@ -523,6 +552,11 @@ export default function DashboardPage() {
                           style={{ color: 'var(--text)' }}>{item.title}</a>
                       ) : (
                         <span className="text-[11px] flex-1 truncate" style={{ color: 'var(--text)' }}>{item.title}</span>
+                      )}
+                      {/* Meta info for Drive/Chat */}
+                      {isDriveChat && item.meta && (
+                        <span className="text-[8px] px-1 py-0.5 rounded shrink-0 truncate max-w-[100px]"
+                          style={{ background: 'var(--bg)', color: 'var(--text-muted)' }}>{item.meta}</span>
                       )}
                       {isOverdue(item.dueDate) && (
                         <span className="text-[9px] px-1 py-0.5 rounded font-bold shrink-0"
@@ -537,12 +571,30 @@ export default function DashboardPage() {
                       {item.dueDate && (
                         <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{formatDate(item.dueDate)}</span>
                       )}
+                      {/* Edit & Delete for personal tasks */}
+                      {isPersonal && (
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                          <button onClick={() => { setEditTitle(item.title); setEditingTask(rawId); }} title="Edit">
+                            <Edit3 size={10} style={{ color: 'var(--accent)' }} />
+                          </button>
+                          <button onClick={() => dismissTask(item.id, item.title)} title="Delete">
+                            <Trash2 size={10} style={{ color: '#ef4444' }} />
+                          </button>
+                        </div>
+                      )}
+                      {/* Dismiss for Drive/Chat */}
+                      {isDriveChat && (
+                        <button onClick={() => dismissTask(rawId, item.title)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0" title="Dismiss">
+                          <X size={10} style={{ color: 'var(--text-muted)' }} />
+                        </button>
+                      )}
                     </div>
                   );
                 })}
-                {priorityItems.length > 5 && (
+                {priorityItems.length > 8 && (
                   <span className="text-[9px] block mt-1" style={{ color: 'var(--text-muted)' }}>
-                    + {priorityItems.length - 5} more priority items below
+                    + {priorityItems.length - 8} more items below
                   </span>
                 )}
               </div>
@@ -749,138 +801,33 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* Google Drive Comments & Activity */}
-            <div className="px-6 py-3">
-              <div className="flex items-center gap-2 mb-2">
-                <FolderOpen size={14} style={{ color: '#4285F4' }} />
-                <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
-                  Google Drive Activity
-                </h3>
-                {notifications?.drive?.items && notifications.drive.items.length > 0 && (
-                  <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: '#4285F422', color: '#4285F4' }}>
-                    {notifications.drive.items.length}
-                  </span>
-                )}
-              </div>
-              {!notifications ? (
-                <div className="rounded-md animate-pulse" style={{ background: 'var(--surface)', height: '40px' }} />
-              ) : notifications.drive.items.length === 0 ? (
-                <p className="text-[10px] py-2" style={{ color: 'var(--text-muted)' }}>
-                  {notifications.drive.available ? 'No recent Drive activity' : `Drive: ${notifications.drive.error || 'Not connected'}`}
-                </p>
-              ) : (
-                <div className="space-y-1">
-                  {notifications.drive.items.slice(0, 8).map(item => {
-                    const alreadyTask = personalTasks.some(pt => pt.title.includes(item.docName));
-                    const timeAgo = getTimeAgo(item.createdAt);
-                    return (
-                      <div key={item.id} className="flex items-center gap-2 rounded px-3 py-1.5 group"
-                        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                        <span className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0"
-                          style={{ background: item.type === 'comment' ? '#FBBC0422' : '#4285F422', color: item.type === 'comment' ? '#FBBC04' : '#4285F4' }}>
-                          {item.type === 'comment' ? 'Comment' : 'Edit'}
-                        </span>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-[11px] block truncate" style={{ color: 'var(--text)' }}>
-                            {item.title}
-                          </span>
-                          <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
-                            {item.author} in <a href={item.url} target="_blank" rel="noopener" className="hover:underline" style={{ color: 'var(--accent)' }}>{item.docName}</a> · {timeAgo}
-                          </span>
-                        </div>
-                        {item.type === 'comment' && !alreadyTask && (
-                          <button
-                            onClick={() => addPersonalTask(
-                              `Review: ${item.docName} — ${item.title.slice(0, 60)}`, null, 'medium',
-                              'Google Drive', item.url
-                            )}
-                            className="text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
-                            style={{ background: 'var(--accent)', color: '#fff' }}
-                            title="Add as task">
-                            <Plus size={10} />
-                          </button>
-                        )}
-                        <a href={item.url} target="_blank" rel="noopener" className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ExternalLink size={10} style={{ color: 'var(--accent)' }} />
-                        </a>
-                      </div>
-                    );
-                  })}
+            {/* Connected sources status */}
+            {notifications && (
+              <div className="px-6 py-3">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="flex items-center gap-1.5">
+                    <FolderOpen size={11} style={{ color: notifications.drive.available ? '#4285F4' : 'var(--text-muted)' }} />
+                    <span className="text-[9px]" style={{ color: notifications.drive.available ? '#4285F4' : 'var(--text-muted)' }}>
+                      Drive {notifications.drive.available
+                        ? `(${notifications.drive.items.filter(i => i.type === 'comment').length} comments)`
+                        : notifications.drive.error?.includes('403') ? '— needs scope' : '— not connected'}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <MessageSquare size={11} style={{ color: notifications.chat.available ? '#34A853' : 'var(--text-muted)' }} />
+                    <span className="text-[9px]" style={{ color: notifications.chat.available ? '#34A853' : 'var(--text-muted)' }}>
+                      Chat {notifications.chat.available
+                        ? `(${notifications.chat.items.length} messages)`
+                        : notifications.chat.error?.includes('403') ? '— needs scope' : '— not connected'}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Hash size={11} style={{ color: 'var(--text-muted)' }} />
+                    <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>Discord — add bot token</span>
+                  </div>
                 </div>
-              )}
-            </div>
-
-            {/* Google Chat Messages */}
-            <div className="px-6 py-3">
-              <div className="flex items-center gap-2 mb-2">
-                <MessageSquare size={14} style={{ color: '#34A853' }} />
-                <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
-                  Google Chat
-                </h3>
-                {notifications?.chat?.items && notifications.chat.items.length > 0 && (
-                  <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: '#34A85322', color: '#34A853' }}>
-                    {notifications.chat.items.length}
-                  </span>
-                )}
               </div>
-              {!notifications ? (
-                <div className="rounded-md animate-pulse" style={{ background: 'var(--surface)', height: '40px' }} />
-              ) : notifications.chat.items.length === 0 ? (
-                <p className="text-[10px] py-2" style={{ color: 'var(--text-muted)' }}>
-                  {notifications.chat.available ? 'No recent Chat messages' : `Chat: ${notifications.chat.error || 'Not connected'}`}
-                </p>
-              ) : (
-                <div className="space-y-1">
-                  {notifications.chat.items.slice(0, 8).map(item => {
-                    const alreadyTask = personalTasks.some(pt => pt.title.includes(item.title.slice(0, 30)));
-                    const timeAgo = getTimeAgo(item.createdAt);
-                    return (
-                      <div key={item.id} className="flex items-center gap-2 rounded px-3 py-1.5 group"
-                        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                        <span className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0"
-                          style={{ background: item.type === 'dm' ? '#EA433522' : '#34A85322', color: item.type === 'dm' ? '#EA4335' : '#34A853' }}>
-                          {item.type === 'dm' ? 'DM' : 'Chat'}
-                        </span>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-[11px] block truncate" style={{ color: 'var(--text)' }}>
-                            {item.title}
-                          </span>
-                          <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
-                            {item.author} in {item.spaceName} · {timeAgo}
-                          </span>
-                        </div>
-                        {!alreadyTask && (
-                          <button
-                            onClick={() => addPersonalTask(
-                              item.title.slice(0, 80), null, 'medium',
-                              `Chat: ${item.spaceName}`, item.spaceUrl
-                            )}
-                            className="text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
-                            style={{ background: 'var(--accent)', color: '#fff' }}
-                            title="Add as task">
-                            <Plus size={10} />
-                          </button>
-                        )}
-                        <a href={item.spaceUrl} target="_blank" rel="noopener" className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ExternalLink size={10} style={{ color: 'var(--accent)' }} />
-                        </a>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            {/* Discord — still needs integration */}
-            <div className="px-6 py-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Hash size={14} style={{ color: '#5865F2' }} />
-                <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Discord</h3>
-              </div>
-              <div className="rounded-lg p-3 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>Discord integration requires a bot token — add DISCORD_BOT_TOKEN to connect</span>
-              </div>
-            </div>
+            )}
           </>
         )}
       </div>
