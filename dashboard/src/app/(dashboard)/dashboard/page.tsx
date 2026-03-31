@@ -265,6 +265,8 @@ export default function DashboardPage() {
   const [personFilterInitialized, setPersonFilterInitialized] = useState(false);
   const [editingTask, setEditingTask] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
+  const [priorityExpanded, setPriorityExpanded] = useState(false);
+  const [editingPriorityDate, setEditingPriorityDate] = useState<string | null>(null);
 
   // Save personal tasks & dismissed meeting tasks on change
   useEffect(() => { savePersonalTasks(personalTasks); }, [personalTasks]);
@@ -440,8 +442,21 @@ export default function DashboardPage() {
     }
   }
 
-  // Email action items — surface unread emails as potential tasks
+  // Email action items — surface unread emails as actionable stream items
   const actionEmails = emails.filter(e => e.unread).slice(0, 5);
+  for (const email of actionEmails) {
+    const emailId = `eml_${email.id}`;
+    if (hiddenTasks.has(emailId) || doneTasks.has(emailId)) continue;
+    const alreadyTask = personalTasks.some(pt => pt.title.includes(email.subject));
+    if (alreadyTask) continue;
+    streamItems.push({
+      id: emailId, title: `${parseFrom(email.from)}: ${email.subject}`,
+      source: 'gmail', dueDate: null,
+      status: email.unread ? 'Unread' : 'Read',
+      url: `https://mail.google.com/mail/u/0/#inbox/${email.id}`,
+      priority: 3, meta: email.snippet?.slice(0, 60), assignee: firstName,
+    });
+  }
 
   // Person filter
   const assigneeMap = new Map<string, string>();
@@ -464,9 +479,9 @@ export default function DashboardPage() {
   const filteredStream = !personFilter ? streamItems
     : streamItems.filter(i => i.assignee?.toLowerCase().includes(personFilter.toLowerCase()));
 
-  // Priority summary — personal tasks + urgent/high + overdue + Drive/Chat items
+  // Priority summary — personal tasks + urgent/high + overdue + Drive/Chat/Email items
   const priorityItems = filteredStream.filter(i =>
-    i.source === 'personal' || i.source === 'drive' || i.source === 'chat' ||
+    i.source === 'personal' || i.source === 'drive' || i.source === 'chat' || i.source === 'gmail' ||
     i.priority <= 2 || isOverdue(i.dueDate)
   );
 
@@ -531,10 +546,12 @@ export default function DashboardPage() {
                 </span>
               </div>
               <div className="space-y-1">
-                {priorityItems.slice(0, 8).map(item => {
-                  const rawId = item.id.replace(/^(lin_|hs_|pt_|drv_|cht_)/, '');
+                {(priorityExpanded ? priorityItems : priorityItems.slice(0, 8)).map(item => {
+                  const rawId = item.id.replace(/^(lin_|hs_|pt_|drv_|cht_|eml_)/, '');
                   const isPersonal = item.source === 'personal';
-                  const isDriveChat = item.source === 'drive' || item.source === 'chat';
+                  const isDriveChatEmail = item.source === 'drive' || item.source === 'chat' || item.source === 'gmail';
+                  const pt = isPersonal ? personalTasks.find(t => t.id === rawId) : null;
+                  const isEditingDate = editingPriorityDate === item.id;
                   return (
                     <div key={item.id} className="flex items-center gap-2 group">
                       <button
@@ -553,8 +570,8 @@ export default function DashboardPage() {
                       ) : (
                         <span className="text-[11px] flex-1 truncate" style={{ color: 'var(--text)' }}>{item.title}</span>
                       )}
-                      {/* Meta info for Drive/Chat */}
-                      {isDriveChat && item.meta && (
+                      {/* Meta info for Drive/Chat/Email */}
+                      {isDriveChatEmail && item.meta && (
                         <span className="text-[8px] px-1 py-0.5 rounded shrink-0 truncate max-w-[100px]"
                           style={{ background: 'var(--bg)', color: 'var(--text-muted)' }}>{item.meta}</span>
                       )}
@@ -568,9 +585,29 @@ export default function DashboardPage() {
                           {item.priority === 1 ? 'URGENT' : 'HIGH'}
                         </span>
                       )}
-                      {item.dueDate && (
-                        <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{formatDate(item.dueDate)}</span>
-                      )}
+                      {/* Due date — inline editable for personal tasks */}
+                      {isPersonal && isEditingDate ? (
+                        <input type="date" autoFocus
+                          value={pt?.dueDate || ''}
+                          onChange={e => { updatePersonalTaskDate(rawId, e.target.value); }}
+                          onBlur={() => setEditingPriorityDate(null)}
+                          onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') setEditingPriorityDate(null); }}
+                          className="text-[9px] bg-transparent outline-none px-1 py-0.5 rounded shrink-0"
+                          style={{ color: 'var(--text)', border: '1px solid var(--accent)', width: '95px' }}
+                        />
+                      ) : item.dueDate ? (
+                        <button onClick={() => isPersonal && setEditingPriorityDate(item.id)}
+                          className="text-[9px] shrink-0" style={{ color: isOverdue(item.dueDate) ? '#ef4444' : 'var(--text-muted)' }}
+                          title={isPersonal ? 'Click to edit date' : undefined}>
+                          {formatDate(item.dueDate)}
+                        </button>
+                      ) : isPersonal ? (
+                        <button onClick={() => setEditingPriorityDate(item.id)}
+                          className="text-[9px] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                          style={{ color: 'var(--text-muted)' }} title="Set due date">
+                          <Calendar size={10} />
+                        </button>
+                      ) : null}
                       {/* Edit & Delete for personal tasks */}
                       {isPersonal && (
                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
@@ -582,20 +619,33 @@ export default function DashboardPage() {
                           </button>
                         </div>
                       )}
-                      {/* Dismiss for Drive/Chat */}
-                      {isDriveChat && (
-                        <button onClick={() => dismissTask(rawId, item.title)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0" title="Dismiss">
-                          <X size={10} style={{ color: 'var(--text-muted)' }} />
-                        </button>
+                      {/* Dismiss + Add as task for Drive/Chat/Email */}
+                      {isDriveChatEmail && (
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                          {!personalTasks.some(pt => pt.title.includes(item.title.slice(0, 30))) && (
+                            <button onClick={() => addPersonalTask(item.title, null, 'medium', SOURCE_LABELS[item.source], item.url || undefined)}
+                              title="Add as personal task">
+                              <Plus size={10} style={{ color: 'var(--accent)' }} />
+                            </button>
+                          )}
+                          <button onClick={() => dismissTask(rawId, item.title)} title="Dismiss">
+                            <X size={10} style={{ color: 'var(--text-muted)' }} />
+                          </button>
+                        </div>
                       )}
                     </div>
                   );
                 })}
                 {priorityItems.length > 8 && (
-                  <span className="text-[9px] block mt-1" style={{ color: 'var(--text-muted)' }}>
-                    + {priorityItems.length - 8} more items below
-                  </span>
+                  <button onClick={() => setPriorityExpanded(!priorityExpanded)}
+                    className="text-[9px] flex items-center gap-1 mt-1 hover:underline"
+                    style={{ color: 'var(--accent)' }}>
+                    {priorityExpanded ? (
+                      <><ChevronUp size={10} /> Show less</>
+                    ) : (
+                      <><ChevronDown size={10} /> + {priorityItems.length - 8} more items</>
+                    )}
+                  </button>
                 )}
               </div>
             </div>
@@ -967,7 +1017,7 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
         <span className="text-[8px] font-bold uppercase tracking-[1.5px]" style={{ color }}>{label} ({count})</span>
       </div>
       {items.map(item => {
-        const rawId = item.id.replace(/^(lin_|hs_|pt_)/, '');
+        const rawId = item.id.replace(/^(lin_|hs_|pt_|drv_|cht_|eml_)/, '');
         const isExpanded = expandedItem === item.id;
         const isPersonal = item.source === 'personal';
         const pt = isPersonal ? personalTasks.find(t => t.id === rawId) : null;
