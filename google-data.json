@@ -1,23 +1,14 @@
 {
-  "refreshedAt": "2026-03-31T10:35:16.798Z",
+  "refreshedAt": "2026-03-31T10:56:40.324Z",
   "gmail": {
     "threads": [
       {
-        "id": "19d4348b28ea2d4c",
-        "subject": "Introduction Transferz & Supplied",
+        "id": "19d4383cb04e4303",
+        "subject": "Discord discussion - creditation",
         "from": "Optiverse <mail@optiverse.ai>",
-        "date": "2026-03-31T09:45:30.000Z",
-        "snippet": "Meeting Summary General Summary The meeting was an introduction between Transferz and Supplied to explore a potential partnership around supplier compliance, document verification, and onboarding at",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d4348b28ea2d4c",
-        "unread": true
-      },
-      {
-        "id": "19d43322bbf52eec",
-        "subject": "Accepted: Commerce<>Product Weekly @ Tue Mar 31, 2026 2:30pm - 3:30pm (CEST) (Johann Rozario)",
-        "from": "Bas Bogerd <bas@supplied.eu>",
-        "date": "2026-03-31T09:20:54.000Z",
-        "snippet": "Commerce&lt;&gt;Product Weekly Bas Bogerd has accepted this invitation. Join with Google Meet Meeting link meet.google.com/fhe-mhir-tgy Join by phone (NL) +31 20 257 5066 PIN: 536386506 More phone",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d43322bbf52eec",
+        "date": "2026-03-31T10:50:03.000Z",
+        "snippet": "Meeting Summary General Summary The team discussed how to handle an edge case in reporting where bookings made in December 2024 are credited in January 2025. They aligned on a principle of always",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d4383cb04e4303",
         "unread": true
       },
       {
@@ -27,15 +18,6 @@
         "date": "2026-03-31T09:04:17.000Z",
         "snippet": "Julio Lindveld replied to a comment in the following document Supplied_SALES_Revenue_Costs_Master_File 1 comment 12-31-25 Johann Rozario • 10:33 AM, Mar 31 (CEST) @julio@supplied.eu can you please",
         "url": "https://mail.google.com/mail/u/0/#inbox/19d4322f5d61d729",
-        "unread": true
-      },
-      {
-        "id": "19d42f4c687d6f38",
-        "subject": "MOFU1_Visual SB_V... - maybe move this after the first frame...",
-        "from": "\"Britt Vries (Google Docs)\" <comments-noreply@docs.google.com>",
-        "date": "2026-03-31T08:13:50.000Z",
-        "snippet": "Britt Vries replied to a comment in the following document MOFU1_Visual SB_V2 Intro.pdf 1 comment Johann Rozario maybe move this after the first frame showing that new regulations are adding even more",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d42f4c687d6f38",
         "unread": true
       },
       {
@@ -109,9 +91,27 @@
         "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
         "unread": true
+      },
+      {
+        "id": "19ce82e9d0fab621",
+        "subject": "Reminder : Help Us Improve: Rate Your Experience",
+        "from": "Akancha  Srivastava <akancha@scrut.io>",
+        "date": "2026-03-13T17:11:33.000Z",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "unread": true
+      },
+      {
+        "id": "19ce7f12f8358ef7",
+        "subject": "Exit on your terms - strategic buy and hold buyers",
+        "from": "dmitry.mykhailenko@auditfirm.uk",
+        "date": "2026-03-13T16:04:27.000Z",
+        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
+        "unread": true
       }
     ],
-    "unreadCount": 41
+    "unreadCount": 39
   },
   "calendar": {
     "today": [
@@ -292,20 +292,44 @@
   "drive": {
     "recent": [
       {
-        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
-        "name": "Notes - Commerce<>Product Weekly",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-30T09:26:59.654Z",
-        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
-        "lastModifiedBy": "Supplied Support"
-      },
-      {
         "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
         "name": "Supplied_SALES_Revenue_Costs_Master_File",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-31T09:01:42.182Z",
+        "modifiedTime": "2026-03-31T10:55:49.249Z",
         "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "15OHfIy-IifRfoXA36kO1vpwHDPYI-WAJ",
+        "name": "MOFU1_Visual SB_V2 Intro.pdf",
+        "mimeType": "application/pdf",
+        "modifiedTime": "2026-03-30T11:26:10.000Z",
+        "url": "https://drive.google.com/file/d/15OHfIy-IifRfoXA36kO1vpwHDPYI-WAJ/view?usp=drivesdk",
+        "lastModifiedBy": "Nitya Shukla Paharia"
+      },
+      {
+        "id": "1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY",
+        "name": "Supplied Video - Batch 2",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-30T12:39:08.400Z",
+        "url": "https://docs.google.com/document/d/1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1kyPdlGKTcFHbCJZlGEVQObQf4JX8CPyz",
+        "name": "Style 2 (New)",
+        "mimeType": "application/vnd.google-apps.folder",
+        "modifiedTime": "2026-03-30T11:27:10.996Z",
+        "url": "https://drive.google.com/drive/folders/1kyPdlGKTcFHbCJZlGEVQObQf4JX8CPyz",
+        "lastModifiedBy": "Nitya Shukla Paharia"
+      },
+      {
+        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
+        "name": "Notes - Commerce<>Product Weekly",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-03-31T10:47:02.069Z",
+        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
+        "lastModifiedBy": "Vladimir Ivanov"
       },
       {
         "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
@@ -348,36 +372,12 @@
         "lastModifiedBy": "Johann Rozario"
       },
       {
-        "id": "15OHfIy-IifRfoXA36kO1vpwHDPYI-WAJ",
-        "name": "MOFU1_Visual SB_V2 Intro.pdf",
-        "mimeType": "application/pdf",
-        "modifiedTime": "2026-03-30T11:26:10.000Z",
-        "url": "https://drive.google.com/file/d/15OHfIy-IifRfoXA36kO1vpwHDPYI-WAJ/view?usp=drivesdk",
-        "lastModifiedBy": "Nitya Shukla Paharia"
-      },
-      {
         "id": "10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I",
         "name": "Supplied_MOFU1_STB",
         "mimeType": "application/vnd.google-apps.document",
         "modifiedTime": "2026-03-20T11:48:02.951Z",
         "url": "https://docs.google.com/document/d/10NqEByJd__P2Epbx0gbsMcVcCCLhLIJNr0QP3GtRk6I/edit?usp=drivesdk",
         "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY",
-        "name": "Supplied Video - Batch 2",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-30T12:39:08.400Z",
-        "url": "https://docs.google.com/document/d/1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
-      },
-      {
-        "id": "1kyPdlGKTcFHbCJZlGEVQObQf4JX8CPyz",
-        "name": "Style 2 (New)",
-        "mimeType": "application/vnd.google-apps.folder",
-        "modifiedTime": "2026-03-30T11:27:10.996Z",
-        "url": "https://drive.google.com/drive/folders/1kyPdlGKTcFHbCJZlGEVQObQf4JX8CPyz",
-        "lastModifiedBy": "Nitya Shukla Paharia"
       },
       {
         "id": "1VgGMLJU_Xd9EoocfzLXL_edah0JUCXVXwS9CTayPinA",
@@ -402,23 +402,13 @@
     },
     {
       "action": "reply",
-      "subject": "Introduction Transferz & Supplied",
-      "reason": "Meeting Summary General Summary The meeting was an introduction between Transferz and Supplied to explore a potential pa",
+      "subject": "Discord discussion - creditation",
+      "reason": "Meeting Summary General Summary The team discussed how to handle an edge case in reporting where bookings made in Decemb",
       "from": "Optiverse <mail@optiverse.ai>",
       "ageDays": 0,
-      "threadId": "19d4348b28ea2d4c",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d4348b28ea2d4c",
-      "id": "email-19d4348b28ea2d4c"
-    },
-    {
-      "action": "reply",
-      "subject": "Accepted: Commerce<>Product Weekly @ Tue Mar 31, 2026 2:30pm - 3:30pm (CEST) (Johann Rozario)",
-      "reason": "Commerce&lt;&gt;Product Weekly Bas Bogerd has accepted this invitation. Join with Google Meet Meeting link meet.google.c",
-      "from": "Bas Bogerd <bas@supplied.eu>",
-      "ageDays": 0,
-      "threadId": "19d43322bbf52eec",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d43322bbf52eec",
-      "id": "email-19d43322bbf52eec"
+      "threadId": "19d4383cb04e4303",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d4383cb04e4303",
+      "id": "email-19d4383cb04e4303"
     },
     {
       "action": "reply",
@@ -429,16 +419,6 @@
       "threadId": "19d4322f5d61d729",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d4322f5d61d729",
       "id": "email-19d4322f5d61d729"
-    },
-    {
-      "action": "reply",
-      "subject": "MOFU1_Visual SB_V... - maybe move this after the first frame...",
-      "reason": "Britt Vries replied to a comment in the following document MOFU1_Visual SB_V2 Intro.pdf 1 comment Johann Rozario maybe m",
-      "from": "\"Britt Vries (Google Docs)\" <comments-noreply@docs.google.com>",
-      "ageDays": 0,
-      "threadId": "19d42f4c687d6f38",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d42f4c687d6f38",
-      "id": "email-19d42f4c687d6f38"
     },
     {
       "action": "reply",
