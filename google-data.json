@@ -1,25 +1,7 @@
 {
-  "refreshedAt": "2026-03-31T17:56:50.579Z",
+  "refreshedAt": "2026-03-31T18:56:42.751Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d4508d0c37ab9e",
-        "subject": "Your receipt from Intercom R&D Unlimited Company #2593-5538",
-        "from": "\"Intercom R&D Unlimited Company\" <invoice+statements@invoices.intercom.com>",
-        "date": "2026-03-31T17:54:57.000Z",
-        "snippet": "Your receipt from Intercom R&amp;D Unlimited Company #2593-5538 ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d4508d0c37ab9e",
-        "unread": true
-      },
-      {
-        "id": "19d44e30185fdf57",
-        "subject": "Automate your work with Google Workspace Studio",
-        "from": "The Google Workspace Team <workspace-noreply@google.com>",
-        "date": "2026-03-31T17:13:40.000Z",
-        "snippet": "Automate work in minutes. ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d44e30185fdf57",
-        "unread": true
-      },
       {
         "id": "19d4322f5d61d729",
         "subject": "Supplied_SALES_Re... - @julio@supplied.eu can you please rev...",
@@ -109,9 +91,27 @@
         "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
         "unread": true
+      },
+      {
+        "id": "19ce6606ba2e3745",
+        "subject": "Customer prioritisation standup",
+        "from": "Optiverse <mail@optiverse.ai>",
+        "date": "2026-03-13T08:46:43.000Z",
+        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "unread": true
+      },
+      {
+        "id": "19ce30963c459b27",
+        "subject": "Reminder : Help Us Improve: Rate Your Experience",
+        "from": "Akancha  Srivastava <akancha@scrut.io>",
+        "date": "2026-03-12T17:12:47.000Z",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
+        "unread": true
       }
     ],
-    "unreadCount": 39
+    "unreadCount": 37
   },
   "calendar": {
     "today": [
@@ -399,26 +399,6 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
-    },
-    {
-      "action": "reply",
-      "subject": "Your receipt from Intercom R&D Unlimited Company #2593-5538",
-      "reason": "Your receipt from Intercom R&amp;D Unlimited Company #2593-5538 ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ",
-      "from": "\"Intercom R&D Unlimited Company\" <invoice+statements@invoices.intercom.com>",
-      "ageDays": 0,
-      "threadId": "19d4508d0c37ab9e",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d4508d0c37ab9e",
-      "id": "email-19d4508d0c37ab9e"
-    },
-    {
-      "action": "reply",
-      "subject": "Automate your work with Google Workspace Studio",
-      "reason": "Automate work in minutes. ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏ ‍͏ ͏",
-      "from": "The Google Workspace Team <workspace-noreply@google.com>",
-      "ageDays": 0,
-      "threadId": "19d44e30185fdf57",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d44e30185fdf57",
-      "id": "email-19d44e30185fdf57"
     },
     {
       "action": "reply",
