@@ -42,6 +42,21 @@ type StreamItem = {
   priority: number; meta?: string; assignee?: string;
 };
 
+// Google notifications
+type DriveItem = {
+  id: string; type: 'comment' | 'edit'; title: string; docName: string;
+  author: string; authorPhoto: string | null; createdAt: string;
+  url: string; hasReplies: boolean; replyCount: number;
+};
+type ChatItem = {
+  id: string; type: 'dm' | 'mention'; title: string; spaceName: string;
+  author: string; createdAt: string; spaceUrl: string;
+};
+type NotificationsData = {
+  drive: { available: boolean; error?: string; items: DriveItem[] };
+  chat: { available: boolean; error?: string; items: ChatItem[] };
+};
+
 // Personal task
 type PersonalTask = {
   id: string; title: string; dueDate: string | null;
@@ -88,6 +103,16 @@ function formatDate(d: string | null) {
 function formatCurrency(n: number | null) {
   if (!n) return '—';
   return new Intl.NumberFormat('en-EU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+}
+
+function getTimeAgo(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
 }
 
 function cleanAssignee(name: string | undefined | null): string | undefined {
@@ -227,6 +252,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState({ tasks: true, calendar: true, hubspot: true, meetings: true });
   const [personalTasks, setPersonalTasks] = useState<PersonalTask[]>(loadPersonalTasks);
   const [dismissedMeetingTasks, setDismissedMeetingTasks] = useState<string[]>(loadDismissedMeetingTasks);
+  const [notifications, setNotifications] = useState<NotificationsData | null>(null);
 
   // Task management state
   const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(new Set());
@@ -344,6 +370,12 @@ export default function DashboardPage() {
       .then(r => r.json())
       .then(data => { setMeetings(data.meetings || []); setLoading(l => ({ ...l, meetings: false })); })
       .catch(() => setLoading(l => ({ ...l, meetings: false })));
+
+    // Fetch Google Drive & Chat notifications
+    fetch(`/api/google/notifications?user=${userName}`)
+      .then(r => r.json())
+      .then(data => setNotifications(data))
+      .catch(() => setNotifications({ drive: { available: false, items: [] }, chat: { available: false, items: [] } }));
   }, [user]);
 
   // Build combined stream
@@ -717,33 +749,136 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* Recommended Actions — integration placeholders */}
+            {/* Google Drive Comments & Activity */}
+            <div className="px-6 py-3">
+              <div className="flex items-center gap-2 mb-2">
+                <FolderOpen size={14} style={{ color: '#4285F4' }} />
+                <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+                  Google Drive Activity
+                </h3>
+                {notifications?.drive?.items && notifications.drive.items.length > 0 && (
+                  <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: '#4285F422', color: '#4285F4' }}>
+                    {notifications.drive.items.length}
+                  </span>
+                )}
+              </div>
+              {!notifications ? (
+                <div className="rounded-md animate-pulse" style={{ background: 'var(--surface)', height: '40px' }} />
+              ) : notifications.drive.items.length === 0 ? (
+                <p className="text-[10px] py-2" style={{ color: 'var(--text-muted)' }}>
+                  {notifications.drive.available ? 'No recent Drive activity' : `Drive: ${notifications.drive.error || 'Not connected'}`}
+                </p>
+              ) : (
+                <div className="space-y-1">
+                  {notifications.drive.items.slice(0, 8).map(item => {
+                    const alreadyTask = personalTasks.some(pt => pt.title.includes(item.docName));
+                    const timeAgo = getTimeAgo(item.createdAt);
+                    return (
+                      <div key={item.id} className="flex items-center gap-2 rounded px-3 py-1.5 group"
+                        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                        <span className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0"
+                          style={{ background: item.type === 'comment' ? '#FBBC0422' : '#4285F422', color: item.type === 'comment' ? '#FBBC04' : '#4285F4' }}>
+                          {item.type === 'comment' ? 'Comment' : 'Edit'}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-[11px] block truncate" style={{ color: 'var(--text)' }}>
+                            {item.title}
+                          </span>
+                          <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
+                            {item.author} in <a href={item.url} target="_blank" rel="noopener" className="hover:underline" style={{ color: 'var(--accent)' }}>{item.docName}</a> · {timeAgo}
+                          </span>
+                        </div>
+                        {item.type === 'comment' && !alreadyTask && (
+                          <button
+                            onClick={() => addPersonalTask(
+                              `Review: ${item.docName} — ${item.title.slice(0, 60)}`, null, 'medium',
+                              'Google Drive', item.url
+                            )}
+                            className="text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                            style={{ background: 'var(--accent)', color: '#fff' }}
+                            title="Add as task">
+                            <Plus size={10} />
+                          </button>
+                        )}
+                        <a href={item.url} target="_blank" rel="noopener" className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <ExternalLink size={10} style={{ color: 'var(--accent)' }} />
+                        </a>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Google Chat Messages */}
+            <div className="px-6 py-3">
+              <div className="flex items-center gap-2 mb-2">
+                <MessageSquare size={14} style={{ color: '#34A853' }} />
+                <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+                  Google Chat
+                </h3>
+                {notifications?.chat?.items && notifications.chat.items.length > 0 && (
+                  <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: '#34A85322', color: '#34A853' }}>
+                    {notifications.chat.items.length}
+                  </span>
+                )}
+              </div>
+              {!notifications ? (
+                <div className="rounded-md animate-pulse" style={{ background: 'var(--surface)', height: '40px' }} />
+              ) : notifications.chat.items.length === 0 ? (
+                <p className="text-[10px] py-2" style={{ color: 'var(--text-muted)' }}>
+                  {notifications.chat.available ? 'No recent Chat messages' : `Chat: ${notifications.chat.error || 'Not connected'}`}
+                </p>
+              ) : (
+                <div className="space-y-1">
+                  {notifications.chat.items.slice(0, 8).map(item => {
+                    const alreadyTask = personalTasks.some(pt => pt.title.includes(item.title.slice(0, 30)));
+                    const timeAgo = getTimeAgo(item.createdAt);
+                    return (
+                      <div key={item.id} className="flex items-center gap-2 rounded px-3 py-1.5 group"
+                        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                        <span className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0"
+                          style={{ background: item.type === 'dm' ? '#EA433522' : '#34A85322', color: item.type === 'dm' ? '#EA4335' : '#34A853' }}>
+                          {item.type === 'dm' ? 'DM' : 'Chat'}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-[11px] block truncate" style={{ color: 'var(--text)' }}>
+                            {item.title}
+                          </span>
+                          <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
+                            {item.author} in {item.spaceName} · {timeAgo}
+                          </span>
+                        </div>
+                        {!alreadyTask && (
+                          <button
+                            onClick={() => addPersonalTask(
+                              item.title.slice(0, 80), null, 'medium',
+                              `Chat: ${item.spaceName}`, item.spaceUrl
+                            )}
+                            className="text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                            style={{ background: 'var(--accent)', color: '#fff' }}
+                            title="Add as task">
+                            <Plus size={10} />
+                          </button>
+                        )}
+                        <a href={item.spaceUrl} target="_blank" rel="noopener" className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <ExternalLink size={10} style={{ color: 'var(--accent)' }} />
+                        </a>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Discord — still needs integration */}
             <div className="px-6 py-3">
               <div className="flex items-center gap-2 mb-2">
                 <Hash size={14} style={{ color: '#5865F2' }} />
-                <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
-                  Other Notifications
-                </h3>
+                <h3 className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Discord</h3>
               </div>
-              <div className="grid grid-cols-3 gap-2">
-                <div className="rounded-lg p-3 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                  <MessageSquare size={16} className="mx-auto mb-1" style={{ color: '#34A853' }} />
-                  <span className="text-[10px] block font-medium" style={{ color: 'var(--text)' }}>Google Chat</span>
-                  <span className="text-[8px] block" style={{ color: 'var(--text-muted)' }}>Tags & mentions</span>
-                  <span className="text-[8px] px-2 py-0.5 rounded inline-block mt-1" style={{ background: '#34A85322', color: '#34A853' }}>Coming soon</span>
-                </div>
-                <div className="rounded-lg p-3 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                  <FolderOpen size={16} className="mx-auto mb-1" style={{ color: '#4285F4' }} />
-                  <span className="text-[10px] block font-medium" style={{ color: 'var(--text)' }}>Google Drive</span>
-                  <span className="text-[8px] block" style={{ color: 'var(--text-muted)' }}>Comments & tasks</span>
-                  <span className="text-[8px] px-2 py-0.5 rounded inline-block mt-1" style={{ background: '#4285F422', color: '#4285F4' }}>Coming soon</span>
-                </div>
-                <div className="rounded-lg p-3 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-                  <Hash size={16} className="mx-auto mb-1" style={{ color: '#5865F2' }} />
-                  <span className="text-[10px] block font-medium" style={{ color: 'var(--text)' }}>Discord</span>
-                  <span className="text-[8px] block" style={{ color: 'var(--text-muted)' }}>Mentions & DMs</span>
-                  <span className="text-[8px] px-2 py-0.5 rounded inline-block mt-1" style={{ background: '#5865F222', color: '#5865F2' }}>Coming soon</span>
-                </div>
+              <div className="rounded-lg p-3 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>Discord integration requires a bot token — add DISCORD_BOT_TOKEN to connect</span>
               </div>
             </div>
           </>
