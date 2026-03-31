@@ -1,17 +1,25 @@
 {
-  "refreshedAt": "2026-03-31T10:56:50.057Z",
+  "refreshedAt": "2026-03-31T11:56:59.058Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 64,
+  "thisWeekTotal": 65,
   "lastWeekTotal": 50,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 64,
+      "thisWeek": 65,
       "lastWeek": 50,
       "companies": [
+        {
+          "name": "Ermakov.Us",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-31",
+          "leadId": "d712b7de-d7ed-11ef-a9e0-6187b644ce3f_27Aetew55ZNqUEQDPSyHkN",
+          "source": "Direct"
+        },
         {
           "name": "Transferz",
           "website": null,
@@ -163,14 +171,6 @@
           "lastVisit": "2026-03-25",
           "leadId": "6a721d4a-d258-11ee-8279-41350748fd32_aespgMLc9QmrU9xjc68jjT",
           "source": "Direct"
-        },
-        {
-          "name": "Ilustre Colegio de la Abogacía de Madrid",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-25",
-          "leadId": "4a4e1658-b1fb-11ea-9cfe-716b5c9ff816_oqkPx98MiGpqZDjrUotcmR",
-          "source": "Direct"
         }
       ]
     }
@@ -277,6 +277,16 @@
       "leadId": "wi2rFLLoQFRRV5PnrnvMok_p6q3nDbB2C4m9KjK9gndy"
     },
     {
+      "name": "Ermakov.Us",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-31",
+      "lastVisit": "2026-03-31",
+      "source": "Direct",
+      "leadId": "d712b7de-d7ed-11ef-a9e0-6187b644ce3f_27Aetew55ZNqUEQDPSyHkN"
+    },
+    {
       "name": "Starr Studio",
       "website": null,
       "visits": 1,
@@ -365,16 +375,6 @@
       "lastVisit": "2026-03-27",
       "source": "Direct",
       "leadId": "091f68f6-2cf9-11ec-a258-75930e3fefe9_xnbS56EZEhLj6BfKrgAz68"
-    },
-    {
-      "name": "Deskbird",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-26",
-      "lastVisit": "2026-03-26",
-      "source": "Direct",
-      "leadId": "68d88a3e-da78-11ec-909f-65355e8fbb21_c592830c-e6fa-11e9-9b3f-2fe890320230"
     }
   ],
   "dailyVisits": [
@@ -552,7 +552,7 @@
     },
     {
       "date": "2026-03-31",
-      "visits": 5
+      "visits": 7
     }
   ]
 }
