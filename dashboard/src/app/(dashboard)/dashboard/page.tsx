@@ -2,8 +2,8 @@
 
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { isAdmin } from '@/lib/auth';
-import { Calendar, Mail, CheckSquare, Clock, ExternalLink, Circle, X, AlarmClock, CheckCircle, Undo2, FileText, ChevronDown, ChevronUp, GripVertical, Phone, DollarSign } from 'lucide-react';
-import { useEffect, useState, useCallback } from 'react';
+import { Calendar, Mail, CheckSquare, Clock, ExternalLink, Circle, X, AlarmClock, CheckCircle, Undo2, FileText, ChevronDown, ChevronUp, GripVertical, Phone, DollarSign, Plus, Trash2, Bell, Edit3 } from 'lucide-react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import WbsoTracker from '@/components/WbsoTracker';
 
 // ── Types ──────────────────────────────────────────────────────
@@ -37,9 +37,18 @@ type HsTask = {
 
 // Combined stream item
 type StreamItem = {
-  id: string; title: string; source: 'linear' | 'hubspot' | 'gcal' | 'gmail';
+  id: string; title: string; source: 'linear' | 'hubspot' | 'gcal' | 'gmail' | 'personal';
   dueDate: string | null; status: string; url: string | null;
   priority: number; meta?: string; assignee?: string;
+};
+
+// Personal task
+type PersonalTask = {
+  id: string; title: string; dueDate: string | null;
+  priority: 'high' | 'medium' | 'low';
+  done: boolean; reminder: string | null;
+  sourceLabel?: string; sourceUrl?: string;
+  createdAt: string;
 };
 
 type Toast = { id: string; message: string; undoAction?: () => void };
@@ -72,16 +81,52 @@ function formatCurrency(n: number | null) {
   return new Intl.NumberFormat('en-EU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
 }
 
+// Clean up email-like assignee names → proper first names
+function cleanAssignee(name: string | undefined | null): string | undefined {
+  if (!name) return undefined;
+  if (name.includes('@')) {
+    // Extract name from email: "nadezhda@supplied.eu" → "Nadezhda"
+    const local = name.split('@')[0];
+    // Handle dots/underscores: "johann.rozario" → "Johann"
+    const first = local.split(/[._-]/)[0];
+    return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+  }
+  return name;
+}
+
+// Get display name for filter (full cleaned name)
+function cleanAssigneeFull(name: string): string {
+  if (name.includes('@')) {
+    const local = name.split('@')[0];
+    const parts = local.split(/[._-]/);
+    return parts.map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');
+  }
+  return name;
+}
+
 const SOURCE_COLORS: Record<string, string> = {
-  linear: '#6366f1', hubspot: '#f97316', gcal: '#3b82f6', gmail: '#ef4444',
+  linear: '#6366f1', hubspot: '#f97316', gcal: '#3b82f6', gmail: '#ef4444', personal: '#22c55e',
 };
 const SOURCE_LABELS: Record<string, string> = {
-  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Gmail',
+  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Gmail', personal: 'My Task',
 };
 
 const priCatColors: Record<string, string> = {
   high: '#f97316', medium: '#facc15', low: '#94a3b8', urgent: '#ef4444',
 };
+
+const PRIORITY_MAP: Record<string, number> = { high: 2, medium: 3, low: 4 };
+
+// ── LocalStorage helpers ──────────────────────────────────────
+function loadPersonalTasks(): PersonalTask[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    return JSON.parse(localStorage.getItem('dashboard_personal_tasks') || '[]');
+  } catch { return []; }
+}
+function savePersonalTasks(tasks: PersonalTask[]) {
+  localStorage.setItem('dashboard_personal_tasks', JSON.stringify(tasks));
+}
 
 // ── Toast notification ─────────────────────────────────────────
 function ToastBar({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: string) => void }) {
@@ -106,6 +151,72 @@ function ToastBar({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: stri
   );
 }
 
+// ── Personal Task Input ────────────────────────────────────────
+function AddTaskInput({ onAdd }: { onAdd: (title: string, dueDate: string | null, priority: 'high' | 'medium' | 'low') => void }) {
+  const [title, setTitle] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium');
+  const [showOptions, setShowOptions] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = () => {
+    if (!title.trim()) return;
+    onAdd(title.trim(), dueDate || null, priority);
+    setTitle('');
+    setDueDate('');
+    setPriority('medium');
+    setShowOptions(false);
+  };
+
+  return (
+    <div className="rounded-lg overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+      <div className="flex items-center gap-2 px-3 py-2">
+        <Plus size={14} style={{ color: 'var(--accent)' }} />
+        <input
+          ref={inputRef}
+          type="text"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          onFocus={() => setShowOptions(true)}
+          onKeyDown={e => { if (e.key === 'Enter') handleSubmit(); }}
+          placeholder="Add a task..."
+          className="flex-1 text-xs bg-transparent border-none outline-none"
+          style={{ color: 'var(--text)' }}
+        />
+        {title && (
+          <button onClick={handleSubmit} className="text-[10px] px-2 py-0.5 rounded font-medium"
+            style={{ background: 'var(--accent)', color: '#fff' }}>
+            Add
+          </button>
+        )}
+      </div>
+      {showOptions && title && (
+        <div className="flex items-center gap-3 px-3 py-1.5" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg)' }}>
+          <div className="flex items-center gap-1">
+            <Calendar size={10} style={{ color: 'var(--text-muted)' }} />
+            <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)}
+              className="text-[10px] bg-transparent border-none outline-none"
+              style={{ color: 'var(--text-muted)' }} />
+          </div>
+          <div className="flex items-center gap-1">
+            {(['high', 'medium', 'low'] as const).map(p => (
+              <button key={p} onClick={() => setPriority(p)}
+                className="text-[9px] px-1.5 py-0.5 rounded capitalize"
+                style={{
+                  background: priority === p ? (priCatColors[p] || '#94a3b8') + '33' : 'transparent',
+                  color: priority === p ? priCatColors[p] : 'var(--text-muted)',
+                  border: priority === p ? `1px solid ${priCatColors[p]}44` : '1px solid transparent',
+                }}>
+                {p}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main page ──────────────────────────────────────────────────
 export default function DashboardPage() {
   const { user } = useUser();
@@ -119,6 +230,7 @@ export default function DashboardPage() {
   const [hsTasks, setHsTasks] = useState<HsTask[]>([]);
   const [hsDeals, setHsDeals] = useState<HsDeal[]>([]);
   const [loading, setLoading] = useState({ tasks: true, calendar: true, hubspot: true, meetings: true });
+  const [personalTasks, setPersonalTasks] = useState<PersonalTask[]>(loadPersonalTasks);
 
   // Task management state
   const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(new Set());
@@ -129,6 +241,11 @@ export default function DashboardPage() {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [personFilter, setPersonFilter] = useState<string>('');
   const [personFilterInitialized, setPersonFilterInitialized] = useState(false);
+  const [editingTask, setEditingTask] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+
+  // Save personal tasks on change
+  useEffect(() => { savePersonalTasks(personalTasks); }, [personalTasks]);
 
   const addToast = useCallback((message: string, undoAction?: () => void) => {
     const id = Date.now().toString();
@@ -138,22 +255,64 @@ export default function DashboardPage() {
   const dismissToast = useCallback((id: string) => setToasts(prev => prev.filter(t => t.id !== id)), []);
 
   const markDone = useCallback((taskId: string, taskTitle: string) => {
+    // Check if it's a personal task
+    if (taskId.startsWith('pt_')) {
+      const ptId = taskId.replace('pt_', '');
+      setPersonalTasks(prev => prev.map(t => t.id === ptId ? { ...t, done: true } : t));
+      addToast(`"${taskTitle}" completed`, () => {
+        setPersonalTasks(prev => prev.map(t => t.id === ptId ? { ...t, done: false } : t));
+      });
+      return;
+    }
     setDoneTasks(prev => new Set(prev).add(taskId));
     addToast(`"${taskTitle}" marked done`, () => {
       setDoneTasks(prev => { const next = new Set(prev); next.delete(taskId); return next; });
     });
   }, [addToast]);
+
   const snoozeTask = useCallback((taskId: string, taskTitle: string) => {
     setSnoozedTasks(prev => new Set(prev).add(taskId));
     addToast(`"${taskTitle}" snoozed until tomorrow`, () => {
       setSnoozedTasks(prev => { const next = new Set(prev); next.delete(taskId); return next; });
     });
   }, [addToast]);
+
   const dismissTask = useCallback((taskId: string, taskTitle: string) => {
+    if (taskId.startsWith('pt_')) {
+      const ptId = taskId.replace('pt_', '');
+      const removed = personalTasks.find(t => t.id === ptId);
+      setPersonalTasks(prev => prev.filter(t => t.id !== ptId));
+      addToast(`"${taskTitle}" removed`, () => {
+        if (removed) setPersonalTasks(prev => [...prev, removed]);
+      });
+      return;
+    }
     setHiddenTasks(prev => new Set(prev).add(taskId));
     addToast(`"${taskTitle}" dismissed`, () => {
       setHiddenTasks(prev => { const next = new Set(prev); next.delete(taskId); return next; });
     });
+  }, [addToast, personalTasks]);
+
+  // Add personal task
+  const addPersonalTask = useCallback((title: string, dueDate: string | null, priority: 'high' | 'medium' | 'low', sourceLabel?: string, sourceUrl?: string) => {
+    const newTask: PersonalTask = {
+      id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      title, dueDate, priority, done: false, reminder: null,
+      sourceLabel, sourceUrl, createdAt: new Date().toISOString(),
+    };
+    setPersonalTasks(prev => [newTask, ...prev]);
+    addToast(`Task added: "${title}"`);
+  }, [addToast]);
+
+  // Update personal task due date
+  const updatePersonalTaskDate = useCallback((taskId: string, date: string) => {
+    setPersonalTasks(prev => prev.map(t => t.id === taskId ? { ...t, dueDate: date || null } : t));
+  }, []);
+
+  // Update personal task reminder
+  const setTaskReminder = useCallback((taskId: string, reminder: string | null) => {
+    setPersonalTasks(prev => prev.map(t => t.id === taskId ? { ...t, reminder } : t));
+    if (reminder) addToast(`Reminder set for ${formatDate(reminder)}`);
   }, [addToast]);
 
   useEffect(() => {
@@ -192,13 +351,24 @@ export default function DashboardPage() {
   // Build combined stream
   const streamItems: StreamItem[] = [];
 
+  // Personal tasks (active only)
+  for (const t of personalTasks) {
+    if (t.done) continue;
+    streamItems.push({
+      id: `pt_${t.id}`, title: t.title, source: 'personal',
+      dueDate: t.dueDate, status: 'Active', url: t.sourceUrl || null,
+      priority: PRIORITY_MAP[t.priority] || 3,
+      meta: t.sourceLabel, assignee: firstName,
+    });
+  }
+
   // Linear tasks
   for (const t of tasks) {
     if (hiddenTasks.has(t.id) || snoozedTasks.has(t.id) || doneTasks.has(t.id)) continue;
     streamItems.push({
       id: `lin_${t.id}`, title: t.title, source: 'linear',
       dueDate: null, status: t.status, url: t.url,
-      priority: t.priority, meta: t.identifier, assignee: t.assignee,
+      priority: t.priority, meta: t.identifier, assignee: cleanAssignee(t.assignee) || t.assignee,
     });
   }
 
@@ -209,12 +379,18 @@ export default function DashboardPage() {
       id: `hs_${t.id}`, title: t.subject, source: 'hubspot',
       dueDate: t.dueDate, status: t.status, url: null,
       priority: t.priority === 'HIGH' ? 2 : t.priority === 'MEDIUM' ? 3 : 4,
-      meta: t.type, assignee: t.ownerName || undefined,
+      meta: t.type, assignee: cleanAssignee(t.ownerName) || t.ownerName || undefined,
     });
   }
 
-  // Person filter
-  const uniqueAssignees = [...new Set(streamItems.map(i => i.assignee).filter(Boolean))] as string[];
+  // Person filter — build from cleaned names
+  const assigneeMap = new Map<string, string>(); // cleaned first name → first seen full cleaned name
+  for (const item of streamItems) {
+    if (!item.assignee) continue;
+    const first = item.assignee.split(' ')[0];
+    if (!assigneeMap.has(first)) assigneeMap.set(first, item.assignee);
+  }
+  const uniqueAssignees = [...assigneeMap.values()];
 
   // Default to logged-in user's name on first load
   if (!personFilterInitialized && uniqueAssignees.length > 0 && firstName !== 'there') {
@@ -253,6 +429,9 @@ export default function DashboardPage() {
   const isLoadingAll = loading.tasks && loading.calendar && loading.hubspot;
   const todayEvents = calendar;
 
+  // Count completed personal tasks
+  const completedPersonalCount = personalTasks.filter(t => t.done).length;
+
   return (
     <div className="flex h-full overflow-hidden">
       {/* Left: Task stream */}
@@ -267,6 +446,21 @@ export default function DashboardPage() {
           </p>
         </div>
 
+        {/* Personal Task List — Add & Manage */}
+        <div className="px-6 pb-3">
+          <AddTaskInput onAdd={(title, dueDate, priority) => addPersonalTask(title, dueDate, priority)} />
+
+          {/* Show completed personal tasks toggle */}
+          {completedPersonalCount > 0 && (
+            <button
+              onClick={() => setPersonalTasks(prev => prev.filter(t => !t.done))}
+              className="text-[9px] mt-1.5 px-2 py-0.5 rounded"
+              style={{ color: 'var(--text-muted)', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+              Clear {completedPersonalCount} completed
+            </button>
+          )}
+        </div>
+
         {isLoadingAll ? (
           <div className="px-6 space-y-2">
             {[1, 2, 3, 4, 5].map(i => (
@@ -278,22 +472,38 @@ export default function DashboardPage() {
             {overdue.length > 0 && (
               <StreamSection label="OVERDUE" count={overdue.length} color="#ef4444"
                 items={overdue} expandedItem={expandedItem} setExpandedItem={setExpandedItem}
-                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask} />
+                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask}
+                personalTasks={personalTasks} onUpdateDate={updatePersonalTaskDate}
+                onSetReminder={setTaskReminder} editingTask={editingTask}
+                setEditingTask={setEditingTask} editTitle={editTitle} setEditTitle={setEditTitle}
+                onEditSave={(id, title) => setPersonalTasks(prev => prev.map(t => t.id === id ? { ...t, title } : t))} />
             )}
             {dueToday.length > 0 && (
               <StreamSection label="DUE TODAY" count={dueToday.length} color="var(--accent)"
                 items={dueToday} expandedItem={expandedItem} setExpandedItem={setExpandedItem}
-                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask} />
+                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask}
+                personalTasks={personalTasks} onUpdateDate={updatePersonalTaskDate}
+                onSetReminder={setTaskReminder} editingTask={editingTask}
+                setEditingTask={setEditingTask} editTitle={editTitle} setEditTitle={setEditTitle}
+                onEditSave={(id, title) => setPersonalTasks(prev => prev.map(t => t.id === id ? { ...t, title } : t))} />
             )}
             {thisWeek.length > 0 && (
               <StreamSection label="THIS WEEK" count={thisWeek.length} color="#f59e0b"
                 items={thisWeek} expandedItem={expandedItem} setExpandedItem={setExpandedItem}
-                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask} />
+                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask}
+                personalTasks={personalTasks} onUpdateDate={updatePersonalTaskDate}
+                onSetReminder={setTaskReminder} editingTask={editingTask}
+                setEditingTask={setEditingTask} editTitle={editTitle} setEditTitle={setEditTitle}
+                onEditSave={(id, title) => setPersonalTasks(prev => prev.map(t => t.id === id ? { ...t, title } : t))} />
             )}
             {later.length > 0 && (
               <StreamSection label="LATER" count={later.length} color="var(--text-muted)"
                 items={later} expandedItem={expandedItem} setExpandedItem={setExpandedItem}
-                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask} />
+                onDone={markDone} onSnooze={snoozeTask} onDismiss={dismissTask}
+                personalTasks={personalTasks} onUpdateDate={updatePersonalTaskDate}
+                onSetReminder={setTaskReminder} editingTask={editingTask}
+                setEditingTask={setEditingTask} editTitle={editTitle} setEditTitle={setEditTitle}
+                onEditSave={(id, title) => setPersonalTasks(prev => prev.map(t => t.id === id ? { ...t, title } : t))} />
             )}
             {filteredStream.length === 0 && (
               <div className="px-6 py-8 text-center">
@@ -330,15 +540,35 @@ export default function DashboardPage() {
                             {mtg.suggestedTasks.length > 0 && (
                               <div className="space-y-1">
                                 <span className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Suggested Tasks</span>
-                                {mtg.suggestedTasks.map((st, i) => (
-                                  <div key={i} className="flex items-center gap-2 text-xs rounded px-2 py-1" style={{ background: 'var(--bg)' }}>
-                                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: priCatColors[st.priority] || '#94a3b8' }} />
-                                    <span className="flex-1" style={{ color: 'var(--text)' }}>{st.task}</span>
-                                    <span className="text-[9px] px-1 py-0.5 rounded" style={{ background: (priCatColors[st.priority] || '#94a3b8') + '22', color: priCatColors[st.priority] || '#94a3b8' }}>
-                                      {st.priority}
-                                    </span>
-                                  </div>
-                                ))}
+                                {mtg.suggestedTasks.map((st, i) => {
+                                  const alreadyAdded = personalTasks.some(pt => pt.title === st.task && pt.sourceLabel === mtg.title);
+                                  return (
+                                    <div key={i} className="flex items-center gap-2 text-xs rounded px-2 py-1" style={{ background: 'var(--bg)' }}>
+                                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: priCatColors[st.priority] || '#94a3b8' }} />
+                                      <span className="flex-1" style={{ color: 'var(--text)' }}>{st.task}</span>
+                                      <span className="text-[9px] px-1 py-0.5 rounded" style={{ background: (priCatColors[st.priority] || '#94a3b8') + '22', color: priCatColors[st.priority] || '#94a3b8' }}>
+                                        {st.priority}
+                                      </span>
+                                      {alreadyAdded ? (
+                                        <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ color: '#22c55e' }}>
+                                          <CheckCircle size={10} />
+                                        </span>
+                                      ) : (
+                                        <button
+                                          onClick={() => addPersonalTask(
+                                            st.task, null,
+                                            (st.priority === 'urgent' ? 'high' : st.priority as 'high' | 'medium' | 'low') || 'medium',
+                                            mtg.title
+                                          )}
+                                          className="text-[9px] px-1.5 py-0.5 rounded hover:opacity-80 transition-opacity"
+                                          style={{ background: 'var(--accent)', color: '#fff' }}
+                                          title="Add to my tasks">
+                                          <Plus size={10} />
+                                        </button>
+                                      )}
+                                    </div>
+                                  );
+                                })}
                               </div>
                             )}
                           </div>
@@ -362,13 +592,16 @@ export default function DashboardPage() {
               SHOWING FOR
             </span>
             <div className="flex flex-wrap gap-1">
-              {uniqueAssignees.slice(0, 6).map(name => (
-                <button key={name} onClick={() => setPersonFilter(name)}
-                  className="text-[10px] px-2 py-0.5 rounded font-medium transition-colors"
-                  style={{ background: personFilter === name ? 'var(--accent)' : 'var(--bg)', color: personFilter === name ? '#fff' : 'var(--text-muted)' }}>
-                  {name.toLowerCase().startsWith(firstName.toLowerCase()) ? 'Me' : name.split(' ')[0]}
-                </button>
-              ))}
+              {uniqueAssignees.map(name => {
+                const displayName = name.toLowerCase().startsWith(firstName.toLowerCase()) ? 'Me' : cleanAssigneeFull(name).split(' ')[0];
+                return (
+                  <button key={name} onClick={() => setPersonFilter(name)}
+                    className="text-[10px] px-2 py-0.5 rounded font-medium transition-colors"
+                    style={{ background: personFilter === name ? 'var(--accent)' : 'var(--bg)', color: personFilter === name ? '#fff' : 'var(--text-muted)' }}>
+                    {displayName}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
@@ -465,12 +698,20 @@ export default function DashboardPage() {
 }
 
 // ── Stream section ─────────────────────────────────────────────
-function StreamSection({ label, count, color, items, expandedItem, setExpandedItem, onDone, onSnooze, onDismiss }: {
+function StreamSection({ label, count, color, items, expandedItem, setExpandedItem, onDone, onSnooze, onDismiss, personalTasks, onUpdateDate, onSetReminder, editingTask, setEditingTask, editTitle, setEditTitle, onEditSave }: {
   label: string; count: number; color: string; items: StreamItem[];
   expandedItem: string | null; setExpandedItem: (id: string | null) => void;
   onDone: (id: string, title: string) => void;
   onSnooze: (id: string, title: string) => void;
   onDismiss: (id: string, title: string) => void;
+  personalTasks: PersonalTask[];
+  onUpdateDate: (taskId: string, date: string) => void;
+  onSetReminder: (taskId: string, reminder: string | null) => void;
+  editingTask: string | null;
+  setEditingTask: (id: string | null) => void;
+  editTitle: string;
+  setEditTitle: (title: string) => void;
+  onEditSave: (id: string, title: string) => void;
 }) {
   return (
     <>
@@ -478,8 +719,12 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
         <span className="text-[8px] font-bold uppercase tracking-[1.5px]" style={{ color }}>{label} ({count})</span>
       </div>
       {items.map(item => {
-        const rawId = item.id.replace(/^(lin_|hs_)/, '');
+        const rawId = item.id.replace(/^(lin_|hs_|pt_)/, '');
         const isExpanded = expandedItem === item.id;
+        const isPersonal = item.source === 'personal';
+        const pt = isPersonal ? personalTasks.find(t => t.id === rawId) : null;
+        const isEditing = editingTask === rawId;
+
         return (
           <div key={item.id} className="group">
             <div
@@ -489,6 +734,14 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               onClick={() => setExpandedItem(isExpanded ? null : item.id)}
             >
+              {/* Done checkbox for personal tasks */}
+              {isPersonal && (
+                <button onClick={e => { e.stopPropagation(); onDone(item.id, item.title); }}
+                  className="shrink-0" title="Complete">
+                  <Circle size={14} style={{ color: 'var(--text-muted)' }} />
+                </button>
+              )}
+
               {/* Source badge */}
               <span className="text-[8px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0"
                 style={{ background: SOURCE_COLORS[item.source] + '22', color: SOURCE_COLORS[item.source] }}>
@@ -496,7 +749,21 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
               </span>
 
               {/* Title */}
-              {item.url ? (
+              {isEditing ? (
+                <input
+                  autoFocus
+                  value={editTitle}
+                  onChange={e => setEditTitle(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') { onEditSave(rawId, editTitle); setEditingTask(null); }
+                    if (e.key === 'Escape') setEditingTask(null);
+                  }}
+                  onBlur={() => { onEditSave(rawId, editTitle); setEditingTask(null); }}
+                  onClick={e => e.stopPropagation()}
+                  className="text-xs flex-1 bg-transparent border-none outline-none px-1 rounded"
+                  style={{ color: 'var(--text)', background: 'var(--bg)', border: '1px solid var(--accent)' }}
+                />
+              ) : item.url ? (
                 <a href={item.url} target="_blank" rel="noopener"
                   className="text-xs flex-1 truncate hover:underline"
                   style={{ color: 'var(--text)' }}
@@ -505,6 +772,14 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
                 </a>
               ) : (
                 <span className="text-xs flex-1 truncate" style={{ color: 'var(--text)' }}>{item.title}</span>
+              )}
+
+              {/* Source label for personal tasks from meetings */}
+              {isPersonal && pt?.sourceLabel && (
+                <span className="text-[8px] px-1 py-0.5 rounded shrink-0 truncate max-w-[100px]"
+                  style={{ background: 'var(--bg)', color: 'var(--text-muted)' }}>
+                  {pt.sourceLabel}
+                </span>
               )}
 
               {/* Priority */}
@@ -525,25 +800,34 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
               )}
 
               {/* Assignee */}
-              {item.assignee && (
+              {item.assignee && !isPersonal && (
                 <span className="text-[9px] px-1.5 py-0.5 rounded shrink-0" style={{ background: 'var(--bg)', color: 'var(--text-muted)' }}>
                   {item.assignee.split(' ')[0]}
                 </span>
               )}
 
               {/* Status */}
-              <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{item.status}</span>
+              {!isPersonal && (
+                <span className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>{item.status}</span>
+              )}
 
               {/* Actions */}
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                <button onClick={e => { e.stopPropagation(); onDone(rawId, item.title); }} title="Done">
-                  <CheckCircle size={12} style={{ color: '#22c55e' }} />
-                </button>
-                <button onClick={e => { e.stopPropagation(); onSnooze(rawId, item.title); }} title="Snooze">
+                {isPersonal && (
+                  <button onClick={e => { e.stopPropagation(); setEditTitle(item.title); setEditingTask(rawId); }} title="Edit">
+                    <Edit3 size={12} style={{ color: 'var(--accent)' }} />
+                  </button>
+                )}
+                {!isPersonal && (
+                  <button onClick={e => { e.stopPropagation(); onDone(item.id.replace(/^(lin_|hs_)/, ''), item.title); }} title="Done">
+                    <CheckCircle size={12} style={{ color: '#22c55e' }} />
+                  </button>
+                )}
+                <button onClick={e => { e.stopPropagation(); onSnooze(item.id.replace(/^(lin_|hs_|pt_)/, ''), item.title); }} title="Snooze">
                   <AlarmClock size={12} style={{ color: 'var(--text-muted)' }} />
                 </button>
-                <button onClick={e => { e.stopPropagation(); onDismiss(rawId, item.title); }} title="Dismiss">
-                  <X size={12} style={{ color: 'var(--text-muted)' }} />
+                <button onClick={e => { e.stopPropagation(); onDismiss(item.id, item.title); }} title={isPersonal ? 'Delete' : 'Dismiss'}>
+                  {isPersonal ? <Trash2 size={12} style={{ color: '#ef4444' }} /> : <X size={12} style={{ color: 'var(--text-muted)' }} />}
                 </button>
               </div>
             </div>
@@ -551,7 +835,7 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
             {/* Expansion panel */}
             {isExpanded && (
               <div className="px-10 py-2 text-xs" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-wrap">
                   {item.meta && <span style={{ color: 'var(--text-muted)' }}>{item.meta}</span>}
                   {item.dueDate && <span style={{ color: isOverdue(item.dueDate) ? '#ef4444' : 'var(--text-muted)' }}>
                     {isOverdue(item.dueDate) ? `Overdue — due ${formatDate(item.dueDate)}` : `Due ${formatDate(item.dueDate)}`}
@@ -562,6 +846,29 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
                       className="flex items-center gap-1 hover:underline" style={{ color: 'var(--accent)' }}>
                       Open in {SOURCE_LABELS[item.source]} <ExternalLink size={10} />
                     </a>
+                  )}
+
+                  {/* Personal task: inline date & reminder controls */}
+                  {isPersonal && pt && (
+                    <>
+                      <div className="flex items-center gap-1.5">
+                        <Calendar size={10} style={{ color: 'var(--text-muted)' }} />
+                        <input type="date" value={pt.dueDate || ''}
+                          onChange={e => onUpdateDate(rawId, e.target.value)}
+                          onClick={e => e.stopPropagation()}
+                          className="text-[10px] bg-transparent outline-none px-1 py-0.5 rounded"
+                          style={{ color: 'var(--text)', border: '1px solid var(--border)' }} />
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Bell size={10} style={{ color: pt.reminder ? '#f59e0b' : 'var(--text-muted)' }} />
+                        <input type="date" value={pt.reminder || ''}
+                          onChange={e => onSetReminder(rawId, e.target.value || null)}
+                          onClick={e => e.stopPropagation()}
+                          className="text-[10px] bg-transparent outline-none px-1 py-0.5 rounded"
+                          style={{ color: 'var(--text)', border: '1px solid var(--border)' }}
+                          title="Set reminder date" />
+                      </div>
+                    </>
                   )}
                 </div>
               </div>

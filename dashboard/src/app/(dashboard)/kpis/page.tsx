@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { BarChart3, TrendingUp, CheckCircle, Clock, Mail, Target, Users, Activity, DollarSign, Circle } from 'lucide-react';
+import { BarChart3, TrendingUp, CheckCircle, Clock, Mail, Target, Users, Activity, DollarSign, Circle, Edit3, Save, RotateCcw, AlertTriangle, ArrowDown, ArrowUp } from 'lucide-react';
 
 type KPIData = {
   linear: {
@@ -21,6 +21,49 @@ type KPIData = {
   health: { green: number; amber: number; red: number; total: number };
 };
 
+// Financial model types
+type MonthData = {
+  month: string; // "Jan-26", "Feb-26", etc.
+  isActual: boolean;
+  revenue: number; // k EUR
+  recurringRevenue: number;
+  nonRecurringRevenue: number;
+  cogs: number;
+  payroll: number;
+  managementFees: number;
+  opex: number;
+  capex: number;
+  ebitda: number;
+  cashStart: number;
+  cashEnd: number;
+  netBurn: number;
+  runway: number; // months
+  mrr: number;
+  arr: number;
+  newCustomers: number;
+  churnedCustomers: number;
+  totalCustomers: number;
+  headcount: number;
+};
+
+const MONTHS = ['Jan-26', 'Feb-26', 'Mar-26', 'Apr-26', 'May-26', 'Jun-26', 'Jul-26', 'Aug-26', 'Sep-26', 'Oct-26', 'Nov-26', 'Dec-26'];
+
+// Default financial model based on the Google Sheets budget
+const DEFAULT_FINANCIALS: MonthData[] = [
+  { month: 'Jan-26', isActual: true, revenue: 9.1, recurringRevenue: 9.1, nonRecurringRevenue: 0, cogs: 3.5, payroll: 52, managementFees: 12, opex: 11.3, capex: 0, ebitda: -69.3, cashStart: 1162, cashEnd: 1099, netBurn: 63, runway: 17, mrr: 9, arr: 108, newCustomers: 0, churnedCustomers: 0, totalCustomers: 5, headcount: 12 },
+  { month: 'Feb-26', isActual: false, revenue: 10.2, recurringRevenue: 10.2, nonRecurringRevenue: 0, cogs: 3.5, payroll: 52, managementFees: 12, opex: 11.3, capex: 0, ebitda: -68.1, cashStart: 1099, cashEnd: 1031, netBurn: 68, runway: 15, mrr: 10, arr: 122, newCustomers: 1, churnedCustomers: 0, totalCustomers: 6, headcount: 12 },
+  { month: 'Mar-26', isActual: false, revenue: 11.5, recurringRevenue: 11.5, nonRecurringRevenue: 0, cogs: 3.7, payroll: 55, managementFees: 12, opex: 11.5, capex: 0, ebitda: -70.7, cashStart: 1031, cashEnd: 960, netBurn: 71, runway: 14, mrr: 11.5, arr: 138, newCustomers: 1, churnedCustomers: 0, totalCustomers: 7, headcount: 13 },
+  { month: 'Apr-26', isActual: false, revenue: 13, recurringRevenue: 12.5, nonRecurringRevenue: 0.5, cogs: 3.9, payroll: 55, managementFees: 12, opex: 12, capex: 0, ebitda: -69.9, cashStart: 960, cashEnd: 890, netBurn: 70, runway: 13, mrr: 12.5, arr: 150, newCustomers: 1, churnedCustomers: 0, totalCustomers: 8, headcount: 13 },
+  { month: 'May-26', isActual: false, revenue: 14.5, recurringRevenue: 14, nonRecurringRevenue: 0.5, cogs: 4.1, payroll: 58, managementFees: 12, opex: 12, capex: 0, ebitda: -71.6, cashStart: 890, cashEnd: 818, netBurn: 72, runway: 11, mrr: 14, arr: 168, newCustomers: 2, churnedCustomers: 0, totalCustomers: 10, headcount: 14 },
+  { month: 'Jun-26', isActual: false, revenue: 16, recurringRevenue: 15.5, nonRecurringRevenue: 0.5, cogs: 4.3, payroll: 58, managementFees: 12, opex: 12.5, capex: 0, ebitda: -70.8, cashStart: 818, cashEnd: 747, netBurn: 71, runway: 11, mrr: 15.5, arr: 186, newCustomers: 2, churnedCustomers: 0, totalCustomers: 12, headcount: 14 },
+  { month: 'Jul-26', isActual: false, revenue: 17, recurringRevenue: 16.5, nonRecurringRevenue: 0.5, cogs: 4.5, payroll: 60, managementFees: 12, opex: 12.5, capex: 0, ebitda: -72, cashStart: 747, cashEnd: 675, netBurn: 72, runway: 9, mrr: 16.5, arr: 198, newCustomers: 1, churnedCustomers: 0, totalCustomers: 13, headcount: 15 },
+  { month: 'Aug-26', isActual: false, revenue: 18, recurringRevenue: 17.5, nonRecurringRevenue: 0.5, cogs: 4.7, payroll: 60, managementFees: 12, opex: 13, capex: 0, ebitda: -71.7, cashStart: 675, cashEnd: 603, netBurn: 72, runway: 8, mrr: 17.5, arr: 210, newCustomers: 1, churnedCustomers: 0, totalCustomers: 14, headcount: 15 },
+  { month: 'Sep-26', isActual: false, revenue: 19, recurringRevenue: 18.5, nonRecurringRevenue: 0.5, cogs: 5, payroll: 62, managementFees: 12, opex: 13, capex: 0, ebitda: -73, cashStart: 603, cashEnd: 530, netBurn: 73, runway: 7, mrr: 18.5, arr: 222, newCustomers: 1, churnedCustomers: 0, totalCustomers: 15, headcount: 16 },
+  { month: 'Oct-26', isActual: false, revenue: 19.5, recurringRevenue: 19, nonRecurringRevenue: 0.5, cogs: 5.2, payroll: 62, managementFees: 12, opex: 13.5, capex: 0, ebitda: -73.2, cashStart: 530, cashEnd: 457, netBurn: 73, runway: 6, mrr: 19, arr: 228, newCustomers: 1, churnedCustomers: 0, totalCustomers: 16, headcount: 16 },
+  { month: 'Nov-26', isActual: false, revenue: 20, recurringRevenue: 19.5, nonRecurringRevenue: 0.5, cogs: 5.4, payroll: 65, managementFees: 12, opex: 13.5, capex: 0, ebitda: -75.9, cashStart: 457, cashEnd: 381, netBurn: 76, runway: 5, mrr: 19.5, arr: 234, newCustomers: 1, churnedCustomers: 0, totalCustomers: 17, headcount: 17 },
+  { month: 'Dec-26', isActual: false, revenue: 21, recurringRevenue: 20.5, nonRecurringRevenue: 0.5, cogs: 5.6, payroll: 65, managementFees: 12, opex: 14, capex: 0, ebitda: -75.6, cashStart: 381, cashEnd: 305, netBurn: 76, runway: 4, mrr: 20.5, arr: 246, newCustomers: 1, churnedCustomers: 0, totalCustomers: 18, headcount: 17 },
+];
+
 const STAGE_COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#14b8a6', '#818cf8'];
 const healthColors = { green: '#22c55e', amber: '#f59e0b', red: '#ef4444' };
 
@@ -28,10 +71,70 @@ function formatCurrency(amount: number) {
   return new Intl.NumberFormat('en-EU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(amount);
 }
 
+function formatK(amount: number) {
+  if (Math.abs(amount) >= 1000) return `€${(amount / 1000).toFixed(1)}M`;
+  return `€${amount.toFixed(0)}k`;
+}
+
+// Recalculate derived fields after user edits
+function recalculate(data: MonthData[]): MonthData[] {
+  const result = [...data];
+  for (let i = 0; i < result.length; i++) {
+    const m = { ...result[i] };
+    m.revenue = m.recurringRevenue + m.nonRecurringRevenue;
+    m.ebitda = m.revenue - m.cogs - m.payroll - m.managementFees - m.opex - m.capex;
+    m.netBurn = Math.max(0, -m.ebitda);
+    if (i === 0) {
+      m.cashEnd = m.cashStart + m.ebitda;
+    } else {
+      m.cashStart = result[i - 1].cashEnd;
+      m.cashEnd = m.cashStart + m.ebitda;
+    }
+    m.mrr = m.recurringRevenue;
+    m.arr = m.mrr * 12;
+    m.runway = m.netBurn > 0 ? Math.round(m.cashEnd / m.netBurn) : 99;
+    result[i] = m;
+  }
+  return result;
+}
+
+// LocalStorage for financial model
+function loadFinancials(): MonthData[] {
+  if (typeof window === 'undefined') return DEFAULT_FINANCIALS;
+  try {
+    const saved = localStorage.getItem('kpi_financials');
+    if (saved) return JSON.parse(saved);
+  } catch {}
+  return DEFAULT_FINANCIALS;
+}
+function saveFinancials(data: MonthData[]) {
+  localStorage.setItem('kpi_financials', JSON.stringify(data));
+}
+
 export default function KpisPage() {
   const { user } = useUser();
   const [data, setData] = useState<KPIData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [financials, setFinancials] = useState<MonthData[]>(loadFinancials);
+  const [editingCell, setEditingCell] = useState<{ row: string; month: number } | null>(null);
+  const [editValue, setEditValue] = useState('');
+  const [showModeling, setShowModeling] = useState(true);
+
+  // Save on change
+  useEffect(() => { saveFinancials(financials); }, [financials]);
+
+  const resetFinancials = useCallback(() => {
+    setFinancials(DEFAULT_FINANCIALS);
+    localStorage.removeItem('kpi_financials');
+  }, []);
+
+  const updateField = useCallback((monthIdx: number, field: keyof MonthData, value: number) => {
+    setFinancials(prev => {
+      const updated = [...prev];
+      updated[monthIdx] = { ...updated[monthIdx], [field]: value };
+      return recalculate(updated);
+    });
+  }, []);
 
   useEffect(() => {
     if (!user?.email) return;
@@ -80,10 +183,8 @@ export default function KpisPage() {
         const wr = wonDeals.length + lostDeals.length > 0
           ? Math.round((wonDeals.length / (wonDeals.length + lostDeals.length)) * 100) : 0;
 
-        // Build stage breakdown
         const stageMap = new Map<string, { count: number; value: number }>();
-        const stageLabels: Record<string, string> = {};
-        for (const p of pipelines) for (const s of (p as any).stages || []) stageLabels[s.id] = s.label;
+        for (const p of pipelines) for (const s of (p as any).stages || []) {}
         for (const d of openDeals) {
           const key = d.stageLabel || d.stage;
           const ex = stageMap.get(key) || { count: 0, value: 0 };
@@ -103,7 +204,6 @@ export default function KpisPage() {
         const unread = (googleRes.emails || []).filter((e: any) => e.unread).length;
         const google = { eventsToday: todayEvents.length, unreadEmails: unread };
 
-        // Health distribution
         const companies = companiesRes.companies || [];
         const health = { green: 0, amber: 0, red: 0, total: companies.length };
         for (const c of companies) {
@@ -123,6 +223,11 @@ export default function KpisPage() {
 
     fetchAll();
   }, [user]);
+
+  // Current month index (0-based for 2026)
+  const currentMonthIdx = Math.max(0, Math.min(11, new Date().getMonth()));
+  const currentData = financials[currentMonthIdx];
+  const prevData = currentMonthIdx > 0 ? financials[currentMonthIdx - 1] : null;
 
   if (loading) {
     return (
@@ -152,8 +257,51 @@ export default function KpisPage() {
   const maxAssigneeCount = Math.max(...data.linear.byAssignee.map(a => a.count), 1);
   const maxStageCount = Math.max(...data.hubspot.byStage.map(s => s.count), 1);
 
+  // Runway warning
+  const runwayMonths = currentData?.runway || 0;
+  const runwayColor = runwayMonths <= 6 ? '#ef4444' : runwayMonths <= 12 ? '#f59e0b' : '#22c55e';
+
+  // Editable cell handlers
+  const startEdit = (row: string, monthIdx: number, currentValue: number) => {
+    setEditingCell({ row, month: monthIdx });
+    setEditValue(currentValue.toString());
+  };
+
+  const commitEdit = () => {
+    if (!editingCell) return;
+    const val = parseFloat(editValue);
+    if (!isNaN(val)) {
+      updateField(editingCell.month, editingCell.row as keyof MonthData, val);
+    }
+    setEditingCell(null);
+  };
+
+  const EDITABLE_ROWS: { key: keyof MonthData; label: string; color: string }[] = [
+    { key: 'recurringRevenue', label: 'Recurring Revenue', color: '#22c55e' },
+    { key: 'nonRecurringRevenue', label: 'Non-recurring Revenue', color: '#10b981' },
+    { key: 'cogs', label: 'COGS', color: '#ef4444' },
+    { key: 'payroll', label: 'Payroll', color: '#f97316' },
+    { key: 'managementFees', label: 'Management Fees', color: '#f59e0b' },
+    { key: 'opex', label: 'Other OPEX', color: '#ec4899' },
+    { key: 'capex', label: 'CAPEX', color: '#8b5cf6' },
+    { key: 'headcount', label: 'Headcount', color: '#6366f1' },
+    { key: 'newCustomers', label: 'New Customers', color: '#14b8a6' },
+    { key: 'churnedCustomers', label: 'Churned Customers', color: '#ef4444' },
+  ];
+
+  const DERIVED_ROWS: { key: keyof MonthData; label: string; color: string; bold?: boolean }[] = [
+    { key: 'revenue', label: 'Total Revenue', color: '#22c55e', bold: true },
+    { key: 'ebitda', label: 'EBITDA', color: '#818cf8', bold: true },
+    { key: 'netBurn', label: 'Net Burn', color: '#ef4444' },
+    { key: 'cashEnd', label: 'Cash Balance', color: '#3b82f6', bold: true },
+    { key: 'runway', label: 'Runway (months)', color: runwayColor, bold: true },
+    { key: 'mrr', label: 'MRR', color: '#22c55e' },
+    { key: 'arr', label: 'ARR', color: '#22c55e' },
+    { key: 'totalCustomers', label: 'Total Customers', color: '#14b8a6' },
+  ];
+
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 max-w-[1600px] mx-auto overflow-auto">
       <div className="mb-5">
         <h1 className="text-lg font-bold" style={{ color: 'var(--text)' }}>KPIs</h1>
         <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>Cross-system performance metrics</p>
@@ -165,6 +313,173 @@ export default function KpisPage() {
         <StatCard label="Open Pipeline" value={formatCurrency(data.hubspot.openPipeline)} icon={TrendingUp} color="#818cf8" subtitle={`${data.hubspot.openDeals} deals · avg ${formatCurrency(data.hubspot.avgDealSize)}`} />
         <StatCard label="Revenue Won" value={formatCurrency(data.hubspot.closedWon)} icon={CheckCircle} color="#22c55e" subtitle={`${data.hubspot.winRate}% win rate · ${data.hubspot.closedWonCount} deals`} />
         <StatCard label="Unread Emails" value={data.google.unreadEmails} icon={Mail} color="#f59e0b" subtitle={`${data.google.eventsToday} meetings today`} />
+      </div>
+
+      {/* Financial Runway Modeling */}
+      <div className="rounded-lg mb-5 overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+        <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
+          <div className="flex items-center gap-3">
+            <DollarSign size={16} style={{ color: '#818cf8' }} />
+            <h3 className="text-sm font-semibold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>
+              Financial Model & Runway
+            </h3>
+            {runwayMonths <= 12 && (
+              <span className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded font-bold"
+                style={{ background: runwayColor + '22', color: runwayColor }}>
+                <AlertTriangle size={10} /> {runwayMonths} months runway
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <button onClick={resetFinancials}
+              className="text-[10px] px-2 py-1 rounded flex items-center gap-1"
+              style={{ background: 'var(--bg)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+              <RotateCcw size={10} /> Reset
+            </button>
+            <button onClick={() => setShowModeling(!showModeling)}
+              className="text-[10px] px-2 py-1 rounded"
+              style={{ background: showModeling ? 'var(--accent)' : 'var(--bg)', color: showModeling ? '#fff' : 'var(--text-muted)', border: '1px solid var(--border)' }}>
+              {showModeling ? 'Collapse' : 'Expand'}
+            </button>
+          </div>
+        </div>
+
+        {/* Key Financial KPIs strip */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 px-5 py-3" style={{ borderBottom: showModeling ? '1px solid var(--border)' : 'none' }}>
+          <div className="text-center">
+            <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Cash</div>
+            <div className="text-lg font-bold" style={{ color: '#3b82f6' }}>{formatK(currentData?.cashEnd || 0)}</div>
+          </div>
+          <div className="text-center">
+            <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Runway</div>
+            <div className="text-lg font-bold" style={{ color: runwayColor }}>{runwayMonths} mo</div>
+          </div>
+          <div className="text-center">
+            <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>MRR</div>
+            <div className="text-lg font-bold" style={{ color: '#22c55e' }}>{formatK(currentData?.mrr || 0)}</div>
+          </div>
+          <div className="text-center">
+            <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Net Burn</div>
+            <div className="text-lg font-bold" style={{ color: '#ef4444' }}>{formatK(currentData?.netBurn || 0)}</div>
+          </div>
+          <div className="text-center">
+            <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>ARR</div>
+            <div className="text-lg font-bold" style={{ color: '#22c55e' }}>{formatK(currentData?.arr || 0)}</div>
+          </div>
+        </div>
+
+        {showModeling && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-[11px]" style={{ minWidth: '900px' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <th className="text-left px-3 py-2 sticky left-0 z-10" style={{ background: 'var(--surface)', color: 'var(--text-muted)', width: '160px' }}>
+                    <span className="text-[9px] uppercase tracking-wider">k EUR</span>
+                  </th>
+                  {MONTHS.map((m, i) => (
+                    <th key={m} className="text-right px-2 py-2" style={{
+                      color: i === currentMonthIdx ? 'var(--accent)' : 'var(--text-muted)',
+                      background: i === currentMonthIdx ? 'var(--accent)' + '08' : 'transparent',
+                    }}>
+                      <span className="text-[9px] uppercase">{m.split('-')[0]}</span>
+                      {financials[i]?.isActual && <span className="text-[7px] ml-0.5 px-1 rounded" style={{ background: '#22c55e22', color: '#22c55e' }}>ACT</span>}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {/* Editable rows */}
+                {EDITABLE_ROWS.map(row => (
+                  <tr key={row.key} className="group" style={{ borderBottom: '1px solid var(--border)' }}
+                    onMouseEnter={e => { for (const td of e.currentTarget.children) (td as HTMLElement).style.background = 'var(--bg)'; }}
+                    onMouseLeave={e => { for (const td of e.currentTarget.children) (td as HTMLElement).style.background = ''; }}>
+                    <td className="px-3 py-1.5 sticky left-0 z-10 font-medium" style={{ background: 'var(--surface)', color: row.color }}>
+                      {row.label}
+                    </td>
+                    {financials.map((m, i) => {
+                      const val = m[row.key] as number;
+                      const isEditing = editingCell?.row === row.key && editingCell?.month === i;
+                      return (
+                        <td key={i} className="text-right px-2 py-1.5 cursor-pointer"
+                          style={{ background: i === currentMonthIdx ? 'var(--accent)' + '05' : 'transparent' }}
+                          onClick={() => !m.isActual && startEdit(row.key, i, val)}>
+                          {isEditing ? (
+                            <input autoFocus type="number" value={editValue}
+                              onChange={e => setEditValue(e.target.value)}
+                              onBlur={commitEdit}
+                              onKeyDown={e => { if (e.key === 'Enter') commitEdit(); if (e.key === 'Escape') setEditingCell(null); }}
+                              className="w-14 text-right text-[11px] bg-transparent outline-none rounded px-1"
+                              style={{ color: 'var(--text)', border: '1px solid var(--accent)' }} />
+                          ) : (
+                            <span style={{ color: m.isActual ? 'var(--text)' : 'var(--text-muted)' }}>
+                              {val.toFixed(row.key === 'headcount' || row.key === 'newCustomers' || row.key === 'churnedCustomers' ? 0 : 1)}
+                            </span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+                {/* Separator */}
+                <tr><td colSpan={13} style={{ height: '4px', background: 'var(--border)' }} /></tr>
+                {/* Derived rows */}
+                {DERIVED_ROWS.map(row => (
+                  <tr key={row.key} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td className={`px-3 py-1.5 sticky left-0 z-10 ${row.bold ? 'font-bold' : 'font-medium'}`}
+                      style={{ background: 'var(--surface)', color: row.color }}>
+                      {row.label}
+                    </td>
+                    {financials.map((m, i) => {
+                      const val = m[row.key] as number;
+                      const isRunway = row.key === 'runway';
+                      const isCash = row.key === 'cashEnd';
+                      return (
+                        <td key={i} className={`text-right px-2 py-1.5 ${row.bold ? 'font-bold' : ''}`}
+                          style={{
+                            color: isRunway ? (val <= 6 ? '#ef4444' : val <= 12 ? '#f59e0b' : '#22c55e')
+                              : isCash && val < 200 ? '#ef4444'
+                              : row.key === 'ebitda' && val < 0 ? '#ef4444'
+                              : row.color,
+                            background: i === currentMonthIdx ? 'var(--accent)' + '05' : 'transparent',
+                          }}>
+                          {row.key === 'headcount' || row.key === 'totalCustomers' || isRunway
+                            ? val.toFixed(0)
+                            : val.toFixed(1)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Cash & Runway Visual */}
+        <div className="px-5 py-3" style={{ borderTop: '1px solid var(--border)' }}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Cash Runway Projection</span>
+          </div>
+          <div className="flex items-end gap-1" style={{ height: '60px' }}>
+            {financials.map((m, i) => {
+              const maxCash = Math.max(...financials.map(f => f.cashEnd));
+              const pct = maxCash > 0 ? (m.cashEnd / maxCash) * 100 : 0;
+              const barColor = m.cashEnd < 200 ? '#ef4444' : m.cashEnd < 500 ? '#f59e0b' : '#3b82f6';
+              return (
+                <div key={i} className="flex-1 flex flex-col items-center gap-0.5" title={`${m.month}: ${formatK(m.cashEnd)}`}>
+                  <div className="w-full rounded-t" style={{
+                    height: `${Math.max(pct, 4)}%`, background: barColor,
+                    opacity: i === currentMonthIdx ? 1 : 0.5,
+                    border: i === currentMonthIdx ? '1px solid var(--accent)' : 'none',
+                  }} />
+                  <span className="text-[7px]" style={{ color: i === currentMonthIdx ? 'var(--accent)' : 'var(--text-muted)' }}>
+                    {m.month.split('-')[0]}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* Customer Health + Sales Summary */}
