@@ -1,14 +1,23 @@
 {
-  "refreshedAt": "2026-03-31T07:56:39.741Z",
+  "refreshedAt": "2026-03-31T08:35:14.601Z",
   "gmail": {
     "threads": [
       {
-        "id": "19d42dff657824fc",
-        "subject": "EU Funding for Supplied",
-        "from": "Edward Hernandez <edward@yieldlumos.com>",
-        "date": "2026-03-31T07:51:03.000Z",
-        "snippet": "Hello Johann, Saw Supplied may qualify for a couple of EU funding programs for SMEs. Depending on your current stage and product focus, programs like FFplus and EIC Accelerator could be worth looking",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d42dff657824fc",
+        "id": "19d42f4c687d6f38",
+        "subject": "MOFU1_Visual SB_V... - maybe move this after the first frame...",
+        "from": "\"Britt Vries (Google Docs)\" <comments-noreply@docs.google.com>",
+        "date": "2026-03-31T08:13:50.000Z",
+        "snippet": "Britt Vries replied to a comment in the following document MOFU1_Visual SB_V2 Intro.pdf 1 comment Johann Rozario maybe move this after the first frame showing that new regulations are adding even more",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d42f4c687d6f38",
+        "unread": true
+      },
+      {
+        "id": "19b6aa08efdc34cd",
+        "subject": "Supplied Monthly Shareholder Updates - 2025 Update",
+        "from": "\"Bas Bogerd (Google Docs)\" <comments-noreply@docs.google.com>",
+        "date": "2026-03-31T07:58:15.000Z",
+        "snippet": "New activity in the following document Supplied Monthly Shareholder Updates - 2025 Update For you Comments Major Development Contract: Scoping Underway One of our largest pipeline accounts is in",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19b6aa08efdc34cd",
         "unread": true
       },
       {
@@ -100,18 +109,9 @@
         "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
         "unread": true
-      },
-      {
-        "id": "19ce30963c459b27",
-        "subject": "Reminder : Help Us Improve: Rate Your Experience",
-        "from": "Akancha  Srivastava <akancha@scrut.io>",
-        "date": "2026-03-12T17:12:47.000Z",
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
-        "unread": true
       }
     ],
-    "unreadCount": 37
+    "unreadCount": 38
   },
   "calendar": {
     "today": [
@@ -168,8 +168,8 @@
       {
         "id": "7tpp705msl82dubdj3g9ei0agl_20260331T120000Z",
         "title": "Bas / Julio - CS Standup",
-        "start": "2026-03-31T14:00:00+02:00",
-        "end": "2026-03-31T14:45:00+02:00",
+        "start": "2026-03-31T15:00:00+02:00",
+        "end": "2026-03-31T15:45:00+02:00",
         "location": null,
         "numAttendees": 3,
         "url": "https://www.google.com/calendar/event?eid=N3RwcDcwNW1zbDgyZHViZGozZzllaTBhZ2xfMjAyNjAzMzFUMTIwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
@@ -282,6 +282,30 @@
   "drive": {
     "recent": [
       {
+        "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
+        "name": "Supplied_SALES_Revenue_Costs_Master_File",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-03-31T08:33:21.569Z",
+        "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
+        "name": "Supplied_Technologies_Budget_2026",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-03-31T08:18:57.972Z",
+        "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
+        "id": "1JxryUjNGaUme3EWtDf8EgtdirBXt8tkR",
+        "name": "260313 - Reporting template Supplied v_2.xlsx",
+        "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "modifiedTime": "2026-03-15T16:39:38.000Z",
+        "url": "https://docs.google.com/spreadsheets/d/1JxryUjNGaUme3EWtDf8EgtdirBXt8tkR/edit?usp=drivesdk&ouid=102001541152652764667&rtpof=true&sd=true",
+        "lastModifiedBy": "Johann Rozario"
+      },
+      {
         "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
         "name": "Supplied Monthly Shareholder Updates - 2025 Update",
         "mimeType": "application/vnd.google-apps.document",
@@ -352,30 +376,6 @@
         "modifiedTime": "2026-03-30T09:12:18.658Z",
         "url": "https://docs.google.com/document/d/17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY/edit?usp=drivesdk",
         "lastModifiedBy": "Julio Lindveld"
-      },
-      {
-        "id": "1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA",
-        "name": "Notes - Commerce<>Product Weekly",
-        "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-30T09:26:59.654Z",
-        "url": "https://docs.google.com/document/d/1Xoc6jProgzRsyBs46oJs3qs3pP_PIB1J3ryMC_8EHHA/edit?usp=drivesdk",
-        "lastModifiedBy": "Supplied Support"
-      },
-      {
-        "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
-        "name": "Supplied_Technologies_Budget_2026",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-13T10:10:52.499Z",
-        "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
-        "lastModifiedBy": "Jelena Hmeltnitski"
-      },
-      {
-        "id": "1fTSt39BTdeQ2KXXGK7rbW5sngn8YfiuLO-ZuBSivCXg",
-        "name": "WBSO - Application SO26018405 Supplied Technologies B.V.",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-02-25T13:23:19.927Z",
-        "url": "https://docs.google.com/spreadsheets/d/1fTSt39BTdeQ2KXXGK7rbW5sngn8YfiuLO-ZuBSivCXg/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
       }
     ]
   },
@@ -392,13 +392,23 @@
     },
     {
       "action": "reply",
-      "subject": "EU Funding for Supplied",
-      "reason": "Hello Johann, Saw Supplied may qualify for a couple of EU funding programs for SMEs. Depending on your current stage and",
-      "from": "Edward Hernandez <edward@yieldlumos.com>",
+      "subject": "MOFU1_Visual SB_V... - maybe move this after the first frame...",
+      "reason": "Britt Vries replied to a comment in the following document MOFU1_Visual SB_V2 Intro.pdf 1 comment Johann Rozario maybe m",
+      "from": "\"Britt Vries (Google Docs)\" <comments-noreply@docs.google.com>",
       "ageDays": 0,
-      "threadId": "19d42dff657824fc",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d42dff657824fc",
-      "id": "email-19d42dff657824fc"
+      "threadId": "19d42f4c687d6f38",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d42f4c687d6f38",
+      "id": "email-19d42f4c687d6f38"
+    },
+    {
+      "action": "reply",
+      "subject": "Supplied Monthly Shareholder Updates - 2025 Update",
+      "reason": "New activity in the following document Supplied Monthly Shareholder Updates - 2025 Update For you Comments Major Develop",
+      "from": "\"Bas Bogerd (Google Docs)\" <comments-noreply@docs.google.com>",
+      "ageDays": 0,
+      "threadId": "19b6aa08efdc34cd",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19b6aa08efdc34cd",
+      "id": "email-19b6aa08efdc34cd"
     },
     {
       "action": "reply",
@@ -445,7 +455,7 @@
       "subject": "Canceled: 30 Minute Meeting with Teddy Ludmer on 30 March 2026",
       "reason": "Hi Johann Rozario, The event below has been canceled. Invitee: Teddy Ludmer Invitee Email: teddy.ludmer@tipalti.com Even",
       "from": "Calendly <notifications@calendly.com>",
-      "ageDays": 0,
+      "ageDays": 1,
       "threadId": "19d3ddfd2b931e5f",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d3ddfd2b931e5f",
       "id": "email-19d3ddfd2b931e5f"
