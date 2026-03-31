@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-30T14:31:39.522Z",
+  "refreshedAt": "2026-03-31T04:53:54.864Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -29,11 +29,6 @@
       "email": "julio@supplied.eu"
     },
     {
-      "id": "710450084",
-      "name": "Stephan Bohr",
-      "email": "stephan.bohr@bohr-advise.de"
-    },
-    {
       "id": "901168591",
       "name": "Johann Rozario",
       "email": "johann@supplied.eu"
@@ -45,17 +40,6 @@
     }
   ],
   "tasks": [
-    {
-      "id": "289059075305",
-      "subject": "Follow up with Rick Joosten",
-      "status": "NOT_STARTED",
-      "type": "TODO",
-      "priority": "NONE",
-      "dueDate": "2025-09-19",
-      "ownerId": "29274155",
-      "body": "Regarding email: Test email, sent on Tuesday, September 16, 2025 10:17 AM",
-      "ownerName": null
-    },
     {
       "id": "371355244765",
       "subject": "Follow up with an email intro",
@@ -1509,6 +1493,17 @@
       "ownerName": "Bas Bogerd"
     },
     {
+      "id": "481697411290",
+      "subject": "Tipatli Follow up new meeting ",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-04-01",
+      "ownerId": "901168591",
+      "body": null,
+      "ownerName": "Johann Rozario"
+    },
+    {
       "id": "375030088948",
       "subject": "Follow up with CoinJar on plans for CARF repporting",
       "status": "NOT_STARTED",
@@ -1520,260 +1515,7 @@
       "ownerName": "Johann Rozario"
     }
   ],
-  "deals": [
-    {
-      "id": "379729648851",
-      "name": "Friend Finder Networks - New Deal",
-      "stage": "3190524125",
-      "pipeline": "2336720120",
-      "amount": 4500,
-      "closeDate": "2026-01-07",
-      "createDate": "2025-11-20",
-      "modifiedDate": "2026-01-07",
-      "ownerId": "901168591",
-      "probability": 1,
-      "stageLabel": "Closed Won",
-      "ownerName": "Johann Rozario"
-    },
-    {
-      "id": "399567336674",
-      "name": "Klusup BV",
-      "stage": "3190524125",
-      "pipeline": "2336720120",
-      "amount": 1788,
-      "closeDate": "2026-01-07",
-      "createDate": "2025-12-05",
-      "modifiedDate": "2026-03-30",
-      "ownerId": "687091984",
-      "probability": 1,
-      "stageLabel": "Closed Won",
-      "ownerName": "Julio Lindveld"
-    },
-    {
-      "id": "371120648436",
-      "name": "FranceVilla – DAC7 Renewal 2025/2026",
-      "stage": "3190524125",
-      "pipeline": "2336720120",
-      "amount": 1788,
-      "closeDate": "2026-01-08",
-      "createDate": "2025-11-13",
-      "modifiedDate": "2026-02-27",
-      "ownerId": "687091984",
-      "probability": 1,
-      "stageLabel": "Closed Won",
-      "ownerName": "Julio Lindveld"
-    },
-    {
-      "id": "425898542327",
-      "name": "Secure live media - Lenos",
-      "stage": "qualifiedtobuy",
-      "pipeline": "default",
-      "amount": 9588,
-      "closeDate": "2026-01-31",
-      "createDate": "2026-01-07",
-      "modifiedDate": "2026-03-30",
-      "ownerId": "687091984",
-      "probability": 0.4,
-      "stageLabel": "Negotiation & Evaluation",
-      "ownerName": "Julio Lindveld"
-    },
-    {
-      "id": "397390371051",
-      "name": "Hypeboost",
-      "stage": "3190524126",
-      "pipeline": "2336720120",
-      "amount": 1788,
-      "closeDate": "2026-02-06",
-      "createDate": "2025-12-05",
-      "modifiedDate": "2026-02-06",
-      "ownerId": "687091984",
-      "probability": 0,
-      "stageLabel": "Closed Lost",
-      "ownerName": "Julio Lindveld"
-    },
-    {
-      "id": "379993066694",
-      "name": "Bookmatch",
-      "stage": "3190524125",
-      "pipeline": "2336720120",
-      "amount": 1788,
-      "closeDate": "2026-03-27",
-      "createDate": "2025-11-20",
-      "modifiedDate": "2026-03-27",
-      "ownerId": "687091984",
-      "probability": 1,
-      "stageLabel": "Closed Won",
-      "ownerName": "Julio Lindveld"
-    },
-    {
-      "id": "475464711375",
-      "name": "Mellow",
-      "stage": "qualifiedtobuy",
-      "pipeline": "default",
-      "amount": 10000,
-      "closeDate": "2026-03-31",
-      "createDate": "2026-02-20",
-      "modifiedDate": "2026-03-24",
-      "ownerId": "687091984",
-      "probability": 0.4,
-      "stageLabel": "Negotiation & Evaluation",
-      "ownerName": "Julio Lindveld"
-    },
-    {
-      "id": "488029925592",
-      "name": "UGC",
-      "stage": "decisionmakerboughtin",
-      "pipeline": "default",
-      "amount": 1788,
-      "closeDate": "2026-03-31",
-      "createDate": "2026-03-06",
-      "modifiedDate": "2026-03-29",
-      "ownerId": "29853062",
-      "probability": 0.8,
-      "stageLabel": "Contract Sent",
-      "ownerName": "Bas Bogerd"
-    },
-    {
-      "id": "472984691899",
-      "name": "BEX (3 Year Contract) ",
-      "stage": "4874399934",
-      "pipeline": "3557407943",
-      "amount": 140000,
-      "closeDate": "2026-04-01",
-      "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-30",
-      "ownerId": "29853062",
-      "probability": 0.3,
-      "stageLabel": "Needs assessment ",
-      "ownerName": "Bas Bogerd"
-    },
-    {
-      "id": "473517296836",
-      "name": "Dutch Cleantech (3 Year Contract)",
-      "stage": "4874399935",
-      "pipeline": "3557407943",
-      "amount": 175000,
-      "closeDate": "2026-04-01",
-      "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-26",
-      "ownerId": "29853062",
-      "probability": 0.5,
-      "stageLabel": "Solution Scoping",
-      "ownerName": "Bas Bogerd"
-    },
-    {
-      "id": "472770817237",
-      "name": "Loewe (3 Year Contract)",
-      "stage": "4874399933",
-      "pipeline": "3557407943",
-      "amount": 75000,
-      "closeDate": "2026-04-30",
-      "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-30",
-      "ownerId": "29853062",
-      "probability": 0.2,
-      "stageLabel": "Discovery call scheduled",
-      "ownerName": "Bas Bogerd"
-    },
-    {
-      "id": "461225992421",
-      "name": "Altify",
-      "stage": "appointmentscheduled",
-      "pipeline": "default",
-      "amount": 25000,
-      "closeDate": "2026-04-30",
-      "createDate": "2026-02-06",
-      "modifiedDate": "2026-03-25",
-      "ownerId": "29853062",
-      "probability": 0.2,
-      "stageLabel": "Solution Proposal Sent",
-      "ownerName": "Bas Bogerd"
-    },
-    {
-      "id": "473243074769",
-      "name": "Guesty (3Year Contract)",
-      "stage": "4874399934",
-      "pipeline": "3557407943",
-      "amount": 750000,
-      "closeDate": "2026-05-01",
-      "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-28",
-      "ownerId": "29853062",
-      "probability": 0.3,
-      "stageLabel": "Needs assessment ",
-      "ownerName": "Bas Bogerd"
-    },
-    {
-      "id": "473517297852",
-      "name": "Stripe (3 year Contract)",
-      "stage": "4874399933",
-      "pipeline": "3557407943",
-      "amount": 1300000,
-      "closeDate": "2026-05-01",
-      "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-14",
-      "ownerId": "901168591",
-      "probability": 0.2,
-      "stageLabel": "Discovery call scheduled",
-      "ownerName": "Johann Rozario"
-    },
-    {
-      "id": "495029916887",
-      "name": "Tipatli ",
-      "stage": "4874399933",
-      "pipeline": "3557407943",
-      "amount": 100000,
-      "closeDate": "2026-06-01",
-      "createDate": "2026-03-24",
-      "modifiedDate": "2026-03-30",
-      "ownerId": "901168591",
-      "probability": 0.2,
-      "stageLabel": "Discovery call scheduled",
-      "ownerName": "Johann Rozario"
-    },
-    {
-      "id": "472986119412",
-      "name": "Landal (3 Year Contract)",
-      "stage": "4874399932",
-      "pipeline": "3557407943",
-      "amount": 165000,
-      "closeDate": "2026-06-01",
-      "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-30",
-      "ownerId": "29853062",
-      "probability": 0.1,
-      "stageLabel": "Initial Contact",
-      "ownerName": "Bas Bogerd"
-    },
-    {
-      "id": "473516903612",
-      "name": "Avalara (3 Year Contract)",
-      "stage": "4874399933",
-      "pipeline": "3557407943",
-      "amount": 1300000,
-      "closeDate": "2026-06-02",
-      "createDate": "2026-02-20",
-      "modifiedDate": "2026-03-20",
-      "ownerId": "901168591",
-      "probability": 0.2,
-      "stageLabel": "Discovery call scheduled",
-      "ownerName": "Johann Rozario"
-    },
-    {
-      "id": "473452053736",
-      "name": "FareHarbor (3 Year Contract)",
-      "stage": "4874399935",
-      "pipeline": "3557407943",
-      "amount": 135000,
-      "closeDate": "2026-08-01",
-      "createDate": "2026-02-18",
-      "modifiedDate": "2026-03-28",
-      "ownerId": "901168591",
-      "probability": 0.5,
-      "stageLabel": "Solution Scoping",
-      "ownerName": "Johann Rozario"
-    }
-  ],
+  "deals": [],
   "pipelines": [
     {
       "id": "3557407943",
@@ -1924,17 +1666,17 @@
     {
       "key": "subscriber",
       "label": "Subscriber",
-      "count": 11
+      "count": 2
     },
     {
       "key": "lead",
       "label": "Lead",
-      "count": 44
+      "count": 12
     },
     {
       "key": "marketingqualifiedlead",
       "label": "MQL",
-      "count": 2
+      "count": 1
     },
     {
       "key": "salesqualifiedlead",
@@ -1944,19 +1686,19 @@
     {
       "key": "opportunity",
       "label": "Opportunity",
-      "count": 434
+      "count": 182
     },
     {
       "key": "customer",
       "label": "Customer",
-      "count": 34
+      "count": 3
     }
   ],
   "trafficSources": [
     {
       "key": "OFFLINE",
-      "thisWeek": 9,
-      "lastWeek": 2,
+      "thisWeek": 8,
+      "lastWeek": 3,
       "contacts": [
         {
           "id": "745933516992",

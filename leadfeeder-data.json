@@ -1,17 +1,33 @@
 {
-  "refreshedAt": "2026-03-30T14:31:50.846Z",
+  "refreshedAt": "2026-03-31T04:54:06.687Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 66,
-  "lastWeekTotal": 52,
+  "thisWeekTotal": 64,
+  "lastWeekTotal": 50,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 66,
-      "lastWeek": 52,
+      "thisWeek": 64,
+      "lastWeek": 50,
       "companies": [
+        {
+          "name": "Starr Studio",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-31",
+          "leadId": "bdec0a36-feda-11ee-be17-6b911e02f461_dc9b1906-fc6c-11e9-9003-6f734b310748",
+          "source": "Direct"
+        },
+        {
+          "name": "372nd QM BTN",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-03-31",
+          "leadId": "f7d34b42-05b0-11e5-ab8d-03d7cc5741e7_q31EztmuYSyzsbKM1mPrsi",
+          "source": "Direct"
+        },
         {
           "name": "PSG",
           "website": null,
@@ -23,7 +39,7 @@
         {
           "name": "Secret View",
           "website": null,
-          "visits": 3,
+          "visits": 2,
           "lastVisit": "2026-03-30",
           "leadId": "e3666dea-f138-11eb-93f9-0148f986d12f_261F6M3JJ2uyxaZT1TNjkp",
           "source": "Direct"
@@ -155,22 +171,6 @@
           "lastVisit": "2026-03-25",
           "leadId": "4a4e1658-b1fb-11ea-9cfe-716b5c9ff816_oqkPx98MiGpqZDjrUotcmR",
           "source": "Direct"
-        },
-        {
-          "name": "Twelveoakstuition.Co.Uk",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-25",
-          "leadId": "84089ada-2838-11f1-a18d-4d2e7453b66e_135c0820-2ee0-11e9-874d-3f25ecb06faa",
-          "source": "Direct"
-        },
-        {
-          "name": "UnternehmerTUM",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-25",
-          "leadId": "33bbb118-2892-11ea-98db-07b20c5eaec6_6knD4mE7nnte1rWKPhh6Je",
-          "source": "Direct"
         }
       ]
     }
@@ -187,16 +187,6 @@
       "leadId": "30f60fd8-3681-11ec-b631-59ff957f2944_p6q3nDbB2C4m9KjK9gndy"
     },
     {
-      "name": "Secret View",
-      "website": null,
-      "visits": 3,
-      "pageViews": null,
-      "firstVisit": "2026-03-16",
-      "lastVisit": "2026-03-30",
-      "source": "Direct",
-      "leadId": "e3666dea-f138-11eb-93f9-0148f986d12f_261F6M3JJ2uyxaZT1TNjkp"
-    },
-    {
       "name": "Transferz",
       "website": null,
       "visits": 3,
@@ -205,6 +195,16 @@
       "lastVisit": "2026-03-27",
       "source": "Direct",
       "leadId": "a809332c-33c4-11eb-871d-5da369c27599_iqJY1yrHd99ZA4hwnBFRG3"
+    },
+    {
+      "name": "Secret View",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-03-16",
+      "lastVisit": "2026-03-30",
+      "source": "Direct",
+      "leadId": "e3666dea-f138-11eb-93f9-0148f986d12f_261F6M3JJ2uyxaZT1TNjkp"
     },
     {
       "name": "Korton",
@@ -257,16 +257,6 @@
       "leadId": "12f074ee-1619-11f0-9a25-41fe763d0a57_8KKvyBiSeKRkp23TC37b99"
     },
     {
-      "name": "Qonto",
-      "website": null,
-      "visits": 2,
-      "pageViews": null,
-      "firstVisit": "2026-03-16",
-      "lastVisit": "2026-03-23",
-      "source": "Direct",
-      "leadId": "32b1abc2-18ad-11eb-b2a8-354a649c2572_6f118eec-e682-11e9-931f-510851ab1241"
-    },
-    {
       "name": "Orient Software Development",
       "website": null,
       "visits": 2,
@@ -277,16 +267,6 @@
       "leadId": "d3826542-8bd4-11eb-b243-0b588a09aad2_a982db1e-1b6e-11ea-937c-67d17a051f8b"
     },
     {
-      "name": "Brenger",
-      "website": null,
-      "visits": 2,
-      "pageViews": null,
-      "firstVisit": "2025-12-02",
-      "lastVisit": "2026-03-19",
-      "source": "Direct",
-      "leadId": "28a13a95-c5cc-4c4c-a695-30746ee4cbb0_iqJY1yrHd99ZA4hwnBFRG3"
-    },
-    {
       "name": "Truman Hoyle",
       "website": null,
       "visits": 2,
@@ -295,6 +275,26 @@
       "lastVisit": "2026-03-18",
       "source": "Direct",
       "leadId": "wi2rFLLoQFRRV5PnrnvMok_p6q3nDbB2C4m9KjK9gndy"
+    },
+    {
+      "name": "Starr Studio",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-03-31",
+      "lastVisit": "2026-03-31",
+      "source": "Direct",
+      "leadId": "bdec0a36-feda-11ee-be17-6b911e02f461_dc9b1906-fc6c-11e9-9003-6f734b310748"
+    },
+    {
+      "name": "372nd QM BTN",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-02-05",
+      "lastVisit": "2026-03-31",
+      "source": "Direct",
+      "leadId": "f7d34b42-05b0-11e5-ab8d-03d7cc5741e7_q31EztmuYSyzsbKM1mPrsi"
     },
     {
       "name": "Acuity Knowledge Partners (Uk)",
@@ -396,7 +396,7 @@
     },
     {
       "date": "2025-12-02",
-      "visits": 1
+      "visits": 2
     },
     {
       "date": "2025-12-03",
@@ -420,7 +420,7 @@
     },
     {
       "date": "2026-01-05",
-      "visits": 2
+      "visits": 1
     },
     {
       "date": "2026-01-23",
@@ -428,7 +428,7 @@
     },
     {
       "date": "2026-02-05",
-      "visits": 1
+      "visits": 2
     },
     {
       "date": "2026-02-11",
@@ -448,7 +448,7 @@
     },
     {
       "date": "2026-03-02",
-      "visits": 18
+      "visits": 2
     },
     {
       "date": "2026-03-03",
@@ -484,7 +484,7 @@
     },
     {
       "date": "2026-03-12",
-      "visits": 10
+      "visits": 9
     },
     {
       "date": "2026-03-13",
@@ -496,7 +496,7 @@
     },
     {
       "date": "2026-03-16",
-      "visits": 10
+      "visits": 12
     },
     {
       "date": "2026-03-17",
@@ -508,7 +508,7 @@
     },
     {
       "date": "2026-03-19",
-      "visits": 18
+      "visits": 19
     },
     {
       "date": "2026-03-20",
@@ -524,7 +524,7 @@
     },
     {
       "date": "2026-03-23",
-      "visits": 9
+      "visits": 10
     },
     {
       "date": "2026-03-24",
@@ -540,7 +540,7 @@
     },
     {
       "date": "2026-03-27",
-      "visits": 6
+      "visits": 5
     },
     {
       "date": "2026-03-28",
@@ -548,7 +548,11 @@
     },
     {
       "date": "2026-03-30",
-      "visits": 9
+      "visits": 10
+    },
+    {
+      "date": "2026-03-31",
+      "visits": 4
     }
   ]
 }
