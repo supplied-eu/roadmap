@@ -1,32 +1,14 @@
 {
-  "refreshedAt": "2026-03-31T04:53:55.830Z",
+  "refreshedAt": "2026-03-31T07:56:39.741Z",
   "gmail": {
     "threads": [
       {
-        "id": "19d42219ce08b373",
-        "subject": "The AI voice race is heating up ",
-        "from": "Sifted Daily <sifted@sifted.eu>",
-        "date": "2026-03-31T04:23:11.000Z",
-        "snippet": "+ Mistral gets $830m loan; Bootstrap 4F loses two partners ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d42219ce08b373",
-        "unread": true
-      },
-      {
-        "id": "19d416d16694706f",
-        "subject": "Re: Interns ready to support projects",
-        "from": "Gemma Goodbourn <gemma@tryvirtualinternships.com>",
-        "date": "2026-03-31T01:05:51.000Z",
-        "snippet": "hey Johann, final bump in your inbox. if easier feel free to reply with a number 1 – Happy to take an intern. Please let me know next steps 2 – Send a few profiles to review 3 – Share a link so I can",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d416d16694706f",
-        "unread": true
-      },
-      {
-        "id": "19d414e28568e61d",
-        "subject": "Southeast Asia’s AI Future Is Becoming an Energy Story, Is China Racing Ahead In Humanoid Robotics?",
-        "from": "Asia Tech Podcast <atpinsights@substack.com>",
-        "date": "2026-03-31T00:31:42.000Z",
-        "snippet": "ATP Insights discusses the most important tech news in Asia. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d414e28568e61d",
+        "id": "19d42dff657824fc",
+        "subject": "EU Funding for Supplied",
+        "from": "Edward Hernandez <edward@yieldlumos.com>",
+        "date": "2026-03-31T07:51:03.000Z",
+        "snippet": "Hello Johann, Saw Supplied may qualify for a couple of EU funding programs for SMEs. Depending on your current stage and product focus, programs like FFplus and EIC Accelerator could be worth looking",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d42dff657824fc",
         "unread": true
       },
       {
@@ -109,9 +91,27 @@
         "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
         "unread": true
+      },
+      {
+        "id": "19ce6606ba2e3745",
+        "subject": "Customer prioritisation standup",
+        "from": "Optiverse <mail@optiverse.ai>",
+        "date": "2026-03-13T08:46:43.000Z",
+        "snippet": "Meeting Summary General Summary During the meeting, discussions focused on addressing discrepancies found in rental settlements and gross earnings, ensuring seller statements are accurate before",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce6606ba2e3745",
+        "unread": true
+      },
+      {
+        "id": "19ce30963c459b27",
+        "subject": "Reminder : Help Us Improve: Rate Your Experience",
+        "from": "Akancha  Srivastava <akancha@scrut.io>",
+        "date": "2026-03-12T17:12:47.000Z",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce30963c459b27",
+        "unread": true
       }
     ],
-    "unreadCount": 39
+    "unreadCount": 37
   },
   "calendar": {
     "today": [
@@ -285,9 +285,9 @@
         "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
         "name": "Supplied Monthly Shareholder Updates - 2025 Update",
         "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-03-30T14:17:48.110Z",
+        "modifiedTime": "2026-03-31T07:53:14.146Z",
         "url": "https://docs.google.com/document/d/1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
+        "lastModifiedBy": "Bas Bogerd"
       },
       {
         "id": "1aS8LmcLLdMRXXxWRTu9Oca_Am5dFM-IZ",
@@ -392,40 +392,20 @@
     },
     {
       "action": "reply",
-      "subject": "The AI voice race is heating up ",
-      "reason": "+ Mistral gets $830m loan; Bootstrap 4F loses two partners ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
-      "from": "Sifted Daily <sifted@sifted.eu>",
+      "subject": "EU Funding for Supplied",
+      "reason": "Hello Johann, Saw Supplied may qualify for a couple of EU funding programs for SMEs. Depending on your current stage and",
+      "from": "Edward Hernandez <edward@yieldlumos.com>",
       "ageDays": 0,
-      "threadId": "19d42219ce08b373",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d42219ce08b373",
-      "id": "email-19d42219ce08b373"
-    },
-    {
-      "action": "reply",
-      "subject": "Re: Interns ready to support projects",
-      "reason": "hey Johann, final bump in your inbox. if easier feel free to reply with a number 1 – Happy to take an intern. Please let",
-      "from": "Gemma Goodbourn <gemma@tryvirtualinternships.com>",
-      "ageDays": 0,
-      "threadId": "19d416d16694706f",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d416d16694706f",
-      "id": "email-19d416d16694706f"
-    },
-    {
-      "action": "reply",
-      "subject": "Southeast Asia’s AI Future Is Becoming an Energy Story, Is China Racing Ahead In Humanoid Robotics?",
-      "reason": "ATP Insights discusses the most important tech news in Asia. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
-      "from": "Asia Tech Podcast <atpinsights@substack.com>",
-      "ageDays": 0,
-      "threadId": "19d414e28568e61d",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d414e28568e61d",
-      "id": "email-19d414e28568e61d"
+      "threadId": "19d42dff657824fc",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d42dff657824fc",
+      "id": "email-19d42dff657824fc"
     },
     {
       "action": "reply",
       "subject": "3 unread notifications on Supplied",
       "reason": "You have 3 unread notifications on Linear. Open your Inbox: https://linear.app/supplied/inbox Unsubscribe from these ema",
       "from": "Linear <notifications@linear.app>",
-      "ageDays": 0,
+      "ageDays": 1,
       "threadId": "19d3d5689be95360",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d3d5689be95360",
       "id": "email-19d3d5689be95360"
@@ -435,7 +415,7 @@
       "subject": "Daily digest BlueJay Ventures B.V.",
       "reason": "Daily digest BlueJay Ventures BV Dear Johann Rozario, You will receive an update on the activities in your Moneybird adm",
       "from": "Moneybird <notifications@moneybird.com>",
-      "ageDays": 0,
+      "ageDays": 1,
       "threadId": "19d3d546d1631a46",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d3d546d1631a46",
       "id": "email-19d3d546d1631a46"
@@ -445,7 +425,7 @@
       "subject": "Daily digest Supplied Technologies B.V.",
       "reason": "Daily digest Supplied Technologies BV Dear Johann Rozario, You will receive an update on the activities in your Moneybir",
       "from": "Moneybird <notifications@moneybird.com>",
-      "ageDays": 0,
+      "ageDays": 1,
       "threadId": "19d3d546a4b65c8b",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d3d546a4b65c8b",
       "id": "email-19d3d546a4b65c8b"
