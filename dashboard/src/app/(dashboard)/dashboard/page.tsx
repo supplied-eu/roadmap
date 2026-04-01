@@ -593,19 +593,27 @@ export default function DashboardPage() {
                           onBlur={() => setEditingPriorityDate(null)}
                           onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') setEditingPriorityDate(null); }}
                           className="text-[9px] bg-transparent outline-none px-1 py-0.5 rounded shrink-0"
-                          style={{ color: 'var(--text)', border: '1px solid var(--accent)', width: '95px' }}
+                          style={{ color: 'var(--text)', border: '1px solid var(--accent)', width: '110px' }}
                         />
                       ) : item.dueDate ? (
                         <button onClick={() => isPersonal && setEditingPriorityDate(item.id)}
-                          className="text-[9px] shrink-0" style={{ color: isOverdue(item.dueDate) ? '#ef4444' : 'var(--text-muted)' }}
-                          title={isPersonal ? 'Click to edit date' : undefined}>
+                          className="text-[9px] px-1.5 py-0.5 rounded shrink-0 flex items-center gap-1"
+                          style={{
+                            color: isOverdue(item.dueDate) ? '#ef4444' : 'var(--text-muted)',
+                            background: isPersonal ? 'var(--bg)' : 'transparent',
+                            border: isPersonal ? '1px solid var(--border)' : 'none',
+                            cursor: isPersonal ? 'pointer' : 'default',
+                          }}
+                          title={isPersonal ? 'Click to change date' : undefined}>
+                          {isPersonal && <Calendar size={8} />}
                           {formatDate(item.dueDate)}
                         </button>
                       ) : isPersonal ? (
                         <button onClick={() => setEditingPriorityDate(item.id)}
-                          className="text-[9px] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                          style={{ color: 'var(--text-muted)' }} title="Set due date">
-                          <Calendar size={10} />
+                          className="text-[9px] shrink-0 px-1.5 py-0.5 rounded flex items-center gap-1"
+                          style={{ color: 'var(--accent)', background: 'var(--bg)', border: '1px dashed var(--accent)' }}
+                          title="Set due date">
+                          <Calendar size={8} /> Add date
                         </button>
                       ) : null}
                       {/* Edit & Delete for personal tasks */}
@@ -1084,14 +1092,28 @@ function StreamSection({ label, count, color, items, expandedItem, setExpandedIt
                 </span>
               )}
 
-              {/* Due date */}
-              {item.dueDate && (
-                <span className="text-[10px] shrink-0" style={{
-                  color: isOverdue(item.dueDate) ? '#ef4444' : isDueToday(item.dueDate) ? 'var(--accent)' : '#f59e0b',
-                }}>
+              {/* Due date — clickable for personal tasks */}
+              {isPersonal && !item.dueDate ? (
+                <button onClick={e => { e.stopPropagation(); setExpandedItem(item.id); }}
+                  className="text-[9px] shrink-0 px-1.5 py-0.5 rounded flex items-center gap-1"
+                  style={{ color: 'var(--accent)', background: 'var(--bg)', border: '1px dashed var(--accent)' }}
+                  title="Click to set due date">
+                  <Calendar size={8} /> Add date
+                </button>
+              ) : item.dueDate ? (
+                <button onClick={e => { if (isPersonal) { e.stopPropagation(); setExpandedItem(item.id); } }}
+                  className="text-[10px] shrink-0 px-1.5 py-0.5 rounded flex items-center gap-0.5"
+                  style={{
+                    color: isOverdue(item.dueDate) ? '#ef4444' : isDueToday(item.dueDate) ? 'var(--accent)' : '#f59e0b',
+                    background: isPersonal ? 'var(--bg)' : 'transparent',
+                    border: isPersonal ? '1px solid var(--border)' : 'none',
+                    cursor: isPersonal ? 'pointer' : 'default',
+                  }}
+                  title={isPersonal ? 'Click to change date' : undefined}>
+                  {isPersonal && <Calendar size={8} />}
                   {formatDate(item.dueDate)}
-                </span>
-              )}
+                </button>
+              ) : null}
 
               {/* Assignee */}
               {item.assignee && !isPersonal && (
