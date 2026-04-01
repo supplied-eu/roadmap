@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-04-01T10:01:56.427Z",
+  "refreshedAt": "2026-04-01T10:18:54.083Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -597,6 +597,19 @@
           "startDate": null,
           "targetDate": null,
           "issues": [
+            {
+              "id": "95660e04-0e38-4950-a4de-05b13c29963f",
+              "identifier": "SUP-1284",
+              "title": "E2E tests update/refresh and on-commit/on-merge runs against staging",
+              "status": "In Progress",
+              "start": "2026-04-01",
+              "end": null,
+              "assignee": "Vladislav Suvorov",
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-1284/e2e-tests-updaterefresh-and-on-commiton-merge-runs-against-staging",
+              "parentId": null
+            },
             {
               "id": "bd8f32b2-690d-4532-88dd-ad3177774137",
               "identifier": "SUP-1124",
@@ -3023,7 +3036,7 @@
               "start": null,
               "end": "2026-02-27",
               "assignee": "Ivan Tiniakov",
-              "priority": "Urgent",
+              "priority": "Medium",
               "estimate": 1,
               "url": "https://linear.app/supplied/issue/SUP-1167/ability-to-add-and-remove-properties-for-a-supplier-in-the-admin-app",
               "parentId": null
@@ -3192,7 +3205,7 @@
               "start": null,
               "end": "2026-02-27",
               "assignee": "Ivan Tiniakov",
-              "priority": "Urgent",
+              "priority": "Medium",
               "estimate": 1,
               "url": "https://linear.app/supplied/issue/SUP-1167/ability-to-add-and-remove-properties-for-a-supplier-in-the-admin-app",
               "parentId": "a407705b-5910-4281-81a5-8f16ffdbede9"
@@ -3296,7 +3309,7 @@
               "start": null,
               "end": "2026-08-21",
               "assignee": null,
-              "priority": "High",
+              "priority": "Urgent",
               "estimate": 3,
               "url": "https://linear.app/supplied/issue/SUP-1030/ability-to-sync-suppliers-and-properties-from-merged-data",
               "parentId": null
