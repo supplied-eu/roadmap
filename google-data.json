@@ -1,16 +1,7 @@
 {
-  "refreshedAt": "2026-04-01T10:18:55.760Z",
+  "refreshedAt": "2026-04-01T11:01:54.759Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d488c3abbe8858",
-        "subject": "Supplied_SALES_Re... - Johann, why do we exclude some contra...",
-        "from": "\"Jelena Hmeltnitski (Google Sheets)\" <comments-noreply@docs.google.com>",
-        "date": "2026-04-01T10:17:22.000Z",
-        "snippet": "Jelena Hmeltnitski (jelena@supplied.eu) assigned you an action item in the following document Supplied_SALES_Revenue_Costs_Master_File 1 comment Total Annual Usage Revenue Jelena Hmeltnitski • 12:12 PM",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d488c3abbe8858",
-        "unread": true
-      },
       {
         "id": "19d47e0483f9000e",
         "subject": "Re: Blog planning & video",
@@ -109,9 +100,18 @@
         "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
         "unread": true
+      },
+      {
+        "id": "19ce82e9d0fab621",
+        "subject": "Reminder : Help Us Improve: Rate Your Experience",
+        "from": "Akancha  Srivastava <akancha@scrut.io>",
+        "date": "2026-03-13T17:11:33.000Z",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "unread": true
       }
     ],
-    "unreadCount": 41
+    "unreadCount": 40
   },
   "calendar": {
     "today": [
@@ -146,13 +146,13 @@
         "allDay": false
       },
       {
-        "id": "2dli0s6cc4m53fbnnobju2kbi5",
-        "title": "Post Linked IN Roles",
-        "start": "2026-04-01T12:30:00+02:00",
-        "end": "2026-04-01T13:30:00+02:00",
+        "id": "_8cq3eghg68p3aba16kp34b9k8d23cba26cpk2b9g712jid9n84rj6hhi6c",
+        "title": "Stripe workflow and design",
+        "start": "2026-04-01T13:45:00+02:00",
+        "end": "2026-04-01T14:45:00+02:00",
         "location": null,
         "numAttendees": 0,
-        "url": "https://www.google.com/calendar/event?eid=MmRsaTBzNmNjNG01M2Zibm5vYmp1MmtiaTUgam9oYW5uQHN1cHBsaWVkLmV1",
+        "url": "https://www.google.com/calendar/event?eid=XzhjcTNlZ2hnNjhwM2FiYTE2a3AzNGI5azhkMjNjYmEyNmNwazJiOWc3MTJqaWQ5bjg0cmo2aGhpNmMgam9oYW5uQHN1cHBsaWVkLmV1",
         "allDay": false
       },
       {
@@ -285,9 +285,9 @@
         "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
         "name": "Supplied_SALES_Revenue_Costs_Master_File",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-04-01T10:15:54.737Z",
+        "modifiedTime": "2026-04-01T10:30:46.100Z",
         "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
-        "lastModifiedBy": "Jelena Hmeltnitski"
+        "lastModifiedBy": "Johann Rozario"
       },
       {
         "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
@@ -389,16 +389,6 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
-    },
-    {
-      "action": "reply",
-      "subject": "Supplied_SALES_Re... - Johann, why do we exclude some contra...",
-      "reason": "Jelena Hmeltnitski (jelena@supplied.eu) assigned you an action item in the following document Supplied_SALES_Revenue_Cos",
-      "from": "\"Jelena Hmeltnitski (Google Sheets)\" <comments-noreply@docs.google.com>",
-      "ageDays": 0,
-      "threadId": "19d488c3abbe8858",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d488c3abbe8858",
-      "id": "email-19d488c3abbe8858"
     },
     {
       "action": "reply",
