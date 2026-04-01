@@ -1,17 +1,33 @@
 {
-  "refreshedAt": "2026-04-01T09:19:02.541Z",
+  "refreshedAt": "2026-04-01T10:02:11.202Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 62,
+  "thisWeekTotal": 64,
   "lastWeekTotal": 51,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 62,
+      "thisWeek": 64,
       "lastWeek": 51,
       "companies": [
+        {
+          "name": "TurboJot",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-04-01",
+          "leadId": "eb2235a4-85a0-11f0-8af5-39c38ebfe1cc_3b5rCZyYHzt2wzMhLfWnRA",
+          "source": "Direct"
+        },
+        {
+          "name": "DSV - Global Transport and Logistics",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-04-01",
+          "leadId": "c8234b06-ca1c-11e4-83c9-311e631ba334_iFZZNLJgsshJRGateNSn12",
+          "source": "Direct"
+        },
         {
           "name": "Insurance Canopy",
           "website": null,
@@ -155,22 +171,6 @@
           "lastVisit": "2026-03-26",
           "leadId": "af13913e-9865-11f0-94c1-69d3873432cc_9308f978-6038-11e9-9853-5d54ebab3e0b",
           "source": "Direct"
-        },
-        {
-          "name": "Multi Montage",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-26",
-          "leadId": "c9922fba-dac0-11e5-89fb-1344a208b079_dfcd82aa-0d0e-11ea-9cc7-21ec7100bda8",
-          "source": "Direct"
-        },
-        {
-          "name": "Oracle",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-25",
-          "leadId": "2WiB3Cmox4RFPHn7Ty27Uu_p6q3nDbB2C4m9KjK9gndy",
-          "source": "Direct"
         }
       ]
     }
@@ -277,6 +277,26 @@
       "leadId": "d3826542-8bd4-11eb-b243-0b588a09aad2_a982db1e-1b6e-11ea-937c-67d17a051f8b"
     },
     {
+      "name": "TurboJot",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-04-01",
+      "lastVisit": "2026-04-01",
+      "source": "Direct",
+      "leadId": "eb2235a4-85a0-11f0-8af5-39c38ebfe1cc_3b5rCZyYHzt2wzMhLfWnRA"
+    },
+    {
+      "name": "DSV - Global Transport and Logistics",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-04-01",
+      "lastVisit": "2026-04-01",
+      "source": "Direct",
+      "leadId": "c8234b06-ca1c-11e4-83c9-311e631ba334_iFZZNLJgsshJRGateNSn12"
+    },
+    {
       "name": "Insurance Canopy",
       "website": null,
       "visits": 1,
@@ -355,26 +375,6 @@
       "lastVisit": "2026-03-28",
       "source": "Direct",
       "leadId": "4c3dd7f8-06ef-11ea-8623-6b90992e6c14_94spWxmC95GeJeDugsjjXN"
-    },
-    {
-      "name": "THE OPC GROUP",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-28",
-      "lastVisit": "2026-03-28",
-      "source": "Direct",
-      "leadId": "49e5c766-2e3c-11eb-8fd5-3dea75c8c9de_aNnouZfGnDJgUBCweh2nRc"
-    },
-    {
-      "name": "Lsm Global",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-27",
-      "lastVisit": "2026-03-27",
-      "source": "Direct",
-      "leadId": "091f68f6-2cf9-11ec-a258-75930e3fefe9_xnbS56EZEhLj6BfKrgAz68"
     }
   ],
   "dailyVisits": [
@@ -552,7 +552,7 @@
     },
     {
       "date": "2026-04-01",
-      "visits": 2
+      "visits": 6
     }
   ]
 }

@@ -1,16 +1,7 @@
 {
-  "refreshedAt": "2026-04-01T09:18:48.998Z",
+  "refreshedAt": "2026-04-01T10:02:00.121Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d4856919a0e130",
-        "subject": "Role Description ... - thinking can drop this part of the se...",
-        "from": "\"Bas Bogerd (Google Docs)\" <comments-noreply@docs.google.com>",
-        "date": "2026-04-01T09:18:45.000Z",
-        "snippet": "Bas Bogerd resolved a comment in the following document Role Description &amp; Development Plan.docx 1 resolved Comments exactly what this plan is designed to build. Johann Rozario • 3:57 PM, Mar 30 (",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d4856919a0e130",
-        "unread": true
-      },
       {
         "id": "19d47e0483f9000e",
         "subject": "Re: Blog planning & video",
@@ -18,15 +9,6 @@
         "date": "2026-04-01T09:14:52.000Z",
         "snippet": "Nice :) I&#39;ve just shared it with Nitya to see if something like this would be possible! -- ______________________________ Britt Vries Senior Project Manager __________________________ Tweede van",
         "url": "https://mail.google.com/mail/u/0/#inbox/19d47e0483f9000e",
-        "unread": true
-      },
-      {
-        "id": "19d4841e99519434",
-        "subject": "Supplied_SALES_Re... - Their account is active, as they stil...",
-        "from": "\"Jelena Hmeltnitski (Google Sheets)\" <comments-noreply@docs.google.com>",
-        "date": "2026-04-01T08:56:11.000Z",
-        "snippet": "Julio Lindveld (julio@supplied.eu) mentioned you in a comment in the following document Supplied_SALES_Revenue_Costs_Master_File 1 comment INACTIVE Julio Lindveld • 4:37 PM, Mar 31 (CEST) Their account",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d4841e99519434",
         "unread": true
       },
       {
@@ -109,9 +91,27 @@
         "snippet": "Regus Uw Regus ervaring Re: Uw ervaring bij ZWOLLE, Trade Centre Om onze service voortdurend te kunnen verbeteren zijn wij zeer geinteresseeerd naar uw ervaring op uw locatie. Het invullen van de",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cfc73957f9533b",
         "unread": true
+      },
+      {
+        "id": "19cf4de5565b3976",
+        "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
+        "from": "anomalydetection@costalerts.amazonaws.com",
+        "date": "2026-03-16T04:18:54.000Z",
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "unread": true
+      },
+      {
+        "id": "19ce82e9d0fab621",
+        "subject": "Reminder : Help Us Improve: Rate Your Experience",
+        "from": "Akancha  Srivastava <akancha@scrut.io>",
+        "date": "2026-03-13T17:11:33.000Z",
+        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
+        "unread": true
       }
     ],
-    "unreadCount": 42
+    "unreadCount": 40
   },
   "calendar": {
     "today": [
@@ -285,7 +285,7 @@
         "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
         "name": "Supplied_SALES_Revenue_Costs_Master_File",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-04-01T09:13:28.436Z",
+        "modifiedTime": "2026-04-01T09:52:59.148Z",
         "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
         "lastModifiedBy": "Jelena Hmeltnitski"
       },
@@ -293,7 +293,7 @@
         "id": "17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY",
         "name": " Customer success standup notes",
         "mimeType": "application/vnd.google-apps.document",
-        "modifiedTime": "2026-04-01T08:43:24.608Z",
+        "modifiedTime": "2026-04-01T09:42:52.998Z",
         "url": "https://docs.google.com/document/d/17O2abBzG1nIB-1cGk8GJeTlFmoYEYhI7vXjAYcEYxDY/edit?usp=drivesdk",
         "lastModifiedBy": "Julio Lindveld"
       },
@@ -357,9 +357,9 @@
         "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
         "name": "Supplied_Technologies_Budget_2026",
         "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-31T11:30:49.935Z",
+        "modifiedTime": "2026-04-01T09:59:43.791Z",
         "url": "https://docs.google.com/spreadsheets/d/1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I/edit?usp=drivesdk",
-        "lastModifiedBy": "Johann Rozario"
+        "lastModifiedBy": "Jelena Hmeltnitski"
       },
       {
         "id": "1OWUu21KkqKJ5n5oJlSnkFVFPfi1uQg_e9O3auPr2wh8",
@@ -381,6 +381,16 @@
   },
   "email_priorities": [
     {
+      "action": "alert",
+      "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
+      "reason": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
+      "from": "anomalydetection@costalerts.amazonaws.com",
+      "ageDays": 16,
+      "threadId": "19cf4de5565b3976",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+      "id": "email-19cf4de5565b3976"
+    },
+    {
       "action": "reply",
       "subject": "Re: Blog planning & video",
       "reason": "Nice :) I&#39;ve just shared it with Nitya to see if something like this would be possible! -- _________________________",
@@ -389,16 +399,6 @@
       "threadId": "19d47e0483f9000e",
       "url": "https://mail.google.com/mail/u/0/#inbox/19d47e0483f9000e",
       "id": "email-19d47e0483f9000e"
-    },
-    {
-      "action": "reply",
-      "subject": "Supplied_SALES_Re... - Their account is active, as they stil...",
-      "reason": "Julio Lindveld (julio@supplied.eu) mentioned you in a comment in the following document Supplied_SALES_Revenue_Costs_Mas",
-      "from": "\"Jelena Hmeltnitski (Google Sheets)\" <comments-noreply@docs.google.com>",
-      "ageDays": 0,
-      "threadId": "19d4841e99519434",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d4841e99519434",
-      "id": "email-19d4841e99519434"
     },
     {
       "action": "reply",

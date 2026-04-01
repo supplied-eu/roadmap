@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-04-01T09:18:45.223Z",
+  "refreshedAt": "2026-04-01T10:01:56.427Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -8382,6 +8382,69 @@
       "targetDate": "2026-12-31",
       "projects": [
         {
+          "id": "220f3a14-4bf6-40dc-a348-4dc6fcadaf7b",
+          "name": "Transferz",
+          "status": "In Progress",
+          "color": "#bec2c8",
+          "url": "https://linear.app/supplied/project/transferz-503c62196997",
+          "startDate": "2026-04-01",
+          "targetDate": null,
+          "issues": [
+            {
+              "id": "4fb9a350-9ea0-40b5-a074-266d408081bf",
+              "identifier": "IMP-168",
+              "title": "Estimate developer time and cost so we can provide the prospect with a clear implementation proposal",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-168/estimate-developer-time-and-cost-so-we-can-provide-the-prospect-with-a",
+              "parentId": null
+            },
+            {
+              "id": "0763cdb3-141f-480d-8cc9-899f3ac6887d",
+              "identifier": "IMP-167",
+              "title": "Confirm multilingual document support",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-167/confirm-multilingual-document-support",
+              "parentId": null
+            },
+            {
+              "id": "eb792268-88cf-435e-818e-8b02ea091f07",
+              "identifier": "IMP-166",
+              "title": "Identify what needs to be built or changed in our current platform to support the 9 document types listed below",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-166/identify-what-needs-to-be-built-or-changed-in-our-current-platform-to",
+              "parentId": null
+            },
+            {
+              "id": "c02787a4-21a4-4caa-9d87-b7b58413a377",
+              "identifier": "IMP-165",
+              "title": "Assess level of effort for Launch 1 and Launch 2",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "High",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-165/assess-level-of-effort-for-launch-1-and-launch-2",
+              "parentId": null
+            }
+          ]
+        },
+        {
           "id": "3b765a13-c1fe-46f1-900f-6077320a1f6b",
           "name": "Booking Experts DAC7 Integration",
           "status": "Backlog",
@@ -9095,6 +9158,19 @@
           "startDate": "2026-03-25",
           "targetDate": "2026-03-27",
           "issues": [
+            {
+              "id": "be57beec-c46a-4555-83ff-eb46fc45c6a2",
+              "identifier": "IMP-169",
+              "title": "Bulk email sends notifications to suppliers without seller statements",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "Urgent",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-169/bulk-email-sends-notifications-to-suppliers-without-seller-statements",
+              "parentId": null
+            },
             {
               "id": "3f39343f-7fa0-41e6-999e-410ab2810d0f",
               "identifier": "SUP-1278",
