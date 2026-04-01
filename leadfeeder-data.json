@@ -1,17 +1,33 @@
 {
-  "refreshedAt": "2026-04-01T12:18:58.405Z",
+  "refreshedAt": "2026-04-01T13:02:06.246Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 64,
+  "thisWeekTotal": 66,
   "lastWeekTotal": 51,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 64,
+      "thisWeek": 66,
       "lastWeek": 51,
       "companies": [
+        {
+          "name": "Universidad Complutense de Madrid",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-04-01",
+          "leadId": "tZwkP3DDkjgKZr9pWGNCFe_oqkPx98MiGpqZDjrUotcmR",
+          "source": "Direct"
+        },
+        {
+          "name": "Amplefuture Group",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-04-01",
+          "leadId": "4ufo9eL9X2WopFhGk31a5D_p6q3nDbB2C4m9KjK9gndy",
+          "source": "Direct"
+        },
         {
           "name": "TurboJot",
           "website": null,
@@ -155,22 +171,6 @@
           "lastVisit": "2026-03-27",
           "leadId": "575ff7a5-f1e0-4620-9eea-61f4adf59606_76b335ec-ea1f-11e9-9b3f-2fe890320230",
           "source": "Direct"
-        },
-        {
-          "name": "Deskbird",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-26",
-          "leadId": "68d88a3e-da78-11ec-909f-65355e8fbb21_c592830c-e6fa-11e9-9b3f-2fe890320230",
-          "source": "Direct"
-        },
-        {
-          "name": "Zedrox",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-26",
-          "leadId": "af13913e-9865-11f0-94c1-69d3873432cc_9308f978-6038-11e9-9853-5d54ebab3e0b",
-          "source": "Direct"
         }
       ]
     }
@@ -277,6 +277,26 @@
       "leadId": "d3826542-8bd4-11eb-b243-0b588a09aad2_a982db1e-1b6e-11ea-937c-67d17a051f8b"
     },
     {
+      "name": "Universidad Complutense de Madrid",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2026-04-01",
+      "lastVisit": "2026-04-01",
+      "source": "Direct",
+      "leadId": "tZwkP3DDkjgKZr9pWGNCFe_oqkPx98MiGpqZDjrUotcmR"
+    },
+    {
+      "name": "Amplefuture Group",
+      "website": null,
+      "visits": 1,
+      "pageViews": null,
+      "firstVisit": "2025-12-19",
+      "lastVisit": "2026-04-01",
+      "source": "Direct",
+      "leadId": "4ufo9eL9X2WopFhGk31a5D_p6q3nDbB2C4m9KjK9gndy"
+    },
+    {
       "name": "TurboJot",
       "website": null,
       "visits": 1,
@@ -355,26 +375,6 @@
       "lastVisit": "2026-03-30",
       "source": "Direct",
       "leadId": "4c66aa78-32c5-11ea-b3b2-4b28092264c0_tfiiFkGNsNYyuggpsjjnTa"
-    },
-    {
-      "name": "TurboJot",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-28",
-      "lastVisit": "2026-03-28",
-      "source": "Direct",
-      "leadId": "eb2235a4-85a0-11f0-8af5-39c38ebfe1cc_d2kDTteAAECxmMZTFM7nJs"
-    },
-    {
-      "name": "Glasvezel Assendorp",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-03-28",
-      "lastVisit": "2026-03-28",
-      "source": "Direct",
-      "leadId": "4c3dd7f8-06ef-11ea-8623-6b90992e6c14_94spWxmC95GeJeDugsjjXN"
     }
   ],
   "dailyVisits": [
@@ -413,6 +413,10 @@
     {
       "date": "2025-12-18",
       "visits": 2
+    },
+    {
+      "date": "2025-12-19",
+      "visits": 1
     },
     {
       "date": "2026-01-02",
@@ -552,7 +556,7 @@
     },
     {
       "date": "2026-04-01",
-      "visits": 6
+      "visits": 9
     }
   ]
 }

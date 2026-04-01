@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-04-01T12:18:45.323Z",
+  "refreshedAt": "2026-04-01T13:01:51.619Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -13972,6 +13972,19 @@
               "priority": "High",
               "estimate": 2,
               "url": "https://linear.app/supplied/issue/SUP-679/properties-adapt-the-rental-properties-collection-to-work-the-same-way",
+              "parentId": null
+            },
+            {
+              "id": "0a6957a8-3938-432e-b13f-3ab38b1dc259",
+              "identifier": "SUP-672",
+              "title": "Create a prompt after import to restrict/filter on which data set (collection) to import and apply conditions to the import)",
+              "status": "Todo",
+              "start": null,
+              "end": "2026-04-10",
+              "assignee": null,
+              "priority": "High",
+              "estimate": 3,
+              "url": "https://linear.app/supplied/issue/SUP-672/create-a-prompt-after-import-to-restrictfilter-on-which-data-set",
               "parentId": null
             },
             {
