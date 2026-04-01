@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-04-01T12:01:49.799Z",
+  "refreshedAt": "2026-04-01T12:18:45.323Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -382,10 +382,10 @@
               "id": "a24e9980-59a8-44f0-ba1a-587ce7030b63",
               "identifier": "SUP-1274",
               "title": "UUID v4 -> v7 change",
-              "status": "Backlog",
-              "start": null,
+              "status": "In Progress",
+              "start": "2026-04-01",
               "end": null,
-              "assignee": null,
+              "assignee": "Vladislav Suvorov",
               "priority": "No priority",
               "estimate": null,
               "url": "https://linear.app/supplied/issue/SUP-1274/uuid-v4-v7-change",
@@ -8473,12 +8473,25 @@
         {
           "id": "3b765a13-c1fe-46f1-900f-6077320a1f6b",
           "name": "Booking Experts DAC7 Integration",
-          "status": "Backlog",
+          "status": "In Progress",
           "color": "#bec2c8",
           "url": "https://linear.app/supplied/project/booking-experts-dac7-integration-604a0b3ee9dd",
-          "startDate": null,
+          "startDate": "2026-04-01",
           "targetDate": null,
           "issues": [
+            {
+              "id": "517ab5a5-0772-447b-a452-41988099cde7",
+              "identifier": "SUP-1286",
+              "title": "Product Documentation on how we generate and calculate DAC7 reports",
+              "status": "In Progress",
+              "start": "2026-04-01",
+              "end": null,
+              "assignee": "Johann Rozario",
+              "priority": "High",
+              "estimate": 1,
+              "url": "https://linear.app/supplied/issue/SUP-1286/product-documentation-on-how-we-generate-and-calculate-dac7-reports",
+              "parentId": null
+            },
             {
               "id": "906098ef-e1b6-44fc-928d-6e7bd031e515",
               "identifier": "SUP-1269",
