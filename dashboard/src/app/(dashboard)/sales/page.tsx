@@ -27,7 +27,7 @@ type HsTrafficSource = { key: string; label: string; icon: string; thisWeek: num
 type LeadfeederData = {
   available: boolean; thisWeekTotal: number; lastWeekTotal: number;
   trafficSources: TrafficSource[];
-  topCompanies: { name: string; visits: number; pageViews: number; firstVisit: string; lastVisit: string; source: string; leadId: string }[];
+  topCompanies: { name: string; website: string | null; visits: number; pageViews: number; firstVisit: string; lastVisit: string; source: string; leadId: string }[];
   dailyVisits: { date: string; visits: number }[];
   contactLifecycle: LifecycleStage[];
   hsTrafficSources: HsTrafficSource[];
@@ -332,7 +332,10 @@ export default function SalesPage() {
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                   <Globe size={12} style={{ color: '#10b981' }} />
                   <div className="flex-1 min-w-0">
-                    <span className="text-xs block truncate" style={{ color: 'var(--text)' }}>{co.name}</span>
+                    <div className="flex items-center gap-1">
+                      <a href={`https://app.dealfront.com/#/o/288893/leads/${co.leadId.split('_')[0]}`} target="_blank" rel="noopener noreferrer" className="text-xs block truncate hover:underline" style={{ color: 'var(--text)' }}>{co.name}</a>
+                      <a href={co.website || `https://www.google.com/search?q=${encodeURIComponent(co.name)}`} target="_blank" rel="noopener noreferrer" className="shrink-0 hover:opacity-70" style={{ color: 'var(--text-muted)' }}><ExternalLink size={10} /></a>
+                    </div>
                     <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>{co.source}</span>
                   </div>
                   <span className="text-[10px] font-medium shrink-0" style={{ color: '#10b981' }}>{co.visits} visits</span>
@@ -587,7 +590,10 @@ export default function SalesPage() {
                       onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                       <span className="text-[9px] font-bold w-4 text-center" style={{ color: 'var(--text-muted)' }}>{idx + 1}</span>
                       <div className="flex-1 min-w-0">
-                        <span className="text-[11px] font-medium block truncate" style={{ color: 'var(--text)' }}>{co.name}</span>
+                        <div className="flex items-center gap-1">
+                          <a href={`https://app.dealfront.com/#/o/288893/leads/${co.leadId.split('_')[0]}`} target="_blank" rel="noopener noreferrer" className="text-[11px] font-medium block truncate hover:underline" style={{ color: 'var(--text)' }}>{co.name}</a>
+                          <a href={co.website || `https://www.google.com/search?q=${encodeURIComponent(co.name)}`} target="_blank" rel="noopener noreferrer" className="shrink-0 hover:opacity-70" style={{ color: 'var(--text-muted)' }}><ExternalLink size={10} /></a>
+                        </div>
                         <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>{co.source}</span>
                       </div>
                       <div className="text-right shrink-0">

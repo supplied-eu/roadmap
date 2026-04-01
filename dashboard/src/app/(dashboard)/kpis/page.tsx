@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { BarChart3, TrendingUp, CheckCircle, Clock, Mail, Target, Users, Activity, DollarSign, Circle, Edit3, Save, RotateCcw, AlertTriangle, ArrowDown, ArrowUp, SlidersHorizontal } from 'lucide-react';
 
@@ -29,6 +29,21 @@ type MonthData = {
   recurringRevenue: number;
   nonRecurringRevenue: number;
   cogs: number;
+  // People — Management (sums to managementFees)
+  ceoComp: number;
+  ctoComp: number;
+  cooComp: number;
+  // People — Team (sums to payroll)
+  engineerCost: number;
+  designCost: number;
+  salesCost: number;
+  // Marketing & Sales (sums to opex)
+  googleAds: number;
+  linkedinSocial: number;
+  eventsConf: number;
+  toolsSubs: number;
+  otherOpex: number;
+  // Derived aggregates (computed by recalculate)
   payroll: number;
   managementFees: number;
   opex: number;
@@ -50,18 +65,18 @@ const MONTHS = ['Jan-26', 'Feb-26', 'Mar-26', 'Apr-26', 'May-26', 'Jun-26', 'Jul
 
 // Default financial model based on the Google Sheets budget
 const DEFAULT_FINANCIALS: MonthData[] = [
-  { month: 'Jan-26', isActual: true, revenue: 9.1, recurringRevenue: 9.1, nonRecurringRevenue: 0, cogs: 3.5, payroll: 52, managementFees: 12, opex: 11.3, capex: 0, ebitda: -69.3, cashStart: 1162, cashEnd: 1099, netBurn: 63, runway: 17, mrr: 9, arr: 108, newCustomers: 0, churnedCustomers: 0, totalCustomers: 5, headcount: 12 },
-  { month: 'Feb-26', isActual: false, revenue: 10.2, recurringRevenue: 10.2, nonRecurringRevenue: 0, cogs: 3.5, payroll: 52, managementFees: 12, opex: 11.3, capex: 0, ebitda: -68.1, cashStart: 1099, cashEnd: 1031, netBurn: 68, runway: 15, mrr: 10, arr: 122, newCustomers: 1, churnedCustomers: 0, totalCustomers: 6, headcount: 12 },
-  { month: 'Mar-26', isActual: false, revenue: 11.5, recurringRevenue: 11.5, nonRecurringRevenue: 0, cogs: 3.7, payroll: 55, managementFees: 12, opex: 11.5, capex: 0, ebitda: -70.7, cashStart: 1031, cashEnd: 960, netBurn: 71, runway: 14, mrr: 11.5, arr: 138, newCustomers: 1, churnedCustomers: 0, totalCustomers: 7, headcount: 13 },
-  { month: 'Apr-26', isActual: false, revenue: 13, recurringRevenue: 12.5, nonRecurringRevenue: 0.5, cogs: 3.9, payroll: 55, managementFees: 12, opex: 12, capex: 0, ebitda: -69.9, cashStart: 960, cashEnd: 890, netBurn: 70, runway: 13, mrr: 12.5, arr: 150, newCustomers: 1, churnedCustomers: 0, totalCustomers: 8, headcount: 13 },
-  { month: 'May-26', isActual: false, revenue: 14.5, recurringRevenue: 14, nonRecurringRevenue: 0.5, cogs: 4.1, payroll: 58, managementFees: 12, opex: 12, capex: 0, ebitda: -71.6, cashStart: 890, cashEnd: 818, netBurn: 72, runway: 11, mrr: 14, arr: 168, newCustomers: 2, churnedCustomers: 0, totalCustomers: 10, headcount: 14 },
-  { month: 'Jun-26', isActual: false, revenue: 16, recurringRevenue: 15.5, nonRecurringRevenue: 0.5, cogs: 4.3, payroll: 58, managementFees: 12, opex: 12.5, capex: 0, ebitda: -70.8, cashStart: 818, cashEnd: 747, netBurn: 71, runway: 11, mrr: 15.5, arr: 186, newCustomers: 2, churnedCustomers: 0, totalCustomers: 12, headcount: 14 },
-  { month: 'Jul-26', isActual: false, revenue: 17, recurringRevenue: 16.5, nonRecurringRevenue: 0.5, cogs: 4.5, payroll: 60, managementFees: 12, opex: 12.5, capex: 0, ebitda: -72, cashStart: 747, cashEnd: 675, netBurn: 72, runway: 9, mrr: 16.5, arr: 198, newCustomers: 1, churnedCustomers: 0, totalCustomers: 13, headcount: 15 },
-  { month: 'Aug-26', isActual: false, revenue: 18, recurringRevenue: 17.5, nonRecurringRevenue: 0.5, cogs: 4.7, payroll: 60, managementFees: 12, opex: 13, capex: 0, ebitda: -71.7, cashStart: 675, cashEnd: 603, netBurn: 72, runway: 8, mrr: 17.5, arr: 210, newCustomers: 1, churnedCustomers: 0, totalCustomers: 14, headcount: 15 },
-  { month: 'Sep-26', isActual: false, revenue: 19, recurringRevenue: 18.5, nonRecurringRevenue: 0.5, cogs: 5, payroll: 62, managementFees: 12, opex: 13, capex: 0, ebitda: -73, cashStart: 603, cashEnd: 530, netBurn: 73, runway: 7, mrr: 18.5, arr: 222, newCustomers: 1, churnedCustomers: 0, totalCustomers: 15, headcount: 16 },
-  { month: 'Oct-26', isActual: false, revenue: 19.5, recurringRevenue: 19, nonRecurringRevenue: 0.5, cogs: 5.2, payroll: 62, managementFees: 12, opex: 13.5, capex: 0, ebitda: -73.2, cashStart: 530, cashEnd: 457, netBurn: 73, runway: 6, mrr: 19, arr: 228, newCustomers: 1, churnedCustomers: 0, totalCustomers: 16, headcount: 16 },
-  { month: 'Nov-26', isActual: false, revenue: 20, recurringRevenue: 19.5, nonRecurringRevenue: 0.5, cogs: 5.4, payroll: 65, managementFees: 12, opex: 13.5, capex: 0, ebitda: -75.9, cashStart: 457, cashEnd: 381, netBurn: 76, runway: 5, mrr: 19.5, arr: 234, newCustomers: 1, churnedCustomers: 0, totalCustomers: 17, headcount: 17 },
-  { month: 'Dec-26', isActual: false, revenue: 21, recurringRevenue: 20.5, nonRecurringRevenue: 0.5, cogs: 5.6, payroll: 65, managementFees: 12, opex: 14, capex: 0, ebitda: -75.6, cashStart: 381, cashEnd: 305, netBurn: 76, runway: 4, mrr: 20.5, arr: 246, newCustomers: 1, churnedCustomers: 0, totalCustomers: 18, headcount: 17 },
+  { month: 'Jan-26', isActual: true, revenue: 9.1, recurringRevenue: 9.1, nonRecurringRevenue: 0, cogs: 3.5, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 36, designCost: 8, salesCost: 8, googleAds: 2, linkedinSocial: 1.5, eventsConf: 1, toolsSubs: 4, otherOpex: 2.8, payroll: 52, managementFees: 12, opex: 11.3, capex: 0, ebitda: -69.3, cashStart: 1162, cashEnd: 1099, netBurn: 63, runway: 17, mrr: 9, arr: 108, newCustomers: 0, churnedCustomers: 0, totalCustomers: 5, headcount: 12 },
+  { month: 'Feb-26', isActual: false, revenue: 10.2, recurringRevenue: 10.2, nonRecurringRevenue: 0, cogs: 3.5, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 36, designCost: 8, salesCost: 8, googleAds: 2, linkedinSocial: 1.5, eventsConf: 1, toolsSubs: 4, otherOpex: 2.8, payroll: 52, managementFees: 12, opex: 11.3, capex: 0, ebitda: -68.1, cashStart: 1099, cashEnd: 1031, netBurn: 68, runway: 15, mrr: 10, arr: 122, newCustomers: 1, churnedCustomers: 0, totalCustomers: 6, headcount: 12 },
+  { month: 'Mar-26', isActual: false, revenue: 11.5, recurringRevenue: 11.5, nonRecurringRevenue: 0, cogs: 3.7, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 38.1, designCost: 8.5, salesCost: 8.5, googleAds: 2, linkedinSocial: 1.5, eventsConf: 1.2, toolsSubs: 4, otherOpex: 2.8, payroll: 55, managementFees: 12, opex: 11.5, capex: 0, ebitda: -70.7, cashStart: 1031, cashEnd: 960, netBurn: 71, runway: 14, mrr: 11.5, arr: 138, newCustomers: 1, churnedCustomers: 0, totalCustomers: 7, headcount: 13 },
+  { month: 'Apr-26', isActual: false, revenue: 13, recurringRevenue: 12.5, nonRecurringRevenue: 0.5, cogs: 3.9, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 38.1, designCost: 8.5, salesCost: 8.5, googleAds: 2.2, linkedinSocial: 1.7, eventsConf: 1.2, toolsSubs: 4, otherOpex: 2.9, payroll: 55, managementFees: 12, opex: 12, capex: 0, ebitda: -69.9, cashStart: 960, cashEnd: 890, netBurn: 70, runway: 13, mrr: 12.5, arr: 150, newCustomers: 1, churnedCustomers: 0, totalCustomers: 8, headcount: 13 },
+  { month: 'May-26', isActual: false, revenue: 14.5, recurringRevenue: 14, nonRecurringRevenue: 0.5, cogs: 4.1, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 40.2, designCost: 8.9, salesCost: 8.9, googleAds: 2.2, linkedinSocial: 1.7, eventsConf: 1.2, toolsSubs: 4, otherOpex: 2.9, payroll: 58, managementFees: 12, opex: 12, capex: 0, ebitda: -71.6, cashStart: 890, cashEnd: 818, netBurn: 72, runway: 11, mrr: 14, arr: 168, newCustomers: 2, churnedCustomers: 0, totalCustomers: 10, headcount: 14 },
+  { month: 'Jun-26', isActual: false, revenue: 16, recurringRevenue: 15.5, nonRecurringRevenue: 0.5, cogs: 4.3, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 40.2, designCost: 8.9, salesCost: 8.9, googleAds: 2.3, linkedinSocial: 1.8, eventsConf: 1.3, toolsSubs: 4.1, otherOpex: 3, payroll: 58, managementFees: 12, opex: 12.5, capex: 0, ebitda: -70.8, cashStart: 818, cashEnd: 747, netBurn: 71, runway: 11, mrr: 15.5, arr: 186, newCustomers: 2, churnedCustomers: 0, totalCustomers: 12, headcount: 14 },
+  { month: 'Jul-26', isActual: false, revenue: 17, recurringRevenue: 16.5, nonRecurringRevenue: 0.5, cogs: 4.5, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 41.5, designCost: 9.2, salesCost: 9.2, googleAds: 2.3, linkedinSocial: 1.8, eventsConf: 1.3, toolsSubs: 4.1, otherOpex: 3, payroll: 60, managementFees: 12, opex: 12.5, capex: 0, ebitda: -72, cashStart: 747, cashEnd: 675, netBurn: 72, runway: 9, mrr: 16.5, arr: 198, newCustomers: 1, churnedCustomers: 0, totalCustomers: 13, headcount: 15 },
+  { month: 'Aug-26', isActual: false, revenue: 18, recurringRevenue: 17.5, nonRecurringRevenue: 0.5, cogs: 4.7, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 41.5, designCost: 9.2, salesCost: 9.2, googleAds: 2.4, linkedinSocial: 1.9, eventsConf: 1.4, toolsSubs: 4.2, otherOpex: 3.1, payroll: 60, managementFees: 12, opex: 13, capex: 0, ebitda: -71.7, cashStart: 675, cashEnd: 603, netBurn: 72, runway: 8, mrr: 17.5, arr: 210, newCustomers: 1, churnedCustomers: 0, totalCustomers: 14, headcount: 15 },
+  { month: 'Sep-26', isActual: false, revenue: 19, recurringRevenue: 18.5, nonRecurringRevenue: 0.5, cogs: 5, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 42.9, designCost: 9.5, salesCost: 9.5, googleAds: 2.4, linkedinSocial: 1.9, eventsConf: 1.4, toolsSubs: 4.2, otherOpex: 3.1, payroll: 62, managementFees: 12, opex: 13, capex: 0, ebitda: -73, cashStart: 603, cashEnd: 530, netBurn: 73, runway: 7, mrr: 18.5, arr: 222, newCustomers: 1, churnedCustomers: 0, totalCustomers: 15, headcount: 16 },
+  { month: 'Oct-26', isActual: false, revenue: 19.5, recurringRevenue: 19, nonRecurringRevenue: 0.5, cogs: 5.2, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 42.9, designCost: 9.5, salesCost: 9.5, googleAds: 2.5, linkedinSocial: 2, eventsConf: 1.5, toolsSubs: 4.3, otherOpex: 3.2, payroll: 62, managementFees: 12, opex: 13.5, capex: 0, ebitda: -73.2, cashStart: 530, cashEnd: 457, netBurn: 73, runway: 6, mrr: 19, arr: 228, newCustomers: 1, churnedCustomers: 0, totalCustomers: 16, headcount: 16 },
+  { month: 'Nov-26', isActual: false, revenue: 20, recurringRevenue: 19.5, nonRecurringRevenue: 0.5, cogs: 5.4, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 45, designCost: 10, salesCost: 10, googleAds: 2.5, linkedinSocial: 2, eventsConf: 1.5, toolsSubs: 4.3, otherOpex: 3.2, payroll: 65, managementFees: 12, opex: 13.5, capex: 0, ebitda: -75.9, cashStart: 457, cashEnd: 381, netBurn: 76, runway: 5, mrr: 19.5, arr: 234, newCustomers: 1, churnedCustomers: 0, totalCustomers: 17, headcount: 17 },
+  { month: 'Dec-26', isActual: false, revenue: 21, recurringRevenue: 20.5, nonRecurringRevenue: 0.5, cogs: 5.6, ceoComp: 4, ctoComp: 4, cooComp: 4, engineerCost: 45, designCost: 10, salesCost: 10, googleAds: 2.6, linkedinSocial: 2.1, eventsConf: 1.5, toolsSubs: 4.4, otherOpex: 3.4, payroll: 65, managementFees: 12, opex: 14, capex: 0, ebitda: -75.6, cashStart: 381, cashEnd: 305, netBurn: 76, runway: 4, mrr: 20.5, arr: 246, newCustomers: 1, churnedCustomers: 0, totalCustomers: 18, headcount: 17 },
 ];
 
 const STAGE_COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#14b8a6', '#818cf8'];
@@ -82,6 +97,10 @@ function recalculate(data: MonthData[]): MonthData[] {
   for (let i = 0; i < result.length; i++) {
     const m = { ...result[i] };
     m.revenue = m.recurringRevenue + m.nonRecurringRevenue;
+    // Derive aggregate cost lines from granular items
+    m.managementFees = m.ceoComp + m.ctoComp + m.cooComp;
+    m.payroll = m.engineerCost + m.designCost + m.salesCost;
+    m.opex = m.googleAds + m.linkedinSocial + m.eventsConf + m.toolsSubs + m.otherOpex;
     m.ebitda = m.revenue - m.cogs - m.payroll - m.managementFees - m.opex - m.capex;
     m.netBurn = Math.max(0, -m.ebitda);
     if (i === 0) {
@@ -344,13 +363,27 @@ export default function KpisPage() {
     setEditingCell(null);
   };
 
-  const EDITABLE_ROWS: { key: keyof MonthData; label: string; color: string }[] = [
-    { key: 'recurringRevenue', label: 'Recurring Revenue', color: '#22c55e' },
+  type EditableRow = { key: keyof MonthData; label: string; color: string; section?: string };
+  const EDITABLE_ROWS: EditableRow[] = [
+    // Revenue
+    { key: 'recurringRevenue', label: 'Recurring Revenue', color: '#22c55e', section: 'REVENUE' },
     { key: 'nonRecurringRevenue', label: 'Non-recurring Revenue', color: '#10b981' },
-    { key: 'cogs', label: 'COGS', color: '#ef4444' },
-    { key: 'payroll', label: 'Payroll', color: '#f97316' },
-    { key: 'managementFees', label: 'Management Fees', color: '#f59e0b' },
-    { key: 'opex', label: 'Other OPEX', color: '#ec4899' },
+    // People — Management
+    { key: 'ceoComp', label: 'CEO / Founder', color: '#f59e0b', section: 'PEOPLE — MANAGEMENT' },
+    { key: 'ctoComp', label: 'CTO / Tech Lead', color: '#f59e0b' },
+    { key: 'cooComp', label: 'COO / Operations', color: '#f59e0b' },
+    // People — Team
+    { key: 'engineerCost', label: 'Engineers (×N)', color: '#f97316', section: 'PEOPLE — TEAM' },
+    { key: 'designCost', label: 'Design & Product', color: '#f97316' },
+    { key: 'salesCost', label: 'Sales & BD', color: '#f97316' },
+    // Marketing & Sales
+    { key: 'googleAds', label: 'Google Ads', color: '#ec4899', section: 'MARKETING & SALES' },
+    { key: 'linkedinSocial', label: 'LinkedIn / Social', color: '#ec4899' },
+    { key: 'eventsConf', label: 'Events & Conferences', color: '#ec4899' },
+    { key: 'toolsSubs', label: 'Tools & Subscriptions', color: '#ec4899' },
+    { key: 'otherOpex', label: 'Other OPEX', color: '#ec4899' },
+    // Other
+    { key: 'cogs', label: 'COGS', color: '#ef4444', section: 'OTHER' },
     { key: 'capex', label: 'CAPEX', color: '#8b5cf6' },
     { key: 'headcount', label: 'Headcount', color: '#6366f1' },
     { key: 'newCustomers', label: 'New Customers', color: '#14b8a6' },
@@ -359,6 +392,9 @@ export default function KpisPage() {
 
   const DERIVED_ROWS: { key: keyof MonthData; label: string; color: string; bold?: boolean }[] = [
     { key: 'revenue', label: 'Total Revenue', color: '#22c55e', bold: true },
+    { key: 'managementFees', label: 'Total Management Fees', color: '#f59e0b' },
+    { key: 'payroll', label: 'Total Payroll', color: '#f97316' },
+    { key: 'opex', label: 'Total OPEX', color: '#ec4899' },
     { key: 'ebitda', label: 'EBITDA', color: '#818cf8', bold: true },
     { key: 'netBurn', label: 'Net Burn', color: '#ef4444' },
     { key: 'cashEnd', label: 'Cash Balance', color: '#3b82f6', bold: true },
@@ -578,14 +614,22 @@ export default function KpisPage() {
                 </tr>
               </thead>
               <tbody>
-                {/* Editable rows */}
+                {/* Editable rows with section headers */}
                 {EDITABLE_ROWS.map(row => (
-                  <tr key={row.key} className="group" style={{ borderBottom: '1px solid var(--border)' }}
-                    onMouseEnter={e => { for (const td of e.currentTarget.children) (td as HTMLElement).style.background = 'var(--bg)'; }}
-                    onMouseLeave={e => { for (const td of e.currentTarget.children) (td as HTMLElement).style.background = ''; }}>
-                    <td className="px-3 py-1.5 sticky left-0 z-10 font-medium" style={{ background: 'var(--surface)', color: row.color }}>
-                      {row.label}
-                    </td>
+                  <React.Fragment key={row.key}>
+                    {row.section && (
+                      <tr>
+                        <td colSpan={13} className="px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider" style={{ background: 'var(--bg)', color: 'var(--text-muted)', borderBottom: '1px solid var(--border)' }}>
+                          {row.section}
+                        </td>
+                      </tr>
+                    )}
+                    <tr className="group" style={{ borderBottom: '1px solid var(--border)' }}
+                      onMouseEnter={e => { for (const td of e.currentTarget.children) (td as HTMLElement).style.background = 'var(--bg)'; }}
+                      onMouseLeave={e => { for (const td of e.currentTarget.children) (td as HTMLElement).style.background = ''; }}>
+                      <td className="px-3 py-1.5 sticky left-0 z-10 font-medium" style={{ background: 'var(--surface)', color: row.color }}>
+                        {row.label}
+                      </td>
                     {financials.map((m, i) => {
                       const val = m[row.key] as number;
                       const isEditing = editingCell?.row === row.key && editingCell?.month === i;
@@ -608,7 +652,8 @@ export default function KpisPage() {
                         </td>
                       );
                     })}
-                  </tr>
+                    </tr>
+                  </React.Fragment>
                 ))}
                 {/* Separator */}
                 <tr><td colSpan={13} style={{ height: '4px', background: 'var(--border)' }} /></tr>
