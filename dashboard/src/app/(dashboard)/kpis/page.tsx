@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { BarChart3, TrendingUp, CheckCircle, Clock, Mail, Target, Users, Activity, DollarSign, Circle, Edit3, Save, RotateCcw, AlertTriangle, ArrowDown, ArrowUp } from 'lucide-react';
+import { BarChart3, TrendingUp, CheckCircle, Clock, Mail, Target, Users, Activity, DollarSign, Circle, Edit3, Save, RotateCcw, AlertTriangle, ArrowDown, ArrowUp, SlidersHorizontal } from 'lucide-react';
 
 type KPIData = {
   linear: {
@@ -119,6 +119,74 @@ export default function KpisPage() {
   const [editingCell, setEditingCell] = useState<{ row: string; month: number } | null>(null);
   const [editValue, setEditValue] = useState('');
   const [showModeling, setShowModeling] = useState(true);
+
+  // Scenario modelling state
+  const [scenarioMrrGrowth, setScenarioMrrGrowth] = useState(10); // % per month
+  const [scenarioPayrollChange, setScenarioPayrollChange] = useState(0); // % change
+  const [scenarioOpexChange, setScenarioOpexChange] = useState(0); // % change
+  const [scenarioFunding, setScenarioFunding] = useState(0); // k EUR additional cash
+  const [scenarioCustomerGrowth, setScenarioCustomerGrowth] = useState(1); // new customers/month
+  const [scenarioApplied, setScenarioApplied] = useState(false);
+
+  // Calculate scenario-adjusted financials
+  const computeScenarioFinancials = useCallback((
+    base: MonthData[],
+    mrrGrowthPct: number,
+    payrollChangePct: number,
+    opexChangePct: number,
+    fundingK: number,
+    custGrowth: number,
+  ): MonthData[] => {
+    const scenario = base.map(m => ({ ...m }));
+    let fundingApplied = false;
+    for (let i = 0; i < scenario.length; i++) {
+      if (scenario[i].isActual) continue;
+      const prev = i > 0 ? scenario[i - 1] : null;
+      // Apply MRR growth rate to recurring revenue
+      if (prev) {
+        scenario[i].recurringRevenue = prev.recurringRevenue * (1 + mrrGrowthPct / 100);
+        scenario[i].mrr = scenario[i].recurringRevenue;
+        scenario[i].arr = scenario[i].mrr * 12;
+      }
+      // Apply payroll change
+      scenario[i].payroll = base[i].payroll * (1 + payrollChangePct / 100);
+      // Apply opex change
+      scenario[i].opex = base[i].opex * (1 + opexChangePct / 100);
+      // Apply customer growth
+      scenario[i].newCustomers = custGrowth;
+      if (prev) {
+        scenario[i].totalCustomers = prev.totalCustomers + custGrowth - scenario[i].churnedCustomers;
+      }
+      // Apply funding injection to first forecast month
+      if (!fundingApplied && fundingK > 0) {
+        scenario[i].cashStart = (prev ? prev.cashEnd : scenario[i].cashStart) + fundingK;
+        fundingApplied = true;
+      }
+    }
+    return recalculate(scenario);
+  }, []);
+
+  // Base runway (last month with positive cash)
+  const baseRunway = financials.filter(m => !m.isActual).slice(-1)[0]?.runway ?? 0;
+  const scenarioFinancials = computeScenarioFinancials(
+    financials, scenarioMrrGrowth, scenarioPayrollChange, scenarioOpexChange, scenarioFunding, scenarioCustomerGrowth
+  );
+  const scenarioRunway = scenarioFinancials.filter(m => !m.isActual).slice(-1)[0]?.runway ?? 0;
+  const runwayDelta = scenarioRunway - baseRunway;
+
+  const resetScenario = useCallback(() => {
+    setScenarioMrrGrowth(10);
+    setScenarioPayrollChange(0);
+    setScenarioOpexChange(0);
+    setScenarioFunding(0);
+    setScenarioCustomerGrowth(1);
+    setScenarioApplied(false);
+  }, []);
+
+  const applyScenario = useCallback(() => {
+    setFinancials(scenarioFinancials);
+    setScenarioApplied(true);
+  }, [scenarioFinancials]);
 
   // Save on change
   useEffect(() => { saveFinancials(financials); }, [financials]);
@@ -367,6 +435,128 @@ export default function KpisPage() {
             <div className="text-lg font-bold" style={{ color: '#22c55e' }}>{formatK(currentData?.arr || 0)}</div>
           </div>
         </div>
+
+        {/* Scenario Modelling Panel */}
+        {showModeling && (
+          <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <SlidersHorizontal size={14} style={{ color: '#f59e0b' }} />
+              <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+                Scenario Modelling
+              </h3>
+              {scenarioApplied && (
+                <span className="text-[9px] px-2 py-0.5 rounded font-bold" style={{ background: '#22c55e22', color: '#22c55e' }}>
+                  Applied
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
+              {/* MRR Growth Rate */}
+              <div>
+                <label className="text-[10px] font-medium block mb-1" style={{ color: 'var(--text-muted)' }}>
+                  MRR Growth Rate: <span style={{ color: '#22c55e' }}>{scenarioMrrGrowth}%</span>/mo
+                </label>
+                <input type="range" min={0} max={30} step={1} value={scenarioMrrGrowth}
+                  onChange={e => { setScenarioMrrGrowth(Number(e.target.value)); setScenarioApplied(false); }}
+                  className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+                  style={{ background: `linear-gradient(to right, #22c55e ${(scenarioMrrGrowth / 30) * 100}%, var(--border) ${(scenarioMrrGrowth / 30) * 100}%)` }} />
+                <div className="flex justify-between text-[8px]" style={{ color: 'var(--text-muted)' }}>
+                  <span>0%</span><span>30%</span>
+                </div>
+              </div>
+              {/* Payroll Change */}
+              <div>
+                <label className="text-[10px] font-medium block mb-1" style={{ color: 'var(--text-muted)' }}>
+                  Payroll Change: <span style={{ color: scenarioPayrollChange > 0 ? '#ef4444' : scenarioPayrollChange < 0 ? '#22c55e' : 'var(--text-muted)' }}>
+                    {scenarioPayrollChange > 0 ? '+' : ''}{scenarioPayrollChange}%
+                  </span>
+                </label>
+                <input type="range" min={-20} max={30} step={1} value={scenarioPayrollChange}
+                  onChange={e => { setScenarioPayrollChange(Number(e.target.value)); setScenarioApplied(false); }}
+                  className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+                  style={{ background: `linear-gradient(to right, var(--border) ${((scenarioPayrollChange + 20) / 50) * 100}%, var(--border) 0%)` }} />
+                <div className="flex justify-between text-[8px]" style={{ color: 'var(--text-muted)' }}>
+                  <span>-20%</span><span>+30%</span>
+                </div>
+              </div>
+              {/* OPEX Change */}
+              <div>
+                <label className="text-[10px] font-medium block mb-1" style={{ color: 'var(--text-muted)' }}>
+                  OPEX Change: <span style={{ color: scenarioOpexChange > 0 ? '#ef4444' : scenarioOpexChange < 0 ? '#22c55e' : 'var(--text-muted)' }}>
+                    {scenarioOpexChange > 0 ? '+' : ''}{scenarioOpexChange}%
+                  </span>
+                </label>
+                <input type="range" min={-30} max={20} step={1} value={scenarioOpexChange}
+                  onChange={e => { setScenarioOpexChange(Number(e.target.value)); setScenarioApplied(false); }}
+                  className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+                  style={{ background: `linear-gradient(to right, var(--border) ${((scenarioOpexChange + 30) / 50) * 100}%, var(--border) 0%)` }} />
+                <div className="flex justify-between text-[8px]" style={{ color: 'var(--text-muted)' }}>
+                  <span>-30%</span><span>+20%</span>
+                </div>
+              </div>
+              {/* New Funding */}
+              <div>
+                <label className="text-[10px] font-medium block mb-1" style={{ color: 'var(--text-muted)' }}>
+                  New Funding: <span style={{ color: '#3b82f6' }}>{formatK(scenarioFunding)}</span>
+                </label>
+                <input type="number" min={0} max={1000} step={50} value={scenarioFunding}
+                  onChange={e => { setScenarioFunding(Math.max(0, Math.min(1000, Number(e.target.value)))); setScenarioApplied(false); }}
+                  className="w-full text-[11px] px-2 py-1 rounded"
+                  style={{ background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border)' }}
+                  placeholder="0 - 1000k" />
+                <div className="flex justify-between text-[8px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                  <span>0k</span><span>1,000k</span>
+                </div>
+              </div>
+              {/* Customer Growth */}
+              <div>
+                <label className="text-[10px] font-medium block mb-1" style={{ color: 'var(--text-muted)' }}>
+                  Customer Growth: <span style={{ color: '#14b8a6' }}>{scenarioCustomerGrowth}</span>/mo
+                </label>
+                <input type="range" min={0} max={5} step={1} value={scenarioCustomerGrowth}
+                  onChange={e => { setScenarioCustomerGrowth(Number(e.target.value)); setScenarioApplied(false); }}
+                  className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+                  style={{ background: `linear-gradient(to right, #14b8a6 ${(scenarioCustomerGrowth / 5) * 100}%, var(--border) ${(scenarioCustomerGrowth / 5) * 100}%)` }} />
+                <div className="flex justify-between text-[8px]" style={{ color: 'var(--text-muted)' }}>
+                  <span>0</span><span>5</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Scenario Results */}
+            <div className="flex items-center gap-4 flex-wrap">
+              <div className="flex items-center gap-3 rounded-md px-4 py-2" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
+                <div>
+                  <div className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Projected Runway</div>
+                  <div className="text-lg font-bold" style={{ color: scenarioRunway <= 6 ? '#ef4444' : scenarioRunway <= 12 ? '#f59e0b' : '#22c55e' }}>
+                    {scenarioRunway} mo
+                  </div>
+                </div>
+                <div style={{ width: '1px', height: '28px', background: 'var(--border)' }} />
+                <div>
+                  <div className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>vs Base Case</div>
+                  <div className="text-lg font-bold flex items-center gap-1" style={{ color: runwayDelta > 0 ? '#22c55e' : runwayDelta < 0 ? '#ef4444' : 'var(--text-muted)' }}>
+                    {runwayDelta > 0 ? <ArrowUp size={14} /> : runwayDelta < 0 ? <ArrowDown size={14} /> : null}
+                    {runwayDelta > 0 ? '+' : ''}{runwayDelta} mo
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button onClick={applyScenario}
+                  className="text-[10px] px-3 py-1.5 rounded font-semibold flex items-center gap-1"
+                  style={{ background: 'var(--accent)', color: '#fff', border: '1px solid var(--accent)' }}>
+                  <Save size={10} /> Apply Scenario
+                </button>
+                <button onClick={resetScenario}
+                  className="text-[10px] px-3 py-1.5 rounded flex items-center gap-1"
+                  style={{ background: 'var(--bg)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+                  <RotateCcw size={10} /> Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {showModeling && (
           <div className="overflow-x-auto">

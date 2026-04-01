@@ -16,8 +16,22 @@ async function getAccessToken(refreshToken: string) {
   return data.access_token;
 }
 
+// Fetch the authenticated user's email and name from Google
+async function fetchUserEmail(accessToken: string): Promise<{ email: string; name: string }> {
+  try {
+    const res = await fetch("https://www.googleapis.com/oauth2/v1/userinfo?alt=json", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!res.ok) return { email: "", name: "" };
+    const data = await res.json();
+    return { email: data.email || "", name: data.name || "" };
+  } catch {
+    return { email: "", name: "" };
+  }
+}
+
 // Fetch recent Drive activity — files with comments, suggestions, or shares
-async function fetchDriveActivity(accessToken: string) {
+async function fetchDriveActivity(accessToken: string, userEmail: string) {
   const items: any[] = [];
 
   try {
@@ -50,6 +64,22 @@ async function fetchDriveActivity(accessToken: string) {
           .filter((c: any) => {
             const age = Date.now() - new Date(c.createdTime).getTime();
             return age < 7 * 86400000; // within last week
+          })
+          .filter((c: any) => {
+            const authorEmail = c.author?.emailAddress || "";
+            const content = c.content || "";
+            const isOwnComment = userEmail && authorEmail.toLowerCase() === userEmail.toLowerCase();
+            const mentionsUser = userEmail && content.includes(`@${userEmail}`);
+            // Show comments that mention/tag the user, OR comments by others
+            // that the user hasn't replied to yet
+            if (mentionsUser) return true;
+            if (isOwnComment) return false;
+            // Check if user has already replied to this comment
+            const replies = c.replies || [];
+            const userReplied = replies.some((r: any) =>
+              (r.author?.emailAddress || "").toLowerCase() === userEmail.toLowerCase()
+            );
+            return !userReplied;
           });
         return { file, comments: recentComments };
       } catch {
@@ -78,7 +108,9 @@ async function fetchDriveActivity(accessToken: string) {
       }
 
       // If file was modified by someone else recently and has no comments, still show it
-      if (comments.length === 0 && file.lastModifyingUser && file.shared) {
+      const lastModifierEmail = file.lastModifyingUser?.emailAddress || "";
+      const modifiedBySelf = userEmail && lastModifierEmail.toLowerCase() === userEmail.toLowerCase();
+      if (comments.length === 0 && file.lastModifyingUser && file.shared && !modifiedBySelf) {
         const modAge = Date.now() - new Date(file.modifiedTime).getTime();
         if (modAge < 2 * 86400000) { // within 2 days
           items.push({
@@ -202,8 +234,9 @@ export async function GET(req: NextRequest) {
 
   try {
     const accessToken = await getAccessToken(refreshToken);
+    const userInfo = await fetchUserEmail(accessToken);
     const [drive, chat] = await Promise.all([
-      fetchDriveActivity(accessToken),
+      fetchDriveActivity(accessToken, userInfo.email),
       fetchChatMentions(accessToken),
     ]);
 

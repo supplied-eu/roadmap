@@ -18,7 +18,7 @@ type CalEvent = {
   isToday: boolean; location: string; meetLink: string; allDay: boolean;
 };
 type Email = {
-  id: string; from: string; subject: string; date: string;
+  id: string; threadId: string; from: string; subject: string; date: string;
   snippet: string; unread: boolean;
 };
 type Meeting = {
@@ -453,7 +453,7 @@ export default function DashboardPage() {
       id: emailId, title: `${parseFrom(email.from)}: ${email.subject}`,
       source: 'gmail', dueDate: null,
       status: email.unread ? 'Unread' : 'Read',
-      url: `https://mail.google.com/mail/u/0/#inbox/${email.id}`,
+      url: `https://mail.google.com/mail/u/0/#inbox/${email.threadId}`,
       priority: 3, meta: email.snippet?.slice(0, 60), assignee: firstName,
     });
   }
@@ -744,7 +744,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => addPersonalTask(
                               `Reply: ${email.subject}`, null, 'medium',
-                              'Email', `https://mail.google.com/mail/u/0/#inbox/${email.id}`
+                              'Email', `https://mail.google.com/mail/u/0/#inbox/${email.threadId}`
                             )}
                             className="text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
                             style={{ background: 'var(--accent)', color: '#fff' }}
