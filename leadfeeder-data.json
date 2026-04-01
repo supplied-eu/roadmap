@@ -1,17 +1,33 @@
 {
-  "refreshedAt": "2026-03-31T19:56:51.374Z",
+  "refreshedAt": "2026-04-01T07:18:45.467Z",
   "available": true,
   "accountId": "288893",
-  "thisWeekTotal": 65,
-  "lastWeekTotal": 50,
+  "thisWeekTotal": 62,
+  "lastWeekTotal": 51,
   "trafficSources": [
     {
       "key": "DIRECT",
       "label": "Direct",
       "icon": "🏠",
-      "thisWeek": 65,
-      "lastWeek": 50,
+      "thisWeek": 62,
+      "lastWeek": 51,
       "companies": [
+        {
+          "name": "Insurance Canopy",
+          "website": null,
+          "visits": 1,
+          "lastVisit": "2026-04-01",
+          "leadId": "868100f2-2b32-4b56-ab85-8bdddd6359d2_tfiiFkGNsNYyuggpsjjnTa",
+          "source": "Direct"
+        },
+        {
+          "name": "372nd QM BTN",
+          "website": null,
+          "visits": 2,
+          "lastVisit": "2026-03-31",
+          "leadId": "f7d34b42-05b0-11e5-ab8d-03d7cc5741e7_q31EztmuYSyzsbKM1mPrsi",
+          "source": "Direct"
+        },
         {
           "name": "Transferz",
           "website": null,
@@ -34,14 +50,6 @@
           "visits": 1,
           "lastVisit": "2026-03-31",
           "leadId": "bdec0a36-feda-11ee-be17-6b911e02f461_dc9b1906-fc6c-11e9-9003-6f734b310748",
-          "source": "Direct"
-        },
-        {
-          "name": "372nd QM BTN",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-31",
-          "leadId": "f7d34b42-05b0-11e5-ab8d-03d7cc5741e7_q31EztmuYSyzsbKM1mPrsi",
           "source": "Direct"
         },
         {
@@ -163,14 +171,6 @@
           "lastVisit": "2026-03-25",
           "leadId": "2WiB3Cmox4RFPHn7Ty27Uu_p6q3nDbB2C4m9KjK9gndy",
           "source": "Direct"
-        },
-        {
-          "name": "Hoban Ltd",
-          "website": null,
-          "visits": 1,
-          "lastVisit": "2026-03-25",
-          "leadId": "6a721d4a-d258-11ee-8279-41350748fd32_aespgMLc9QmrU9xjc68jjT",
-          "source": "Direct"
         }
       ]
     }
@@ -195,6 +195,16 @@
       "lastVisit": "2026-03-30",
       "source": "Direct",
       "leadId": "30f60fd8-3681-11ec-b631-59ff957f2944_p6q3nDbB2C4m9KjK9gndy"
+    },
+    {
+      "name": "372nd QM BTN",
+      "website": null,
+      "visits": 2,
+      "pageViews": null,
+      "firstVisit": "2026-02-05",
+      "lastVisit": "2026-03-31",
+      "source": "Direct",
+      "leadId": "f7d34b42-05b0-11e5-ab8d-03d7cc5741e7_q31EztmuYSyzsbKM1mPrsi"
     },
     {
       "name": "Secret View",
@@ -267,14 +277,14 @@
       "leadId": "d3826542-8bd4-11eb-b243-0b588a09aad2_a982db1e-1b6e-11ea-937c-67d17a051f8b"
     },
     {
-      "name": "Truman Hoyle",
+      "name": "Insurance Canopy",
       "website": null,
-      "visits": 2,
+      "visits": 1,
       "pageViews": null,
-      "firstVisit": "2026-02-11",
-      "lastVisit": "2026-03-18",
+      "firstVisit": "2026-04-01",
+      "lastVisit": "2026-04-01",
       "source": "Direct",
-      "leadId": "wi2rFLLoQFRRV5PnrnvMok_p6q3nDbB2C4m9KjK9gndy"
+      "leadId": "868100f2-2b32-4b56-ab85-8bdddd6359d2_tfiiFkGNsNYyuggpsjjnTa"
     },
     {
       "name": "Ermakov.Us",
@@ -295,16 +305,6 @@
       "lastVisit": "2026-03-31",
       "source": "Direct",
       "leadId": "bdec0a36-feda-11ee-be17-6b911e02f461_dc9b1906-fc6c-11e9-9003-6f734b310748"
-    },
-    {
-      "name": "372nd QM BTN",
-      "website": null,
-      "visits": 1,
-      "pageViews": null,
-      "firstVisit": "2026-02-05",
-      "lastVisit": "2026-03-31",
-      "source": "Direct",
-      "leadId": "f7d34b42-05b0-11e5-ab8d-03d7cc5741e7_q31EztmuYSyzsbKM1mPrsi"
     },
     {
       "name": "Acuity Knowledge Partners (Uk)",
@@ -416,7 +416,7 @@
     },
     {
       "date": "2026-01-02",
-      "visits": 2
+      "visits": 1
     },
     {
       "date": "2026-01-05",
@@ -432,7 +432,7 @@
     },
     {
       "date": "2026-02-11",
-      "visits": 1
+      "visits": 2
     },
     {
       "date": "2026-02-18",
@@ -449,10 +449,6 @@
     {
       "date": "2026-03-02",
       "visits": 2
-    },
-    {
-      "date": "2026-03-03",
-      "visits": 6
     },
     {
       "date": "2026-03-04",
@@ -500,11 +496,11 @@
     },
     {
       "date": "2026-03-17",
-      "visits": 6
+      "visits": 5
     },
     {
       "date": "2026-03-18",
-      "visits": 5
+      "visits": 6
     },
     {
       "date": "2026-03-19",
@@ -553,6 +549,10 @@
     {
       "date": "2026-03-31",
       "visits": 7
+    },
+    {
+      "date": "2026-04-01",
+      "visits": 2
     }
   ]
 }

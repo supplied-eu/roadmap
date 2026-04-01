@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-03-31T19:56:41.381Z",
+  "refreshedAt": "2026-04-01T07:18:31.961Z",
   "currency": "€",
   "portalId": "27215736",
   "owners": [
@@ -1526,6 +1526,17 @@
       "ownerName": "Bas Bogerd"
     },
     {
+      "id": "482341466306",
+      "subject": "Reach out to Starr Studio",
+      "status": "NOT_STARTED",
+      "type": "TODO",
+      "priority": "NONE",
+      "dueDate": "2026-04-03",
+      "ownerId": "29853062",
+      "body": null,
+      "ownerName": "Bas Bogerd"
+    },
+    {
       "id": "375030088948",
       "subject": "Follow up with CoinJar on plans for CARF repporting",
       "status": "NOT_STARTED",
@@ -2157,7 +2168,7 @@
     {
       "key": "PAID_SOCIAL",
       "thisWeek": 0,
-      "lastWeek": 4,
+      "lastWeek": 3,
       "contacts": [
         {
           "id": "741349508286",
