@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-04-01T13:18:46.915Z",
+  "refreshedAt": "2026-04-01T14:02:03.430Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -9197,6 +9197,19 @@
           "startDate": "2026-03-25",
           "targetDate": "2026-03-27",
           "issues": [
+            {
+              "id": "066d0dc8-e2ea-47fa-bfee-882f48cf6402",
+              "identifier": "SUP-1287",
+              "title": "Sellers without statements should not receive emails",
+              "status": "Backlog",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-1287/sellers-without-statements-should-not-receive-emails",
+              "parentId": null
+            },
             {
               "id": "be57beec-c46a-4555-83ff-eb46fc45c6a2",
               "identifier": "IMP-169",

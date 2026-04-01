@@ -1,25 +1,7 @@
 {
-  "refreshedAt": "2026-04-01T13:18:50.358Z",
+  "refreshedAt": "2026-04-01T14:02:06.831Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d4841e99519434",
-        "subject": "Supplied_SALES_Re... - Their account is active, as they stil...",
-        "from": "\"Jelena Hmeltnitski (Google Sheets)\" <comments-noreply@docs.google.com>",
-        "date": "2026-04-01T13:15:55.000Z",
-        "snippet": "Julio Lindveld (julio@supplied.eu) mentioned you in a comment in the following document Supplied_SALES_Revenue_Costs_Master_File 1 resolved Comments INACTIVE Julio Lindveld • 4:37 PM, Mar 31 (CEST)",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d4841e99519434",
-        "unread": true
-      },
-      {
-        "id": "19d492725971c0eb",
-        "subject": "Your job, Head of Data Engineering, has been closed",
-        "from": "LinkedIn <jobs-listings@linkedin.com>",
-        "date": "2026-04-01T13:06:20.000Z",
-        "snippet": "Your free job post has been closed ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d492725971c0eb",
-        "unread": true
-      },
       {
         "id": "19d4923a41721dc0",
         "subject": "OpenSanctions Tech Bulletin | April 2026",
@@ -109,9 +91,27 @@
         "snippet": "Event Name: intro call w/Michal&amp;Kamil Location: This is a Zoom web conference. You can join this meeting from your computer, tablet, or smartphone. https://us02web.zoom.us/j/83881814947 One tap",
         "url": "https://mail.google.com/mail/u/0/#inbox/19d2fa1cdfbfe765",
         "unread": true
+      },
+      {
+        "id": "19cfc73957f9533b",
+        "subject": "Herinnering voor feedback over je ervaring",
+        "from": "Regus Customer Service <donotreply@regus.com>",
+        "date": "2026-03-17T15:39:18.000Z",
+        "snippet": "Regus Uw Regus ervaring Re: Uw ervaring bij ZWOLLE, Trade Centre Om onze service voortdurend te kunnen verbeteren zijn wij zeer geinteresseeerd naar uw ervaring op uw locatie. Het invullen van de",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cfc73957f9533b",
+        "unread": true
+      },
+      {
+        "id": "19cf4de5565b3976",
+        "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
+        "from": "anomalydetection@costalerts.amazonaws.com",
+        "date": "2026-03-16T04:18:54.000Z",
+        "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+        "unread": true
       }
     ],
-    "unreadCount": 43
+    "unreadCount": 41
   },
   "calendar": {
     "today": [
@@ -380,6 +380,16 @@
     ]
   },
   "email_priorities": [
+    {
+      "action": "alert",
+      "subject": "AWS Cost Management: Cost anomaly(ies) summary for account: supplied-infra (224361002901) [2026-03-15]",
+      "reason": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are ",
+      "from": "anomalydetection@costalerts.amazonaws.com",
+      "ageDays": 16,
+      "threadId": "19cf4de5565b3976",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
+      "id": "email-19cf4de5565b3976"
+    },
     {
       "action": "reply",
       "subject": "OpenSanctions Tech Bulletin | April 2026",
