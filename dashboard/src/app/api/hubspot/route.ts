@@ -24,8 +24,8 @@ export async function GET() {
   if (!apiKey) return NextResponse.json({ error: "HUBSPOT_API_KEY not set" }, { status: 500 });
 
   try {
-    // Fetch deals, owners, pipeline stages in parallel + paginated tasks
-    const [dealsRes, ownersRes, pipelinesRes, taskResults] = await Promise.all([
+    // Fetch deals, owners, pipeline stages, account info in parallel + paginated tasks
+    const [dealsRes, ownersRes, pipelinesRes, taskResults, accountRes] = await Promise.all([
       fetch(`${HS_API}/crm/v3/objects/deals?limit=100&properties=dealname,dealstage,amount,closedate,hubspot_owner_id,pipeline`, {
         headers: { Authorization: `Bearer ${apiKey}` },
       }),
@@ -36,7 +36,11 @@ export async function GET() {
         headers: { Authorization: `Bearer ${apiKey}` },
       }),
       fetchAllTasks(apiKey),
+      fetch(`${HS_API}/account-info/v3/details`, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
+    const portalId = accountRes?.portalId || accountRes?.hub_id || '';
 
     if (!dealsRes.ok) {
       const errBody = await dealsRes.text().catch(() => "");
@@ -97,7 +101,7 @@ export async function GET() {
       type: t.properties?.hs_task_type || "TODO",
     }));
 
-    return NextResponse.json({ deals, stageMap, pipelines, tasks, owners }, {
+    return NextResponse.json({ deals, stageMap, pipelines, tasks, owners, portalId }, {
       headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=600" },
     });
   } catch (err: any) {

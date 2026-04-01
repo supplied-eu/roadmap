@@ -249,6 +249,7 @@ export default function DashboardPage() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [hsTasks, setHsTasks] = useState<HsTask[]>([]);
   const [hsDeals, setHsDeals] = useState<HsDeal[]>([]);
+  const [hsPortalId, setHsPortalId] = useState<string>('');
   const [loading, setLoading] = useState({ tasks: true, calendar: true, hubspot: true, meetings: true });
   const [personalTasks, setPersonalTasks] = useState<PersonalTask[]>(loadPersonalTasks);
   const [dismissedMeetingTasks, setDismissedMeetingTasks] = useState<string[]>(loadDismissedMeetingTasks);
@@ -364,6 +365,7 @@ export default function DashboardPage() {
       .then(data => {
         setHsTasks((data.tasks || []).filter((t: HsTask) => t.status !== 'COMPLETED'));
         setHsDeals(data.deals || []);
+        if (data.portalId) setHsPortalId(data.portalId);
         setLoading(l => ({ ...l, hubspot: false }));
       })
       .catch(() => setLoading(l => ({ ...l, hubspot: false })));
@@ -407,9 +409,10 @@ export default function DashboardPage() {
   // HubSpot tasks
   for (const t of hsTasks) {
     if (hiddenTasks.has(t.id) || snoozedTasks.has(t.id) || doneTasks.has(t.id)) continue;
+    const hsUrl = hsPortalId ? `https://app.hubspot.com/contacts/${hsPortalId}/task/${t.id}` : null;
     streamItems.push({
       id: `hs_${t.id}`, title: t.subject, source: 'hubspot',
-      dueDate: t.dueDate, status: t.status, url: null,
+      dueDate: t.dueDate, status: t.status, url: hsUrl,
       priority: t.priority === 'HIGH' ? 2 : t.priority === 'MEDIUM' ? 3 : 4,
       meta: t.type, assignee: cleanAssignee(t.ownerName) || t.ownerName || undefined,
     });
@@ -442,8 +445,21 @@ export default function DashboardPage() {
     }
   }
 
-  // Email action items — surface unread emails as actionable stream items
-  const actionEmails = emails.filter(e => e.unread).slice(0, 5);
+  // Email action items — only surface emails that likely need a personal reply
+  // Skip newsletters, marketing, notifications, and no-reply addresses
+  const SPAM_PATTERNS = /noreply|no-reply|notifications?@|newsletter|marketing|unsubscribe|updates@|info@|support@|billing@|hello@|team@|do-not-reply|donotreply|mailer-daemon/i;
+  const actionEmails = emails
+    .filter(e => e.unread)
+    .filter(e => !SPAM_PATTERNS.test(e.from))
+    .filter(e => !SPAM_PATTERNS.test(e.subject))
+    .filter(e => {
+      // Skip short auto-generated subjects
+      if (e.subject.length < 5) return false;
+      // Skip common notification patterns
+      if (/invitation:|shared .* with you|commented on|assigned to you|reminder:/i.test(e.subject)) return false;
+      return true;
+    })
+    .slice(0, 5);
   for (const email of actionEmails) {
     const emailId = `eml_${email.id}`;
     if (hiddenTasks.has(emailId) || doneTasks.has(emailId)) continue;
@@ -549,20 +565,31 @@ export default function DashboardPage() {
                 {(priorityExpanded ? priorityItems : priorityItems.slice(0, 8)).map(item => {
                   const rawId = item.id.replace(/^(lin_|hs_|pt_|drv_|cht_|eml_)/, '');
                   const isPersonal = item.source === 'personal';
-                  const isDriveChatEmail = item.source === 'drive' || item.source === 'chat' || item.source === 'gmail';
                   const pt = isPersonal ? personalTasks.find(t => t.id === rawId) : null;
                   const isEditingDate = editingPriorityDate === item.id;
                   return (
                     <div key={item.id} className="flex items-center gap-2 group">
+                      {/* Cross off / mark done — works for ALL task types */}
                       <button
                         onClick={() => markDone(isPersonal ? item.id : rawId, item.title)}
-                        className="shrink-0" title="Mark done">
+                        className="shrink-0 hover:scale-110 transition-transform" title="Mark done">
                         <Circle size={13} style={{ color: 'var(--text-muted)' }} />
                       </button>
-                      <span className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0"
-                        style={{ background: SOURCE_COLORS[item.source] + '22', color: SOURCE_COLORS[item.source] }}>
-                        {SOURCE_LABELS[item.source]}
-                      </span>
+                      {/* Source badge — clickable link to source */}
+                      {item.url ? (
+                        <a href={item.url} target="_blank" rel="noopener"
+                          className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0 hover:opacity-80"
+                          style={{ background: SOURCE_COLORS[item.source] + '22', color: SOURCE_COLORS[item.source] }}
+                          title={`Open in ${SOURCE_LABELS[item.source]}`}>
+                          {SOURCE_LABELS[item.source]}
+                        </a>
+                      ) : (
+                        <span className="text-[8px] font-bold uppercase px-1 py-0.5 rounded shrink-0"
+                          style={{ background: SOURCE_COLORS[item.source] + '22', color: SOURCE_COLORS[item.source] }}>
+                          {SOURCE_LABELS[item.source]}
+                        </span>
+                      )}
+                      {/* Title — clickable to source */}
                       {item.url ? (
                         <a href={item.url} target="_blank" rel="noopener"
                           className="text-[11px] flex-1 truncate hover:underline"
@@ -570,11 +597,7 @@ export default function DashboardPage() {
                       ) : (
                         <span className="text-[11px] flex-1 truncate" style={{ color: 'var(--text)' }}>{item.title}</span>
                       )}
-                      {/* Meta info for Drive/Chat/Email */}
-                      {isDriveChatEmail && item.meta && (
-                        <span className="text-[8px] px-1 py-0.5 rounded shrink-0 truncate max-w-[100px]"
-                          style={{ background: 'var(--bg)', color: 'var(--text-muted)' }}>{item.meta}</span>
-                      )}
+                      {/* Overdue / priority badges */}
                       {isOverdue(item.dueDate) && (
                         <span className="text-[9px] px-1 py-0.5 rounded font-bold shrink-0"
                           style={{ background: '#ef444422', color: '#ef4444' }}>OVERDUE</span>
@@ -585,7 +608,7 @@ export default function DashboardPage() {
                           {item.priority === 1 ? 'URGENT' : 'HIGH'}
                         </span>
                       )}
-                      {/* Due date — inline editable for personal tasks */}
+                      {/* Due date */}
                       {isPersonal && isEditingDate ? (
                         <input type="date" autoFocus
                           value={pt?.dueDate || ''}
@@ -596,51 +619,47 @@ export default function DashboardPage() {
                           style={{ color: 'var(--text)', border: '1px solid var(--accent)', width: '110px' }}
                         />
                       ) : item.dueDate ? (
-                        <button onClick={() => isPersonal && setEditingPriorityDate(item.id)}
-                          className="text-[9px] px-1.5 py-0.5 rounded shrink-0 flex items-center gap-1"
-                          style={{
-                            color: isOverdue(item.dueDate) ? '#ef4444' : 'var(--text-muted)',
-                            background: isPersonal ? 'var(--bg)' : 'transparent',
-                            border: isPersonal ? '1px solid var(--border)' : 'none',
-                            cursor: isPersonal ? 'pointer' : 'default',
-                          }}
-                          title={isPersonal ? 'Click to change date' : undefined}>
-                          {isPersonal && <Calendar size={8} />}
+                        <span className="text-[9px] shrink-0"
+                          style={{ color: isOverdue(item.dueDate) ? '#ef4444' : 'var(--text-muted)' }}>
                           {formatDate(item.dueDate)}
-                        </button>
-                      ) : isPersonal ? (
-                        <button onClick={() => setEditingPriorityDate(item.id)}
-                          className="text-[9px] shrink-0 px-1.5 py-0.5 rounded flex items-center gap-1"
-                          style={{ color: 'var(--accent)', background: 'var(--bg)', border: '1px dashed var(--accent)' }}
-                          title="Set due date">
-                          <Calendar size={8} /> Add date
-                        </button>
+                        </span>
                       ) : null}
-                      {/* Edit & Delete for personal tasks */}
-                      {isPersonal && (
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                          <button onClick={() => { setEditTitle(item.title); setEditingTask(rawId); }} title="Edit">
+                      {/* Actions — always visible for core actions, hover for extras */}
+                      <div className="flex items-center gap-1 shrink-0">
+                        {/* Snooze — works for all */}
+                        <button onClick={() => snoozeTask(rawId, item.title)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity" title="Snooze until tomorrow">
+                          <AlarmClock size={10} style={{ color: 'var(--text-muted)' }} />
+                        </button>
+                        {/* Open in source — always visible if url exists */}
+                        {item.url && (
+                          <a href={item.url} target="_blank" rel="noopener"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity" title={`Open in ${SOURCE_LABELS[item.source]}`}>
+                            <ExternalLink size={10} style={{ color: 'var(--accent)' }} />
+                          </a>
+                        )}
+                        {/* Edit for personal */}
+                        {isPersonal && (
+                          <button onClick={() => { setEditTitle(item.title); setEditingTask(rawId); }}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity" title="Edit">
                             <Edit3 size={10} style={{ color: 'var(--accent)' }} />
                           </button>
-                          <button onClick={() => dismissTask(item.id, item.title)} title="Delete">
-                            <Trash2 size={10} style={{ color: '#ef4444' }} />
+                        )}
+                        {/* Date for personal */}
+                        {isPersonal && (
+                          <button onClick={() => setEditingPriorityDate(item.id)}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity" title="Set due date">
+                            <Calendar size={10} style={{ color: 'var(--text-muted)' }} />
                           </button>
-                        </div>
-                      )}
-                      {/* Dismiss + Add as task for Drive/Chat/Email */}
-                      {isDriveChatEmail && (
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                          {!personalTasks.some(pt => pt.title.includes(item.title.slice(0, 30))) && (
-                            <button onClick={() => addPersonalTask(item.title, null, 'medium', SOURCE_LABELS[item.source], item.url || undefined)}
-                              title="Add as personal task">
-                              <Plus size={10} style={{ color: 'var(--accent)' }} />
-                            </button>
-                          )}
-                          <button onClick={() => dismissTask(rawId, item.title)} title="Dismiss">
-                            <X size={10} style={{ color: 'var(--text-muted)' }} />
-                          </button>
-                        </div>
-                      )}
+                        )}
+                        {/* Dismiss/delete */}
+                        <button onClick={() => dismissTask(isPersonal ? item.id : rawId, item.title)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity"
+                          title={isPersonal ? 'Delete' : 'Dismiss'}>
+                          {isPersonal ? <Trash2 size={10} style={{ color: '#ef4444' }} />
+                            : <X size={10} style={{ color: 'var(--text-muted)' }} />}
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
