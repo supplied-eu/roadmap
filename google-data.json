@@ -1,7 +1,16 @@
 {
-  "refreshedAt": "2026-04-01T11:18:49.122Z",
+  "refreshedAt": "2026-04-01T12:01:52.208Z",
   "gmail": {
     "threads": [
+      {
+        "id": "19d48e7044eb3a2b",
+        "subject": "We saved a Slot just for you",
+        "from": "Figma <announcements@figma.com>",
+        "date": "2026-04-01T11:56:31.000Z",
+        "snippet": "Slots, agents in canvas, and more Figma product updates this month. ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19d48e7044eb3a2b",
+        "unread": true
+      },
       {
         "id": "19d47e0483f9000e",
         "subject": "Re: Blog planning & video",
@@ -100,18 +109,9 @@
         "snippet": "AWS Cost Management: Anomaly Detection 2026-03-15 AWS Account: supplied-infra (224361002901) Dear AWS Customer, You are receiving this alert because AWS Cost Anomaly Detection has detected higher than",
         "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
         "unread": true
-      },
-      {
-        "id": "19ce82e9d0fab621",
-        "subject": "Reminder : Help Us Improve: Rate Your Experience",
-        "from": "Akancha  Srivastava <akancha@scrut.io>",
-        "date": "2026-03-13T17:11:33.000Z",
-        "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
-        "unread": true
       }
     ],
-    "unreadCount": 40
+    "unreadCount": 41
   },
   "calendar": {
     "today": [
@@ -389,6 +389,16 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
+    },
+    {
+      "action": "reply",
+      "subject": "We saved a Slot just for you",
+      "reason": "Slots, agents in canvas, and more Figma product updates this month. ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ",
+      "from": "Figma <announcements@figma.com>",
+      "ageDays": 0,
+      "threadId": "19d48e7044eb3a2b",
+      "url": "https://mail.google.com/mail/u/0/#inbox/19d48e7044eb3a2b",
+      "id": "email-19d48e7044eb3a2b"
     },
     {
       "action": "reply",

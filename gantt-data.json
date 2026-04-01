@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-04-01T11:18:46.087Z",
+  "refreshedAt": "2026-04-01T12:01:49.799Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -499,7 +499,7 @@
               "id": "24e565e5-4849-4d5a-a60e-d57b895ed777",
               "identifier": "SUP-1176",
               "title": "Backfill phase",
-              "status": "In Review",
+              "status": "In Test",
               "start": "2026-03-25",
               "end": null,
               "assignee": null,
@@ -13822,8 +13822,8 @@
               "id": "310ab302-8497-43bd-894b-90753d63a5da",
               "identifier": "SUP-966",
               "title": "[Tarisio] Your current data contains no valid entries for DAC7 report generation",
-              "status": "Todo",
-              "start": null,
+              "status": "Done",
+              "start": "2026-04-01",
               "end": "2026-04-01",
               "assignee": null,
               "priority": "Low",
