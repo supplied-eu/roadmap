@@ -33,6 +33,7 @@ const STATUS_COLORS: Record<string, string> = {
   'Canceled': '#94a3b8', 'Completed': '#22c55e', 'Started': '#f59e0b',
 };
 const DONE_STATES = new Set(['Done', 'Cancelled', 'Canceled', 'Completed', 'Duplicate']);
+const HIDDEN_STATES = new Set(['Backlog']);
 const PRIO_LABELS: Record<number, { label: string; color: string }> = {
   1: { label: 'URGENT', color: '#ef4444' },
   2: { label: 'HIGH', color: '#f97316' },
@@ -433,7 +434,7 @@ export default function RoadmapPage() {
   const today = fmt(new Date());
 
   const isOverdue = (end: string | null, status: string) => !!end && end < today && !DONE_STATES.has(status);
-  const isActive = (status: string) => !DONE_STATES.has(status);
+  const isActive = (status: string) => !DONE_STATES.has(status) && !HIDDEN_STATES.has(status);
 
   // Gantt filter: check if issue matches the current filter
   const passesFilter = (iss: Issue) => {
@@ -484,7 +485,9 @@ export default function RoadmapPage() {
     if (DONE_STATES.has(ini.status)) return null;
     const iniKey = `ini_${ini.id}`;
     const iniExp = expanded[iniKey] !== undefined ? expanded[iniKey] : true;
-    const rawActiveProjects = ini.projects.filter(p => !DONE_STATES.has(p.status));
+    const rawActiveProjects = ini.projects
+      .filter(p => !DONE_STATES.has(p.status) && !HIDDEN_STATES.has(p.status))
+      .sort((a, b) => statusSort(a.status, b.status));
     if (rawActiveProjects.length === 0) return null;
     const activeProjects = getOrderedProjects(ini.id, rawActiveProjects);
 
@@ -519,7 +522,9 @@ export default function RoadmapPage() {
         const proj = activeProjects[projIdx];
         const projKey = `proj_${proj.id}`;
         const projExp = expanded[projKey] !== undefined ? expanded[projKey] : false;
-        const activeIssues = proj.issues.filter(i => isActive(i.status) && passesFilter(i));
+        const activeIssues = proj.issues
+          .filter(i => isActive(i.status) && passesFilter(i))
+          .sort((a, b) => statusSort(a.status, b.status));
         const topIssues = activeIssues.filter(i => !i.parentId);
         const childMap = new Map<string, Issue[]>();
         for (const i of activeIssues) {
@@ -757,10 +762,10 @@ export default function RoadmapPage() {
             {data.orphanProjects.length > 0 && (
               <>
                 <SectionHeader title="Other Projects" subtitle="not in any initiative" />
-                {data.orphanProjects.filter(p => !DONE_STATES.has(p.status)).map(proj => {
+                {data.orphanProjects.filter(p => !DONE_STATES.has(p.status) && !HIDDEN_STATES.has(p.status)).sort((a, b) => statusSort(a.status, b.status)).map(proj => {
                   const projKey = `oproj_${proj.id}`;
                   const projExp = expanded[projKey] !== undefined ? expanded[projKey] : false;
-                  const activeIssues = proj.issues.filter(i => isActive(i.status));
+                  const activeIssues = proj.issues.filter(i => isActive(i.status)).sort((a, b) => statusSort(a.status, b.status));
                   const topIssues = activeIssues.filter(i => !i.parentId);
                   const projOd = isOverdue(proj.targetDate, proj.status);
                   return (
@@ -853,10 +858,10 @@ export default function RoadmapPage() {
                 if (DONE_STATES.has(ini.status)) return null;
                 const iniKey = `pini_${ini.id}`;
                 const iniExp = expanded[iniKey] !== undefined ? expanded[iniKey] : false;
-                const activeProjects = ini.projects.filter(p => !DONE_STATES.has(p.status));
+                const activeProjects = ini.projects.filter(p => !DONE_STATES.has(p.status) && !HIDDEN_STATES.has(p.status));
                 if (activeProjects.length === 0) return null;
 
-                const totalIssues = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => !DONE_STATES.has(i.status)).length, 0);
+                const totalIssues = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => !DONE_STATES.has(i.status) && !HIDDEN_STATES.has(i.status)).length, 0);
                 const doneIssues = activeProjects.reduce((sum, p) => sum + p.issues.filter(i => DONE_STATES.has(i.status)).length, 0);
                 const allIssues = totalIssues + doneIssues;
                 const pct = allIssues > 0 ? Math.round((doneIssues / allIssues) * 100) : 0;
