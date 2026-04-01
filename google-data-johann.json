@@ -1,16 +1,7 @@
 {
-  "refreshedAt": "2026-04-01T07:18:32.930Z",
+  "refreshedAt": "2026-04-01T08:18:49.147Z",
   "gmail": {
     "threads": [
-      {
-        "id": "19d47e0483f9000e",
-        "subject": "Blog planning & video",
-        "from": "Britt Vries <britt@mcpr.nl>",
-        "date": "2026-04-01T07:09:21.000Z",
-        "snippet": "Morning! @Bas &amp; Julio: Hierbij een opzetje voor de blog planning, waarin we alle topics, data en mogelijke onderwerpen kunnen bijhouden: https://docs.google.com/document/d/13Klq72xSoI8b-",
-        "url": "https://mail.google.com/mail/u/0/#inbox/19d47e0483f9000e",
-        "unread": true
-      },
       {
         "id": "19d472ed95174931",
         "subject": "Invoice 2026-0658 from Suijkerbuijk+Co B.V.",
@@ -109,9 +100,18 @@
         "snippet": "How likely is it that you would recommend Scrut Automation to a friend or colleague? Not at all likely Extremely likely 0 1 2 3 4 5 6 7 8 9 10",
         "url": "https://mail.google.com/mail/u/0/#inbox/19ce82e9d0fab621",
         "unread": true
+      },
+      {
+        "id": "19ce7f12f8358ef7",
+        "subject": "Exit on your terms - strategic buy and hold buyers",
+        "from": "dmitry.mykhailenko@auditfirm.uk",
+        "date": "2026-03-13T16:04:27.000Z",
+        "snippet": "Hi Johann, I came across Supplied and wanted to reach out you - I think (while I am not expert in software ) you&#39;ve built something that serious acquirers would pay a premium for right now.",
+        "url": "https://mail.google.com/mail/u/0/#inbox/19ce7f12f8358ef7",
+        "unread": true
       }
     ],
-    "unreadCount": 40
+    "unreadCount": 39
   },
   "calendar": {
     "today": [
@@ -208,6 +208,16 @@
         "allDay": false
       },
       {
+        "id": "_60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g6so34g9g6h336ga3890k8gpg64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g8p2k2dpg60rjec26612k2d9k8os34e9l70qj6c9n8kpk6h236ss0",
+        "title": "GASTREOAI drop in working session ",
+        "start": "2026-04-02T12:00:00+02:00",
+        "end": "2026-04-02T13:30:00+02:00",
+        "location": "Microsoft Teams Meeting",
+        "numAttendees": 16,
+        "url": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc2c28zNGc5ZzZoMzM2Z2EzODkwazhncGc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnOHAyazJkcGc2MHJqZWMyNjYxMmsyZDlrOG9zMzRlOWw3MHFqNmM5bjhrcGs2aDIzNnNzMCBqb2hhbm5Ac3VwcGxpZWQuZXU",
+        "allDay": false
+      },
+      {
         "id": "f0m0ha5csouibr0lnfdqqe5jgm_20260402T100000Z",
         "title": "Standup",
         "start": "2026-04-02T12:00:00+02:00",
@@ -266,21 +276,27 @@
         "numAttendees": 3,
         "url": "https://www.google.com/calendar/event?eid=b2pmajBndW1ib2pmYWVuZGtxOTNlYjJnODFfMjAyNjA0MDNUMDkwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
         "allDay": false
-      },
-      {
-        "id": "f0m0ha5csouibr0lnfdqqe5jgm_20260403T100000Z",
-        "title": "Standup",
-        "start": "2026-04-03T12:00:00+02:00",
-        "end": "2026-04-03T12:30:00+02:00",
-        "location": null,
-        "numAttendees": 7,
-        "url": "https://www.google.com/calendar/event?eid=ZjBtMGhhNWNzb3VpYnIwbG5mZHFxZTVqZ21fMjAyNjA0MDNUMTAwMDAwWiBqb2hhbm5Ac3VwcGxpZWQuZXU",
-        "allDay": false
       }
     ]
   },
   "drive": {
     "recent": [
+      {
+        "id": "13Klq72xSoI8b-v2qIAVvRvzcDjYB8QwYHf_pIs7u7iU",
+        "name": "Blog planning Supplied",
+        "mimeType": "application/vnd.google-apps.document",
+        "modifiedTime": "2026-04-01T06:44:56.690Z",
+        "url": "https://docs.google.com/document/d/13Klq72xSoI8b-v2qIAVvRvzcDjYB8QwYHf_pIs7u7iU/edit?usp=drivesdk",
+        "lastModifiedBy": "Britt Vries"
+      },
+      {
+        "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
+        "name": "Supplied_SALES_Revenue_Costs_Master_File",
+        "mimeType": "application/vnd.google-apps.spreadsheet",
+        "modifiedTime": "2026-03-31T14:36:04.788Z",
+        "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
+        "lastModifiedBy": "Julio Lindveld"
+      },
       {
         "id": "1R4oUGLpYNjZOsMFhdBfvGMVKOZthJ1b71UUmjf_X45M",
         "name": "Data Engineer - Job Description",
@@ -330,14 +346,6 @@
         "lastModifiedBy": "Johann Rozario"
       },
       {
-        "id": "1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc",
-        "name": "Supplied_SALES_Revenue_Costs_Master_File",
-        "mimeType": "application/vnd.google-apps.spreadsheet",
-        "modifiedTime": "2026-03-31T14:36:04.788Z",
-        "url": "https://docs.google.com/spreadsheets/d/1tXY232sSSn8hpxpUV2ynilReg-D6JZVWqTrYPzovMdc/edit?usp=drivesdk",
-        "lastModifiedBy": "Julio Lindveld"
-      },
-      {
         "id": "1yuu9zCc579qtFqrhsCk1wSyBP1H3OKzVY-B-Bvafx1I",
         "name": "Supplied_Technologies_Budget_2026",
         "mimeType": "application/vnd.google-apps.spreadsheet",
@@ -368,14 +376,6 @@
         "modifiedTime": "2026-04-01T06:09:39.436Z",
         "url": "https://docs.google.com/document/d/1kEVAEXrAZ22d3dPFVqgyipLPpleF3IOI-Wl-i1eJFKY/edit?usp=drivesdk",
         "lastModifiedBy": "Nitya Shukla Paharia"
-      },
-      {
-        "id": "1kyPdlGKTcFHbCJZlGEVQObQf4JX8CPyz",
-        "name": "Style 2 (New)",
-        "mimeType": "application/vnd.google-apps.folder",
-        "modifiedTime": "2026-03-30T11:27:10.996Z",
-        "url": "https://drive.google.com/drive/folders/1kyPdlGKTcFHbCJZlGEVQObQf4JX8CPyz",
-        "lastModifiedBy": "Nitya Shukla Paharia"
       }
     ]
   },
@@ -389,16 +389,6 @@
       "threadId": "19cf4de5565b3976",
       "url": "https://mail.google.com/mail/u/0/#inbox/19cf4de5565b3976",
       "id": "email-19cf4de5565b3976"
-    },
-    {
-      "action": "reply",
-      "subject": "Blog planning & video",
-      "reason": "Morning! @Bas &amp; Julio: Hierbij een opzetje voor de blog planning, waarin we alle topics, data en mogelijke onderwerp",
-      "from": "Britt Vries <britt@mcpr.nl>",
-      "ageDays": 0,
-      "threadId": "19d47e0483f9000e",
-      "url": "https://mail.google.com/mail/u/0/#inbox/19d47e0483f9000e",
-      "id": "email-19d47e0483f9000e"
     },
     {
       "action": "reply",
@@ -435,7 +425,7 @@
       "subject": "Supplied Monthly Shareholder Updates - 2025 Update",
       "reason": "New activity in the following document Supplied Monthly Shareholder Updates - 2025 Update For you Comments Major Develop",
       "from": "\"Bas Bogerd (Google Docs)\" <comments-noreply@docs.google.com>",
-      "ageDays": 0,
+      "ageDays": 1,
       "threadId": "19b6aa08efdc34cd",
       "url": "https://mail.google.com/mail/u/0/#inbox/19b6aa08efdc34cd",
       "id": "email-19b6aa08efdc34cd"

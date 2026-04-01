@@ -1,5 +1,5 @@
 {
-  "refreshedAt": "2026-04-01T07:18:29.344Z",
+  "refreshedAt": "2026-04-01T08:18:45.612Z",
   "initiatives": [
     {
       "id": "072b5d8c-ba5b-4b72-a4f8-81cc628fcf66",
@@ -4854,9 +4854,9 @@
               "id": "2222e042-2253-45ee-832c-2f834aae235e",
               "identifier": "SUP-499",
               "title": "SERVICES TO ENABLE BASED ON SERVICES in PRICING",
-              "status": "In Test",
+              "status": "Done",
               "start": "2026-03-31",
-              "end": null,
+              "end": "2026-04-01",
               "assignee": "Vladislav Suvorov",
               "priority": "High",
               "estimate": null,
@@ -9095,6 +9095,32 @@
           "startDate": "2026-03-25",
           "targetDate": "2026-03-27",
           "issues": [
+            {
+              "id": "3f39343f-7fa0-41e6-999e-410ab2810d0f",
+              "identifier": "SUP-1278",
+              "title": "Person details for Businesses",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "No priority",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/SUP-1278/person-details-for-businesses",
+              "parentId": null
+            },
+            {
+              "id": "7ac8eecc-0c3f-41e0-b8e4-4cd1ed97d45a",
+              "identifier": "IMP-164",
+              "title": "Seller statements show contact person name instead of business name for Business suppliers",
+              "status": "Todo",
+              "start": null,
+              "end": null,
+              "assignee": "Vladimir Ivanov",
+              "priority": "Urgent",
+              "estimate": null,
+              "url": "https://linear.app/supplied/issue/IMP-164/seller-statements-show-contact-person-name-instead-of-business-name",
+              "parentId": null
+            },
             {
               "id": "f45a281f-9dc2-4251-a027-4642d951a082",
               "identifier": "IMP-162",
