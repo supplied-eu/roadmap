@@ -155,6 +155,20 @@ function loadPersonalTasks(): PersonalTask[] {
 function savePersonalTasks(tasks: PersonalTask[]) {
   localStorage.setItem('dashboard_personal_tasks', JSON.stringify(tasks));
 }
+function loadDoneTaskIds(): string[] {
+  if (typeof window === 'undefined') return [];
+  try { return JSON.parse(localStorage.getItem('dashboard_done_tasks') || '[]'); } catch { return []; }
+}
+function saveDoneTaskIds(ids: string[]) {
+  localStorage.setItem('dashboard_done_tasks', JSON.stringify(ids));
+}
+function loadHiddenTaskIds(): string[] {
+  if (typeof window === 'undefined') return [];
+  try { return JSON.parse(localStorage.getItem('dashboard_hidden_tasks') || '[]'); } catch { return []; }
+}
+function saveHiddenTaskIds(ids: string[]) {
+  localStorage.setItem('dashboard_hidden_tasks', JSON.stringify(ids));
+}
 
 // ── Toast notification ─────────────────────────────────────────
 function ToastBar({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: string) => void }) {
@@ -255,10 +269,10 @@ export default function DashboardPage() {
   const [dismissedMeetingTasks, setDismissedMeetingTasks] = useState<string[]>(loadDismissedMeetingTasks);
   const [notifications, setNotifications] = useState<NotificationsData | null>(null);
 
-  // Task management state
-  const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(new Set());
+  // Task management state — persisted to localStorage
+  const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(() => new Set(loadHiddenTaskIds()));
   const [snoozedTasks, setSnoozedTasks] = useState<Set<string>>(new Set());
-  const [doneTasks, setDoneTasks] = useState<Set<string>>(new Set());
+  const [doneTasks, setDoneTasks] = useState<Set<string>>(() => new Set(loadDoneTaskIds()));
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [expandedMeeting, setExpandedMeeting] = useState<string | null>(null);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
@@ -272,6 +286,8 @@ export default function DashboardPage() {
   // Save personal tasks & dismissed meeting tasks on change
   useEffect(() => { savePersonalTasks(personalTasks); }, [personalTasks]);
   useEffect(() => { saveDismissedMeetingTasks(dismissedMeetingTasks); }, [dismissedMeetingTasks]);
+  useEffect(() => { saveDoneTaskIds([...doneTasks]); }, [doneTasks]);
+  useEffect(() => { saveHiddenTaskIds([...hiddenTasks]); }, [hiddenTasks]);
 
   const addToast = useCallback((message: string, undoAction?: () => void) => {
     const id = Date.now().toString();
@@ -423,7 +439,7 @@ export default function DashboardPage() {
   if (notifications?.drive?.items) {
     for (const d of notifications.drive.items) {
       if (d.type !== 'comment') continue;
-      if (hiddenTasks.has(d.id) || doneTasks.has(d.id)) continue;
+      if (hiddenTasks.has(d.id) || hiddenTasks.has(`drv_${d.id}`) || doneTasks.has(d.id) || doneTasks.has(`drv_${d.id}`)) continue;
       streamItems.push({
         id: `drv_${d.id}`, title: `${d.author}: "${d.title}"`,
         source: 'drive',
@@ -436,7 +452,7 @@ export default function DashboardPage() {
   // Google Chat messages → stream items
   if (notifications?.chat?.items) {
     for (const c of notifications.chat.items) {
-      if (hiddenTasks.has(c.id) || doneTasks.has(c.id)) continue;
+      if (hiddenTasks.has(c.id) || hiddenTasks.has(`cht_${c.id}`) || doneTasks.has(c.id) || doneTasks.has(`cht_${c.id}`)) continue;
       streamItems.push({
         id: `cht_${c.id}`, title: c.title,
         source: 'chat',
@@ -463,7 +479,7 @@ export default function DashboardPage() {
     .slice(0, 5);
   for (const email of actionEmails) {
     const emailId = `eml_${email.id}`;
-    if (hiddenTasks.has(emailId) || doneTasks.has(emailId)) continue;
+    if (hiddenTasks.has(emailId) || hiddenTasks.has(email.id) || doneTasks.has(emailId) || doneTasks.has(email.id)) continue;
     const alreadyTask = personalTasks.some(pt => pt.title.includes(email.subject));
     if (alreadyTask) continue;
     streamItems.push({
