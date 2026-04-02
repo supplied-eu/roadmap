@@ -37,7 +37,7 @@ type HsTask = {
 
 // Combined stream item
 type StreamItem = {
-  id: string; title: string; source: 'linear' | 'hubspot' | 'gcal' | 'gmail' | 'personal' | 'drive' | 'chat';
+  id: string; title: string; source: 'linear' | 'hubspot' | 'gcal' | 'gmail' | 'personal' | 'drive' | 'chat' | 'ai';
   dueDate: string | null; status: string; url: string | null;
   priority: number; meta?: string; assignee?: string;
 };
@@ -135,10 +135,10 @@ function cleanAssigneeFull(name: string): string {
 }
 
 const SOURCE_COLORS: Record<string, string> = {
-  linear: '#6366f1', hubspot: '#f97316', gcal: '#3b82f6', gmail: '#ef4444', personal: '#22c55e', drive: '#4285F4', chat: '#34A853',
+  linear: '#6366f1', hubspot: '#f97316', gcal: '#3b82f6', gmail: '#ef4444', personal: '#22c55e', drive: '#4285F4', chat: '#34A853', ai: '#a855f7',
 };
 const SOURCE_LABELS: Record<string, string> = {
-  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Email', personal: 'My Task', drive: 'Drive', chat: 'Chat',
+  linear: 'Linear', hubspot: 'HubSpot', gcal: 'Calendar', gmail: 'Email', personal: 'My Task', drive: 'Drive', chat: 'Chat', ai: 'AI Suggested',
 };
 
 const priCatColors: Record<string, string> = {
@@ -268,6 +268,7 @@ export default function DashboardPage() {
   const [personalTasks, setPersonalTasks] = useState<PersonalTask[]>(loadPersonalTasks);
   const [dismissedMeetingTasks, setDismissedMeetingTasks] = useState<string[]>(loadDismissedMeetingTasks);
   const [notifications, setNotifications] = useState<NotificationsData | null>(null);
+  const [aiRecommendations, setAiRecommendations] = useState<{ title: string; source: string; priority: string; reason: string }[]>([]);
 
   // Task management state — persisted to localStorage
   const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(() => new Set(loadHiddenTaskIds()));
@@ -398,6 +399,33 @@ export default function DashboardPage() {
       .catch(() => setNotifications({ drive: { available: false, items: [] }, chat: { available: false, items: [] } }));
   }, [user]);
 
+  // Fetch AI-recommended actions when emails/notifications arrive
+  useEffect(() => {
+    if (emails.length === 0 && !notifications) return;
+    const driveItems = notifications?.drive?.items || [];
+    const chatItems = notifications?.chat?.items || [];
+    if (emails.length === 0 && driveItems.length === 0 && chatItems.length === 0) return;
+
+    fetch('/api/recommendations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        emails: emails.filter(e => e.unread).slice(0, 8).map(e => ({
+          from: e.from, subject: e.subject, snippet: e.snippet,
+        })),
+        driveComments: driveItems.filter((d: DriveItem) => d.type === 'comment').map((d: DriveItem) => ({
+          docName: d.docName, author: d.author, title: d.title,
+        })),
+        chatMessages: chatItems.map((c: ChatItem) => ({
+          spaceName: c.spaceName, author: c.author, title: c.title,
+        })),
+      }),
+    })
+      .then(r => r.json())
+      .then(data => { if (data.recommendations?.length) setAiRecommendations(data.recommendations); })
+      .catch(() => {});
+  }, [emails, notifications]);
+
   // Build combined stream
   const streamItems: StreamItem[] = [];
 
@@ -425,8 +453,7 @@ export default function DashboardPage() {
   // HubSpot tasks
   for (const t of hsTasks) {
     if (hiddenTasks.has(t.id) || snoozedTasks.has(t.id) || doneTasks.has(t.id)) continue;
-    const pid = hsPortalId || '27215736';
-    const hsUrl = `https://app.hubspot.com/contacts/${pid}/record/0-27/${t.id}`;
+    const hsUrl = `https://app.hubspot.com/contacts/27215736/record/0-27/${t.id}`;
     streamItems.push({
       id: `hs_${t.id}`, title: t.subject, source: 'hubspot',
       dueDate: t.dueDate, status: t.status, url: hsUrl,
@@ -464,7 +491,7 @@ export default function DashboardPage() {
 
   // Email action items — only surface emails that likely need a personal reply
   // Skip newsletters, marketing, notifications, and no-reply addresses
-  const SPAM_PATTERNS = /noreply|no-reply|notifications?@|newsletter|marketing|unsubscribe|updates@|info@|support@|billing@|hello@|team@|do-not-reply|donotreply|mailer-daemon/i;
+  const SPAM_PATTERNS = /noreply|no-reply|notifications?@|newsletter|marketing|unsubscribe|updates@|info@|support@|billing@|hello@|team@|do-not-reply|donotreply|mailer-daemon|anvr|nieuwsbrief|digest|weekly.?update|promo|announcement/i;
   const actionEmails = emails
     .filter(e => e.unread)
     .filter(e => !SPAM_PATTERNS.test(e.from))
@@ -486,8 +513,20 @@ export default function DashboardPage() {
       id: emailId, title: `${parseFrom(email.from)}: ${email.subject}`,
       source: 'gmail', dueDate: null,
       status: email.unread ? 'Unread' : 'Read',
-      url: `https://mail.google.com/mail/u/0/#inbox/${email.threadId}`,
+      url: `https://mail.google.com/mail/u/0/#all/${email.threadId}`,
       priority: 3, meta: email.snippet?.slice(0, 60), assignee: firstName,
+    });
+  }
+
+  // AI recommended actions
+  for (const rec of aiRecommendations) {
+    const recId = `ai_${rec.title.slice(0, 20).replace(/\s/g, '_').replace(/[^a-zA-Z0-9_]/g, '')}`;
+    if (hiddenTasks.has(recId) || doneTasks.has(recId)) continue;
+    streamItems.push({
+      id: recId, title: rec.title, source: 'ai',
+      dueDate: null, status: rec.reason, url: null,
+      priority: rec.priority === 'high' ? 2 : rec.priority === 'medium' ? 3 : 4,
+      meta: rec.reason, assignee: firstName,
     });
   }
 
@@ -514,7 +553,7 @@ export default function DashboardPage() {
 
   // Priority summary — personal tasks + urgent/high + overdue + Drive/Chat/Email items
   const priorityItems = filteredStream.filter(i =>
-    i.source === 'personal' || i.source === 'drive' || i.source === 'chat' || i.source === 'gmail' ||
+    i.source === 'personal' || i.source === 'drive' || i.source === 'chat' || i.source === 'gmail' || i.source === 'ai' ||
     i.priority <= 2 || isOverdue(i.dueDate)
   );
 
@@ -788,7 +827,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => addPersonalTask(
                               `Reply: ${email.subject}`, null, 'medium',
-                              'Email', `https://mail.google.com/mail/u/0/#inbox/${email.threadId}`
+                              'Email', `https://mail.google.com/mail/u/0/#all/${email.threadId}`
                             )}
                             className="text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
                             style={{ background: 'var(--accent)', color: '#fff' }}
