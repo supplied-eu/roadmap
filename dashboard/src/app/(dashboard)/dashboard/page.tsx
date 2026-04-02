@@ -402,15 +402,45 @@ export default function DashboardPage() {
   // Fetch AI-recommended actions when emails/notifications arrive
   useEffect(() => {
     if (emails.length === 0 && !notifications) return;
+    const spamFilter = /noreply|no-reply|notifications?@|newsletter|marketing|unsubscribe|updates@|info@|support@|billing@|hello@|team@|do-not-reply|donotreply|mailer-daemon|anvr|nieuwsbrief|digest|weekly.?update|promo|announcement|calendly|ledennieuw/i;
     const driveItems = notifications?.drive?.items || [];
     const chatItems = notifications?.chat?.items || [];
-    if (emails.length === 0 && driveItems.length === 0 && chatItems.length === 0) return;
+    const filteredEmails = emails
+      .filter(e => e.unread)
+      .filter(e => !spamFilter.test(e.from) && !spamFilter.test(e.subject))
+      .filter(e => e.subject.length >= 5)
+      .filter(e => !/invitation:|shared .* with you|commented on|assigned to you|reminder:|accepted:/i.test(e.subject))
+      .slice(0, 8);
 
+    if (filteredEmails.length === 0 && driveItems.length === 0 && chatItems.length === 0) return;
+
+    // Generate client-side fallback recommendations from emails/drive
+    const fallbackRecs: { title: string; source: string; priority: string; reason: string }[] = [];
+    for (const e of filteredEmails.slice(0, 4)) {
+      const sender = parseFrom(e.from);
+      const isReply = /^re:/i.test(e.subject);
+      fallbackRecs.push({
+        title: isReply ? `Reply to ${sender} re: ${e.subject.replace(/^re:\s*/i, '').slice(0, 40)}` : `Review & respond to ${sender}: ${e.subject.slice(0, 35)}`,
+        source: 'gmail',
+        priority: /urgent|asap|important|deadline|contract|invoice|proposal/i.test(e.subject + ' ' + e.snippet) ? 'high' : 'medium',
+        reason: `Unread email from ${sender}`,
+      });
+    }
+    for (const d of driveItems.filter((x: DriveItem) => x.type === 'comment').slice(0, 2)) {
+      fallbackRecs.push({
+        title: `Review ${d.author}'s comment on ${d.docName.slice(0, 30)}`,
+        source: 'drive',
+        priority: /urgent|asap|important|please review|@/i.test(d.title) ? 'high' : 'medium',
+        reason: `Comment needs your response`,
+      });
+    }
+
+    // Try Claude API first, fall back to client-side recs
     fetch('/api/recommendations', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        emails: emails.filter(e => e.unread).slice(0, 8).map(e => ({
+        emails: filteredEmails.map(e => ({
           from: e.from, subject: e.subject, snippet: e.snippet,
         })),
         driveComments: driveItems.filter((d: DriveItem) => d.type === 'comment').map((d: DriveItem) => ({
@@ -422,8 +452,16 @@ export default function DashboardPage() {
       }),
     })
       .then(r => r.json())
-      .then(data => { if (data.recommendations?.length) setAiRecommendations(data.recommendations); })
-      .catch(() => {});
+      .then(data => {
+        if (data.recommendations?.length) {
+          setAiRecommendations(data.recommendations);
+        } else if (fallbackRecs.length > 0) {
+          setAiRecommendations(fallbackRecs);
+        }
+      })
+      .catch(() => {
+        if (fallbackRecs.length > 0) setAiRecommendations(fallbackRecs);
+      });
   }, [emails, notifications]);
 
   // Build combined stream
@@ -491,7 +529,7 @@ export default function DashboardPage() {
 
   // Email action items — only surface emails that likely need a personal reply
   // Skip newsletters, marketing, notifications, and no-reply addresses
-  const SPAM_PATTERNS = /noreply|no-reply|notifications?@|newsletter|marketing|unsubscribe|updates@|info@|support@|billing@|hello@|team@|do-not-reply|donotreply|mailer-daemon|anvr|nieuwsbrief|digest|weekly.?update|promo|announcement/i;
+  const SPAM_PATTERNS = /noreply|no-reply|notifications?@|newsletter|marketing|unsubscribe|updates@|info@|support@|billing@|hello@|team@|do-not-reply|donotreply|mailer-daemon|anvr|nieuwsbrief|digest|weekly.?update|promo|announcement|calendly|ledennieuw/i;
   const actionEmails = emails
     .filter(e => e.unread)
     .filter(e => !SPAM_PATTERNS.test(e.from))
@@ -1052,15 +1090,21 @@ export default function DashboardPage() {
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>No recent emails.</p>
           ) : (
             <div className="space-y-1">
-              {emails.slice(0, 8).map(email => (
-                <div key={email.id} className="rounded-md px-2.5 py-1.5"
-                  style={{ background: email.unread ? 'var(--bg)' : 'transparent' }}>
+              {emails
+                .filter(e => !/anvr|nieuwsbrief|noreply|no-reply|newsletter|calendly|unsubscribe|mailer-daemon|do-not-reply|donotreply/i.test(e.from + ' ' + e.subject))
+                .slice(0, 8).map(email => (
+                <a key={email.id}
+                  href={`https://mail.google.com/mail/u/0/#all/${email.threadId}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="block rounded-md px-2.5 py-1.5 hover:opacity-80 cursor-pointer transition-opacity"
+                  style={{ background: email.unread ? 'var(--bg)' : 'transparent', textDecoration: 'none' }}>
                   <div className="flex items-center gap-1.5">
                     {email.unread && <Circle size={5} fill="var(--accent)" stroke="var(--accent)" />}
                     <span className="text-[11px] font-medium flex-1 truncate" style={{ color: 'var(--text)' }}>{parseFrom(email.from)}</span>
+                    <ExternalLink size={9} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
                   </div>
                   <p className="text-[10px] truncate" style={{ color: 'var(--text-muted)' }}>{email.subject}</p>
-                </div>
+                </a>
               ))}
             </div>
           )}
