@@ -409,7 +409,7 @@ export default function DashboardPage() {
       .filter(e => e.unread)
       .filter(e => !spamFilter.test(e.from) && !spamFilter.test(e.subject))
       .filter(e => e.subject.length >= 5)
-      .filter(e => !/invitation:|shared .* with you|commented on|assigned to you|reminder:|accepted:/i.test(e.subject))
+      .filter(e => !/invitation:|accepted:|declined:|shared .* with you|commented on|assigned to you|reminder:|new event:|updated event:|canceled event:|out of office|automatic reply|auto-reply|delivery status|read receipt/i.test(e.subject))
       .slice(0, 8);
 
     if (filteredEmails.length === 0 && driveItems.length === 0 && chatItems.length === 0) return;
@@ -538,7 +538,7 @@ export default function DashboardPage() {
       // Skip short auto-generated subjects
       if (e.subject.length < 5) return false;
       // Skip common notification patterns
-      if (/invitation:|shared .* with you|commented on|assigned to you|reminder:/i.test(e.subject)) return false;
+      if (/invitation:|accepted:|declined:|shared .* with you|commented on|assigned to you|reminder:|new event:|updated event:|canceled event:|out of office|automatic reply|auto-reply|delivery status|read receipt/i.test(e.subject)) return false;
       return true;
     })
     .slice(0, 5);
