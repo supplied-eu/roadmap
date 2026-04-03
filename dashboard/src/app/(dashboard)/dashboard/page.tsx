@@ -491,7 +491,7 @@ export default function DashboardPage() {
   // HubSpot tasks
   for (const t of hsTasks) {
     if (hiddenTasks.has(t.id) || snoozedTasks.has(t.id) || doneTasks.has(t.id)) continue;
-    const hsUrl = `https://app.hubspot.com/contacts/27215736/record/0-27/${t.id}`;
+    const hsUrl = `https://app-eu1.hubspot.com/contacts/27215736/record/0-27/${t.id}`;
     streamItems.push({
       id: `hs_${t.id}`, title: t.subject, source: 'hubspot',
       dueDate: t.dueDate, status: t.status, url: hsUrl,
